@@ -42,9 +42,6 @@ def includeDesktopSupport = false
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 
-repositories{
-    mavencentral()
-}
 
 dependencies {
     implementation wpi.deps.wpilib()
