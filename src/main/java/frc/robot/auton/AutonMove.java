@@ -10,8 +10,8 @@ package frc.robot.auton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 import frc.robot.commands.drivetrain.DegreeRotate;
-import frc.robot.commands.drivetrain.MoveOnPath;
-import frc.robot.commands.drivetrain.MoveOnPath.MPDirection;
+//import frc.robot.commands.drivetrain.MoveOnPath;
+//import frc.robot.commands.drivetrain.MoveOnPath.MPDirection;
 import frc.robot.commands.drivetrain.SwitchDriveDirection;
 import frc.robot.util.DriveAssist.DriveDirection;
 
@@ -27,20 +27,20 @@ public class AutonMove extends CommandGroup {
     }
 
     public AutonMove(String pathname, DriveDirection driveDirection) {
-        MoveOnPath mop = null;
-
+        //MoveOnPath mop = null;
+        /*
         try {
-            mop = new MoveOnPath(pathname);
+            //mop = new MoveOnPath(pathname);
         } catch (FileNotFoundException fnfe) {
             System.out.println("Not a path!");
             fnfe.printStackTrace();
         }
-
-        addSequential(mop);
+        */
+        //addSequential(mop);
         if (Robot.driveTrain.getDirection() != driveDirection) {
             addSequential(new SwitchDriveDirection(driveDirection));
         }
-
+        /*
         if (mop.getFilename().indexOf("Station") > 0) {
             try {
                 addSequential(new MoveOnPath(mop.getFilename(), MPDirection.BACKWARD));
@@ -50,5 +50,6 @@ public class AutonMove extends CommandGroup {
             }
             addSequential(new DegreeRotate(180));
         }
+        */
     }
 }

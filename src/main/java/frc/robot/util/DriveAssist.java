@@ -2,8 +2,6 @@ package frc.robot.util;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.util.interfaces.IMercMotorController;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.concurrent.TimeUnit;
 
@@ -14,8 +12,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class DriveAssist {
 
-    private final Logger LOG = LogManager.getLogger(DriveAssist.class);
-    private final DelayableLogger SLOW_LOG = new DelayableLogger(LOG, 10, TimeUnit.SECONDS);
     private final IMercMotorController LEFT_CONTROLLER, RIGHT_CONTROLLER;
     private double maxOutput = 1.0;
 

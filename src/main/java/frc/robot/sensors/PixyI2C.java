@@ -6,16 +6,12 @@ import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import frc.robot.util.BoundingBox;
 import frc.robot.util.config.SensorsSettings;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * PixyCam implementation using the I2C interface
  * Thanks to croadfeldt (https://github.com/croadfeldt/wpilib_pixy_spi_java) for the original implementation
  */
 public class PixyI2C implements PIDSource {
-    private static final Logger LOG = LogManager.getLogger(PixyI2C.class);
     private final I2C PIXY;
     private final BoundingBox[] BOXES;
     private final int DISPLACEMENT_OFFSET;
@@ -69,7 +65,6 @@ public class PixyI2C implements PIDSource {
         }
 
         if (rawData.length < 32) {
-            LOG.log(Level.ERROR, "Byte array is broken!");
             return;
         }
 
@@ -97,7 +92,6 @@ public class PixyI2C implements PIDSource {
                 //Checks whether the data is valid using the checksum *This if block should never be entered*
                 if (checksum != sig + BOXES[sig - 1].getX() + BOXES[sig - 1].getY() + BOXES[sig - 1].getWidth() + BOXES[sig - 1].getHeight()) {
                     BOXES[sig - 1] = null;
-                    LOG.log(Level.ERROR, "Pixy Error! Invalid Data!");
                 }
                 break;
             }

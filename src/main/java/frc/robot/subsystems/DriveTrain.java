@@ -17,8 +17,6 @@ import frc.robot.sensors.Ultrasonic;
 import frc.robot.util.*;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.interfaces.IMercMotorController;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Subsystem that encapsulates the driveAssist train.
@@ -47,8 +45,6 @@ public class DriveTrain extends Subsystem implements PIDOutput {
                                PEAK_OUT = 1.0;
 
     private final PIDGain DRIVE_GAINS, SMOOTH_GAINS, MOTION_PROFILE_GAINS, TURN_GAINS;
-
-    private Logger log = LogManager.getLogger(DriveTrain.class);
 
     private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight;
     private Limelight limelight;
@@ -288,30 +284,18 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     }
 
     public PigeonIMU getPigeon() {
-        if (podgeboi == null) {
-            log.error("PigeonIMU was not initialized!");
-        }
         return podgeboi;
     }
 
     public LIDAR getLidar() {
-        if (lidar == null) {
-            log.error("LIDAR was not initialized!");
-        }
         return lidar;
     }
 
     public Ultrasonic getRightUltrasonic() {
-        if (rightUltrasonic == null) {
-            log.error("Right Ultrasonic was not initialized!");
-        }
         return rightUltrasonic;
     }
 
     public Ultrasonic getLeftUltrasonic() {
-        if (leftUltrasonic == null) {
-            log.error("Right Ultrasonic was not initialized!");
-        }
         return leftUltrasonic;
     }
 

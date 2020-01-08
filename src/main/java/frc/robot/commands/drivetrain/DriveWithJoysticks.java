@@ -6,15 +6,12 @@ import frc.robot.Robot;
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.util.DriveAssist;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 /**
  * Command that puts the drive train into a manual control mode.
  * This puts the robot in arcade drive.
  */
 public class DriveWithJoysticks extends Command {
-    private static Logger log = LogManager.getLogger(DriveWithJoysticks.class);
     private DriveAssist tDrive;
     //private DelayableLogger everySecond = new DelayableLogger(log, 10, TimeUnit.SECONDS);
     private DriveType driveType;
@@ -23,7 +20,6 @@ public class DriveWithJoysticks extends Command {
         requires(Robot.driveTrain);
         setName("DriveWithJoysticks Command");
         driveType = type;
-        log.debug(getName() + " command created");
     }
 
     // Called just before this Command runs the first time
@@ -31,9 +27,7 @@ public class DriveWithJoysticks extends Command {
     protected void initialize() {
         Robot.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
         tDrive = Robot.driveTrain.getDriveAssist();
-        log.info("Set max output to: " + tDrive.getMaxOutput());
         Robot.driveTrain.setNeutralMode(NeutralMode.Brake);
-        log.info(getName() + " command initialized");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -48,8 +42,6 @@ public class DriveWithJoysticks extends Command {
                     tDrive.arcadeDrive(-Robot.oi.getJoystickY(DS_USB.LEFT_STICK), Robot.oi.getJoystickX(DS_USB.RIGHT_STICK), true);
                     break;
             }
-        } else {
-            log.info("Talon Drive is not initialized!");
         }
     }
 
@@ -64,14 +56,12 @@ public class DriveWithJoysticks extends Command {
     protected void end() {
         Robot.driveTrain.setNeutralMode(NeutralMode.Brake);
         Robot.driveTrain.stop();
-        log.info(getName() + "ended");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        log.info(getName() + "interrupted");
         end();
     }
 

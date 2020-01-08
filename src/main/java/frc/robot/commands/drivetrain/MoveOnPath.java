@@ -18,11 +18,8 @@ import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.MercMath;
 import frc.robot.util.MercTalonSRX;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVRecord;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+//import org.apache.commons.csv.CSVFormat;
+//import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -33,8 +30,7 @@ import java.util.List;
 /**
  * Use motion profiling to move on a specified path
  */
-public class MoveOnPath extends Command {
-    private static Logger log = LogManager.getLogger(MoveOnPath.class);
+/*public class MoveOnPath extends Command {
     private static Notifier trajectoryProcessor;
     private final int TRAJECTORY_SIZE;
     private TalonSRX left;
@@ -45,13 +41,6 @@ public class MoveOnPath extends Command {
     private boolean isRunning;
     private int dir;
     private String name;
-
-    /**
-     * Creates this command using the file prefix to determine the files to load.
-     *
-     * @param filename name of the trajectory
-     * @param direction The direction (Backwards or Forwards) to run the profile
-     */
     public MoveOnPath(String filename, MPDirection direction) throws FileNotFoundException {
         this(filename);
         switch (direction) {
@@ -68,7 +57,6 @@ public class MoveOnPath extends Command {
     public MoveOnPath(String filename) throws FileNotFoundException {
         requires(Robot.driveTrain);
         setName("MoveOnPath-" + filename);
-        log.info(getName() + " Beginning constructor");
 
         name = filename;
 
@@ -105,11 +93,8 @@ public class MoveOnPath extends Command {
 
         if (trajectoryListLeft != null) {
             TRAJECTORY_SIZE = trajectoryListLeft.size();
-
-            log.info(getName() + " construced: " + TRAJECTORY_SIZE);
         } else {
             TRAJECTORY_SIZE = 0;
-            log.info(getName() + " could not be constructed!");
             end();
         }
     }
@@ -140,7 +125,6 @@ public class MoveOnPath extends Command {
         // Start processing
         // i.e.: moving API points to RAM
         trajectoryProcessor.startPeriodic(0.005);
-        log.info(getName() + " Initialized");
     }
 
     //Called repeatedly when this Command is scheduled to run.
@@ -152,8 +136,6 @@ public class MoveOnPath extends Command {
         // we can chew or however that metaphor goes.
         if (!isRunning && statusLeft.btmBufferCnt >= 5 && statusRight.btmBufferCnt >= 5) {
             setMotionProfileMode(SetValueMotionProfile.Enable);
-
-            log.log(Level.INFO, "Starting motion profile...");
 
             isRunning = true;
         }
@@ -181,12 +163,7 @@ public class MoveOnPath extends Command {
 
         Robot.driveTrain.stop();
 
-        log.log(Level.INFO, "Finished running");
     }
-
-    /**
-     * Fill top-level (API-level) buffer with all points
-     */
     private void fillTopBuffer() {
         for (int i = 0; i < TRAJECTORY_SIZE; i++) {
 
@@ -241,8 +218,6 @@ public class MoveOnPath extends Command {
         // Clear the trajectory buffer
         left.clearMotionProfileTrajectories();
         right.clearMotionProfileTrajectories();
-
-        log.log(Level.INFO, "Cleared trajectories; check: " + statusLeft.btmBufferCnt);
     }
 
     @Override
@@ -258,3 +233,4 @@ public class MoveOnPath extends Command {
         BACKWARD, FORWARD
     }
 }
+*/

@@ -16,12 +16,9 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.MercMath;
 import frc.robot.util.interfaces.IMercMotorController;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class MoveHeading extends Command {
     protected final int CLOSED_LOOP_TIME_MS = 1;
-    private final Logger LOG = LogManager.getLogger(MoveHeading.class);
     protected int moveThresholdTicks;   // ticks
     protected double angleThresholdDeg; // degrees
     protected int onTargetMinCount; // 100 millis
@@ -56,7 +53,6 @@ public class MoveHeading extends Command {
         this.targetHeading = MercMath.degreesToPigeonUnits(heading);
 
         setName("MoveHeading Command");
-        LOG.info(getName() + " Constructed");
     }
 
     // Called just before this Command runs the first time
@@ -83,8 +79,6 @@ public class MoveHeading extends Command {
         Robot.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
         Robot.driveTrain.resetPigeonYaw();
-
-        LOG.info(getName() + " Initialized");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -93,7 +87,6 @@ public class MoveHeading extends Command {
         /* Configured for MotionMagic on Quad Encoders and Auxiliary PID on Pigeon */
         right.set(ControlMode.MotionMagic, distance, DemandType.AuxPID, targetHeading);
         left.follow(right, FollowerType.AuxOutput1);
-        LOG.info(getName() + " Executed");
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -133,14 +126,12 @@ public class MoveHeading extends Command {
     protected void end() {
         Robot.driveTrain.stop();
         Robot.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
-        LOG.info(getName() + " Ended");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        LOG.info(getName() + " Interrupted");
         this.end();
     }
 }
