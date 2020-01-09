@@ -5,28 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.auton;
+//package frc.robot.auton;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.Robot;
-import frc.robot.commands.drivetrain.DegreeRotate;
+//import edu.wpi.first.wpilibj.command.CommandGroup;
+//import frc.robot.Robot;
+//import frc.robot.commands.drivetrain.DegreeRotate;
 //import frc.robot.commands.drivetrain.MoveOnPath;
 //import frc.robot.commands.drivetrain.MoveOnPath.MPDirection;
-import frc.robot.commands.drivetrain.SwitchDriveDirection;
-import frc.robot.util.DriveAssist.DriveDirection;
+//import frc.robot.commands.drivetrain.SwitchDriveDirection;
+//import frc.robot.util.DriveAssist.DriveDirection;
 
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 
-public class AutonMove extends CommandGroup {
+//public class AutonMove extends CommandGroup {
     /**
      * Add your docs here.
      */
 
-    public AutonMove(String pathname) {
-        this(pathname, Robot.driveTrain.getDirection());
-    }
+    //public AutonMove(String pathname) {
+       // this(pathname, Robot.driveTrain.getDirection());
+    //}
 
-    public AutonMove(String pathname, DriveDirection driveDirection) {
+    //public AutonMove(String pathname, DriveDirection driveDirection) {
         //MoveOnPath mop = null;
         /*
         try {
@@ -37,9 +37,9 @@ public class AutonMove extends CommandGroup {
         }
         */
         //addSequential(mop);
-        if (Robot.driveTrain.getDirection() != driveDirection) {
-            addSequential(new SwitchDriveDirection(driveDirection));
-        }
+        //if (Robot.driveTrain.getDirection() != driveDirection) {
+          //  addSequential(new SwitchDriveDirection(driveDirection));
+        //}
         /*
         if (mop.getFilename().indexOf("Station") > 0) {
             try {
@@ -51,5 +51,5 @@ public class AutonMove extends CommandGroup {
             addSequential(new DegreeRotate(180));
         }
         */
-    }
-}
+   // }
+//}

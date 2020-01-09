@@ -7,43 +7,49 @@
 
 package frc.robot.commands.drivetrain;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.util.Requirements;
 import frc.robot.util.DriveAssist.DriveDirection;
+import java.util.Set;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class SwitchDrive extends Command {
+public class SwitchDrive implements Command {
     private DriveDirection dd;
+    private Set<Subsystem> requirements;
 
     public SwitchDrive(DriveDirection driveDir) {
         dd = driveDir;
-        setName("SwitchDrive Command");
+        requirements = new Requirements();
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
         Robot.driveTrain.setDirection(dd);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return true;
     }
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
+    public Set<Subsystem> getRequirements(){
+        return this.requirements;
+    }
+
+    public void setRequirements(Set<Subsystem> requirements){
+        this.requirements = requirements;
     }
 }

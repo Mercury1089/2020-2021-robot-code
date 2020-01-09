@@ -22,7 +22,8 @@ public class DriveWithJoysticks implements Command {
     private Set<Subsystem> requirements;
 
     public DriveWithJoysticks(DriveType type) {
-        requirements = Requirements.requires(new Subsystem[] {Robot.driveTrain});
+        requirements = new Requirements();
+        requirements.add(Robot.driveTrain);
         driveType = type;
     }
 

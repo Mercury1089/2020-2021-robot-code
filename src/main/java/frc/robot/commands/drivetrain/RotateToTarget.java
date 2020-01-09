@@ -20,7 +20,6 @@ public class RotateToTarget extends DegreeRotate {
 
     public RotateToTarget() {
         super(0);
-        setRequirements(Requirements.requires(new Subsystem[] {Robot.driveTrain}));
 
         angleThresholdDeg = 1.2;
     }

@@ -2,8 +2,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.auton.AutonMove;
-import frc.robot.commands.drivetrain.SwitchDriveDirection;
 import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
@@ -32,6 +30,8 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 
         driveTrain = new DriveTrain(DriveTrainLayout.TALONS);
+
+        driveTrain.setDirection(DriveDirection.HATCH);
 
         oi = new OI();
     }
@@ -63,7 +63,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         driveTrain.getLimelight().setLEDState(LimelightLEDState.ON);
-        (new SwitchDriveDirection(DriveDirection.HATCH)).start();
     }
 
     @Override

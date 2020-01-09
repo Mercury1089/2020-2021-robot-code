@@ -42,7 +42,8 @@ public class MoveHeading implements Command {
      * @param heading  heading to turn to for the pigeon
      */
     public MoveHeading(double distance, double heading) {
-        requirements =  Requirements.requires(new Subsystem[] {Robot.driveTrain});
+        requirements = new Requirements();
+        requirements.add(Robot.driveTrain);
 
         left = Robot.driveTrain.getLeftLeader();
         right = Robot.driveTrain.getRightLeader();

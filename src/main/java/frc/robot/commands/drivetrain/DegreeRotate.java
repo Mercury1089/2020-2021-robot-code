@@ -18,10 +18,14 @@ import frc.robot.util.Requirements;
 
 public class DegreeRotate extends MoveHeading {
 
+    private Set<Subsystem> requirements;
+
     public DegreeRotate(double angleToTurn) {
         super(0, angleToTurn);
 
-        setRequirements(Requirements.requires(new Subsystem[]{Robot.driveTrain}));
+        requirements = new Requirements();
+
+        requirements.add(Robot.driveTrain);
 
         moveThresholdTicks = 100;
         angleThresholdDeg = 1;
