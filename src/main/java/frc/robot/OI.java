@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
-import frc.robot.auton.AutonMove;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.drivetrain.TrackTarget;
