@@ -1,7 +1,9 @@
 package frc.robot;
 
+
+import edu.wpi.first.wpilibj2.command.button.*;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;

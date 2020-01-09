@@ -2,13 +2,13 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.CANifier;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap.CAN;
 import frc.robot.sensors.LIDAR;
 import frc.robot.util.MercVictorSPX;
 
-public class ClawAndIntake extends Subsystem {
+public class ClawAndIntake implements Subsystem {
 
     public static final double CARGO_IN_ROBOT_THRESHOLD = 12.0;
 
@@ -28,11 +28,6 @@ public class ClawAndIntake extends Subsystem {
         clawRight.follow(clawLeft);
 
         lidar = new LIDAR(Robot.driveTrain.getCanifier(), CANifier.PWMChannel.valueOf(0), LIDAR.PWMOffset.EQUATION_C);
-    }
-
-    @Override
-    public void initDefaultCommand() {
-        //setDefaultCommand(new RunClaw(ClawState.IDLE));
     }
 
     public LIDAR getLidar() {

@@ -7,9 +7,13 @@
 
 package frc.robot.commands.drivetrain;
 
+import java.util.Set;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FollowerType;
+
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 
 public class DriveWithLidar extends MoveHeading {
@@ -28,20 +32,19 @@ public class DriveWithLidar extends MoveHeading {
         inchThreshold = 0.5;
         angleThresholdDeg = 2;
         onTargetMinCount = 10;
-        setName("DriveWithLidar MoveHeading Command");
         //LOG.info(getName() + " Constructed");
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
         super.initialize();
         //LOG.info(getName() + " Initialized");
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
         double adjustedDistance = Robot.driveTrain.getLidar().getDistance() - startingDistance;
         right.set(ControlMode.Position, adjustedDistance, DemandType.AuxPID, targetHeading);
         left.follow(right, FollowerType.AuxOutput1);
@@ -50,7 +53,7 @@ public class DriveWithLidar extends MoveHeading {
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         if (initialCheckCount < checkThreshold) {
             initialCheckCount++;
             return false;
@@ -79,16 +82,13 @@ public class DriveWithLidar extends MoveHeading {
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
-        super.end();
+    public void end(boolean interrupted) {
+        super.end(interrupted);
         //LOG.info(getName() + " Ended");
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     @Override
-    protected void interrupted() {
-        //LOG.info(getName() + " Interrupted");
-        this.end();
+    public void setRequirements(Set<Subsystem> requirements) {
+        super.setRequirements(requirements);
     }
 }

@@ -10,14 +10,16 @@ package frc.robot.commands.drivetrain;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FollowerType;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
-import frc.robot.util.MercMath;
+import frc.robot.util.*;
 import frc.robot.util.interfaces.IMercMotorController;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+import java.util.Set;
 
-public class MoveHeading extends Command {
+public class MoveHeading implements Command {
     protected final int CLOSED_LOOP_TIME_MS = 1;
     protected int moveThresholdTicks;   // ticks
     protected double angleThresholdDeg; // degrees
@@ -31,6 +33,8 @@ public class MoveHeading extends Command {
 
     protected int onTargetCount, initialCheckCount;
 
+    private Set<Subsystem> requirements;
+
     /**
      * Move with heading assist from pigeon
      *
@@ -38,7 +42,7 @@ public class MoveHeading extends Command {
      * @param heading  heading to turn to for the pigeon
      */
     public MoveHeading(double distance, double heading) {
-        requires(Robot.driveTrain);
+        requirements =  Requirements.requires(new Subsystem[] {Robot.driveTrain});
 
         left = Robot.driveTrain.getLeftLeader();
         right = Robot.driveTrain.getRightLeader();
@@ -51,13 +55,15 @@ public class MoveHeading extends Command {
 
         this.distance = MercMath.inchesToEncoderTicks(distance * dirFactor);
         this.targetHeading = MercMath.degreesToPigeonUnits(heading);
+    }
 
-        setName("MoveHeading Command");
+    public Set<Subsystem> getRequirements() {
+        return requirements;
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
         Robot.driveTrain.resetEncoders();
 
         if (!Robot.driveTrain.isInMotionMagicMode())
@@ -83,7 +89,7 @@ public class MoveHeading extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
         /* Configured for MotionMagic on Quad Encoders and Auxiliary PID on Pigeon */
         right.set(ControlMode.MotionMagic, distance, DemandType.AuxPID, targetHeading);
         left.follow(right, FollowerType.AuxOutput1);
@@ -91,7 +97,7 @@ public class MoveHeading extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         if (initialCheckCount < checkThreshold) {
             initialCheckCount++;
             return false;
@@ -123,15 +129,15 @@ public class MoveHeading extends Command {
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         Robot.driveTrain.stop();
         Robot.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-        this.end();
+    /**
+     * @param requirements the requirements to set
+     */
+    public void setRequirements(Set<Subsystem> requirements) {
+        this.requirements = requirements;
     }
 }

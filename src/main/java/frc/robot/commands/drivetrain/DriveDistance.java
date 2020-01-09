@@ -7,6 +7,10 @@
 
 package frc.robot.commands.drivetrain;
 
+import java.util.Set;
+
+import edu.wpi.first.wpilibj2.command.Subsystem;
+
 public class DriveDistance extends MoveHeading {
 
     /**
@@ -20,24 +24,23 @@ public class DriveDistance extends MoveHeading {
         moveThresholdTicks = 500;
         angleThresholdDeg = 2;
         onTargetMinCount = 10;
-        setName("DriveDistance MoveHeading Command");
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
         super.initialize();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
         super.execute();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         if (initialCheckCount < checkThreshold) {
             initialCheckCount++;
             return false;
@@ -66,14 +69,12 @@ public class DriveDistance extends MoveHeading {
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
-        super.end();
+    public void end(boolean interrupted) {
+        super.end(interrupted);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     @Override
-    protected void interrupted() {
-        this.end();
+    public void setRequirements(Set<Subsystem> requirements) {
+        super.setRequirements(requirements);
     }
 }

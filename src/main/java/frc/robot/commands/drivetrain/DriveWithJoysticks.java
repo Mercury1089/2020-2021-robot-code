@@ -1,30 +1,39 @@
 package frc.robot.commands.drivetrain;
 
+import java.util.Set;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.util.DriveAssist;
+import frc.robot.util.*;
 
 /**
  * Command that puts the drive train into a manual control mode.
  * This puts the robot in arcade drive.
  */
-public class DriveWithJoysticks extends Command {
+public class DriveWithJoysticks implements Command {
     private DriveAssist tDrive;
     //private DelayableLogger everySecond = new DelayableLogger(log, 10, TimeUnit.SECONDS);
     private DriveType driveType;
 
+    private Set<Subsystem> requirements;
+
     public DriveWithJoysticks(DriveType type) {
-        requires(Robot.driveTrain);
-        setName("DriveWithJoysticks Command");
+        requirements = Requirements.requires(new Subsystem[] {Robot.driveTrain});
         driveType = type;
+    }
+
+    @Override
+    public Set<Subsystem> getRequirements() {
+        return this.requirements;
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
         Robot.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
         tDrive = Robot.driveTrain.getDriveAssist();
         Robot.driveTrain.setNeutralMode(NeutralMode.Brake);
@@ -32,7 +41,7 @@ public class DriveWithJoysticks extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
         if (tDrive != null) {
             switch (driveType) {
                 case TANK:
@@ -47,26 +56,25 @@ public class DriveWithJoysticks extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         return false;
     }
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         Robot.driveTrain.setNeutralMode(NeutralMode.Brake);
         Robot.driveTrain.stop();
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-        end();
     }
 
     public enum DriveType {
         TANK,
         ARCADE
+    }
+    /**
+     * @param requirements the requirements to set
+     */
+    public void setRequirements(Set<Subsystem> requirements) {
+        this.requirements = requirements;
     }
 }

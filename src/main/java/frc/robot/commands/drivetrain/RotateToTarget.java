@@ -7,25 +7,27 @@
 
 package frc.robot.commands.drivetrain;
 
+import java.util.Set;
+
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.MercMath;
+import frc.robot.util.Requirements;
 
 public class RotateToTarget extends DegreeRotate {
 
     public RotateToTarget() {
         super(0);
-        requires(Robot.driveTrain);
+        setRequirements(Requirements.requires(new Subsystem[] {Robot.driveTrain}));
 
         angleThresholdDeg = 1.2;
-
-        setName("RotateToTarget DegreeRotate Command");
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
         super.initialize();
 
         Robot.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
@@ -37,13 +39,13 @@ public class RotateToTarget extends DegreeRotate {
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
         super.execute();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         double angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
         angleError = MercMath.pigeonUnitsToDegrees(angleError);
@@ -70,14 +72,12 @@ public class RotateToTarget extends DegreeRotate {
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
-        super.end();
+    public void end(boolean interrupted) {
+        super.end(interrupted);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     @Override
-    protected void interrupted() {
-        this.end();
+    public void setRequirements(Set<Subsystem> requirements) {
+        super.setRequirements(requirements);
     }
 }

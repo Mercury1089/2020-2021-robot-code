@@ -7,10 +7,13 @@
 
 package frc.robot.commands.drivetrain;
 
+import java.util.Set;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
@@ -21,12 +24,11 @@ public class TrackTarget extends MoveHeading {
 
     public TrackTarget() {
         super(0, 0);
-        setName("TrackTarget MoveHeading Command");
     }
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    public void initialize() {
         super.initialize();
         Robot.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
         Robot.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_PID_SLOT, .3);
@@ -35,7 +37,7 @@ public class TrackTarget extends MoveHeading {
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
+    public void execute() {
         double adjustedDistance = MercMath.feetToEncoderTicks(Robot.driveTrain.getLimelight().getRawVertDistance() - allowableDistError);
         //adjustedDistance *= Robot.driveTrain.getDirection().dir;
         double adjustedHeading = MercMath.degreesToPigeonUnits(Robot.driveTrain.getLimelight().getTargetCenterXAngle());
@@ -45,7 +47,7 @@ public class TrackTarget extends MoveHeading {
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         if (initialCheckCount < checkThreshold) {
             initialCheckCount++;
             return false;
@@ -84,15 +86,13 @@ public class TrackTarget extends MoveHeading {
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         Robot.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_PID_SLOT, .75);
         Robot.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT, 1.0);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     @Override
-    protected void interrupted() {
-        this.end();
+    public void setRequirements(Set<Subsystem> requirements) {
+        super.setRequirements(requirements);
     }
 }

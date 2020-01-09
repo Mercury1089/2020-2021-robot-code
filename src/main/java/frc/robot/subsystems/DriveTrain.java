@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.CAN;
@@ -23,7 +23,7 @@ import frc.robot.util.interfaces.IMercMotorController;
  * This contains the {@link DriveAssist} needed to driveAssist manually
  * using the motor controllers.
  */
-public class DriveTrain extends Subsystem implements PIDOutput {
+public class DriveTrain implements Subsystem{
 
     public static final int DRIVE_PID_SLOT = 0,
         DRIVE_SMOOTH_MOTION_SLOT = 1,
@@ -218,7 +218,7 @@ public class DriveTrain extends Subsystem implements PIDOutput {
     }
 
     public void initDefaultCommand() {
-        setDefaultCommand(new DriveWithJoysticks(DriveWithJoysticks.DriveType.ARCADE));
+        this.setDefaultCommand(new DriveWithJoysticks(DriveWithJoysticks.DriveType.ARCADE));
     }
 
     public void resetEncoders() {
