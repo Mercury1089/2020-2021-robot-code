@@ -6,6 +6,7 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.CAN;
@@ -23,7 +24,7 @@ import frc.robot.util.interfaces.IMercMotorController;
  * This contains the {@link DriveAssist} needed to driveAssist manually
  * using the motor controllers.
  */
-public class DriveTrain implements Subsystem{
+public class DriveTrain extends SubsystemBase{
 
     public static final int DRIVE_PID_SLOT = 0,
         DRIVE_SMOOTH_MOTION_SLOT = 1,

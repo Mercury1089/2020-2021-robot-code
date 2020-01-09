@@ -3,12 +3,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.CANifier;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap.CAN;
 import frc.robot.sensors.LIDAR;
 import frc.robot.util.MercVictorSPX;
 
-public class ClawAndIntake implements Subsystem {
+public class ClawAndIntake extends SubsystemBase{
 
     public static final double CARGO_IN_ROBOT_THRESHOLD = 12.0;
 
