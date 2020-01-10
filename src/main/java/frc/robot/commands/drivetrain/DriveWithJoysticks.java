@@ -26,7 +26,6 @@ public class DriveWithJoysticks extends CommandBase {
         requirements = new Requirements();
         requirements.add(Robot.driveTrain);
         driveType = type;
-        System.out.println("DriveWithJoysticks Init");
     }
 
     @Override

@@ -5,6 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+/*
 package frc.robot.commands.drivetrain;
 
 import java.util.Set;
@@ -21,9 +22,6 @@ public class DriveWithLidar extends MoveHeading {
     private double inchThreshold;
     private double startingDistance;
 
-    /**
-     * Construct Drive Distance w / Motion Magic
-     */
     public DriveWithLidar() {
         super(0, 0);
 
@@ -92,3 +90,4 @@ public class DriveWithLidar extends MoveHeading {
         super.setRequirements(requirements);
     }
 }
+*/

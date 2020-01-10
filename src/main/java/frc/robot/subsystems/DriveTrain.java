@@ -12,11 +12,8 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.CAN;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
-import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.sensors.LIDAR;
 import frc.robot.sensors.Limelight;
-import frc.robot.sensors.LIDAR.PWMOffset;
-import frc.robot.sensors.Ultrasonic;
 import frc.robot.util.*;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.interfaces.IMercMotorController;
@@ -26,7 +23,7 @@ import frc.robot.util.interfaces.IMercMotorController;
  * This contains the {@link DriveAssist} needed to driveAssist manually
  * using the motor controllers.
  */
-public class DriveTrain extends SubsystemBase{
+public class DriveTrain implements Subsystem{
 
     public static final int DRIVE_PID_SLOT = 0,
         DRIVE_SMOOTH_MOTION_SLOT = 1,
@@ -53,7 +50,7 @@ public class DriveTrain extends SubsystemBase{
     private Limelight limelight;
     private DriveAssist driveAssist;
     private PigeonIMU podgeboi;
-    private LIDAR lidar;
+    //private LIDAR lidar;
     private DriveTrainLayout layout;
     private boolean isInMotionMagicMode;
     private LEDColor currentLEDColor;
@@ -214,7 +211,7 @@ public class DriveTrain extends SubsystemBase{
     }
 
     public void initDefaultCommand() {
-        this.setDefaultCommand(new DriveWithJoysticks(DriveWithJoysticks.DriveType.ARCADE));
+        CommandScheduler.getInstance().setDefaultCommand(this, new DriveWithJoysticks(DriveWithJoysticks.DriveType.ARCADE));
     }
 
     public void resetEncoders() {
@@ -275,9 +272,9 @@ public class DriveTrain extends SubsystemBase{
         return podgeboi;
     }
 
-    public LIDAR getLidar() {
-        return lidar;
-    }
+    //public LIDAR getLidar() {
+        //return lidar;
+    //}
 
     public double getPigeonYaw() {
         double[] currYawPitchRoll = new double[3];
