@@ -20,17 +20,11 @@ public class DriveWithJoysticks extends CommandBase {
     //private DelayableLogger everySecond = new DelayableLogger(log, 10, TimeUnit.SECONDS);
     private DriveType driveType;
 
-    private Set<Subsystem> requirements;
-
     public DriveWithJoysticks(DriveType type) {
-        requirements = new Requirements();
-        requirements.add(Robot.driveTrain);
+        super();
+        super.addRequirements(Robot.driveTrain);
         driveType = type;
-    }
-
-    @Override
-    public Set<Subsystem> getRequirements() {
-        return this.requirements;
+        System.out.println("DriveWithJoysticks init");
     }
 
     // Called just before this Command runs the first time
@@ -72,11 +66,5 @@ public class DriveWithJoysticks extends CommandBase {
     public enum DriveType {
         TANK,
         ARCADE
-    }
-    /**
-     * @param requirements the requirements to set
-     */
-    public void setRequirements(Set<Subsystem> requirements) {
-        this.requirements = requirements;
     }
 }

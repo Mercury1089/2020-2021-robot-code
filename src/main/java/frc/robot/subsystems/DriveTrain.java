@@ -6,12 +6,14 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.CAN;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
+import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.sensors.LIDAR;
 import frc.robot.sensors.Limelight;
 import frc.robot.util.*;
@@ -46,6 +48,8 @@ public class DriveTrain implements Subsystem{
 
     private final PIDGain DRIVE_GAINS, SMOOTH_GAINS, MOTION_PROFILE_GAINS, TURN_GAINS;
 
+    private Command defaultCommand;
+
     private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight;
     private Limelight limelight;
     private DriveAssist driveAssist;
@@ -63,8 +67,8 @@ public class DriveTrain implements Subsystem{
     public DriveTrain(DriveTrain.DriveTrainLayout layout) {
         //This should eventually be fully configurable
         // At this point it's based on what the layout is
-
         this.layout = layout;
+        this.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE));
         switch (layout) {
             case LEGACY:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
@@ -135,6 +139,14 @@ public class DriveTrain implements Subsystem{
         setMaxOutput(PEAK_OUT);
 
         stop();
+    }
+
+    public void setDefaultCommand(Command defaultCommand){
+        this.defaultCommand = defaultCommand;
+    }
+
+    public Command getDefaultCommand(){
+        return this.defaultCommand;
     }
 
     public void initializeNormalMotionFeedback() {
@@ -208,10 +220,6 @@ public class DriveTrain implements Subsystem{
     public void configClosedLoopPeakOutput(int driveTrainPIDSlot, double maxOut) {
         leaderLeft.configClosedLoopPeakOutput(driveTrainPIDSlot, maxOut);
         leaderRight.configClosedLoopPeakOutput(driveTrainPIDSlot, maxOut);
-    }
-
-    public void initDefaultCommand() {
-        CommandScheduler.getInstance().setDefaultCommand(this, new DriveWithJoysticks(DriveWithJoysticks.DriveType.ARCADE));
     }
 
     public void resetEncoders() {

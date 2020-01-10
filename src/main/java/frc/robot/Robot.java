@@ -33,11 +33,13 @@ public class Robot extends TimedRobot {
 
         driveTrain.setDirection(DriveDirection.HATCH);
 
-        oi = new OI();
-
         CommandScheduler.getInstance().enable();
 
         CommandScheduler.getInstance().registerSubsystem(driveTrain);
+
+        CommandScheduler.getInstance().setDefaultCommand(driveTrain, driveTrain.getDefaultCommand());
+
+        oi = new OI();
     }
 
     @Override

@@ -9,12 +9,10 @@ import frc.robot.util.Requirements;
 
 public class CalibrateGyro extends CommandBase {
 
-    private Set<Subsystem> requirements;
-
     public CalibrateGyro(){
-        requirements = new Requirements();
-
+        
     }
+
     
     public void initialize() {
         //  System.out.println("Calibrating gyro...");
@@ -31,11 +29,4 @@ public class CalibrateGyro extends CommandBase {
         return true;
     }
 
-    public Set<Subsystem> getRequirements(){
-        return this.requirements;
-    }
-
-    public void setRequirements(Set<Subsystem> requirements){
-        this.requirements = requirements;
-    }
 }
