@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap.DS_USB;
@@ -14,7 +15,7 @@ import frc.robot.util.*;
  * Command that puts the drive train into a manual control mode.
  * This puts the robot in arcade drive.
  */
-public class DriveWithJoysticks implements Command {
+public class DriveWithJoysticks extends CommandBase {
     private DriveAssist tDrive;
     //private DelayableLogger everySecond = new DelayableLogger(log, 10, TimeUnit.SECONDS);
     private DriveType driveType;
@@ -25,6 +26,7 @@ public class DriveWithJoysticks implements Command {
         requirements = new Requirements();
         requirements.add(Robot.driveTrain);
         driveType = type;
+        System.out.println("DriveWithJoysticks Init");
     }
 
     @Override

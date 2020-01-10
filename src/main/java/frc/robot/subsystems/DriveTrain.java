@@ -5,12 +5,14 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.CAN;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
+import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.sensors.LIDAR;
 import frc.robot.sensors.Limelight;
 import frc.robot.sensors.LIDAR.PWMOffset;
@@ -51,10 +53,7 @@ public class DriveTrain extends SubsystemBase{
     private Limelight limelight;
     private DriveAssist driveAssist;
     private PigeonIMU podgeboi;
-    private CANifier canifier;
     private LIDAR lidar;
-    private Ultrasonic leftUltrasonic;
-    private Ultrasonic rightUltrasonic;
     private DriveTrainLayout layout;
     private boolean isInMotionMagicMode;
     private LEDColor currentLEDColor;
@@ -95,10 +94,6 @@ public class DriveTrain extends SubsystemBase{
         podgeboi.configFactoryDefault();
 
         //CANifier and distance sensors
-        canifier = new CANifier(RobotMap.CAN.CANIFIER);
-        lidar = new LIDAR(canifier, CANifier.PWMChannel.PWMChannel0, PWMOffset.EQUATION_C);
-        rightUltrasonic = new Ultrasonic(RobotMap.AIO.RIGHT_ULTRASONIC);
-        leftUltrasonic = new Ultrasonic(RobotMap.AIO.LEFT_ULTRASONIC);
         limelight = new Limelight();
 
         //Account for motor orientation.
@@ -229,7 +224,6 @@ public class DriveTrain extends SubsystemBase{
 
     @Override
     public void periodic() {
-        lidar.updatePWMInput();
         updateLEDs();
     }
 
@@ -243,13 +237,6 @@ public class DriveTrain extends SubsystemBase{
      */
     private void setLEDColor(LEDColor ledColor) {
         currentLEDColor = ledColor;
-        canifier.setLEDOutput(ledColor.getRed(), CANifier.LEDChannel.LEDChannelB);
-        canifier.setLEDOutput(ledColor.getBlue(), CANifier.LEDChannel.LEDChannelA);
-        canifier.setLEDOutput(ledColor.getGreen(), CANifier.LEDChannel.LEDChannelC);
-    }
-
-    public CANifier getCanifier() {
-        return canifier;
     }
 
     /**
@@ -290,14 +277,6 @@ public class DriveTrain extends SubsystemBase{
 
     public LIDAR getLidar() {
         return lidar;
-    }
-
-    public Ultrasonic getRightUltrasonic() {
-        return rightUltrasonic;
-    }
-
-    public Ultrasonic getLeftUltrasonic() {
-        return leftUltrasonic;
     }
 
     public double getPigeonYaw() {

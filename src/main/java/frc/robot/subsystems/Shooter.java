@@ -19,9 +19,7 @@ import frc.robot.RobotMap.*;
 public class Shooter extends SubsystemBase {
   //private IMercMotorController flywheel;
   private CANSparkMax flywheel;
-  /**
-   * Creates a new Shooter.
-   */
+
   public Shooter() {
     //flywheel = new MercTalonSRX(CAN.SHOOTER_FLYWHEEL);
     flywheel = new CANSparkMax(CAN.SHOOTER_FLYWHEEL, MotorType.kBrushless);
@@ -31,20 +29,12 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
-/*
-  public IMercMotorController getFlywheel() {
-    return flywheel;
-  } 
-*/
+
   public CANSparkMax getFlywheel() {
     return flywheel;
   }
-/*  
+
   public void setSpeed(double speed) {
-    flywheel.setSpeed(speed);
+    flywheel.set(speed);
   }
-*/
-public void setSpeed(double speed) {
-  flywheel.set(speed);
-}
 }

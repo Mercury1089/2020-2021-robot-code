@@ -8,13 +8,14 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.util.Requirements;
 import frc.robot.util.DriveAssist.DriveDirection;
 import java.util.Set;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class SwitchDrive implements Command {
+public class SwitchDrive extends CommandBase {
     private DriveDirection dd;
     private Set<Subsystem> requirements;
 

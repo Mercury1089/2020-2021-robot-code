@@ -11,7 +11,7 @@ import java.util.Set;
 
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class DriveDistance extends MoveHeading {
+public class DriveDistance extends MoveHeading{
 
     /**
      * Construct Drive Distance w / Motion Magic

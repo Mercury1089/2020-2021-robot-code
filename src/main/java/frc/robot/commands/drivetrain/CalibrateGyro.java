@@ -1,13 +1,13 @@
 package frc.robot.commands.drivetrain;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import java.util.Set;
 import frc.robot.Robot;
 import frc.robot.util.Requirements;
 
-public class CalibrateGyro implements Command {
+public class CalibrateGyro extends CommandBase {
 
     private Set<Subsystem> requirements;
 
