@@ -15,6 +15,7 @@ public class CalibrateGyro extends CommandBase {
     public CalibrateGyro(DriveTrain driveTrain){
         this.driveTrain = driveTrain;
     }
+
     
     public void initialize() {
         //  System.out.println("Calibrating gyro...");
@@ -30,4 +31,8 @@ public class CalibrateGyro extends CommandBase {
     public boolean runsWhenDisabled(){
         return true;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 10368085d361cc37b42ccb1f610d0e71585c19c7
 }

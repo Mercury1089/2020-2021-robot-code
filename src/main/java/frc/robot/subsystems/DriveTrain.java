@@ -6,6 +6,7 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -48,6 +49,8 @@ public class DriveTrain extends SubsystemBase{
 
     private final PIDGain DRIVE_GAINS, SMOOTH_GAINS, MOTION_PROFILE_GAINS, TURN_GAINS;
 
+    private Command defaultCommand;
+
     private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight;
     private Limelight limelight;
     private DriveAssist driveAssist;
@@ -65,9 +68,13 @@ public class DriveTrain extends SubsystemBase{
     public DriveTrain(DriveTrain.DriveTrainLayout layout) {
         //This should eventually be fully configurable
         // At this point it's based on what the layout is
+<<<<<<< HEAD
 
         super();
+=======
+>>>>>>> 10368085d361cc37b42ccb1f610d0e71585c19c7
         this.layout = layout;
+        this.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE));
         switch (layout) {
             case LEGACY:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
