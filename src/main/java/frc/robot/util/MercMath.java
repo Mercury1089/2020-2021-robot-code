@@ -1,6 +1,6 @@
 package frc.robot.util;
 
-import frc.robot.OI;
+import frc.robot.RobotContainer;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
@@ -90,7 +90,7 @@ public class MercMath {
     }
 
     public static double applyDeadzone(double value) {
-        return applyDeadzone(value, OI.DEADZONE);
+        return applyDeadzone(value, RobotContainer.DEADZONE);
     }
 
     public static double centimetersToInches(double val) {

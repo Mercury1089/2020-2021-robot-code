@@ -16,15 +16,18 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.drivetrain.MoveHeading;
+import frc.robot.subsystems.DriveTrain;
 //import frc.robot.commands.drivetrain.MoveOnPath.MPDirection;
 import frc.robot.Robot;
 
 public class PigeonFollower extends MoveHeading {
   private double currDistAngle;
   private double[][] distAngle;
+  private DriveTrain driveTrain;
 
-  public PigeonFollower(double distance, double[][] distAngle) {
-    super(distance, 0);
+  public PigeonFollower(double distance, double[][] distAngle, DriveTrain driveTrain) {
+    super(distance, 0, driveTrain);
+    this.driveTrain = driveTrain;
     this.distAngle = distAngle;
   }
 
@@ -51,10 +54,5 @@ public class PigeonFollower extends MoveHeading {
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
-  }
-
-  @Override
-  public void setRequirements(Set<Subsystem> requirements) {
-    super.setRequirements(requirements);
   }
 }

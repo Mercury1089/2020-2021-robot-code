@@ -10,16 +10,21 @@ package frc.robot.commands.drivetrain;
 import java.util.Set;
 
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.subsystems.DriveTrain;
 
-public class DriveDistance extends MoveHeading {
+public class DriveDistance extends MoveHeading{
+
+    private DriveTrain driveTrain;
 
     /**
      * Construct Drive Distance w / Motion Magic
      *
      * @param distance in inches
      */
-    public DriveDistance(double distance) {
-        super(distance, 0);
+    public DriveDistance(double distance, DriveTrain driveTrain) {
+        super(distance, 0, driveTrain);
+
+        this.driveTrain = driveTrain;
 
         moveThresholdTicks = 500;
         angleThresholdDeg = 2;
@@ -71,10 +76,5 @@ public class DriveDistance extends MoveHeading {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-    }
-
-    @Override
-    public void setRequirements(Set<Subsystem> requirements) {
-        super.setRequirements(requirements);
     }
 }

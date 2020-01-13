@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap.DS_USB;
@@ -14,30 +15,26 @@ import frc.robot.util.*;
  * Command that puts the drive train into a manual control mode.
  * This puts the robot in arcade drive.
  */
-public class DriveWithJoysticks implements Command {
+public class DriveWithJoysticks extends CommandBase{
     private DriveAssist tDrive;
     //private DelayableLogger everySecond = new DelayableLogger(log, 10, TimeUnit.SECONDS);
     private DriveType driveType;
 
-    private Set<Subsystem> requirements;
+    private DriveTrain driveTrain;
 
-    public DriveWithJoysticks(DriveType type) {
-        requirements = new Requirements();
-        requirements.add(Robot.driveTrain);
+    public DriveWithJoysticks(DriveType type, DriveTrain driveTrain) {
+        super();
+        super.addRequirements(driveTrain);
+        this.driveTrain = driveTrain;
         driveType = type;
-    }
-
-    @Override
-    public Set<Subsystem> getRequirements() {
-        return this.requirements;
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
-        Robot.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
-        tDrive = Robot.driveTrain.getDriveAssist();
-        Robot.driveTrain.setNeutralMode(NeutralMode.Brake);
+        this.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
+        tDrive = this.driveTrain.getDriveAssist();
+        this.driveTrain.setNeutralMode(NeutralMode.Brake);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -46,10 +43,10 @@ public class DriveWithJoysticks implements Command {
         if (tDrive != null) {
             switch (driveType) {
                 case TANK:
-                    tDrive.tankDrive(Robot.oi.getJoystickY(DS_USB.LEFT_STICK), Robot.oi.getJoystickY(DS_USB.RIGHT_STICK));
+                    tDrive.tankDrive(Robot.robotContainer.getJoystickY(DS_USB.LEFT_STICK), Robot.robotContainer.getJoystickY(DS_USB.RIGHT_STICK));
                     break;
                 case ARCADE:
-                    tDrive.arcadeDrive(-Robot.oi.getJoystickY(DS_USB.LEFT_STICK), Robot.oi.getJoystickX(DS_USB.RIGHT_STICK), true);
+                    tDrive.arcadeDrive(-Robot.robotContainer.getJoystickY(DS_USB.LEFT_STICK), Robot.robotContainer.getJoystickX(DS_USB.RIGHT_STICK), true);
                     break;
             }
         }
@@ -64,18 +61,12 @@ public class DriveWithJoysticks implements Command {
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-        Robot.driveTrain.setNeutralMode(NeutralMode.Brake);
-        Robot.driveTrain.stop();
+        this.driveTrain.setNeutralMode(NeutralMode.Brake);
+        this.driveTrain.stop();
     }
 
     public enum DriveType {
         TANK,
         ARCADE
-    }
-    /**
-     * @param requirements the requirements to set
-     */
-    public void setRequirements(Set<Subsystem> requirements) {
-        this.requirements = requirements;
     }
 }

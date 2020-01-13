@@ -5,16 +5,18 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.CAN;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
+import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.sensors.LIDAR;
 import frc.robot.sensors.Limelight;
-import frc.robot.sensors.LIDAR.PWMOffset;
-import frc.robot.sensors.Ultrasonic;
 import frc.robot.util.*;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.interfaces.IMercMotorController;
@@ -47,14 +49,11 @@ public class DriveTrain extends SubsystemBase{
 
     private final PIDGain DRIVE_GAINS, SMOOTH_GAINS, MOTION_PROFILE_GAINS, TURN_GAINS;
 
-    private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight;
+    private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight; 
     private Limelight limelight;
     private DriveAssist driveAssist;
     private PigeonIMU podgeboi;
-    private CANifier canifier;
-    private LIDAR lidar;
-    private Ultrasonic leftUltrasonic;
-    private Ultrasonic rightUltrasonic;
+    //private LIDAR lidar;
     private DriveTrainLayout layout;
     private boolean isInMotionMagicMode;
     private LEDColor currentLEDColor;
@@ -68,6 +67,7 @@ public class DriveTrain extends SubsystemBase{
         //This should eventually be fully configurable
         // At this point it's based on what the layout is
 
+        super();
         this.layout = layout;
         switch (layout) {
             case LEGACY:
@@ -95,10 +95,6 @@ public class DriveTrain extends SubsystemBase{
         podgeboi.configFactoryDefault();
 
         //CANifier and distance sensors
-        canifier = new CANifier(RobotMap.CAN.CANIFIER);
-        lidar = new LIDAR(canifier, CANifier.PWMChannel.PWMChannel0, PWMOffset.EQUATION_C);
-        rightUltrasonic = new Ultrasonic(RobotMap.AIO.RIGHT_ULTRASONIC);
-        leftUltrasonic = new Ultrasonic(RobotMap.AIO.LEFT_ULTRASONIC);
         limelight = new Limelight();
 
         //Account for motor orientation.
@@ -143,6 +139,14 @@ public class DriveTrain extends SubsystemBase{
         setMaxOutput(PEAK_OUT);
 
         stop();
+    }
+
+    public Command getDefaultCommand(){
+        return CommandScheduler.getInstance().getDefaultCommand(this);
+    }
+
+    public void setDefaultCommand(Command command){
+        CommandScheduler.getInstance().setDefaultCommand(this, command);
     }
 
     public void initializeNormalMotionFeedback() {
@@ -218,10 +222,6 @@ public class DriveTrain extends SubsystemBase{
         leaderRight.configClosedLoopPeakOutput(driveTrainPIDSlot, maxOut);
     }
 
-    public void initDefaultCommand() {
-        this.setDefaultCommand(new DriveWithJoysticks(DriveWithJoysticks.DriveType.ARCADE));
-    }
-
     public void resetEncoders() {
         leaderLeft.resetEncoder();
         leaderRight.resetEncoder();
@@ -229,7 +229,6 @@ public class DriveTrain extends SubsystemBase{
 
     @Override
     public void periodic() {
-        lidar.updatePWMInput();
         updateLEDs();
     }
 
@@ -243,13 +242,6 @@ public class DriveTrain extends SubsystemBase{
      */
     private void setLEDColor(LEDColor ledColor) {
         currentLEDColor = ledColor;
-        canifier.setLEDOutput(ledColor.getRed(), CANifier.LEDChannel.LEDChannelB);
-        canifier.setLEDOutput(ledColor.getBlue(), CANifier.LEDChannel.LEDChannelA);
-        canifier.setLEDOutput(ledColor.getGreen(), CANifier.LEDChannel.LEDChannelC);
-    }
-
-    public CANifier getCanifier() {
-        return canifier;
     }
 
     /**
@@ -288,17 +280,9 @@ public class DriveTrain extends SubsystemBase{
         return podgeboi;
     }
 
-    public LIDAR getLidar() {
-        return lidar;
-    }
-
-    public Ultrasonic getRightUltrasonic() {
-        return rightUltrasonic;
-    }
-
-    public Ultrasonic getLeftUltrasonic() {
-        return leftUltrasonic;
-    }
+    //public LIDAR getLidar() {
+        //return lidar;
+    //}
 
     public double getPigeonYaw() {
         double[] currYawPitchRoll = new double[3];

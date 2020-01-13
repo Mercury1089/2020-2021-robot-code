@@ -17,7 +17,7 @@ import frc.robot.util.ShuffleDash;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
-public class OI {
+public class RobotContainer {
     public static final double DEADZONE = 0.08;
 
     private ShuffleDash shuffleDash;
@@ -28,7 +28,7 @@ public class OI {
     private JoystickButton right1, right2, right3, right4, right5, right6, right7, right8, right9, right10, right11;
     private JoystickButton gamepadA, gamepadB, gamepadX, gamepadY, gamepadRB, gamepadLB, gamepadBack, gamepadStart, gamepadLeftStickButton, gamepadRightStickButton;
 
-    public OI() {
+    public RobotContainer() {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
@@ -37,7 +37,7 @@ public class OI {
 
         initalizeJoystickButtons();
 
-        left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE));
+        left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, Robot.driveTrain));
     }
 
     public String getAutonFirstStep() {
