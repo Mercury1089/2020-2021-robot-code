@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.MercTalonSRX;
+
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.interfaces.IMercMotorController;
@@ -20,9 +22,12 @@ public class Shooter extends SubsystemBase {
   //private IMercMotorController flywheel;
   private CANSparkMax flywheel;
 
+  private CANEncoder encoder;
+
   public Shooter() {
     //flywheel = new MercTalonSRX(CAN.SHOOTER_FLYWHEEL);
     flywheel = new CANSparkMax(CAN.SHOOTER_FLYWHEEL, MotorType.kBrushless);
+    encoder = flywheel.getEncoder();
   }
 
   @Override

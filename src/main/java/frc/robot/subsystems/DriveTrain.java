@@ -49,9 +49,7 @@ public class DriveTrain extends SubsystemBase{
 
     private final PIDGain DRIVE_GAINS, SMOOTH_GAINS, MOTION_PROFILE_GAINS, TURN_GAINS;
 
-    private Command defaultCommand;
-
-    private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight;
+    private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight; 
     private Limelight limelight;
     private DriveAssist driveAssist;
     private PigeonIMU podgeboi;
