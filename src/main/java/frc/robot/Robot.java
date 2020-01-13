@@ -2,6 +2,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.drivetrain.DriveWithJoysticks;
+import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
@@ -20,7 +22,7 @@ public class Robot extends TimedRobot {
 
     public static DriveTrain driveTrain;
 
-    public static OI oi;
+    public static RobotContainer robotContainer;
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -28,21 +30,19 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
-
-        driveTrain = new DriveTrain(DriveTrainLayout.TALONS);
-
-        driveTrain.setDirection(DriveDirection.HATCH);
-
-        oi = new OI();
-
         CommandScheduler.getInstance().enable();
 
-        CommandScheduler.getInstance().registerSubsystem(driveTrain);
+        driveTrain = new DriveTrain(DriveTrainLayout.TALONS);
+        driveTrain.setDirection(DriveDirection.HATCH);
+        driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+
+        robotContainer = new RobotContainer();
     }
 
     @Override
     public void robotPeriodic() {
-        oi.updateDash();
+        robotContainer.updateDash();
+        CommandScheduler.getInstance().run();
     }
 
     @Override
@@ -51,7 +51,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        CommandScheduler.getInstance().run();
     }
 
     @Override
@@ -61,7 +60,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
-        CommandScheduler.getInstance().run();
     }
 
     @Override
@@ -71,7 +69,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        CommandScheduler.getInstance().run();
     }
 
     @Override

@@ -18,8 +18,12 @@ import frc.robot.util.Requirements;
 
 public class RotateToTarget extends DegreeRotate {
 
-    public RotateToTarget() {
-        super(0);
+    private DriveTrain driveTrain;
+
+    public RotateToTarget(DriveTrain driveTrain) {
+        super(0, driveTrain);
+
+        this.driveTrain = driveTrain;
 
         angleThresholdDeg = 1.2;
     }
@@ -29,10 +33,10 @@ public class RotateToTarget extends DegreeRotate {
     public void initialize() {
         super.initialize();
 
-        Robot.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+        this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
-        targetHeading = -MercMath.degreesToPigeonUnits(Robot.driveTrain.getLimelight().getTargetCenterXAngle());
-        System.out.println("RotateToTarget initialized with angle " + Robot.driveTrain.getLimelight().getTargetCenterXAngle());
+        targetHeading = -MercMath.degreesToPigeonUnits(this.driveTrain.getLimelight().getTargetCenterXAngle());
+        System.out.println("RotateToTarget initialized with angle " + this.driveTrain.getLimelight().getTargetCenterXAngle());
 
     }
 
@@ -73,10 +77,5 @@ public class RotateToTarget extends DegreeRotate {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-    }
-
-    @Override
-    public void setRequirements(Set<Subsystem> requirements) {
-        super.setRequirements(requirements);
     }
 }

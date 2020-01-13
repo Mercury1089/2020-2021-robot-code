@@ -22,25 +22,29 @@ import frc.robot.util.MercMath;
 public class TrackTarget extends MoveHeading {
     private double allowableDistError = 19; //inches
 
-    public TrackTarget() {
-        super(0, 0);
+    private DriveTrain driveTrain;
+
+    public TrackTarget(DriveTrain driveTrain) {
+        super(0, 0, driveTrain);
+
+        this.driveTrain = driveTrain;
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
         super.initialize();
-        Robot.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
-        Robot.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_PID_SLOT, .3);
-        Robot.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT, .25);
+        this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+        this.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_PID_SLOT, .3);
+        this.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT, .25);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        double adjustedDistance = MercMath.feetToEncoderTicks(Robot.driveTrain.getLimelight().getRawVertDistance() - allowableDistError);
+        double adjustedDistance = MercMath.feetToEncoderTicks(this.driveTrain.getLimelight().getRawVertDistance() - allowableDistError);
         //adjustedDistance *= Robot.driveTrain.getDirection().dir;
-        double adjustedHeading = MercMath.degreesToPigeonUnits(Robot.driveTrain.getLimelight().getTargetCenterXAngle());
+        double adjustedHeading = MercMath.degreesToPigeonUnits(this.driveTrain.getLimelight().getTargetCenterXAngle());
         right.set(ControlMode.Position, adjustedDistance, DemandType.AuxPID, adjustedHeading);
         left.follow(right, FollowerType.AuxOutput1);
     }
@@ -53,11 +57,11 @@ public class TrackTarget extends MoveHeading {
             return false;
         }
 
-        double distError = MercMath.inchesToEncoderTicks(Robot.driveTrain.getLimelight().getRawVertDistance() - allowableDistError),
-                angleError = MercMath.degreesToPigeonUnits(Robot.driveTrain.getLimelight().getTargetCenterXAngle());
+        double distError = MercMath.inchesToEncoderTicks(this.driveTrain.getLimelight().getRawVertDistance() - allowableDistError),
+                angleError = MercMath.degreesToPigeonUnits(this.driveTrain.getLimelight().getTargetCenterXAngle());
 
         angleError = MercMath.pigeonUnitsToDegrees(angleError);
-        distError *= Robot.driveTrain.getDirection().dir;
+        distError *= this.driveTrain.getDirection().dir;
 
         SmartDashboard.putString("ang error, dist error", angleError + ", " + distError);
 
@@ -67,7 +71,7 @@ public class TrackTarget extends MoveHeading {
 
         boolean isOnTarget = (Math.abs(distError) < moveThresholdTicks &&
                 Math.abs(angleError) < angleThresholdDeg &&
-                Robot.driveTrain.getLimelight().isSafeToTrack());
+                this.driveTrain.getLimelight().isSafeToTrack());
 
         if (isOnTarget) {
             onTargetCount++;
@@ -87,12 +91,7 @@ public class TrackTarget extends MoveHeading {
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-        Robot.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_PID_SLOT, .75);
-        Robot.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT, 1.0);
-    }
-
-    @Override
-    public void setRequirements(Set<Subsystem> requirements) {
-        super.setRequirements(requirements);
+        this.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_PID_SLOT, .75);
+        this.driveTrain.configClosedLoopPeakOutput(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT, 1.0);
     }
 }

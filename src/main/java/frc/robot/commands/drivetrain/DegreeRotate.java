@@ -18,14 +18,12 @@ import frc.robot.util.Requirements;
 
 public class DegreeRotate extends MoveHeading {
 
-    private Set<Subsystem> requirements;
+    private DriveTrain driveTrain;
 
-    public DegreeRotate(double angleToTurn) {
-        super(0, angleToTurn);
+    public DegreeRotate(double angleToTurn, DriveTrain driveTrain) {
+        super(0, angleToTurn, driveTrain);
 
-        requirements = new Requirements();
-
-        requirements.add(Robot.driveTrain);
+        this.driveTrain = driveTrain;
 
         moveThresholdTicks = 100;
         angleThresholdDeg = 1;
@@ -37,7 +35,7 @@ public class DegreeRotate extends MoveHeading {
     public void initialize() {
         super.initialize();
 
-        Robot.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
+        this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -76,10 +74,5 @@ public class DegreeRotate extends MoveHeading {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
-    }
-
-    @Override
-    public void setRequirements(Set<Subsystem> requirements) {
-        super.setRequirements(requirements);
     }
 }

@@ -37,4 +37,6 @@ public class Shooter extends SubsystemBase {
   public void setSpeed(double speed) {
     flywheel.set(speed);
   }
+ 
+
 }

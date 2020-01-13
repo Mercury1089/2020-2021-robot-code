@@ -5,20 +5,20 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import java.util.Set;
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.util.Requirements;
 
 public class CalibrateGyro extends CommandBase {
 
-    private Set<Subsystem> requirements;
+    private DriveTrain driveTrain;
 
-    public CalibrateGyro(){
-        requirements = new Requirements();
-
+    public CalibrateGyro(DriveTrain driveTrain){
+        this.driveTrain = driveTrain;
     }
     
     public void initialize() {
         //  System.out.println("Calibrating gyro...");
-        Robot.driveTrain.getPigeon().enterCalibrationMode(PigeonIMU.CalibrationMode.BootTareGyroAccel);
+        this.driveTrain.getPigeon().enterCalibrationMode(PigeonIMU.CalibrationMode.BootTareGyroAccel);
     }
 
     @Override
@@ -29,13 +29,5 @@ public class CalibrateGyro extends CommandBase {
     @Override
     public boolean runsWhenDisabled(){
         return true;
-    }
-
-    public Set<Subsystem> getRequirements(){
-        return this.requirements;
-    }
-
-    public void setRequirements(Set<Subsystem> requirements){
-        this.requirements = requirements;
     }
 }

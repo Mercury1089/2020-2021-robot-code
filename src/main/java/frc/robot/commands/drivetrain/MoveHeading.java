@@ -34,7 +34,7 @@ public class MoveHeading extends CommandBase {
 
     protected int onTargetCount, initialCheckCount;
 
-    private Set<Subsystem> requirements;
+    private DriveTrain driveTrain;
 
     /**
      * Move with heading assist from pigeon
@@ -42,34 +42,30 @@ public class MoveHeading extends CommandBase {
      * @param distance distance to move in inches
      * @param heading  heading to turn to for the pigeon
      */
-    public MoveHeading(double distance, double heading) {
-        requirements = new Requirements();
-        requirements.add(Robot.driveTrain);
+    public MoveHeading(double distance, double heading, DriveTrain driveTrain) {
+        super.addRequirements(driveTrain);
 
-        left = Robot.driveTrain.getLeftLeader();
-        right = Robot.driveTrain.getRightLeader();
+        this.driveTrain = driveTrain;
+
+        left = this.driveTrain.getLeftLeader();
+        right = this.driveTrain.getRightLeader();
 
         moveThresholdTicks = 500;
         angleThresholdDeg = 5;
         onTargetMinCount = 4;
 
-        dirFactor = Robot.driveTrain.getDirection().dir;
+        dirFactor = this.driveTrain.getDirection().dir;
 
         this.distance = MercMath.inchesToEncoderTicks(distance * dirFactor);
         this.targetHeading = MercMath.degreesToPigeonUnits(heading);
     }
-
-    public Set<Subsystem> getRequirements() {
-        return requirements;
-    }
-
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
-        Robot.driveTrain.resetEncoders();
+        this.driveTrain.resetEncoders();
 
-        if (!Robot.driveTrain.isInMotionMagicMode())
-            Robot.driveTrain.initializeMotionMagicFeedback();
+        if (!this.driveTrain.isInMotionMagicMode())
+            this.driveTrain.initializeMotionMagicFeedback();
 
         onTargetCount = 0;
         initialCheckCount = 0;
@@ -84,9 +80,9 @@ public class MoveHeading extends CommandBase {
 
         right.configAuxPIDPolarity(true);
 
-        Robot.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+        this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
-        Robot.driveTrain.resetPigeonYaw();
+        this.driveTrain.resetPigeonYaw();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -132,14 +128,7 @@ public class MoveHeading extends CommandBase {
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-        Robot.driveTrain.stop();
-        Robot.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
-    }
-
-    /**
-     * @param requirements the requirements to set
-     */
-    public void setRequirements(Set<Subsystem> requirements) {
-        this.requirements = requirements;
+        this.driveTrain.stop();
+        this.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
     }
 }

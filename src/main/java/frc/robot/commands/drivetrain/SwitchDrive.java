@@ -10,6 +10,7 @@ package frc.robot.commands.drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.util.Requirements;
 import frc.robot.util.DriveAssist.DriveDirection;
 import java.util.Set;
@@ -17,17 +18,19 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class SwitchDrive extends CommandBase {
     private DriveDirection dd;
-    private Set<Subsystem> requirements;
 
-    public SwitchDrive(DriveDirection driveDir) {
+    private DriveTrain driveTrain;
+
+    public SwitchDrive(DriveDirection driveDir, DriveTrain driveTrain) {
         dd = driveDir;
-        requirements = new Requirements();
+
+        this.driveTrain = driveTrain;
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
-        Robot.driveTrain.setDirection(dd);
+        this.driveTrain.setDirection(dd);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -44,13 +47,5 @@ public class SwitchDrive extends CommandBase {
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-    }
-
-    public Set<Subsystem> getRequirements(){
-        return this.requirements;
-    }
-
-    public void setRequirements(Set<Subsystem> requirements){
-        this.requirements = requirements;
     }
 }
