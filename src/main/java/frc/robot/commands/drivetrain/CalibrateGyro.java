@@ -31,8 +31,4 @@ public class CalibrateGyro extends CommandBase {
     public boolean runsWhenDisabled(){
         return true;
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 10368085d361cc37b42ccb1f610d0e71585c19c7
 }

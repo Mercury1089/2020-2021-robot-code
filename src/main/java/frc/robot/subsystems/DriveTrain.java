@@ -68,13 +68,9 @@ public class DriveTrain extends SubsystemBase{
     public DriveTrain(DriveTrain.DriveTrainLayout layout) {
         //This should eventually be fully configurable
         // At this point it's based on what the layout is
-<<<<<<< HEAD
 
         super();
-=======
->>>>>>> 10368085d361cc37b42ccb1f610d0e71585c19c7
         this.layout = layout;
-        this.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE));
         switch (layout) {
             case LEGACY:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
