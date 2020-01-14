@@ -8,6 +8,7 @@ import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
+import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.drivetrain.TrackTarget;
 import frc.robot.util.DriveAssist.DriveDirection;
@@ -38,6 +39,7 @@ public class RobotContainer {
         initalizeJoystickButtons();
 
         left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, Robot.driveTrain));
+        left3.whenPressed(new RunShooter(Robot.shooter));
     }
 
     public String getAutonFirstStep() {

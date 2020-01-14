@@ -21,6 +21,7 @@ import frc.robot.util.DriveAssist.DriveDirection;
 public class Robot extends TimedRobot {
 
     public static DriveTrain driveTrain;
+    public static Shooter shooter;
 
     public static RobotContainer robotContainer;
 
@@ -35,6 +36,8 @@ public class Robot extends TimedRobot {
         driveTrain = new DriveTrain(DriveTrainLayout.TALONS);
         driveTrain.setDirection(DriveDirection.HATCH);
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+
+        shooter = new Shooter();
 
         robotContainer = new RobotContainer();
     }

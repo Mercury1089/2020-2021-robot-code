@@ -11,8 +11,9 @@ public class RobotMap {
                 DRIVETRAIN_SL = 3,
                 DRIVETRAIN_SR = 4,
                 ELEVATOR_TALON = 5,
-                PIGEON = 10,
-                SHOOTER_FLYWHEEL = 8;
+                SHOOTER_LEFT = 8,
+                SHOOTER_RIGHT = 9,
+                PIGEON = 10;
 
         private CAN() {
         }

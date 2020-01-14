@@ -8,7 +8,10 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.MercSparkMax;
 import frc.robot.util.MercTalonSRX;
 
 import com.revrobotics.CANEncoder;
@@ -16,18 +19,24 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.RobotMap.*;
+import frc.robot.commands.shooter.RunShooter;
 
 
 public class Shooter extends SubsystemBase {
   //private IMercMotorController flywheel;
-  private CANSparkMax flywheel;
+
+  public static final double NOMINAL_OUT = 0.0,
+                                PEAK_OUT = 1.0;
+
+  private IMercMotorController shooterLeft, shooterRight;
 
   private CANEncoder encoder;
 
   public Shooter() {
     //flywheel = new MercTalonSRX(CAN.SHOOTER_FLYWHEEL);
-    flywheel = new CANSparkMax(CAN.SHOOTER_FLYWHEEL, MotorType.kBrushless);
-    encoder = flywheel.getEncoder();
+    shooterLeft = new MercSparkMax(CAN.SHOOTER_LEFT);
+    shooterRight = new MercSparkMax(CAN.SHOOTER_RIGHT);
+    
   }
 
   @Override
@@ -35,11 +44,17 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public CANSparkMax getFlywheel() {
-    return flywheel;
+  public void setSpeed(double speed) {
+    shooterLeft.setSpeed(speed);
+    shooterRight.setSpeed(-speed);
   }
 
-  public void setSpeed(double speed) {
-    flywheel.set(speed);
+  public void configVoltage(double nominalOutput, double peakOutput) {
+    shooterLeft.configVoltage(nominalOutput, peakOutput);
+    shooterRight.configVoltage(nominalOutput, peakOutput);
+  }
+
+  public Command getDefaultCommand(){
+    return CommandScheduler.getInstance().getDefaultCommand(this);
   }
 }
