@@ -1,7 +1,7 @@
 /**
  *
  */
-/*
+
 package frc.robot.commands.drivetrain;
 
 import com.ctre.phoenix.motion.MotionProfileStatus;
@@ -20,8 +20,8 @@ import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.MercMath;
 import frc.robot.util.MercTalonSRX;
-//import org.apache.commons.csv.CSVFormat;
-//import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Use motion profiling to move on a specified path
  */
-/*
+
 public class MoveOnPath extends CommandBase {
     private static Notifier trajectoryProcessor;
     private final int TRAJECTORY_SIZE;
@@ -45,8 +45,8 @@ public class MoveOnPath extends CommandBase {
     private int dir;
     private String name;
     private DriveTrain driveTrain;
-    public MoveOnPath(String filename, MPDirection direction) throws FileNotFoundException {
-        this(filename);
+    public MoveOnPath(String filename, MPDirection direction, DriveTrain driveTrain) throws FileNotFoundException {
+        this(filename, driveTrain);
         switch (direction) {
             case BACKWARD:
                 dir = -1;
@@ -233,4 +233,3 @@ public class MoveOnPath extends CommandBase {
         BACKWARD, FORWARD
     }
 }
-*/
