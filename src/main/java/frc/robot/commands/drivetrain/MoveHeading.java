@@ -101,7 +101,7 @@ public class MoveHeading extends CommandBase {
             return false;
         }
 
-        double distError = right.getClosedLoopError(), angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+        double distError = right.getClosedLoopError(), angleError = right.getClosedLoopError(this.driveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
         angleError = MercMath.pigeonUnitsToDegrees(angleError);
 

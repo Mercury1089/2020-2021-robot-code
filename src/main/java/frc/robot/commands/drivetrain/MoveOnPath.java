@@ -1,6 +1,7 @@
 /**
  *
  */
+/*
 package frc.robot.commands.drivetrain;
 
 import com.ctre.phoenix.motion.MotionProfileStatus;
@@ -11,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
@@ -30,7 +32,8 @@ import java.util.List;
 /**
  * Use motion profiling to move on a specified path
  */
-/*public class MoveOnPath extends Command {
+/*
+public class MoveOnPath extends CommandBase {
     private static Notifier trajectoryProcessor;
     private final int TRAJECTORY_SIZE;
     private TalonSRX left;
@@ -41,6 +44,7 @@ import java.util.List;
     private boolean isRunning;
     private int dir;
     private String name;
+    private DriveTrain driveTrain;
     public MoveOnPath(String filename, MPDirection direction) throws FileNotFoundException {
         this(filename);
         switch (direction) {
@@ -54,18 +58,19 @@ import java.util.List;
         }
     }
 
-    public MoveOnPath(String filename) throws FileNotFoundException {
-        requires(Robot.driveTrain);
+    public MoveOnPath(String filename, DriveTrain driveTrain) throws FileNotFoundException {
+        super.addRequirements(driveTrain);
+        this.driveTrain = driveTrain;
         setName("MoveOnPath-" + filename);
 
         name = filename;
 
         try {
-            if (Robot.driveTrain.getDirection() == DriveDirection.CARGO) {
+            if (this.driveTrain.getDirection() == DriveDirection.CARGO) {
                 dir = -1;
                 leftTrajCSV = new FileReader("/home/lvuser/deploy/trajectories/PathWeaver/output/" + filename + ".right.pf1.csv");
                 rightTrajCSV = new FileReader("/home/lvuser/deploy/trajectories/PathWeaver/output/" + filename + ".left.pf1.csv");
-            } else if (Robot.driveTrain.getDirection() == DriveDirection.HATCH) {
+            } else if (this.driveTrain.getDirection() == DriveDirection.HATCH) {
                 dir = 1;
                 leftTrajCSV = new FileReader("/home/lvuser/deploy/trajectories/PathWeaver/output/" + filename + ".right.pf1.csv");
                 rightTrajCSV = new FileReader("/home/lvuser/deploy/trajectories/PathWeaver/output/" + filename + ".left.pf1.csv");
@@ -75,11 +80,11 @@ import java.util.List;
         } catch (Exception e) {
             System.out.println("this a'int a profile fella");
             e.printStackTrace();
-            end();
+            end(false);
         }
 
-        left = ((MercTalonSRX) Robot.driveTrain.getLeftLeader()).get();
-        right = ((MercTalonSRX) Robot.driveTrain.getRightLeader()).get();
+        left = ((MercTalonSRX) this.driveTrain.getLeftLeader()).get();
+        right = ((MercTalonSRX) this.driveTrain.getRightLeader()).get();
 
         if (trajectoryProcessor == null) {
             trajectoryProcessor = new Notifier(() -> {
@@ -95,25 +100,25 @@ import java.util.List;
             TRAJECTORY_SIZE = trajectoryListLeft.size();
         } else {
             TRAJECTORY_SIZE = 0;
-            end();
+            end(false);
         }
     }
 
     //Called just before this Command runs for the first time.
-    protected void initialize() {
+    public void initialize() {
 
         System.out.println("running MP");
 
-        if (Robot.driveTrain.isInMotionMagicMode())
-            Robot.driveTrain.initializeNormalMotionFeedback();
+        if (this.driveTrain.isInMotionMagicMode())
+            this.driveTrain.initializeNormalMotionFeedback();
 
         // Reset command state
         reset();
 
-        dir = Robot.driveTrain.getDirection() == DriveDirection.HATCH ? 1 : -1;
+        dir = this.driveTrain.getDirection() == DriveDirection.HATCH ? 1 : -1;
 
-        Robot.driveTrain.configPIDSlots(DriveTrainSide.LEFT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
-        Robot.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+        this.driveTrain.configPIDSlots(DriveTrainSide.LEFT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+        this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
         // Change motion control frame period
         left.changeMotionControlFramePeriod(10);
@@ -128,7 +133,7 @@ import java.util.List;
     }
 
     //Called repeatedly when this Command is scheduled to run.
-    protected void execute() {
+    public void execute() {
         left.getMotionProfileStatus(statusLeft);
         right.getMotionProfileStatus(statusRight);
 
@@ -142,7 +147,7 @@ import java.util.List;
     }
 
     @Override
-    protected boolean isFinished() {
+    public boolean isFinished() {
         // If we're running, only finish if both talons
         // reach their last valid point
         return
@@ -154,7 +159,7 @@ import java.util.List;
     }
 
     @Override
-    protected void end() {
+    public void end(boolean interrupted) {
         // Stop processing trajectories
         trajectoryProcessor.stop();
 
@@ -218,11 +223,6 @@ import java.util.List;
         // Clear the trajectory buffer
         left.clearMotionProfileTrajectories();
         right.clearMotionProfileTrajectories();
-    }
-
-    @Override
-    protected void interrupted() {
-        this.end();
     }
 
     public String getFilename() {
