@@ -47,7 +47,7 @@ public class DegreeRotate extends MoveHeading {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        double angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
+        double angleError = right.getClosedLoopError(this.driveTrain.DRIVE_SMOOTH_TURN_SLOT);
 
         angleError = MercMath.pigeonUnitsToDegrees(angleError);
 
