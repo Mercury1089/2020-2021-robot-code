@@ -8,21 +8,19 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
+import frc.robot.RobotMap.DS_USB;
+import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.subsystems.Shooter;
-import frc.robot.util.interfaces.IMercMotorController;
 
-public class RunShooter extends CommandBase {
-
-  protected IMercMotorController shooterLeft, shooterRight;
+public class ShootManualVoltage extends CommandBase {
 
   private Shooter shooter;
-  
-  private final double VOLTAGE = 0.5;
 
   /**
-   * Creates a new RunShooter.
+   * Creates a new ShootManualVoltage.
    */
-  public RunShooter(Shooter shooter) {
+  public ShootManualVoltage(Shooter shooter) {
     super.addRequirements(shooter);
     this.shooter = shooter;
   }
@@ -30,12 +28,13 @@ public class RunShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.shooter.setSpeed(0.1);
+    this.shooter.configVoltage(Shooter.NOMINAL_OUT, Shooter.PEAK_OUT);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    this.shooter.setSpeed(Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.leftY));
   }
 
   // Called once the command ends or is interrupted.

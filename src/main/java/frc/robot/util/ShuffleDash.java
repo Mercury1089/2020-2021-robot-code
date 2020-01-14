@@ -41,7 +41,7 @@ public class ShuffleDash {
 
         // SmartDashboard.putNumber("Left Enc in ticks", Robot.driveTrain.getLeftLeader().getEncTicks());
         // SmartDashboard.putNumber("Right Enc in ticks", Robot.driveTrain.getRightLeader().getEncTicks());
-
+        
         SmartDashboard.putString("direction", Robot.driveTrain.getDirection().name());
 
         SmartDashboard.putNumber("Left Enc in feet", Robot.driveTrain.getLeftEncPositionInFeet());

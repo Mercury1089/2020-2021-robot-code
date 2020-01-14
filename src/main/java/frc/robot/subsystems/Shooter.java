@@ -31,11 +31,13 @@ public class Shooter extends SubsystemBase {
   private IMercMotorController shooterLeft, shooterRight;
 
   private CANEncoder encoder;
+  private double speed;
 
   public Shooter() {
     //flywheel = new MercTalonSRX(CAN.SHOOTER_FLYWHEEL);
     shooterLeft = new MercSparkMax(CAN.SHOOTER_LEFT);
     shooterRight = new MercSparkMax(CAN.SHOOTER_RIGHT);
+    configVoltage(NOMINAL_OUT, PEAK_OUT);
     
   }
 
@@ -45,8 +47,9 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
+    this.speed = speed;
     shooterLeft.setSpeed(speed);
-    shooterRight.setSpeed(-speed);
+    shooterRight.setSpeed(speed);
   }
 
   public void configVoltage(double nominalOutput, double peakOutput) {
@@ -54,7 +57,21 @@ public class Shooter extends SubsystemBase {
     shooterRight.configVoltage(nominalOutput, peakOutput);
   }
 
+  public void increaseSpeed(){
+    speed += 0.05;
+    this.setSpeed(speed);
+  }
+
+  public void decreaseSpeed(){
+    speed -= 0.05;
+    this.setSpeed(speed);
+  }
+
   public Command getDefaultCommand(){
     return CommandScheduler.getInstance().getDefaultCommand(this);
+  }
+
+  public void setDefaultCommand(Command command){
+    CommandScheduler.getInstance().setDefaultCommand(this, command);
   }
 }

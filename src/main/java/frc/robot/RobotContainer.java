@@ -39,7 +39,7 @@ public class RobotContainer {
         initalizeJoystickButtons();
 
         left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, Robot.driveTrain));
-        left3.whenPressed(new RunShooter(Robot.shooter));
+        left3.whileHeld(new RunShooter(Robot.shooter));
     }
 
     public String getAutonFirstStep() {
@@ -84,7 +84,7 @@ public class RobotContainer {
     }
 
     public void updateDash() {
-        shuffleDash.updateDash();
+        //shuffleDash.updateDash();
     }
 
     private void initalizeJoystickButtons() {

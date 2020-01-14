@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
+import frc.robot.commands.shooter.ShootManualVoltage;
 import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
@@ -34,10 +35,10 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().enable();
 
         driveTrain = new DriveTrain(DriveTrainLayout.TALONS);
-        driveTrain.setDirection(DriveDirection.HATCH);
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
         shooter = new Shooter();
+        shooter.setDefaultCommand(new ShootManualVoltage(shooter));
 
         robotContainer = new RobotContainer();
     }
