@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.MercSparkMax;
 import frc.robot.util.MercTalonSRX;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -32,13 +33,21 @@ public class Shooter extends SubsystemBase {
 
   private CANEncoder encoder;
   private double speed;
+  private ShooterMode mode;
+  public enum ShooterMode{
+    OVER_THE_TOP,
+    THROUGH_MIDDLE
+  }
 
-  public Shooter() {
+
+  public Shooter(ShooterMode mode) {
     //flywheel = new MercTalonSRX(CAN.SHOOTER_FLYWHEEL);
     shooterLeft = new MercSparkMax(CAN.SHOOTER_LEFT);
     shooterRight = new MercSparkMax(CAN.SHOOTER_RIGHT);
     configVoltage(NOMINAL_OUT, PEAK_OUT);
-    
+    this.mode = mode;
+    shooterLeft.setNeutralMode(NeutralMode.Coast);
+    shooterRight.setNeutralMode(NeutralMode.Coast);
   }
 
   @Override
@@ -48,8 +57,14 @@ public class Shooter extends SubsystemBase {
 
   public void setSpeed(double speed) {
     this.speed = speed;
-    shooterLeft.setSpeed(speed);
-    shooterRight.setSpeed(speed);
+    if (mode == ShooterMode.OVER_THE_TOP) {
+        shooterLeft.setSpeed(-speed);
+        shooterRight.setSpeed(speed);
+    }
+    else if (mode == ShooterMode.THROUGH_MIDDLE) {
+      shooterLeft.setSpeed(-speed);
+      shooterRight.setSpeed(-speed);
+    }
   }
 
   public void configVoltage(double nominalOutput, double peakOutput) {
