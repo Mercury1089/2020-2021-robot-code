@@ -5,51 +5,54 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-//package frc.robot.auton;
+package frc.robot.auton;
 
-//import edu.wpi.first.wpilibj.command.CommandGroup;
-//import frc.robot.Robot;
-//import frc.robot.commands.drivetrain.DegreeRotate;
-//import frc.robot.commands.drivetrain.MoveOnPath;
-//import frc.robot.commands.drivetrain.MoveOnPath.MPDirection;
-//import frc.robot.commands.drivetrain.SwitchDriveDirection;
-//import frc.robot.util.DriveAssist.DriveDirection;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.commands.drivetrain.DegreeRotate;
+import frc.robot.commands.drivetrain.MoveOnPath;
+import frc.robot.commands.drivetrain.MoveOnPath.MPDirection;
+import frc.robot.util.DriveAssist.DriveDirection;
 
-//import java.io.FileNotFoundException;
+import java.io.FileNotFoundException;
 
-//public class AutonMove extends CommandGroup {
+public class AutonMove extends SequentialCommandGroup {
     /**
      * Add your docs here.
      */
 
-    //public AutonMove(String pathname) {
-       // this(pathname, Robot.driveTrain.getDirection());
-    //}
+    private DriveTrain driveTrain;
+    private MoveOnPath mop;
 
-    //public AutonMove(String pathname, DriveDirection driveDirection) {
-        //MoveOnPath mop = null;
-        /*
+     
+
+    public AutonMove(String pathname, DriveTrain driveTrain) {
+        this(pathname, driveTrain.getDirection(), driveTrain);
+    }
+
+    public AutonMove(String pathname, DriveDirection driveDirection, DriveTrain driveTrain) {
+        this.driveTrain = driveTrain;
         try {
-            //mop = new MoveOnPath(pathname);
+            mop = new MoveOnPath(pathname, driveTrain);
         } catch (FileNotFoundException fnfe) {
             System.out.println("Not a path!");
             fnfe.printStackTrace();
         }
-        */
-        //addSequential(mop);
-        //if (Robot.driveTrain.getDirection() != driveDirection) {
-          //  addSequential(new SwitchDriveDirection(driveDirection));
-        //}
+        if (this.driveTrain.getDirection() != driveDirection) {
+            this.driveTrain.switchDirection();
+        }
         /*
         if (mop.getFilename().indexOf("Station") > 0) {
             try {
-                addSequential(new MoveOnPath(mop.getFilename(), MPDirection.BACKWARD));
+                //addSequential(new MoveOnPath(mop.getFilename(), MPDirection.BACKWARD));
             } catch (FileNotFoundException fnfe) {
                 System.out.println("Not a file!");
                 fnfe.printStackTrace();
             }
-            addSequential(new DegreeRotate(180));
         }
         */
-   // }
-//}
+    }
+}

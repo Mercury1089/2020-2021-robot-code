@@ -1,15 +1,21 @@
 package frc.robot;
 
-
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.*;
+
+import java.io.FileNotFoundException;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
+import frc.robot.commands.drivetrain.MoveOnPath;
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.shooter.ShootManualVoltage;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Shooter;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.drivetrain.TrackTarget;
 import frc.robot.util.DriveAssist.DriveDirection;
@@ -30,18 +36,27 @@ public class RobotContainer {
     private JoystickButton right1, right2, right3, right4, right5, right6, right7, right8, right9, right10, right11;
     private JoystickButton gamepadA, gamepadB, gamepadX, gamepadY, gamepadRB, gamepadLB, gamepadBack, gamepadStart, gamepadLeftStickButton, gamepadRightStickButton;
 
-    public RobotContainer() {
+    private DriveTrain driveTrain;
+    private Shooter shooter;
+
+    private SequentialCommandGroup autonCommand;
+
+    public RobotContainer(DriveTrain driveTrain, Shooter shooter) {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
+
+        this.driveTrain = driveTrain;
+        this.shooter = shooter;
         
 
         shuffleDash = new ShuffleDash();
+        autonCommand = new SequentialCommandGroup();
 
         initalizeJoystickButtons();
 
-        left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, Robot.driveTrain));
-        left3.whileHeld(new RunShooter(Robot.shooter));
+        left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
+        left3.whileHeld(new RunShooter(this.shooter));
     }
 
     public String getAutonFirstStep() {
@@ -124,5 +139,18 @@ public class RobotContainer {
         gamepadStart = new JoystickButton(gamepad, GAMEPAD_BUTTONS.START);
         gamepadLeftStickButton = new JoystickButton(gamepad, GAMEPAD_BUTTONS.L3);
         gamepadRightStickButton = new JoystickButton(gamepad, GAMEPAD_BUTTONS.R3);
+    }
+
+    //Eventually this will link to our auton app on the shuffledash
+    public void initializeAutonCommand(){
+        try{
+            autonCommand.addCommands(new MoveOnPath("StraightProfile", this.driveTrain));            
+        }catch(FileNotFoundException e){
+            System.out.println(e);
+        }
+    }
+
+    public SequentialCommandGroup getAutonCommand(){
+        return this.autonCommand;
     }
 }

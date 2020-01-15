@@ -276,6 +276,15 @@ public class DriveTrain extends SubsystemBase{
         driveAssist.setDirection(dd);
     }
 
+    public void switchDirection(){
+        if (getDirection() == DriveDirection.HATCH){
+            setDirection(DriveDirection.CARGO);
+        }
+        else{
+            setDirection(DriveDirection.HATCH);
+        }
+    }
+
     public PigeonIMU getPigeon() {
         return podgeboi;
     }

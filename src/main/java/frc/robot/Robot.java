@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
@@ -28,6 +29,8 @@ public class Robot extends TimedRobot {
 
     public static RobotContainer robotContainer;
 
+    private Command autonCommand;
+
     /**
      * This function is run when the robot is first started up and should be used
      * for any initialization code.
@@ -42,7 +45,8 @@ public class Robot extends TimedRobot {
         shooter = new Shooter(ShooterMode.THROUGH_MIDDLE);
         shooter.setDefaultCommand(new ShootManualVoltage(shooter));
 
-        robotContainer = new RobotContainer();
+        robotContainer = new RobotContainer(driveTrain, shooter);
+        robotContainer.initializeAutonCommand();
     }
 
     @Override
@@ -62,6 +66,11 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         driveTrain.getLimelight().setLEDState(LimelightLEDState.ON);
+        this.autonCommand = robotContainer.getAutonCommand();
+
+        if (autonCommand != null){
+            autonCommand.schedule();;
+        }
     }
 
     @Override
