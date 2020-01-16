@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
+import frc.robot.commands.drivetrain.DegreeRotate;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.MoveOnPath;
 import frc.robot.commands.shooter.RunShooter;
@@ -51,7 +52,9 @@ public class RobotContainer {
         
 
         shuffleDash = new ShuffleDash();
+
         autonCommand = new SequentialCommandGroup();
+        initializeAutonCommand();
 
         initalizeJoystickButtons();
 
@@ -148,6 +151,8 @@ public class RobotContainer {
         }catch(FileNotFoundException e){
             System.out.println(e);
         }
+
+        autonCommand.addCommands(new DegreeRotate(90, this.driveTrain));
     }
 
     public SequentialCommandGroup getAutonCommand(){

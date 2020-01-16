@@ -73,8 +73,8 @@ public class DriveTrain extends SubsystemBase{
             case LEGACY:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
                 leaderRight = new MercTalonSRX(CAN.DRIVETRAIN_MR);
-                followerLeft = new MercTalonSRX(CAN.DRIVETRAIN_SL);
-                followerRight = new MercTalonSRX(CAN.DRIVETRAIN_SR);
+                followerLeft = new MercTalonSRX(CAN.DRIVETRAIN_FL);
+                followerRight = new MercTalonSRX(CAN.DRIVETRAIN_FR);
                 break;/*
             case SPARKS:
                 leaderLeft = new MercSparkMax(CAN.DRIVETRAIN_ML);
@@ -85,8 +85,8 @@ public class DriveTrain extends SubsystemBase{
             case TALONS:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
                 leaderRight = new MercTalonSRX(CAN.DRIVETRAIN_MR);
-                followerLeft = new MercVictorSPX(CAN.DRIVETRAIN_SL);
-                followerRight = new MercVictorSPX(CAN.DRIVETRAIN_SR);
+                followerLeft = new MercVictorSPX(CAN.DRIVETRAIN_FL);
+                followerRight = new MercVictorSPX(CAN.DRIVETRAIN_FR);
                 break;
         }
 

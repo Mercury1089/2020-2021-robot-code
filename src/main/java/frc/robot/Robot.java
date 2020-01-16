@@ -46,7 +46,6 @@ public class Robot extends TimedRobot {
         shooter.setDefaultCommand(new ShootManualVoltage(shooter));
 
         robotContainer = new RobotContainer(driveTrain, shooter);
-        robotContainer.initializeAutonCommand();
     }
 
     @Override

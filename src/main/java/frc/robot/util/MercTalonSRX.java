@@ -46,8 +46,11 @@ public class MercTalonSRX implements IMercMotorController {
 
     @Override
     public void follow(IMercMotorController leader) {
-        if (Robot.driveTrain.getLayout() != DriveTrainLayout.SPARKS)
+        if (leader instanceof MercTalonSRX) {
             talonsrx.follow(((MercTalonSRX) leader).get());
+        } else if (leader instanceof MercVictorSPX) {
+            talonsrx.follow(((MercVictorSPX)leader).get());
+        }
     }
 
     @Override

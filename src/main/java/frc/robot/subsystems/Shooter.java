@@ -82,6 +82,10 @@ public class Shooter extends SubsystemBase {
     this.setSpeed(speed);
   }
 
+  public double getRPM(){
+    return encoder.getVelocity();
+  }
+
   public Command getDefaultCommand(){
     return CommandScheduler.getInstance().getDefaultCommand(this);
   }
