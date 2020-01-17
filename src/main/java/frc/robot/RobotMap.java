@@ -10,7 +10,7 @@ public class RobotMap {
                 DRIVETRAIN_MR = 2,
                 DRIVETRAIN_SL = 3,
                 DRIVETRAIN_SR = 4,
-                ELEVATOR_TALON = 5,
+                INTAKE = 7,
                 SHOOTER_LEFT = 8,
                 SHOOTER_RIGHT = 9,
                 PIGEON = 10;
