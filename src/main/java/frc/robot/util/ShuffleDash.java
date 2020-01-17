@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.subsystems.Shooter.ShooterMode;
 import frc.robot.util.interfaces.IMercMotorController.LimitSwitchDirection;
 
 public class ShuffleDash {

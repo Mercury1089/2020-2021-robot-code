@@ -8,6 +8,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,6 +20,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.interfaces.IMercMotorController;
+import frc.robot.Robot;
 import frc.robot.RobotMap.*;
 import frc.robot.commands.shooter.RunShooter;
 
@@ -32,8 +34,12 @@ public class Shooter extends SubsystemBase {
   private IMercMotorController shooterLeft, shooterRight;
 
   private CANEncoder encoder;
-  private double speed;
+  private double currentSpeed;
+  private double runSpeed;
+  
   private ShooterMode mode;
+
+
   public enum ShooterMode{
     OVER_THE_TOP,
     THROUGH_MIDDLE
@@ -48,6 +54,8 @@ public class Shooter extends SubsystemBase {
     this.mode = mode;
     shooterLeft.setNeutralMode(NeutralMode.Coast);
     shooterRight.setNeutralMode(NeutralMode.Coast);
+
+    SmartDashboard.putString("Shooter mode", Robot.shooter.getMode() == ShooterMode.OVER_THE_TOP ? "Over the top" : "Through the middle");
   }
 
   @Override
@@ -56,7 +64,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setSpeed(double speed) {
-    this.speed = speed;
+    this.currentSpeed = speed;
     if (mode == ShooterMode.OVER_THE_TOP) {
         shooterLeft.setSpeed(speed);
         shooterRight.setSpeed(-speed);
@@ -73,13 +81,13 @@ public class Shooter extends SubsystemBase {
   }
 
   public void increaseSpeed(){
-    speed += 0.05;
-    this.setSpeed(speed);
+    currentSpeed += 0.05;
+    this.setSpeed(currentSpeed);
   }
 
   public void decreaseSpeed(){
-    speed -= 0.05;
-    this.setSpeed(speed);
+    currentSpeed -= 0.05;
+    this.setSpeed(currentSpeed);
   }
 
   public double getRPM(){
@@ -92,5 +100,17 @@ public class Shooter extends SubsystemBase {
 
   public void setDefaultCommand(Command command){
     CommandScheduler.getInstance().setDefaultCommand(this, command);
+  }
+
+  public void setRunSpeed(double runSpeed){
+    SmartDashboard.putNumber("Shooting speed", 0.0);
+  }
+
+  public double getRunSpeed() {
+    return SmartDashboard.getNumber("Shooting speed", 0.0);
+  }
+
+  public ShooterMode getMode() {
+    return mode;
   }
 }
