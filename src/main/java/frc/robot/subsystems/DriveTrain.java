@@ -70,7 +70,7 @@ public class DriveTrain extends SubsystemBase{
         super();
         this.layout = layout;
         switch (layout) {
-            case LEGACY:
+            case FALCONS:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
                 leaderRight = new MercTalonSRX(CAN.DRIVETRAIN_MR);
                 followerLeft = new MercTalonSRX(CAN.DRIVETRAIN_FL);
@@ -82,7 +82,7 @@ public class DriveTrain extends SubsystemBase{
                 followerLeft = new MercSparkMax(CAN.DRIVETRAIN_SL);
                 followerRight = new MercSparkMax(CAN.DRIVETRAIN_SR);
                 break;*/
-            case TALONS:
+            case TALONS_VICTORS:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
                 leaderRight = new MercTalonSRX(CAN.DRIVETRAIN_MR);
                 followerLeft = new MercVictorSPX(CAN.DRIVETRAIN_FL);
@@ -372,8 +372,8 @@ public class DriveTrain extends SubsystemBase{
 
     public enum DriveTrainLayout {
         SPARKS,
-        TALONS,
-        LEGACY
+        TALONS_VICTORS,
+        FALCONS
     }
 
     public enum DriveTrainSide {

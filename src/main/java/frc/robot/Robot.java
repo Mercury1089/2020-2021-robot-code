@@ -39,10 +39,10 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         CommandScheduler.getInstance().enable();
 
-        driveTrain = new DriveTrain(DriveTrainLayout.TALONS);
+        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS);
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
-        shooter = new Shooter(ShooterMode.THROUGH_MIDDLE);
+        shooter = new Shooter(ShooterMode.OVER_THE_TOP);
         shooter.setDefaultCommand(new ShootManualVoltage(shooter));
 
         robotContainer = new RobotContainer(driveTrain, shooter);
