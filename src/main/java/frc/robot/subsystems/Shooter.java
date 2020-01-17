@@ -58,12 +58,12 @@ public class Shooter extends SubsystemBase {
   public void setSpeed(double speed) {
     this.speed = speed;
     if (mode == ShooterMode.OVER_THE_TOP) {
-        shooterLeft.setSpeed(-speed);
-        shooterRight.setSpeed(speed);
+        shooterLeft.setSpeed(speed);
+        shooterRight.setSpeed(-speed);
     }
     else if (mode == ShooterMode.THROUGH_MIDDLE) {
-      shooterLeft.setSpeed(-speed);
-      shooterRight.setSpeed(-speed);
+      shooterLeft.setSpeed(speed);
+      shooterRight.setSpeed(speed);
     }
   }
 

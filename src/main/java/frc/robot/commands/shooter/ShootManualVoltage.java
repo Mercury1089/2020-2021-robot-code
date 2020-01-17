@@ -21,7 +21,7 @@ public class ShootManualVoltage extends CommandBase {
    * Creates a new ShootManualVoltage.
    */
   public ShootManualVoltage(Shooter shooter) {
-    super.addRequirements(shooter);
+    addRequirements(shooter);
     this.shooter = shooter;
   }
 

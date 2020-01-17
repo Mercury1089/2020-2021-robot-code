@@ -25,7 +25,7 @@ public class RunIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.intake.setSpeed(0.3);
+    this.intake.setSpeed(0.7);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
