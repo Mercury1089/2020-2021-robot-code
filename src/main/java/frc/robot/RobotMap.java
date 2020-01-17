@@ -8,8 +8,8 @@ public class RobotMap {
         public static final int
                 DRIVETRAIN_ML = 1,
                 DRIVETRAIN_MR = 2,
-                DRIVETRAIN_SL = 3,
-                DRIVETRAIN_SR = 4,
+                DRIVETRAIN_FL = 3,
+                DRIVETRAIN_FR = 4,
                 INTAKE = 7,
                 SHOOTER_LEFT = 8,
                 SHOOTER_RIGHT = 9,
