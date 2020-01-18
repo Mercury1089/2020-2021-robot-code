@@ -55,7 +55,8 @@ public class Shooter extends SubsystemBase {
     shooterLeft.setNeutralMode(NeutralMode.Coast);
     shooterRight.setNeutralMode(NeutralMode.Coast);
 
-    SmartDashboard.putString("Shooter mode", Robot.shooter.getMode() == ShooterMode.OVER_THE_TOP ? "Over the top" : "Through the middle");
+    setRunSpeed(0.0);
+    SmartDashboard.putString("Shooter mode", getMode() == ShooterMode.OVER_THE_TOP ? "Over the top" : "Through the middle");
   }
 
   @Override

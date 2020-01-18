@@ -16,7 +16,6 @@ public class RunShooter extends CommandBase {
   protected IMercMotorController shooterLeft, shooterRight;
 
   private Shooter shooter;
-  private double runSpeed;
 
   /**
    * Creates a new RunShooter.
@@ -24,18 +23,17 @@ public class RunShooter extends CommandBase {
   public RunShooter(Shooter shooter) {
     super.addRequirements(shooter);
     this.shooter = shooter;
-    this.runSpeed = shooter.getRunSpeed();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.shooter.setSpeed(runSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    this.shooter.setSpeed(shooter.getRunSpeed());
   }
 
   // Called once the command ends or is interrupted.

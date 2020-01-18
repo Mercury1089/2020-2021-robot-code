@@ -95,7 +95,8 @@ public class DriveTrain extends SubsystemBase{
         podgeboi.configFactoryDefault();
 
         //CANifier and distance sensors
-        limelight = new Limelight();
+        this.limelight = new Limelight();
+
 
         //Account for motor orientation.
         leaderLeft.setInverted(false);
@@ -289,6 +290,10 @@ public class DriveTrain extends SubsystemBase{
         return podgeboi;
     }
 
+    public Limelight getLimelight(){
+        return this.limelight;
+    }
+
     //public LIDAR getLidar() {
         //return lidar;
     //}
@@ -345,10 +350,6 @@ public class DriveTrain extends SubsystemBase{
 
     public DriveAssist getDriveAssist() {
         return driveAssist;
-    }
-
-    public Limelight getLimelight(){
-        return limelight;
     }
 
     public double getFeedForward() {
