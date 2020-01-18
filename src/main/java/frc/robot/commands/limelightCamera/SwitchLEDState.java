@@ -19,6 +19,7 @@ public class SwitchLEDState extends InstantCommand {
 
   public SwitchLEDState(LimelightCamera limelightCamera) {
     super();
+    this.limelightCamera = limelightCamera;
     super.addRequirements(limelightCamera);
   }
 
