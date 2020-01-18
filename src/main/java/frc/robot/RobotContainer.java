@@ -17,6 +17,7 @@ import frc.robot.commands.drivetrain.DegreeRotate;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.MoveOnPath;
 import frc.robot.commands.shooter.RunShooter;
+import frc.robot.commands.shooter.RunShooterRPM;
 import frc.robot.commands.shooter.ShootManualVoltage;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimelightCamera;
@@ -73,6 +74,7 @@ public class RobotContainer {
         left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
         left3.whenPressed(new RunShooter(shooter));
         left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
+        left5.whenPressed(new RunShooterRPM(shooter));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
 
         gamepadY.whenHeld(new RunFeeder(Robot.feeder));
