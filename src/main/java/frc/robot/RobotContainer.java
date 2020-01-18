@@ -55,6 +55,8 @@ public class RobotContainer {
         
 
         shuffleDash = new ShuffleDash();
+        shuffleDash.addPublisher(shooter);
+        
 
         autonCommand = new SequentialCommandGroup();
         initializeAutonCommand();
