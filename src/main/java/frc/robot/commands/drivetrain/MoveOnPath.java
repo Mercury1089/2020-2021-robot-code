@@ -66,11 +66,11 @@ public class MoveOnPath extends CommandBase {
         name = filename;
 
         try {
-            if (this.driveTrain.getDirection() == DriveDirection.CARGO) {
+            if (this.driveTrain.getDirection() == DriveDirection.ELECTRONICS_BOARD) {
                 dir = -1;
                 leftTrajCSV = new FileReader("/home/lvuser/deploy/trajectories/PathWeaver/output/" + filename + ".right.pf1.csv");
                 rightTrajCSV = new FileReader("/home/lvuser/deploy/trajectories/PathWeaver/output/" + filename + ".left.pf1.csv");
-            } else if (this.driveTrain.getDirection() == DriveDirection.HATCH) {
+            } else if (this.driveTrain.getDirection() == DriveDirection.LIMELIGHT) {
                 dir = 1;
                 leftTrajCSV = new FileReader("/home/lvuser/deploy/trajectories/PathWeaver/output/" + filename + ".right.pf1.csv");
                 rightTrajCSV = new FileReader("/home/lvuser/deploy/trajectories/PathWeaver/output/" + filename + ".left.pf1.csv");
@@ -115,7 +115,7 @@ public class MoveOnPath extends CommandBase {
         // Reset command state
         reset();
 
-        dir = this.driveTrain.getDirection() == DriveDirection.HATCH ? 1 : -1;
+        dir = this.driveTrain.getDirection() == DriveDirection.LIMELIGHT ? 1 : -1;
 
         this.driveTrain.configPIDSlots(DriveTrainSide.LEFT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
         this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
