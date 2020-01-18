@@ -2,6 +2,8 @@ package frc.robot.util.interfaces;
 
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.*;
+import com.revrobotics.CANPIDController;
+
 import frc.robot.util.PIDGain;
 
 public interface IMercMotorController {
@@ -70,7 +72,10 @@ public interface IMercMotorController {
      *
      * @return the encoder velocity of the controller
      */
-    double getEncVelo();
+    double getEncVelocity();
+
+    
+    void setVelocity(double rpm);
 
     /**
      * Want to reset the encoder?

@@ -14,10 +14,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.MercSparkMax;
 import frc.robot.util.MercTalonSRX;
+import frc.robot.util.PIDGain;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
@@ -39,6 +42,8 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   
   private ShooterMode mode;
 
+  private final PIDGain VELOCITY_GAINS;
+
 
   public enum ShooterMode{
     OVER_THE_TOP,
@@ -57,6 +62,17 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
     setRunSpeed(0.0);
     
+    VELOCITY_GAINS = new PIDGain(5e-5, 1e-6, 0, 0);
+
+    shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), VELOCITY_GAINS);
+    shooterRight.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), VELOCITY_GAINS);
+
+    SmartDashboard.putNumber("P Gain", VELOCITY_GAINS.kP);
+    SmartDashboard.putNumber("I Gain", VELOCITY_GAINS.kI);
+    SmartDashboard.putNumber("D Gain", VELOCITY_GAINS.kD);
+    SmartDashboard.putNumber("Feed Forward", VELOCITY_GAINS.kF);
+
+
   }
 
   @Override
@@ -96,7 +112,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public double getRPM(){
-    return shooterLeft.getEncVelo();
+    return shooterLeft.getEncVelocity();
   }
 
   public Command getDefaultCommand(){
@@ -115,6 +131,11 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     return SmartDashboard.getNumber("Shooting speed", 0.0);
   }
 
+  public void setVelocity(double rpm){
+    shooterLeft.setVelocity(rpm);
+    shooterRight.setVelocity(rpm);
+  }
+
   public ShooterMode getMode() {
     return mode;
   }
@@ -122,5 +143,19 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   public void publishValues() {
     SmartDashboard.putString("Shooter mode", getMode() == ShooterMode.OVER_THE_TOP ? "Over the top" : "Through the middle");
     SmartDashboard.putNumber("Shooter RPM", getRPM());
+  }
+
+  public enum SHOOTER_PID_SLOTS{
+    VELOCITY_GAINS(0);
+
+    private int value;
+
+    SHOOTER_PID_SLOTS(int value){
+      this.value = value;
+    }
+
+    public int getValue(){
+      return this.value;
+    }
   }
 }

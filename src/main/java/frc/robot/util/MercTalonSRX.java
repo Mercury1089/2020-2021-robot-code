@@ -35,6 +35,9 @@ public class MercTalonSRX implements IMercMotorController {
     }
 
     @Override
+    public void setVelocity(double rpm){}
+
+    @Override
     public void setInverted(boolean invert) {
         talonsrx.setInverted(invert);
     }
@@ -64,7 +67,7 @@ public class MercTalonSRX implements IMercMotorController {
     }
 
     @Override
-    public double getEncVelo() {
+    public double getEncVelocity() {
         return talonsrx.getSelectedSensorVelocity(0);
     }
 
