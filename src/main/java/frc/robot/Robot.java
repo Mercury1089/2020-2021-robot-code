@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.shooter.RunShooter;
@@ -43,7 +44,7 @@ public class Robot extends TimedRobot {
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
         shooter = new Shooter(ShooterMode.THROUGH_MIDDLE);
-        shooter.setDefaultCommand(new ShootManualVoltage(shooter));
+        shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
         robotContainer = new RobotContainer(driveTrain, shooter);
     }
