@@ -76,6 +76,7 @@ public class RobotContainer {
         left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
         left5.whenPressed(new RunShooterRPM(shooter));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
+        left7.whenPressed(new DegreeRotate(90, this.driveTrain));
 
         gamepadY.whenHeld(new RunFeeder(Robot.feeder));
     }

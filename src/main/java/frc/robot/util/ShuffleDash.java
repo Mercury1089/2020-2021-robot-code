@@ -41,8 +41,8 @@ public class ShuffleDash {
         // SmartDashboard.putNumber("Left Enc in feet", Robot.driveTrain.getLeftEncPositionInFeet());
         // SmartDashboard.putNumber("Right Enc in feet", Robot.driveTrain.getRightEncPositionInFeet());
 
-        // SmartDashboard.putNumber("Left Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(Robot.driveTrain.getLeftLeader().getEncVelo()));
-        // SmartDashboard.putNumber("Right Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(Robot.driveTrain.getRightLeader().getEncVelo()));
+         SmartDashboard.putNumber("Left Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(Robot.driveTrain.getLeftLeader().getEncVelocity()));
+         SmartDashboard.putNumber("Right Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(Robot.driveTrain.getRightLeader().getEncVelocity()));
 
         // SmartDashboard.putNumber("Gyro Angle", Robot.driveTrain.getPigeonYaw());
 
@@ -55,5 +55,6 @@ public class ShuffleDash {
 
     public String getFirstStep() {
         return autonFirstStep.getSelected();
+        
     }
 }
