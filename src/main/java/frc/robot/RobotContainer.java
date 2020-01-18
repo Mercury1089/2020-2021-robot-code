@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.*;
 
@@ -59,7 +60,8 @@ public class RobotContainer {
         initalizeJoystickButtons();
 
         left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
-        left3.whileHeld(new RunShooter(this.shooter));
+        left3.whenPressed(new RunShooter(shooter));
+        left2.whenPressed(() -> shooter.setSpeed(0.0));
     }
 
     public String getAutonFirstStep() {
