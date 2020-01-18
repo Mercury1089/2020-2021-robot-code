@@ -9,6 +9,7 @@ package frc.robot.commands.drivetrain;
 
 import java.util.Set;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
@@ -54,6 +55,10 @@ public class DegreeRotate extends MoveHeading {
 
         boolean isOnTarget = (Math.abs(angleError) < angleThresholdDeg);
 
+
+        SmartDashboard.putNumber("onTargetCount", onTargetCount);
+        SmartDashboard.putNumber("onTargetMinCount", onTargetMinCount);
+
         if (isOnTarget) {
             onTargetCount++;
         } else {
@@ -65,6 +70,8 @@ public class DegreeRotate extends MoveHeading {
             isFinished = true;
             onTargetCount = 0;
         }
+
+        SmartDashboard.putBoolean("isOnTarget", isOnTarget);
 
         return isFinished;
     }
