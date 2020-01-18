@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
 
     public static DriveTrain driveTrain;
     public static Shooter shooter;
+    public static Feeder feeder;
 
     public static RobotContainer robotContainer;
 
@@ -46,6 +47,7 @@ public class Robot extends TimedRobot {
         shooter = new Shooter(ShooterMode.THROUGH_MIDDLE);
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
+        feeder = new Feeder();
         robotContainer = new RobotContainer(driveTrain, shooter);
     }
 

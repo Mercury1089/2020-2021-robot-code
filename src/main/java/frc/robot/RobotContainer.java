@@ -21,6 +21,7 @@ import frc.robot.commands.shooter.ShootManualVoltage;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
+import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.drivetrain.TrackTarget;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.ShuffleDash;
@@ -66,6 +67,8 @@ public class RobotContainer {
         left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
         left3.whenPressed(new RunShooter(shooter));
         left2.whenPressed(() -> shooter.setSpeed(0.0));
+
+        gamepadY.whenHeld(new RunFeeder(Robot.feeder));
     }
 
     public String getAutonFirstStep() {

@@ -16,7 +16,7 @@ import frc.robot.RobotMap.CAN;
 public class Feeder extends SubsystemBase {
   
   private IMercMotorController feedWheel;
-  
+
   /**
    * Creates a new Feeder.
    */
@@ -28,12 +28,8 @@ public class Feeder extends SubsystemBase {
     feedWheel.setSpeed(speed);
   }
 
-  public void setRunSpeed(){
-    SmartDashboard.putNumber("Feeder Speed", 0.0);
-  }
-
   public double getRunSpeed() {
-    return SmartDashboard.getNumber("Feeder Speed", 0.0);
+    return 0.5;
   }
 
   @Override
