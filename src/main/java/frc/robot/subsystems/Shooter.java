@@ -20,12 +20,13 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.interfaces.IMercMotorController;
+import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 import frc.robot.Robot;
 import frc.robot.RobotMap.*;
 import frc.robot.commands.shooter.RunShooter;
 
 
-public class Shooter extends SubsystemBase {
+public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher{
   //private IMercMotorController flywheel;
 
   public static final double NOMINAL_OUT = 0.0,
@@ -33,7 +34,6 @@ public class Shooter extends SubsystemBase {
 
   private IMercMotorController shooterLeft, shooterRight;
 
-  private CANEncoder encoder;
   private double currentSpeed;
   private double runSpeed;
   
@@ -56,7 +56,7 @@ public class Shooter extends SubsystemBase {
     shooterRight.setNeutralMode(NeutralMode.Coast);
 
     setRunSpeed(0.0);
-    SmartDashboard.putString("Shooter mode", getMode() == ShooterMode.OVER_THE_TOP ? "Over the top" : "Through the middle");
+    
   }
 
   @Override
@@ -66,6 +66,10 @@ public class Shooter extends SubsystemBase {
 
   public void setSpeed(double speed) {
     this.currentSpeed = speed;
+
+    shooterLeft.setNeutralMode(NeutralMode.Coast);
+    shooterRight.setNeutralMode(NeutralMode.Coast);
+
     if (mode == ShooterMode.OVER_THE_TOP) {
         shooterLeft.setSpeed(speed);
         shooterRight.setSpeed(-speed);
@@ -92,7 +96,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public double getRPM(){
-    return encoder.getVelocity();
+    return shooterLeft.getEncVelo();
   }
 
   public Command getDefaultCommand(){
@@ -113,5 +117,10 @@ public class Shooter extends SubsystemBase {
 
   public ShooterMode getMode() {
     return mode;
+  }
+
+  public void publishValues() {
+    SmartDashboard.putString("Shooter mode", getMode() == ShooterMode.OVER_THE_TOP ? "Over the top" : "Through the middle");
+    SmartDashboard.putNumber("Shooter RPM", getRPM());
   }
 }

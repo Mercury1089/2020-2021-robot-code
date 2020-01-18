@@ -19,9 +19,11 @@ import frc.robot.commands.drivetrain.MoveOnPath;
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.shooter.ShootManualVoltage;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.feeder.RunFeeder;
+import frc.robot.commands.limelightCamera.SwitchLEDState;
 import frc.robot.commands.drivetrain.TrackTarget;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.ShuffleDash;
@@ -43,30 +45,35 @@ public class RobotContainer {
 
     private DriveTrain driveTrain;
     private Shooter shooter;
+    private LimelightCamera limelightCamera;
 
     private CommandGroupBase autonCommand;
 
-    public RobotContainer(DriveTrain driveTrain, Shooter shooter) {
+    public RobotContainer(DriveTrain driveTrain, Shooter shooter, LimelightCamera limelightCamera) {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
 
         this.driveTrain = driveTrain;
         this.shooter = shooter;
+        this.limelightCamera = limelightCamera;
         
 
         shuffleDash = new ShuffleDash();
+        shuffleDash.addPublisher(shooter);
+        shuffleDash.addPublisher(driveTrain);
+        
 
         autonCommand = new SequentialCommandGroup();
+        autonCommand.addRequirements(this.driveTrain);
         initializeAutonCommand();
 
         initalizeJoystickButtons();
-        
-        left6.whenPressed(new RunCommand(() -> this.driveTrain.getLimelight().switchLEDState()));
-       
-        left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
+
+        left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
         left3.whenPressed(new RunShooter(shooter));
-        left2.whenPressed(() -> shooter.setSpeed(0.0));
+        left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
+        left6.whenPressed(new SwitchLEDState(limelightCamera));
 
         gamepadY.whenHeld(new RunFeeder(Robot.feeder));
     }
@@ -155,6 +162,8 @@ public class RobotContainer {
 
     //Eventually this will link to our auton app on the shuffledash
     public void initializeAutonCommand(){
+        
+        autonCommand.addRequirements(this.driveTrain);
         try{
             autonCommand.addCommands(new MoveOnPath("StraightProfile", this.driveTrain));            
         }catch(FileNotFoundException e){
