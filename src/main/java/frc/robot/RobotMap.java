@@ -10,6 +10,7 @@ public class RobotMap {
                 DRIVETRAIN_MR = 2,
                 DRIVETRAIN_FL = 3,
                 DRIVETRAIN_FR = 4,
+                FEEDER = 5,
                 INTAKE = 7,
                 SHOOTER_LEFT = 8,
                 SHOOTER_RIGHT = 9,
