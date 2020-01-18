@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -21,13 +22,14 @@ import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.util.*;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.interfaces.IMercMotorController;
+import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
 /**
  * Subsystem that encapsulates the driveAssist train.
  * This contains the {@link DriveAssist} needed to driveAssist manually
  * using the motor controllers.
  */
-public class DriveTrain extends SubsystemBase{
+public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublisher{
 
     public static final int DRIVE_PID_SLOT = 0,
         DRIVE_SMOOTH_MOTION_SLOT = 1,
@@ -128,7 +130,7 @@ public class DriveTrain extends SubsystemBase{
 
         resetEncoders();
 
-        driveAssist = new DriveAssist(leaderLeft, leaderRight, DriveDirection.HATCH);
+        driveAssist = new DriveAssist(leaderLeft, leaderRight, DriveDirection.LIMELIGHT);
 
         // Set follower control on back talons. Use follow() instead of ControlMode.Follower so that Talons can follow Victors and vice versa.
         followerLeft.follow(leaderLeft);
@@ -276,11 +278,11 @@ public class DriveTrain extends SubsystemBase{
     }
 
     public void switchDirection(){
-        if (getDirection() == DriveDirection.HATCH){
-            setDirection(DriveDirection.CARGO);
+        if (getDirection() == DriveDirection.LIMELIGHT){
+            setDirection(DriveDirection.ELECTRONICS_BOARD);
         }
         else{
-            setDirection(DriveDirection.HATCH);
+            setDirection(DriveDirection.LIMELIGHT);
         }
     }
 
@@ -405,5 +407,20 @@ public class DriveTrain extends SubsystemBase{
         public double getBlue() {
             return b;
         }
+    }
+
+    //Publish values to ShuffleBoard
+    public void publishValues() {
+        //Drive direction
+        SmartDashboard.putString("direction", Robot.driveTrain.getDirection().name());
+        //
+        SmartDashboard.putNumber("Left Enc in feet", Robot.driveTrain.getLeftEncPositionInFeet());
+        SmartDashboard.putNumber("Right Enc in feet", Robot.driveTrain.getRightEncPositionInFeet());
+        //Wheel RPM
+        SmartDashboard.putNumber("Left Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(Robot.driveTrain.getLeftLeader().getEncVelo()));
+        SmartDashboard.putNumber("Right Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(Robot.driveTrain.getRightLeader().getEncVelo()));
+        //Angle From Pigeon
+        SmartDashboard.putNumber("Gyro Angle", Robot.driveTrain.getPigeonYaw());
+        
     }
 }

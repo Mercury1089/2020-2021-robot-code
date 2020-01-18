@@ -60,6 +60,7 @@ public class RobotContainer {
 
         shuffleDash = new ShuffleDash();
         shuffleDash.addPublisher(shooter);
+        shuffleDash.addPublisher(driveTrain);
         
 
         autonCommand = new SequentialCommandGroup();
@@ -69,9 +70,8 @@ public class RobotContainer {
         initalizeJoystickButtons();
 
         left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
-        left3.whileHeld(new RunShooter(this.shooter));
         left3.whenPressed(new RunShooter(shooter));
-        left2.whenPressed(() -> shooter.setSpeed(0.0));
+        left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
 
         left6.whenPressed(new SwitchLEDState(limelightCamera));
     }

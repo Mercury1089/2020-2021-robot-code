@@ -127,13 +127,13 @@ public class DriveAssist {
 
         // Apply speeds to motors.
         // This assumes that the Controllers have been setClawState properly.
-        LEFT_CONTROLLER.setSpeed((direction == DriveDirection.CARGO ? -leftVal : leftVal) * maxOutput);
-        RIGHT_CONTROLLER.setSpeed((direction == DriveDirection.CARGO ? -rightVal : rightVal) * maxOutput);
+        LEFT_CONTROLLER.setSpeed((direction == DriveDirection.ELECTRONICS_BOARD ? -leftVal : leftVal) * maxOutput);
+        RIGHT_CONTROLLER.setSpeed((direction == DriveDirection.ELECTRONICS_BOARD ? -rightVal : rightVal) * maxOutput);
     }
 
     public enum DriveDirection {
-        HATCH(1.0),
-        CARGO(-1.0);
+        LIMELIGHT(1.0),
+        ELECTRONICS_BOARD(-1.0);
 
         public double dir;
 
