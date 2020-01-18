@@ -60,18 +60,28 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     shooterLeft.setNeutralMode(NeutralMode.Coast);
     shooterRight.setNeutralMode(NeutralMode.Coast);
 
+    if (mode == ShooterMode.OVER_THE_TOP) {
+      shooterLeft.setInverted(false);
+      shooterRight.setInverted(true);
+    }else if (mode == ShooterMode.THROUGH_MIDDLE) {
+      shooterLeft.setInverted(false);
+      shooterRight.setInverted(false);
+    }
+
+    shooterRight.follow(shooterLeft);
+
     setRunSpeed(0.0);
     
-    VELOCITY_GAINS = new PIDGain(5e-5, 1e-6, 0, 0);
+    VELOCITY_GAINS = new PIDGain(1e-5, 2e-7, 1e-5, 0);
 
     shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), VELOCITY_GAINS);
-    shooterRight.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), VELOCITY_GAINS);
+    //shooterRight.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), VELOCITY_GAINS);
 
     SmartDashboard.putNumber("P Gain", VELOCITY_GAINS.kP);
     SmartDashboard.putNumber("I Gain", VELOCITY_GAINS.kI);
     SmartDashboard.putNumber("D Gain", VELOCITY_GAINS.kD);
     SmartDashboard.putNumber("Feed Forward", VELOCITY_GAINS.kF);
-
+    SmartDashboard.putNumber("Set Shooter RPM", 0.0);
 
   }
 
@@ -86,14 +96,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     shooterLeft.setNeutralMode(NeutralMode.Coast);
     shooterRight.setNeutralMode(NeutralMode.Coast);
 
-    if (mode == ShooterMode.OVER_THE_TOP) {
-        shooterLeft.setSpeed(speed);
-        shooterRight.setSpeed(-speed);
-    }
-    else if (mode == ShooterMode.THROUGH_MIDDLE) {
-      shooterLeft.setSpeed(speed);
-      shooterRight.setSpeed(speed);
-    }
+    shooterLeft.setSpeed(speed);
   }
 
   public void configVoltage(double nominalOutput, double peakOutput) {
@@ -132,8 +135,16 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public void setVelocity(double rpm){
+    //Ensures shooter is in coast mode
+    shooterLeft.setNeutralMode(NeutralMode.Coast);
+    shooterRight.setNeutralMode(NeutralMode.Coast);
+    //Sets RPM
     shooterLeft.setVelocity(rpm);
-    shooterRight.setVelocity(rpm);
+    //shooterRight.setVelocity(rpm);
+  }
+
+  public double getRunRPM() {
+    return SmartDashboard.getNumber("Set Shooter RPM", 0.0);
   }
 
   public ShooterMode getMode() {

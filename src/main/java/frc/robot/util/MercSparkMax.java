@@ -24,6 +24,7 @@ public class MercSparkMax implements IMercMotorController {
     private CANSparkMax sparkmax;
     private int port;
     private double setPos;
+    private boolean isInverted = false;
 
     public MercSparkMax(int port) {
         sparkmax = new CANSparkMax(port, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -50,6 +51,7 @@ public class MercSparkMax implements IMercMotorController {
     @Override
     public void setInverted(boolean invert) {
         sparkmax.setInverted(invert);
+        this.isInverted = invert;
     }
 
     @Override
@@ -60,9 +62,7 @@ public class MercSparkMax implements IMercMotorController {
     @Override
     public void follow(IMercMotorController leader) {
         if (leader instanceof MercSparkMax)
-            sparkmax.follow(((MercSparkMax) leader).get());
-        else
-            sparkmax.follow((ExternalFollower) leader, leader.getPort()); // Def the wrong way to do this please check
+            sparkmax.follow(((MercSparkMax) leader).get(), isInverted);
     }
 
     @Override
