@@ -17,6 +17,7 @@ import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.sensors.LIDAR;
 import frc.robot.sensors.Limelight;
+import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.util.*;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.interfaces.IMercMotorController;
@@ -96,7 +97,7 @@ public class DriveTrain extends SubsystemBase{
 
         //CANifier and distance sensors
         this.limelight = new Limelight();
-
+        this.limelight.setLEDState(LimelightLEDState.ON);
 
         //Account for motor orientation.
         leaderLeft.setInverted(false);
