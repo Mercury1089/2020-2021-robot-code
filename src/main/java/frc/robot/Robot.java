@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
 
     public static DriveTrain driveTrain;
     public static Shooter shooter;
+    public static LimelightCamera limelightCamera;
 
     public static RobotContainer robotContainer;
 
@@ -46,7 +47,11 @@ public class Robot extends TimedRobot {
         shooter = new Shooter(ShooterMode.THROUGH_MIDDLE);
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
-        robotContainer = new RobotContainer(driveTrain, shooter);
+        limelightCamera = new LimelightCamera();
+        CommandScheduler.getInstance().registerSubsystem(limelightCamera);
+
+        robotContainer = new RobotContainer(driveTrain, shooter, limelightCamera);
+
     }
 
     @Override
@@ -65,7 +70,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        driveTrain.getLimelight().setLEDState(LimelightLEDState.ON);
         this.autonCommand = robotContainer.getAutonCommand();
 
         if (autonCommand != null){
@@ -79,7 +83,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        driveTrain.getLimelight().setLEDState(LimelightLEDState.ON);
     }
 
     @Override
@@ -89,6 +92,5 @@ public class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
         super.testInit();
-        driveTrain.getLimelight().setLEDState(LimelightLEDState.ON);
     }
 }

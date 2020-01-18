@@ -14,7 +14,6 @@ import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.MercMath;
-import frc.robot.util.Requirements;
 
 public class DegreeRotate extends MoveHeading {
 

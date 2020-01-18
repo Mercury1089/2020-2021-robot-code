@@ -17,6 +17,7 @@ import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.sensors.LIDAR;
 import frc.robot.sensors.Limelight;
+import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.util.*;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.interfaces.IMercMotorController;
@@ -49,8 +50,7 @@ public class DriveTrain extends SubsystemBase{
 
     private final PIDGain DRIVE_GAINS, SMOOTH_GAINS, MOTION_PROFILE_GAINS, TURN_GAINS;
 
-    private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight; 
-    private Limelight limelight;
+    private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight;
     private DriveAssist driveAssist;
     private PigeonIMU podgeboi;
     //private LIDAR lidar;
@@ -95,8 +95,6 @@ public class DriveTrain extends SubsystemBase{
         podgeboi.configFactoryDefault();
 
         //CANifier and distance sensors
-        this.limelight = new Limelight();
-
 
         //Account for motor orientation.
         leaderLeft.setInverted(false);
@@ -288,10 +286,6 @@ public class DriveTrain extends SubsystemBase{
 
     public PigeonIMU getPigeon() {
         return podgeboi;
-    }
-
-    public Limelight getLimelight(){
-        return this.limelight;
     }
 
     //public LIDAR getLidar() {

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import java.util.Set;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.util.Requirements;
 
 public class CalibrateGyro extends CommandBase {
 
