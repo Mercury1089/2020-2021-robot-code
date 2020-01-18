@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.MercMath;
 
@@ -23,11 +24,13 @@ public class TrackTarget extends MoveHeading {
     private double allowableDistError = 19; //inches
 
     private DriveTrain driveTrain;
+    private LimelightCamera limelightCamera;
 
-    public TrackTarget(DriveTrain driveTrain) {
+    public TrackTarget(DriveTrain driveTrain, LimelightCamera limelightCamera) {
         super(0, 0, driveTrain);
 
         this.driveTrain = driveTrain;
+        this.limelightCamera = limelightCamera;
     }
 
     // Called just before this Command runs the first time
@@ -42,9 +45,9 @@ public class TrackTarget extends MoveHeading {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        double adjustedDistance = MercMath.feetToEncoderTicks(this.driveTrain.getLimelight().getRawVertDistance() - allowableDistError);
+        double adjustedDistance = MercMath.feetToEncoderTicks(this.limelightCamera.getLimelight().getRawVertDistance() - allowableDistError);
         //adjustedDistance *= Robot.driveTrain.getDirection().dir;
-        double adjustedHeading = MercMath.degreesToPigeonUnits(this.driveTrain.getLimelight().getTargetCenterXAngle());
+        double adjustedHeading = MercMath.degreesToPigeonUnits(this.limelightCamera.getLimelight().getTargetCenterXAngle());
         right.set(ControlMode.Position, adjustedDistance, DemandType.AuxPID, adjustedHeading);
         left.follow(right, FollowerType.AuxOutput1);
     }
@@ -57,8 +60,8 @@ public class TrackTarget extends MoveHeading {
             return false;
         }
 
-        double distError = MercMath.inchesToEncoderTicks(this.driveTrain.getLimelight().getRawVertDistance() - allowableDistError),
-                angleError = MercMath.degreesToPigeonUnits(this.driveTrain.getLimelight().getTargetCenterXAngle());
+        double distError = MercMath.inchesToEncoderTicks(this.limelightCamera.getLimelight().getRawVertDistance() - allowableDistError),
+                angleError = MercMath.degreesToPigeonUnits(this.limelightCamera.getLimelight().getTargetCenterXAngle());
 
         angleError = MercMath.pigeonUnitsToDegrees(angleError);
         distError *= this.driveTrain.getDirection().dir;
@@ -71,7 +74,7 @@ public class TrackTarget extends MoveHeading {
 
         boolean isOnTarget = (Math.abs(distError) < moveThresholdTicks &&
                 Math.abs(angleError) < angleThresholdDeg &&
-                this.driveTrain.getLimelight().isSafeToTrack());
+                this.limelightCamera.getLimelight().isSafeToTrack());
 
         if (isOnTarget) {
             onTargetCount++;

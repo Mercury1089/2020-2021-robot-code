@@ -12,18 +12,20 @@ import java.util.Set;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.MercMath;
-import frc.robot.util.Requirements;
 
 public class RotateToTarget extends DegreeRotate {
 
     private DriveTrain driveTrain;
+    private LimelightCamera limelightCamera;
 
-    public RotateToTarget(DriveTrain driveTrain) {
+    public RotateToTarget(DriveTrain driveTrain, LimelightCamera limelightCamera) {
         super(0, driveTrain);
 
         this.driveTrain = driveTrain;
+        this.limelightCamera = limelightCamera;
 
         angleThresholdDeg = 1.2;
     }
@@ -35,8 +37,8 @@ public class RotateToTarget extends DegreeRotate {
 
         this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
-        targetHeading = -MercMath.degreesToPigeonUnits(this.driveTrain.getLimelight().getTargetCenterXAngle());
-        System.out.println("RotateToTarget initialized with angle " + this.driveTrain.getLimelight().getTargetCenterXAngle());
+        targetHeading = -MercMath.degreesToPigeonUnits(this.limelightCamera.getLimelight().getTargetCenterXAngle());
+        System.out.println("RotateToTarget initialized with angle " + this.limelightCamera.getLimelight().getTargetCenterXAngle());
 
     }
 

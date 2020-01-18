@@ -26,7 +26,7 @@ public class LimelightCamera extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public Limelight getLightlight(){
+  public Limelight getLimelight(){
     return this.limelight;
   }
 }
