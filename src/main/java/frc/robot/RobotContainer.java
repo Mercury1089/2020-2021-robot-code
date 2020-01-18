@@ -24,6 +24,7 @@ import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.feeder.RunFeeder;
+import frc.robot.commands.hopper.RunHopperBelt;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
 import frc.robot.commands.drivetrain.TrackTarget;
 import frc.robot.util.DriveAssist.DriveDirection;
@@ -79,6 +80,7 @@ public class RobotContainer {
         left7.whenPressed(new DegreeRotate(90, this.driveTrain));
 
         gamepadY.whenHeld(new RunFeeder(Robot.feeder));
+        gamepadX.whenHeld(new RunHopperBelt(Robot.hopper));
     }
 
     public String getAutonFirstStep() {

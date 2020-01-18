@@ -7,27 +7,38 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotMap.CAN;
 import frc.robot.util.MercTalonSRX;
 import frc.robot.util.interfaces.IMercMotorController;
-import frc.robot.RobotMap.CAN;
 
-public class Feeder extends SubsystemBase {
+public class Elevator extends SubsystemBase {
   
-  private IMercMotorController feedWheel;
+  public enum ElevatorPosition{
+    IN_ROBOT,
+    CONTROL_PANEL,
+    CLIMB,
+    HANGING
+  }
+
+  private IMercMotorController elevator, spinner;
   private double runSpeed;
 
   /**
-   * Creates a new Feeder.
+   * Creates a new Elevator.
    */
-  public Feeder() {
-    feedWheel = new MercTalonSRX(CAN.FEEDER);
+  public Elevator() {
+    elevator = new MercTalonSRX(CAN.ELEVATOR);
+    spinner = new MercTalonSRX(CAN.SPINNER);
     runSpeed = 0.5;
   }
 
-  public void setSpeed(double speed) {
-    feedWheel.setSpeed(speed);
+  public void setRaiseOrLowerSpeed(double speed) {
+    elevator.setSpeed(speed);
+  }
+
+  public void setSpinningSpeed(double speed) {
+    spinner.setSpeed(speed);
   }
 
   public double getRunSpeed() {

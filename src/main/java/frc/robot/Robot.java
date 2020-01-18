@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
     public static DriveTrain driveTrain;
     public static Shooter shooter;
     public static Feeder feeder;
+    public static Hopper hopper;
     public static LimelightCamera limelightCamera;
 
     public static RobotContainer robotContainer;
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot {
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
         feeder = new Feeder();
+        hopper = new Hopper();
         
         limelightCamera = new LimelightCamera();
         CommandScheduler.getInstance().registerSubsystem(limelightCamera);
