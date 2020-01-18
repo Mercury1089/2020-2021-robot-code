@@ -11,10 +11,13 @@ public class RobotMap {
                 DRIVETRAIN_FL = 3,
                 DRIVETRAIN_FR = 4,
                 FEEDER = 5,
+                HOPPER_BELT = 6,
                 INTAKE = 7,
                 SHOOTER_LEFT = 8,
                 SHOOTER_RIGHT = 9,
-                PIGEON = 10;
+                PIGEON = 10,
+                ELEVATOR = 11,
+                SPINNER = 12;
 
         private CAN() {
         }
