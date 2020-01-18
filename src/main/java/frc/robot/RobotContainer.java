@@ -1,5 +1,7 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.*;
 
@@ -40,7 +42,7 @@ public class RobotContainer {
     private DriveTrain driveTrain;
     private Shooter shooter;
 
-    private SequentialCommandGroup autonCommand;
+    private CommandGroupBase autonCommand;
 
     public RobotContainer(DriveTrain driveTrain, Shooter shooter) {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
@@ -60,6 +62,7 @@ public class RobotContainer {
 
         left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
         left3.whileHeld(new RunShooter(this.shooter));
+        left6.whenPressed(new RunCommand(() -> this.driveTrain.getLimelight().switchLEDState()));
     }
 
     public String getAutonFirstStep() {

@@ -50,6 +50,7 @@ public class DriveTrain extends SubsystemBase{
     private final PIDGain DRIVE_GAINS, SMOOTH_GAINS, MOTION_PROFILE_GAINS, TURN_GAINS;
 
     private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight; 
+    private Limelight limelight;
     private DriveAssist driveAssist;
     private PigeonIMU podgeboi;
     //private LIDAR lidar;
@@ -94,6 +95,8 @@ public class DriveTrain extends SubsystemBase{
         podgeboi.configFactoryDefault();
 
         //CANifier and distance sensors
+        this.limelight = new Limelight();
+
 
         //Account for motor orientation.
         leaderLeft.setInverted(false);
@@ -285,6 +288,10 @@ public class DriveTrain extends SubsystemBase{
 
     public PigeonIMU getPigeon() {
         return podgeboi;
+    }
+
+    public Limelight getLimelight(){
+        return this.limelight;
     }
 
     //public LIDAR getLidar() {
