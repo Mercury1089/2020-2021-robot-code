@@ -61,11 +61,11 @@ public class RobotContainer {
 
         initalizeJoystickButtons();
         
-        left6.whenPressed(new RunCommand(() -> this.driveTrain.getLimelight().switchLEDState()));
+        left6.whenPressed(new InstantCommand(() -> this.driveTrain.getLimelight().switchLEDState(), driveTrain));
        
         left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
         left3.whenPressed(new RunShooter(shooter));
-        left2.whenPressed(() -> shooter.setSpeed(0.0));
+        left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
     }
 
     public String getAutonFirstStep() {

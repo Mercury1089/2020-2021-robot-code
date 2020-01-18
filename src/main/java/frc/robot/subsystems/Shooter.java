@@ -66,6 +66,10 @@ public class Shooter extends SubsystemBase {
 
   public void setSpeed(double speed) {
     this.currentSpeed = speed;
+
+    shooterLeft.setNeutralMode(NeutralMode.Coast);
+    shooterRight.setNeutralMode(NeutralMode.Coast);
+
     if (mode == ShooterMode.OVER_THE_TOP) {
         shooterLeft.setSpeed(speed);
         shooterRight.setSpeed(-speed);
