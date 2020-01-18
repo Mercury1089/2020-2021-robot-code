@@ -1,5 +1,6 @@
 package frc.robot.util;
 
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.ControlType;
@@ -75,8 +76,12 @@ public class MercSparkMax implements IMercMotorController {
     }
 
     @Override
-    public double getEncVelo() {
+    public double getEncVelocity() {
         return sparkmax.getEncoder().getVelocity();
+    }
+
+    public void setVelocity(double rpm){
+        sparkmax.getPIDController().setReference(rpm, ControlType.kVelocity);
     }
 
     public void resetEncoder() {

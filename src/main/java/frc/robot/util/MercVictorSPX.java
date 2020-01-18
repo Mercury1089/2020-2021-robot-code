@@ -31,6 +31,8 @@ public class MercVictorSPX implements IMercMotorController {
         victorspx.set(ControlMode.PercentOutput, speed);
     }
 
+    public void setVelocity(double rpm){}
+
     @Override
     public void setInverted(boolean invert) {
         victorspx.setInverted(invert);
@@ -61,7 +63,7 @@ public class MercVictorSPX implements IMercMotorController {
     }
 
     @Override
-    public double getEncVelo() {
+    public double getEncVelocity() {
         return 0;
     }
 
