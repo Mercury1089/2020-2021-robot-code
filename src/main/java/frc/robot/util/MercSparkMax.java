@@ -54,6 +54,10 @@ public class MercSparkMax implements IMercMotorController {
         this.isInverted = invert;
     }
 
+    public boolean getInverted() {
+        return this.isInverted;
+    }
+
     @Override
     public int getPort() {
         return port;
@@ -61,8 +65,10 @@ public class MercSparkMax implements IMercMotorController {
 
     @Override
     public void follow(IMercMotorController leader) {
-        if (leader instanceof MercSparkMax)
-            sparkmax.follow(((MercSparkMax) leader).get(), isInverted);
+        if (leader instanceof MercSparkMax) {
+            MercSparkMax sparkLeader = (MercSparkMax) leader;
+            sparkmax.follow(sparkLeader.get(), isInverted != sparkLeader.getInverted());
+        }
     }
 
     @Override

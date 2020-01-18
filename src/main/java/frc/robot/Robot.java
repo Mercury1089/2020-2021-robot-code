@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
         driveTrain = new DriveTrain(DriveTrainLayout.TALONS_VICTORS);
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
-        shooter = new Shooter(ShooterMode.THROUGH_MIDDLE);
+        shooter = new Shooter(ShooterMode.OVER_THE_TOP);
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
         feeder = new Feeder();
