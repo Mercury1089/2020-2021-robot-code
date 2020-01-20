@@ -2,9 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.*;
 
 import java.io.FileNotFoundException;
 
@@ -18,23 +16,27 @@ import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.MoveOnPath;
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.shooter.RunShooterRPMPID;
-import frc.robot.commands.shooter.ShootManualVoltage;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spinner;
+import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
+import frc.robot.subsystems.Shooter.ShooterMode;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.hopper.RunHopperBelt;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
-import frc.robot.commands.drivetrain.TrackTarget;
-import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.ShuffleDash;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
+
+ @SuppressWarnings("all")
 public class RobotContainer {
     public static final double DEADZONE = 0.08;
 
@@ -48,44 +50,53 @@ public class RobotContainer {
 
     private DriveTrain driveTrain;
     private Shooter shooter;
+    private Feeder feeder;
+    private Hopper hopper;
     private Spinner spinner;
+    private Elevator elevator;
     private LimelightCamera limelightCamera;
+    
 
     private CommandGroupBase autonCommand;
 
-    public RobotContainer(DriveTrain driveTrain, Shooter shooter, Spinner spinner, LimelightCamera limelightCamera) {
+    public RobotContainer() {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
 
-        this.driveTrain = driveTrain;
-        this.shooter = shooter;
-        this.spinner = spinner;
-        this.limelightCamera = limelightCamera;
+        driveTrain = new DriveTrain(DriveTrainLayout.TALONS_VICTORS);
+        driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+
+        shooter = new Shooter(ShooterMode.OVER_THE_TOP);
+        shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
+
+        feeder = new Feeder();
+        hopper = new Hopper();
+        
+        limelightCamera = new LimelightCamera();
         
 
         shuffleDash = new ShuffleDash();
         shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
-        shuffleDash.addPublisher(spinner);
         shuffleDash.addPIDTunable(shooter);
         
 
         autonCommand = new SequentialCommandGroup();
-        autonCommand.addRequirements(this.driveTrain);
+        autonCommand.addRequirements(driveTrain);
         initializeAutonCommand();
 
         initalizeJoystickButtons();
 
         left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
         left3.whenPressed(new RunShooter(shooter));
-        left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, this.driveTrain));
+        left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         left5.whenPressed(new RunShooterRPMPID(shooter));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
-        left7.whenPressed(new DegreeRotate(90, this.driveTrain));
+        left7.whenPressed(new DegreeRotate(90, driveTrain));
 
-        gamepadY.whenHeld(new RunFeeder(Robot.feeder));
-        gamepadX.whenHeld(new RunHopperBelt(Robot.hopper));
+        gamepadY.whenHeld(new RunFeeder(feeder));
+        gamepadX.whenHeld(new RunHopperBelt(hopper));
     }
 
     public String getAutonFirstStep() {

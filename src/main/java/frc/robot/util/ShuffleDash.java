@@ -8,15 +8,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
-import frc.robot.Robot;
 
+
+@SuppressWarnings("all")
 public class ShuffleDash {
 
     private NetworkTableInstance ntInstance;
     private SendableChooser<String> autonFirstStep;
     private List<IMercShuffleBoardPublisher> publishers;
     private List<IMercPIDTunable> pidTunables;
-    private SendableChooser<IMercPIDTunable> subsystemPIDTuneChooser;
+    private SendableChooser<String> subsystemPIDTuneChooser;
 
     public ShuffleDash() {
         new Notifier(this::updateDash).startPeriodic(0.020);
@@ -28,17 +29,7 @@ public class ShuffleDash {
         publishers = new ArrayList<IMercShuffleBoardPublisher>();
         pidTunables = new ArrayList<IMercPIDTunable>();
 
-        subsystemPIDTuneChooser = new SendableChooser<IMercPIDTunable>();
-        subsystemPIDTuneChooser.setDefaultOption("NONE", null);
-    }
-
-    public void addPublisher(IMercShuffleBoardPublisher publisher) {
-        publishers.add(publisher);
-    }
-
-    public void addPIDTunable(IMercPIDTunable pidTunable){
-        pidTunables.add(pidTunable);
-        subsystemPIDTuneChooser.addOption(pidTunable.getPIDName(), pidTunable);
+        subsystemPIDTuneChooser = new SendableChooser<String>();
     }
 
     public void updateDash() {
@@ -47,7 +38,19 @@ public class ShuffleDash {
             publisher.publishValues();
         }
 
+        for(IMercPIDTunable pidTunable: pidTunables){
+            //TODO
+        }
+
         SmartDashboard.putData("Auton First Step", autonFirstStep);
+    }
+
+    public void addPublisher(IMercShuffleBoardPublisher publisher) {
+        publishers.add(publisher);
+    }
+
+    public void addPIDTunable(IMercPIDTunable pidTunable){
+        pidTunables.add(pidTunable);
     }
 
     public String getFirstStep() {
