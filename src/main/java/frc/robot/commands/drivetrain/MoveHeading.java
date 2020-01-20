@@ -10,15 +10,11 @@ package frc.robot.commands.drivetrain;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FollowerType;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.*;
 import frc.robot.util.interfaces.IMercMotorController;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import java.util.Set;
 
 public class MoveHeading extends CommandBase {
     protected final int CLOSED_LOOP_TIME_MS = 1;
@@ -101,7 +97,7 @@ public class MoveHeading extends CommandBase {
             return false;
         }
 
-        double distError = right.getClosedLoopError(), angleError = right.getClosedLoopError(this.driveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+        double distError = right.getClosedLoopError(), angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
         angleError = MercMath.pigeonUnitsToDegrees(angleError);
 

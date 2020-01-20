@@ -3,8 +3,6 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.util.interfaces.IMercMotorController;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Helper class for various manual drive controls
  * using Controllers. This is to replace {@link DifferentialDrive},

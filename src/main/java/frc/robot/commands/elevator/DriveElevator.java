@@ -7,8 +7,6 @@
 
 package frc.robot.commands.elevator;
 
-import java.lang.annotation.ElementType;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap.GAMEPAD_AXIS;

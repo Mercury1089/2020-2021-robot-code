@@ -1,13 +1,11 @@
 package frc.robot.sensors;
 
 import edu.wpi.first.networktables.*;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
 
 /**
  * A wrapper class for limelight information from the network table.
  */
-public class Limelight implements PIDSource, TableEntryListener {
+public class Limelight implements TableEntryListener {
     private final double safeTurnThreshold = 10.0, limelightResX = 320;
     /*
      * Coefficients and exponents to help find the distance of a target
@@ -160,27 +158,6 @@ public class Limelight implements PIDSource, TableEntryListener {
 
     public synchronized double[] getCornerXArray() {
         return this.cornerx;
-    }
-
-    /**
-     * Get the PID Source Type (what kind of value PID is acting on)
-     */
-    public synchronized PIDSourceType getPIDSourceType() {
-        return PIDSourceType.kDisplacement;
-    }
-
-    /**
-     * Set the PID Source (should not be implemented)
-     */
-    public synchronized void setPIDSourceType(PIDSourceType pidST) {
-
-    }
-
-    /**
-     * Get the value that PID acts on. For PIDCommand
-     */
-    public synchronized double pidGet() {
-        return this.targetCenterXAngle;
     }
 
     /**

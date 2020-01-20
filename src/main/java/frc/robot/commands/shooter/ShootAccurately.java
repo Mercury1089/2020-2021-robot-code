@@ -8,13 +8,10 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import java.util.Set;
-import frc.robot.sensors.LIDAR;
-import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.Shooter;
 
+
+@SuppressWarnings("all")
 public class ShootAccurately extends CommandBase {
 
   private Shooter shooter;

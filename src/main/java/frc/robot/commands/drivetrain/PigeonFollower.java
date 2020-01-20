@@ -7,19 +7,11 @@
 
 package frc.robot.commands.drivetrain;
 
-import java.util.Set;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FollowerType;
-
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.commands.drivetrain.MoveHeading;
 import frc.robot.subsystems.DriveTrain;
 //import frc.robot.commands.drivetrain.MoveOnPath.MPDirection;
-import frc.robot.Robot;
 
+@SuppressWarnings("all")
 public class PigeonFollower extends MoveHeading {
   private double currDistAngle;
   private double[][] distAngle;

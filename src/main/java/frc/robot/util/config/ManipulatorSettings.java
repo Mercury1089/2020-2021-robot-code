@@ -1,6 +1,5 @@
 package frc.robot.util.config;
 
-import java.util.Properties;
 
 /**
  * Class that allows user to interface with manipulator.properties
@@ -11,10 +10,9 @@ import java.util.Properties;
  */
 @Deprecated
 public class ManipulatorSettings extends Config {
-    private static Properties instance;
+
 
     public static void initialize() {
-        instance = getInstance();
         loadProperties("manipulator.properties");
     }
 

@@ -7,14 +7,10 @@
 
 package frc.robot.commands.drivetrain;
 
-import java.util.Set;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;

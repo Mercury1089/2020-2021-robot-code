@@ -7,11 +7,7 @@
 
 package frc.robot.commands.drivetrain;
 
-import java.util.Set;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.MercMath;
@@ -47,7 +43,7 @@ public class DegreeRotate extends MoveHeading {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        double angleError = right.getClosedLoopError(this.driveTrain.DRIVE_SMOOTH_TURN_SLOT);
+        double angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
 
         angleError = MercMath.pigeonUnitsToDegrees(angleError);
 

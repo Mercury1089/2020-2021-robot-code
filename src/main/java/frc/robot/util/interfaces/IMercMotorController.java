@@ -2,7 +2,6 @@ package frc.robot.util.interfaces;
 
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.*;
-import com.revrobotics.CANPIDController;
 
 import frc.robot.util.PIDGain;
 
