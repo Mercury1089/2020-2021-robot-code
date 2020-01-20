@@ -57,5 +57,9 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber("Spinner ticks", getEncTicks());
     SmartDashboard.putString("Detected Color", colorSensor.get().toString());
     SmartDashboard.putNumber("Color Confidence", colorSensor.getConfidence());
+    
+    SmartDashboard.putNumber("Color red", colorSensor.getDetectedColor().red);
+    SmartDashboard.putNumber("Color green", colorSensor.getDetectedColor().green);
+    SmartDashboard.putNumber("Color blue", colorSensor.getDetectedColor().blue);
   }
 }

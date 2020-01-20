@@ -27,6 +27,8 @@ public class REVColor {
   private final Color kGreenTarget;
   private final Color kRedTarget;
   private final Color kYellowTarget;
+  
+  private Color detectedColor;
   private double confidence = 0.0;
 
   public REVColor() {
@@ -35,10 +37,10 @@ public class REVColor {
     colorSensor = new ColorSensorV3(i2cPort);
     colorMatch = new ColorMatch();
 
-    kBlueTarget = ColorMatch.makeColor(0.143, 0.427, 0.429);
-    kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
-    kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
-    kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+    kBlueTarget = ColorMatch.makeColor(0.2, 0.4, 0.4);
+    kGreenTarget = ColorMatch.makeColor(0.2, 0.6, 0.2);
+    kRedTarget = ColorMatch.makeColor(0.6, 0.2, 0.2);
+    kYellowTarget = ColorMatch.makeColor(0.4, 0.4, 0.2);
 
     colorMatch.addColorMatch(kBlueTarget);
     colorMatch.addColorMatch(kGreenTarget);
@@ -48,7 +50,7 @@ public class REVColor {
 
 
   public ControlPanelColor get() {
-    Color detectedColor = colorSensor.getColor();
+    detectedColor = colorSensor.getColor();
     ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
     confidence = match.confidence;
 
@@ -69,6 +71,10 @@ public class REVColor {
 
   public Color getRawColor() {
     return colorSensor.getColor();
+  }
+
+  public Color getDetectedColor() {
+    return detectedColor;
   }
 
   public enum ControlPanelColor {
