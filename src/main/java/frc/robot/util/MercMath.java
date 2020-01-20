@@ -1,9 +1,7 @@
 package frc.robot.util;
 
 import frc.robot.RobotContainer;
-import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 
 import java.nio.ByteBuffer;
 
@@ -131,9 +129,7 @@ public class MercMath {
 
     public static double getEncPosition(double ticks) {
         return ((Math.PI * DriveTrain.WHEEL_DIAMETER_INCHES) /
-                ((Robot.driveTrain.getLayout() != DriveTrainLayout.SPARKS ?
-                        DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION : DriveTrain.NEO_ENCODER_TICKS_PER_REVOLUTION) *
-                        DriveTrain.GEAR_RATIO) * ticks) / 12;
+                DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION);
     }
 
     /**
@@ -149,13 +145,11 @@ public class MercMath {
 
     public static double inchesToEncoderTicks(double inches) {
         return inches / (Math.PI * DriveTrain.WHEEL_DIAMETER_INCHES) *
-                (Robot.driveTrain.getLayout() != DriveTrainLayout.SPARKS ?
-                        DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION : DriveTrain.NEO_ENCODER_TICKS_PER_REVOLUTION);
+                (DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION);
     }
 
     public static double encoderTicksToInches(double ticks) {
-        return ticks / (Robot.driveTrain.getLayout() != DriveTrainLayout.SPARKS ?
-                DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION : DriveTrain.NEO_ENCODER_TICKS_PER_REVOLUTION) *
+        return ticks / DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION *
                 (Math.PI * DriveTrain.WHEEL_DIAMETER_INCHES);
     }
 
@@ -172,13 +166,11 @@ public class MercMath {
     }
 
     public static double encoderTicksToRevs(double ticks) {
-        return ticks / (Robot.driveTrain.getLayout() != DriveTrainLayout.SPARKS ?
-                DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION : DriveTrain.NEO_ENCODER_TICKS_PER_REVOLUTION);
+        return ticks / DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION;
     }
 
     public static double revsToEncoderTicks(double revs) {
-        return revs * (Robot.driveTrain.getLayout() != DriveTrainLayout.SPARKS ?
-                DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION : DriveTrain.NEO_ENCODER_TICKS_PER_REVOLUTION);
+        return revs * DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION;
     }
 
     /**
@@ -191,14 +183,12 @@ public class MercMath {
      * @return Revs per minute
      */
     public static double ticksPerTenthToRevsPerMinute(double ticksPerTenthSecond) {
-        return ticksPerTenthSecond / (Robot.driveTrain.getLayout() != DriveTrainLayout.SPARKS ?
-                DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION : DriveTrain.NEO_ENCODER_TICKS_PER_REVOLUTION) * 600;
+        return ticksPerTenthSecond / DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION * 600;
     }
 
 
     public static double revsPerMinuteToTicksPerTenth(double revsPerMinute) {
-        return revsPerMinute * (Robot.driveTrain.getLayout() != DriveTrainLayout.SPARKS ?
-                DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION : DriveTrain.NEO_ENCODER_TICKS_PER_REVOLUTION) / 600;
+        return revsPerMinute * DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION / 600;
     }
 
     public static double revsPerMinuteToMetersPerSecond(double revsPerMinute) {
