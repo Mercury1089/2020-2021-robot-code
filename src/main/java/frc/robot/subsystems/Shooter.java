@@ -149,11 +149,11 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber("Shooter RPM", getRPM());
   }
 
-  public PIDGain getPIDGain(){
+  public PIDGain getPIDGain(String slot){
     return this.velocityGains;
   }
 
-  public void setPIDGain(PIDGain gain){
+  public void setPIDGain(String slot, PIDGain gain){
     this.velocityGains = gain;
 
     shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
@@ -172,10 +172,5 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     public int getValue(){
       return this.value;
     }
-  }
-
-  @Override
-  public String getPIDName() {
-    return this.getName();
   }
 }
