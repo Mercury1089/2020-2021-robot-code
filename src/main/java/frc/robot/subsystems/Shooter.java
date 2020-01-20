@@ -158,18 +158,12 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber("Shooter RPM", getRPM());
   }
 
-  public void putPIDGain(){
-    SmartDashboard.putNumber("P Gain", velocityGains.kP);
-    SmartDashboard.putNumber("I Gain", velocityGains.kI);
-    SmartDashboard.putNumber("D Gain", velocityGains.kD);
-    SmartDashboard.putNumber("Feed Forward", velocityGains.kF);
+  public PIDGain getPIDGain(){
+    return this.velocityGains;
   }
 
-  public void checkPIDGain(){
-    this.velocityGains = new PIDGain(SmartDashboard.getNumber("P Gain", velocityGains.kP), 
-                                     SmartDashboard.getNumber("I Gain", velocityGains.kI), 
-                                     SmartDashboard.getNumber("D Gain", velocityGains.kD), 
-                                     SmartDashboard.getNumber("Feed Foward", velocityGains.kF));
+  public void setPIDGain(PIDGain gain){
+    this.velocityGains = gain;
 
     shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
     shooterRight.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);

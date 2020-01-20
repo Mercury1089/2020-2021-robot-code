@@ -16,7 +16,7 @@ public class ShuffleDash {
     private SendableChooser<String> autonFirstStep;
     private List<IMercShuffleBoardPublisher> publishers;
     private List<IMercPIDTunable> pidTunables;
-    private SendableChooser<String> subsystemPIDTuneChooser;
+    private SendableChooser<IMercPIDTunable> subsystemPIDTuneChooser;
 
     public ShuffleDash() {
         new Notifier(this::updateDash).startPeriodic(0.020);
@@ -28,20 +28,8 @@ public class ShuffleDash {
         publishers = new ArrayList<IMercShuffleBoardPublisher>();
         pidTunables = new ArrayList<IMercPIDTunable>();
 
-        subsystemPIDTuneChooser = new SendableChooser<String>();
-    }
-
-    public void updateDash() {
-        
-        for(IMercShuffleBoardPublisher publisher: publishers) {
-            publisher.publishValues();
-        }
-
-        for(IMercPIDTunable pidTunable: pidTunables){
-            pidTunable.checkPIDGain();
-        }
-
-        SmartDashboard.putData("Auton First Step", autonFirstStep);
+        subsystemPIDTuneChooser = new SendableChooser<IMercPIDTunable>();
+        subsystemPIDTuneChooser.setDefaultOption("NONE", null);
     }
 
     public void addPublisher(IMercShuffleBoardPublisher publisher) {
@@ -50,6 +38,16 @@ public class ShuffleDash {
 
     public void addPIDTunable(IMercPIDTunable pidTunable){
         pidTunables.add(pidTunable);
+        subsystemPIDTuneChooser.addOption(pidTunable.getPIDName(), pidTunable);
+    }
+
+    public void updateDash() {
+        
+        for(IMercShuffleBoardPublisher publisher: publishers) {
+            publisher.publishValues();
+        }
+
+        SmartDashboard.putData("Auton First Step", autonFirstStep);
     }
 
     public String getFirstStep() {
