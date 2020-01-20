@@ -13,21 +13,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.MercSparkMax;
-import frc.robot.util.MercTalonSRX;
 import frc.robot.util.PIDGain;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.revrobotics.CANEncoder;
-import com.revrobotics.CANPIDController;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
-import frc.robot.Robot;
 import frc.robot.RobotMap.*;
-import frc.robot.commands.shooter.RunShooter;
 
 
 public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher, IMercPIDTunable{
@@ -39,7 +31,6 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   private IMercMotorController shooterLeft, shooterRight;
 
   private double currentSpeed;
-  private double runSpeed;
   
   private ShooterMode mode;
 

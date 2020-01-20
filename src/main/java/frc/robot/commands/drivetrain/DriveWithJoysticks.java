@@ -1,11 +1,7 @@
 package frc.robot.commands.drivetrain;
 
-import java.util.Set;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.subsystems.DriveTrain;

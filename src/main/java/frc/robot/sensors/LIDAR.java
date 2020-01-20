@@ -1,21 +1,16 @@
 package frc.robot.sensors;
 
 import com.ctre.phoenix.CANifier;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.filters.LinearDigitalFilter;
 import frc.robot.util.MercMath;
 
 /**
  * Wrapper class for the entire LIDAR system that we are using to check for distance.
  */
-public class LIDAR implements PIDSource {
+public class LIDAR {
     private final double[] PWM_INPUT = new double[2];
     private CANifier canifier;
     private CANifier.PWMChannel pwmChannel;
     private PWMOffset equation;
-
-    private LinearDigitalFilter linearDigitalFilter;
 
     /**
      * Creates a new LIDAR by defining both the CANifier PWM channel that the
@@ -29,8 +24,6 @@ public class LIDAR implements PIDSource {
         canifier = cFier;
         pwmChannel = channel;
         equation = o;
-
-        linearDigitalFilter = LinearDigitalFilter.movingAverage(this, 5);
 
         // canifier(channel.value, true);
     }
@@ -50,11 +43,6 @@ public class LIDAR implements PIDSource {
      *
      * @return raw distance from LIDAR, with applied offset
      */
-    @Override
-    public synchronized double pidGet() {
-        // Apply offset equation
-        return equation.apply(getRawDistance());
-    }
 
     /**
      * Get the distance reported by the LIDAR with a moving average provided by a LinearDigitalFilter
@@ -62,7 +50,7 @@ public class LIDAR implements PIDSource {
      * @return the distance to the target
      */
     public synchronized double getDistance() {
-        return linearDigitalFilter.pidGet();
+        return equation.apply(getRawDistance());
     }
 
     /**
@@ -89,19 +77,10 @@ public class LIDAR implements PIDSource {
     /**
      * Get the PID source type
      */
-    @Override
-    public PIDSourceType getPIDSourceType() {
-        return PIDSourceType.kDisplacement;
-    }
 
     /**
      * Set the pid source type (Should not be implemented)
      */
-    @Override
-    public void setPIDSourceType(PIDSourceType pidSource) {
-
-    }
-
     public enum PWMOffset {
         EQUATION_A(-5.55, 1.0),
         EQUATION_B(-4.67, 1.02),

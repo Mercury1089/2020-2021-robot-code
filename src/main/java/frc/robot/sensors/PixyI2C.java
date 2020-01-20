@@ -2,19 +2,15 @@ package frc.robot.sensors;
 
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import frc.robot.util.BoundingBox;
-import frc.robot.util.config.SensorsSettings;
 
 /**
  * PixyCam implementation using the I2C interface
  * Thanks to croadfeldt (https://github.com/croadfeldt/wpilib_pixy_spi_java) for the original implementation
  */
-public class PixyI2C implements PIDSource {
+public class PixyI2C{
     private final I2C PIXY;
     private final BoundingBox[] BOXES;
-    private final int DISPLACEMENT_OFFSET;
     private final int MIN_BOX_WIDTH = 45; //Arbitrary value, change to what minimum value of width can be for cube to be cassified as "In range"
     private final Notifier PIXY_UPDATE_NOTIFIER = new Notifier(null);
     private BoundingBox curTarget;
@@ -29,7 +25,6 @@ public class PixyI2C implements PIDSource {
         PIXY = new I2C(I2C.Port.kOnboard, 0x54);
 
         BOXES = new BoundingBox[7];
-        DISPLACEMENT_OFFSET = 10;
 
         PIXY_UPDATE_NOTIFIER.setHandler(() -> {
             this.read(1);
@@ -103,28 +98,6 @@ public class PixyI2C implements PIDSource {
 
     public BoundingBox getTarget() {
         return curTarget;
-    }
-
-    @Override
-    public PIDSourceType getPIDSourceType() {
-        return PIDSourceType.kDisplacement;
-        // Always a displacement error
-    }
-
-    @Override
-    public void setPIDSourceType(PIDSourceType pidSource) {
-        // Unused, but must be implemented
-    }
-
-    @Override
-    public double pidGet() {
-        double val = Double.NEGATIVE_INFINITY;
-        int resX = SensorsSettings.getCameraResolution().width;
-
-        if (curTarget != null)
-            val = resX / 2 - curTarget.getX() + DISPLACEMENT_OFFSET;
-
-        return val;
     }
 
     /**

@@ -1,24 +1,13 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
-import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Robot;
-import frc.robot.RobotMap;
 import frc.robot.RobotMap.CAN;
-import frc.robot.commands.drivetrain.DriveWithJoysticks;
-import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
-import frc.robot.sensors.LIDAR;
-import frc.robot.sensors.Limelight;
-import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.util.*;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.interfaces.IMercMotorController;
@@ -58,7 +47,6 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     //private LIDAR lidar;
     private DriveTrainLayout layout;
     private boolean isInMotionMagicMode;
-    private LEDColor currentLEDColor;
 
     /**
      * Creates the drivetrain, assuming that there are four controllers.
@@ -77,13 +65,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
                 leaderRight = new MercTalonSRX(CAN.DRIVETRAIN_MR);
                 followerLeft = new MercTalonSRX(CAN.DRIVETRAIN_FL);
                 followerRight = new MercTalonSRX(CAN.DRIVETRAIN_FR);
-                break;/*
-            case SPARKS:
-                leaderLeft = new MercSparkMax(CAN.DRIVETRAIN_ML);
-                leaderRight = new MercSparkMax(CAN.DRIVETRAIN_MR);
-                followerLeft = new MercSparkMax(CAN.DRIVETRAIN_SL);
-                followerRight = new MercSparkMax(CAN.DRIVETRAIN_SR);
-                break;*/
+                break;
             case TALONS_VICTORS:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
                 leaderRight = new MercTalonSRX(CAN.DRIVETRAIN_MR);
@@ -230,20 +212,12 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
     @Override
     public void periodic() {
-        updateLEDs();
-    }
-
-    private void updateLEDs() {
-        setLEDColor(LEDColor.GREEN);
     }
 
     /**
      * Sets the canifier LED output to the correct {@code LEDColor}. The
      * CANifier use BRG (not RGB) for its LED Channels
      */
-    private void setLEDColor(LEDColor ledColor) {
-        currentLEDColor = ledColor;
-    }
 
     /**
      * Stops the driveAssist train.
@@ -251,11 +225,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     public void stop() {
         leaderLeft.stop();
         leaderRight.stop();
-        if (layout == DriveTrainLayout.SPARKS) {
-            //NOTE: CALLING STOP ON VICTOR FOLLOWERS BREAKS THEM OUT OF FOLLOW MODE!!
-            followerLeft.stop();
-            followerRight.stop();
-        }
+
     }
 
     /**
@@ -368,7 +338,6 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     }
 
     public enum DriveTrainLayout {
-        SPARKS,
         TALONS_VICTORS,
         FALCONS
     }
@@ -412,15 +381,15 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     //Publish values to ShuffleBoard
     public void publishValues() {
         //Drive direction
-        SmartDashboard.putString("direction", Robot.driveTrain.getDirection().name());
+        SmartDashboard.putString("direction", getDirection().name());
         //
-        SmartDashboard.putNumber("Left Enc in feet", Robot.driveTrain.getLeftEncPositionInFeet());
-        SmartDashboard.putNumber("Right Enc in feet", Robot.driveTrain.getRightEncPositionInFeet());
+        SmartDashboard.putNumber("Left Enc in feet", getLeftEncPositionInFeet());
+        SmartDashboard.putNumber("Right Enc in feet", getRightEncPositionInFeet());
         //Wheel RPM
-        SmartDashboard.putNumber("Left Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(Robot.driveTrain.getLeftLeader().getEncVelocity()));
-        SmartDashboard.putNumber("Right Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(Robot.driveTrain.getRightLeader().getEncVelocity()));
+        SmartDashboard.putNumber("Left Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(getLeftLeader().getEncVelocity()));
+        SmartDashboard.putNumber("Right Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(getRightLeader().getEncVelocity()));
         //Angle From Pigeon
-        SmartDashboard.putNumber("Gyro Angle", Robot.driveTrain.getPigeonYaw());
+        SmartDashboard.putNumber("Gyro Angle", getPigeonYaw());
         
     }
 }

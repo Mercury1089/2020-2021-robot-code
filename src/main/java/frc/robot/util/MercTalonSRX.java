@@ -3,9 +3,7 @@ package frc.robot.util;
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.util.interfaces.IMercMotorController;
 
 public class MercTalonSRX implements IMercMotorController {

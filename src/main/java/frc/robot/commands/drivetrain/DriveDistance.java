@@ -7,14 +7,9 @@
 
 package frc.robot.commands.drivetrain;
 
-import java.util.Set;
-
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.DriveTrain;
 
 public class DriveDistance extends MoveHeading{
-
-    private DriveTrain driveTrain;
 
     /**
      * Construct Drive Distance w / Motion Magic
@@ -23,8 +18,6 @@ public class DriveDistance extends MoveHeading{
      */
     public DriveDistance(double distance, DriveTrain driveTrain) {
         super(distance, 0, driveTrain);
-
-        this.driveTrain = driveTrain;
 
         moveThresholdTicks = 500;
         angleThresholdDeg = 2;
