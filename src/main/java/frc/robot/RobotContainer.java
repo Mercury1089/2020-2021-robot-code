@@ -64,6 +64,7 @@ public class RobotContainer {
         shuffleDash = new ShuffleDash();
         shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
+        shuffleDash.addPIDTunable(shooter);
         
 
         autonCommand = new SequentialCommandGroup();
