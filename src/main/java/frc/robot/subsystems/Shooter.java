@@ -63,15 +63,6 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
 
     shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), velocityGains);
-    // shooterRight.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(),
-    // VELOCITY_GAINS);
-
-    SmartDashboard.putNumber("P Gain", velocityGains.kP);
-    SmartDashboard.putNumber("I Gain", velocityGains.kI);
-    SmartDashboard.putNumber("D Gain", velocityGains.kD);
-    SmartDashboard.putNumber("Feed Forward", velocityGains.kF);
-    SmartDashboard.putNumber("Set Shooter RPM", 0.0);
-
   }
 
   @Override
@@ -144,6 +135,12 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putString("Shooter mode",
         getMode() == ShooterMode.OVER_THE_TOP ? "Over the top" : "Through the middle");
     SmartDashboard.putNumber("Shooter RPM", getRPM());
+    
+    SmartDashboard.putNumber("P Gain", velocityGains.kP);
+    SmartDashboard.putNumber("I Gain", velocityGains.kI);
+    SmartDashboard.putNumber("D Gain", velocityGains.kD);
+    SmartDashboard.putNumber("Feed Forward", velocityGains.kF);
+    SmartDashboard.putNumber("Set Shooter RPM", 0.0);
   }
 
   @Override

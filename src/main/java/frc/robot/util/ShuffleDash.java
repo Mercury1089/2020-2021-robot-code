@@ -75,7 +75,6 @@ public class ShuffleDash {
                 SmartDashboard.putNumber(PID_TUNER_I, pid.kI);
                 SmartDashboard.putNumber(PID_TUNER_D, pid.kD);
                 SmartDashboard.putNumber(PID_TUNER_F, pid.kF);
-                this.tunableSlot = tunableSlot;
             } else {
                 PIDGain pid = new PIDGain(
                     SmartDashboard.getNumber(PID_TUNER_P, 0.0),
@@ -84,6 +83,7 @@ public class ShuffleDash {
                     SmartDashboard.getNumber(PID_TUNER_F, 0.0));
                 tunableSlot.tunable.setPIDGain(tunableSlot.slot, pid);
             }
+            this.tunableSlot = tunableSlot;
         }
         SmartDashboard.putData("Auton First Step", autonFirstStep);
     }
