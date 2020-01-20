@@ -33,6 +33,8 @@ public class Robot extends TimedRobot {
 
     public static RobotContainer robotContainer;
 
+    public static boolean isInTestMode = false;
+
     private Command autonCommand;
 
     /**
@@ -92,6 +94,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+    }
+
+    @Override
+    public void testInit() {
+        isInTestMode = true;
     }
 
     @Override

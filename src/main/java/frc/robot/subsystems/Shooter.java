@@ -23,13 +23,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import frc.robot.util.interfaces.IMercMotorController;
+import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 import frc.robot.Robot;
 import frc.robot.RobotMap.*;
 import frc.robot.commands.shooter.RunShooter;
 
 
-public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher{
+public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher, IMercPIDTunable{
   //private IMercMotorController flywheel;
 
   public static final double NOMINAL_OUT = 0.0,
@@ -42,7 +43,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   
   private ShooterMode mode;
 
-  private final PIDGain VELOCITY_GAINS;
+  private PIDGain velocityGains;
 
 
   public enum ShooterMode{
@@ -72,22 +73,22 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
     setRunSpeed(0.0);
     
-    VELOCITY_GAINS = new PIDGain(1e-5, 2e-7, 1e-5, 0);
+    velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
 
-    shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), VELOCITY_GAINS);
+    shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), velocityGains);
     //shooterRight.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), VELOCITY_GAINS);
 
-    SmartDashboard.putNumber("P Gain", VELOCITY_GAINS.kP);
-    SmartDashboard.putNumber("I Gain", VELOCITY_GAINS.kI);
-    SmartDashboard.putNumber("D Gain", VELOCITY_GAINS.kD);
-    SmartDashboard.putNumber("Feed Forward", VELOCITY_GAINS.kF);
+    SmartDashboard.putNumber("P Gain", velocityGains.kP);
+    SmartDashboard.putNumber("I Gain", velocityGains.kI);
+    SmartDashboard.putNumber("D Gain", velocityGains.kD);
+    SmartDashboard.putNumber("Feed Forward", velocityGains.kF);
     SmartDashboard.putNumber("Set Shooter RPM", 0.0);
 
   }
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+
   }
 
   public void setSpeed(double speed) {
@@ -154,6 +155,23 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   public void publishValues() {
     SmartDashboard.putString("Shooter mode", getMode() == ShooterMode.OVER_THE_TOP ? "Over the top" : "Through the middle");
     SmartDashboard.putNumber("Shooter RPM", getRPM());
+  }
+
+  public void putPIDGain(){
+    SmartDashboard.putNumber("P Gain", velocityGains.kP);
+    SmartDashboard.putNumber("I Gain", velocityGains.kI);
+    SmartDashboard.putNumber("D Gain", velocityGains.kD);
+    SmartDashboard.putNumber("Feed Forward", velocityGains.kF);
+  }
+
+  public void checkPIDGain(){
+    this.velocityGains = new PIDGain(SmartDashboard.getNumber("P Gain", velocityGains.kP), 
+                                     SmartDashboard.getNumber("I Gain", velocityGains.kI), 
+                                     SmartDashboard.getNumber("D Gain", velocityGains.kD), 
+                                     SmartDashboard.getNumber("Feed Foward", velocityGains.kF));
+
+    shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
+    shooterRight.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
   }
 
   public enum SHOOTER_PID_SLOTS{
