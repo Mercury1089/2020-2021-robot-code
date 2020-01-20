@@ -53,6 +53,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
 
   public Shooter(ShooterMode mode) {
+    setName("Shooter");
     //flywheel = new MercTalonSRX(CAN.SHOOTER_FLYWHEEL);
     shooterLeft = new MercSparkMax(CAN.SHOOTER_LEFT);
     shooterRight = new MercSparkMax(CAN.SHOOTER_RIGHT);
@@ -186,5 +187,10 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     public int getValue(){
       return this.value;
     }
+  }
+
+  @Override
+  public String getPIDName() {
+    return this.getName();
   }
 }
