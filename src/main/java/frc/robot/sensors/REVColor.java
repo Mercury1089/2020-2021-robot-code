@@ -61,6 +61,10 @@ public class REVColor {
     return ControlPanelColor.UNKNOWN;
   }
 
+  public Color getRawColor() {
+    return colorSensor.getColor();
+  }
+
   public enum ControlPanelColor {
     BLUE,
     RED,
