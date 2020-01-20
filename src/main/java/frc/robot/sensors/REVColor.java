@@ -27,6 +27,7 @@ public class REVColor {
   private final Color kGreenTarget;
   private final Color kRedTarget;
   private final Color kYellowTarget;
+  private final Color kWhiteTarget;
   private double confidence = 0.0;
 
   public REVColor() {
@@ -39,11 +40,13 @@ public class REVColor {
     kGreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
     kRedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
     kYellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+    kWhiteTarget = ColorMatch.makeColor(1, 1, 1);
 
     colorMatch.addColorMatch(kBlueTarget);
     colorMatch.addColorMatch(kGreenTarget);
     colorMatch.addColorMatch(kRedTarget);
     colorMatch.addColorMatch(kYellowTarget);  
+    colorMatch.addColorMatch(kWhiteTarget);
   }
 
 
@@ -60,6 +63,8 @@ public class REVColor {
       return ControlPanelColor.GREEN;
     else if (match.color == kYellowTarget) 
       return ControlPanelColor.YELLOW;
+    else if (match.color == kWhiteTarget)
+      return ControlPanelColor.WHITE;
     return ControlPanelColor.UNKNOWN;
   }
 
@@ -76,6 +81,7 @@ public class REVColor {
     RED,
     GREEN,
     YELLOW,
+    WHITE,
     UNKNOWN
   }
 }
