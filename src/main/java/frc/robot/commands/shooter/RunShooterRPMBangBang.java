@@ -17,6 +17,8 @@ public class RunShooterRPMBangBang extends CommandBase {
   private Shooter shooter;
   private double rMax, rMin;
   private final int TOLERANCE = 25;
+  //  If we want tolerance to be based on a percent of rpm
+  //private final double TOLERANCE = 1.01;
 
   public RunShooterRPMBangBang(Shooter shooter) {
     super.addRequirements(shooter);
@@ -38,6 +40,16 @@ public class RunShooterRPMBangBang extends CommandBase {
       shooter.setSpeed(0.0);
     else if (shooter.getRPM() < rMin)
       shooter.setSpeed(1.0);
+
+    /*  If we want the tolerance to be based on a percent of desired rpm
+    rMax = Math.abs(shooter.getRunRPM()) * TOLERANCE;
+    rMin = Math.abs(shooter.getRunRPM()) / TOLERANCE;
+    
+    if(shooter.getRPM() > rMax)
+      shooter.setSpeed(0.0);
+    else if (shooter.getRPM() < rMin)
+      shooter.setSpeed(1.0);
+    */
   }
 
   // Called once the command ends or is interrupted.
