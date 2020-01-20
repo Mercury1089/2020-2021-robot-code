@@ -4,6 +4,6 @@ import frc.robot.util.PIDGain;
 
 public interface IMercPIDTunable {
     public String getPIDName();
-    public void putPIDGain();
-    public void checkPIDGain();
+    public PIDGain getPIDGain();
+    public void setPIDGain(PIDGain gain);
 }
