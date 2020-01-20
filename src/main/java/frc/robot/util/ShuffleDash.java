@@ -19,8 +19,8 @@ public class ShuffleDash {
 
     private class TunablePIDSlot {
         public IMercPIDTunable tunable;
-        public String slot;
-        public TunablePIDSlot(IMercPIDTunable tunable, String slot) {
+        public int slot;
+        public TunablePIDSlot(IMercPIDTunable tunable, int slot) {
             this.tunable = tunable;
             this.slot = slot;
         }
@@ -54,8 +54,10 @@ public class ShuffleDash {
         publishers.add(publisher);
     }
 
-    public void addPIDTunable(IMercPIDTunable pidTunable, String pidName, String slotName){
-        tunablePIDChooser.addOption(pidName + "." + slotName, new TunablePIDSlot(pidTunable, slotName));
+    public void addPIDTunable(IMercPIDTunable pidTunable, String pidName){
+        for(int slot : pidTunable.getSlots()) {
+            tunablePIDChooser.addOption(pidName + "." + Integer.toString(slot), new TunablePIDSlot(pidTunable, slot));
+        }
     }
 
     public void updateDash() {
