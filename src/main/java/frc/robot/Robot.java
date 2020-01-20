@@ -29,6 +29,7 @@ public class Robot extends TimedRobot {
     public static Shooter shooter;
     public static Feeder feeder;
     public static Hopper hopper;
+    public static Spinner spinner;
     public static LimelightCamera limelightCamera;
 
     public static RobotContainer robotContainer;
@@ -53,11 +54,12 @@ public class Robot extends TimedRobot {
 
         feeder = new Feeder();
         hopper = new Hopper();
-        
+        spinner = new Spinner();
+
         limelightCamera = new LimelightCamera();
         CommandScheduler.getInstance().registerSubsystem(limelightCamera);
 
-        robotContainer = new RobotContainer(driveTrain, shooter, limelightCamera);
+        robotContainer = new RobotContainer(driveTrain, shooter, spinner, limelightCamera);
 
     }
 

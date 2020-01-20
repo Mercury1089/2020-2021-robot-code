@@ -22,6 +22,7 @@ import frc.robot.commands.shooter.ShootManualVoltage;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Spinner;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.hopper.RunHopperBelt;
@@ -47,23 +48,26 @@ public class RobotContainer {
 
     private DriveTrain driveTrain;
     private Shooter shooter;
+    private Spinner spinner;
     private LimelightCamera limelightCamera;
 
     private CommandGroupBase autonCommand;
 
-    public RobotContainer(DriveTrain driveTrain, Shooter shooter, LimelightCamera limelightCamera) {
+    public RobotContainer(DriveTrain driveTrain, Shooter shooter, Spinner spinner, LimelightCamera limelightCamera) {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
 
         this.driveTrain = driveTrain;
         this.shooter = shooter;
+        this.spinner = spinner;
         this.limelightCamera = limelightCamera;
         
 
         shuffleDash = new ShuffleDash();
         shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
+        shuffleDash.addPublisher(spinner);
         shuffleDash.addPIDTunable(shooter);
         
 
