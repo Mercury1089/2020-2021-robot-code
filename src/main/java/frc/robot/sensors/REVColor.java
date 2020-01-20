@@ -46,24 +46,26 @@ public class REVColor {
   }
 
 
-  public String get() {
+  public ControlPanelColor get() {
     Color detectedColor = colorSensor.getColor();
-
-    String colorString;
     ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
 
-    if (match.color == kBlueTarget) {
-        colorString = "Blue";
-      } else if (match.color == kRedTarget) {
-        colorString = "Red";
-      } else if (match.color == kGreenTarget) {
-        colorString = "Green";
-      } else if (match.color == kYellowTarget) {
-        colorString = "Yellow";
-      } else {
-        colorString = "Unknown";
-      }
+    if (match.color == kBlueTarget)
+      return ControlPanelColor.BLUE;
+    else if (match.color == kRedTarget)
+      return ControlPanelColor.RED;
+    else if (match.color == kGreenTarget)
+      return ControlPanelColor.GREEN;
+    else if (match.color == kYellowTarget) 
+      return ControlPanelColor.YELLOW;
+    return ControlPanelColor.UNKNOWN;
+  }
 
-    return colorString;
+  public enum ControlPanelColor {
+    BLUE,
+    RED,
+    GREEN,
+    YELLOW,
+    UNKNOWN
   }
 }
