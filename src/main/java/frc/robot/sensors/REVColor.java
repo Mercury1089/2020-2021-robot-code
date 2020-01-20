@@ -27,6 +27,7 @@ public class REVColor {
   private final Color kGreenTarget;
   private final Color kRedTarget;
   private final Color kYellowTarget;
+  private double confidence = 0.0;
 
   public REVColor() {
 
@@ -49,6 +50,7 @@ public class REVColor {
   public ControlPanelColor get() {
     Color detectedColor = colorSensor.getColor();
     ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
+    confidence = match.confidence;
 
     if (match.color == kBlueTarget)
       return ControlPanelColor.BLUE;
@@ -59,6 +61,10 @@ public class REVColor {
     else if (match.color == kYellowTarget) 
       return ControlPanelColor.YELLOW;
     return ControlPanelColor.UNKNOWN;
+  }
+
+  public double getConfidence() {
+    return confidence;
   }
 
   public Color getRawColor() {
