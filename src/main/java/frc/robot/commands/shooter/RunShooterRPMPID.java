@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.util.interfaces.IMercMotorController;
 
-public class RunShooterRPM extends CommandBase {
+public class RunShooterRPMPID extends CommandBase {
 
   protected IMercMotorController shooterLeft, shooterRight;
 
@@ -20,7 +20,7 @@ public class RunShooterRPM extends CommandBase {
   /**
    * Creates a new RunShooter.
    */
-  public RunShooterRPM(Shooter shooter) {
+  public RunShooterRPMPID(Shooter shooter) {
     super.addRequirements(shooter);
     this.shooter = shooter;
   }
