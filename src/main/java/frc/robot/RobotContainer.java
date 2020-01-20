@@ -36,7 +36,6 @@ import frc.robot.util.ShuffleDash;
  * interface to the commands and command groups that allow control of the robot.
  */
 
- @SuppressWarnings("all")
 public class RobotContainer {
     public static final double DEADZONE = 0.08;
 
@@ -74,11 +73,16 @@ public class RobotContainer {
         hopper = new Hopper();
         
         limelightCamera = new LimelightCamera();
+
+        spinner = new Spinner();
+        elevator = new Elevator();
         
 
         shuffleDash = new ShuffleDash();
         shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
+        shuffleDash.addPublisher(spinner);
+        shuffleDash.addPublisher(elevator);
         shuffleDash.addPIDTunable(shooter);
         
 
