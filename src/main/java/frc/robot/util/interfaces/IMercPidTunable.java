@@ -2,8 +2,8 @@ package frc.robot.util.interfaces;
 
 import frc.robot.util.PIDGain;
 
-public interface IMercPidTunable {
+public interface IMercPIDTunable {
 
-    public PIDGain getPIDGain();
-    public void setPIDGain(PIDGain pidGain);
+    public void putPIDGain();
+    public void checkPIDGain();
 }
