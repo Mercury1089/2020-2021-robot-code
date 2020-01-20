@@ -99,6 +99,5 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   @Override
   public void publishValues() {
     SmartDashboard.putNumber("Elevator height ticks", getEncTicks());
-    SmartDashboard.put
   }
 }
