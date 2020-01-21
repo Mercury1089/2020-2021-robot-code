@@ -25,6 +25,8 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
    * Creates a new Spinner.
    */
   public Spinner() {
+    super();
+    setName("Spinner");
     spinController = new MercTalonSRX(CAN.SPINNER);
     colorSensor = new REVColor();
 
@@ -54,12 +56,12 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
 
   @Override
   public void publishValues() {
-    SmartDashboard.putNumber("Spinner ticks", getEncTicks());
-    SmartDashboard.putString("Detected Color", colorSensor.get().toString());
-    SmartDashboard.putNumber("Color Confidence", colorSensor.getConfidence());
+    SmartDashboard.putNumber(getName() + "/Ticks", getEncTicks());
+    SmartDashboard.putString(getName() + "/Color/Detected", colorSensor.get().toString());
+    SmartDashboard.putNumber(getName() + "/Color/Confidence", colorSensor.getConfidence());
     
-    SmartDashboard.putNumber("Color red", colorSensor.getDetectedColor().red);
-    SmartDashboard.putNumber("Color green", colorSensor.getDetectedColor().green);
-    SmartDashboard.putNumber("Color blue", colorSensor.getDetectedColor().blue);
+    SmartDashboard.putNumber(getName() + "/Color/RGB/Red", colorSensor.getDetectedColor().red);
+    SmartDashboard.putNumber(getName() + "/Color/RGB/Green", colorSensor.getDetectedColor().green);
+    SmartDashboard.putNumber(getName() + "/Color/RGB/Blue", colorSensor.getDetectedColor().blue);
   }
 }

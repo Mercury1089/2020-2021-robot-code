@@ -107,11 +107,11 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public void setRunSpeed(double runSpeed) {
-    SmartDashboard.putNumber("Shooting speed", 0.0);
+    SmartDashboard.putNumber(getName() + "/RunSpeed", 0.0);
   }
 
   public double getRunSpeed() {
-    return SmartDashboard.getNumber("Shooting speed", 0.0);
+    return SmartDashboard.getNumber(getName() + "/RunSpeed", 0.0);
   }
 
   public void setVelocity(double rpm) {
@@ -124,7 +124,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public double getRunRPM() {
-    return SmartDashboard.getNumber("Set Shooter RPM", 0.0);
+    return SmartDashboard.getNumber(getName() + "/SetRPM", 0.0);
   }
 
   public ShooterMode getMode() {
@@ -132,15 +132,15 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public void publishValues() {
-    SmartDashboard.putString("Shooter mode",
+    SmartDashboard.putString(getName() + "/ShooterMode",
         getMode() == ShooterMode.OVER_THE_TOP ? "Over the top" : "Through the middle");
-    SmartDashboard.putNumber("Shooter RPM", getRPM());
+    SmartDashboard.putNumber(getName() + "/RPM", getRPM());
     
-    SmartDashboard.putNumber("P Gain", velocityGains.kP);
-    SmartDashboard.putNumber("I Gain", velocityGains.kI);
-    SmartDashboard.putNumber("D Gain", velocityGains.kD);
-    SmartDashboard.putNumber("Feed Forward", velocityGains.kF);
-    SmartDashboard.putNumber("Set Shooter RPM", 0.0);
+    SmartDashboard.putNumber(getName() + "/PIDGains/P", velocityGains.kP);
+    SmartDashboard.putNumber(getName() + "/PIDGains/I", velocityGains.kI);
+    SmartDashboard.putNumber(getName() + "/PIDGains/D", velocityGains.kD);
+    SmartDashboard.putNumber(getName() + "/PIDGains/F", velocityGains.kF);
+    SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
   }
 
   @Override

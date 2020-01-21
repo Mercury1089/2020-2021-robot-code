@@ -55,6 +55,8 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
    * Creates a new Elevator.
    */
   public Elevator() {
+    super();
+    setName("Elevator");
     elevator = new MercTalonSRX(CAN.ELEVATOR);
     runSpeed = 0.5;
     elevator.setNeutralMode(NeutralMode.Brake);
@@ -98,6 +100,6 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
 
   @Override
   public void publishValues() {
-    SmartDashboard.putNumber("Elevator height ticks", getEncTicks());
+    SmartDashboard.putNumber(getName() + "/Height(ticks)", getEncTicks());
   }
 }

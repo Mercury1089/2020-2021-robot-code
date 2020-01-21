@@ -25,6 +25,7 @@ public class TrackTarget extends MoveHeading {
     public TrackTarget(DriveTrain driveTrain, LimelightCamera limelightCamera) {
         super(0, 0, driveTrain);
 
+        setName("TrackTarget");
         this.driveTrain = driveTrain;
         this.limelightCamera = limelightCamera;
     }
@@ -62,7 +63,9 @@ public class TrackTarget extends MoveHeading {
         angleError = MercMath.pigeonUnitsToDegrees(angleError);
         distError *= this.driveTrain.getDirection().dir;
 
-        SmartDashboard.putString("ang error, dist error", angleError + ", " + distError);
+        String sdPrefix = driveTrain.getName() + "/" + getName();
+        SmartDashboard.putNumber(sdPrefix + "angleError", angleError);
+        SmartDashboard.putNumber(sdPrefix + "distError", distError);
 
         System.out.println(distError);
 

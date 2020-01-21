@@ -57,8 +57,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     public DriveTrain(DriveTrain.DriveTrainLayout layout) {
         //This should eventually be fully configurable
         // At this point it's based on what the layout is
-
         super();
+        setName("DriveTrain");
         this.layout = layout;
         switch (layout) {
             case FALCONS:
@@ -374,15 +374,15 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     //Publish values to ShuffleBoard
     public void publishValues() {
         //Drive direction
-        SmartDashboard.putString("direction", getDirection().name());
-        //
-        SmartDashboard.putNumber("Left Enc in feet", getLeftEncPositionInFeet());
-        SmartDashboard.putNumber("Right Enc in feet", getRightEncPositionInFeet());
+        SmartDashboard.putString(getName() + "/Direction", getDirection().name());
+        //Encoder positions
+        SmartDashboard.putNumber(getName() + "/Left Encoder (feet)", getLeftEncPositionInFeet());
+        SmartDashboard.putNumber(getName() + "/Right Encoder (feet)", getRightEncPositionInFeet());
         //Wheel RPM
-        SmartDashboard.putNumber("Left Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(getLeftLeader().getEncVelocity()));
-        SmartDashboard.putNumber("Right Wheel RPM", MercMath.ticksPerTenthToRevsPerMinute(getRightLeader().getEncVelocity()));
+        SmartDashboard.putNumber(getName() + "/Left RPM", MercMath.ticksPerTenthToRevsPerMinute(getLeftLeader().getEncVelocity()));
+        SmartDashboard.putNumber(getName() + "/Right RPM", MercMath.ticksPerTenthToRevsPerMinute(getRightLeader().getEncVelocity()));
         //Angle From Pigeon
-        SmartDashboard.putNumber("Gyro Angle", getPigeonYaw());
+        SmartDashboard.putNumber(getName() + "/Yaw", getPigeonYaw());
         
     }
 

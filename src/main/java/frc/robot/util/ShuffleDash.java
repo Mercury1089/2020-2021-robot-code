@@ -11,11 +11,11 @@ import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
 public class ShuffleDash {
 
-    private static final String PID_TUNER = "Tune PID";
-    private static final String PID_TUNER_P = "Tune PID kP";
-    private static final String PID_TUNER_I = "Tune PID kI";
-    private static final String PID_TUNER_D = "Tune PID kD";
-    private static final String PID_TUNER_F = "Tune PID kF";
+    private static final String PID_TUNER = "PIDTuner/Target";
+    private static final String PID_TUNER_P = "PIDTuner/kP";
+    private static final String PID_TUNER_I = "PIDTuner/kI";
+    private static final String PID_TUNER_D = "PIDTuner/kD";
+    private static final String PID_TUNER_F = "PIDTuner/kF";
 
     private class TunablePIDSlot {
         public IMercPIDTunable tunable;
@@ -85,7 +85,7 @@ public class ShuffleDash {
             }
             this.tunableSlot = tunableSlot;
         }
-        SmartDashboard.putData("Auton First Step", autonFirstStep);
+        SmartDashboard.putData("Auton/First Step", autonFirstStep);
     }
 
     public String getFirstStep() {

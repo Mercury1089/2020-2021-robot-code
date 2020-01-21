@@ -19,6 +19,7 @@ public class DegreeRotate extends MoveHeading {
     public DegreeRotate(double angleToTurn, DriveTrain driveTrain) {
         super(0, angleToTurn, driveTrain);
 
+        this.setName("DegreeRotate");
         this.driveTrain = driveTrain;
 
         moveThresholdTicks = 100;
@@ -51,10 +52,6 @@ public class DegreeRotate extends MoveHeading {
 
         boolean isOnTarget = (Math.abs(angleError) < angleThresholdDeg);
 
-
-        SmartDashboard.putNumber("onTargetCount", onTargetCount);
-        SmartDashboard.putNumber("onTargetMinCount", onTargetMinCount);
-
         if (isOnTarget) {
             onTargetCount++;
         } else {
@@ -67,7 +64,10 @@ public class DegreeRotate extends MoveHeading {
             onTargetCount = 0;
         }
 
-        SmartDashboard.putBoolean("isOnTarget", isOnTarget);
+        String sdPrefix = driveTrain.getName() + "/" + getName();
+        SmartDashboard.putNumber(sdPrefix + "/onTargetCount", onTargetCount);
+        SmartDashboard.putNumber(sdPrefix + "/onTargetMinCount", onTargetMinCount);
+        SmartDashboard.putBoolean(sdPrefix + "/isOnTarget", isOnTarget);
 
         return isFinished;
     }
