@@ -70,18 +70,18 @@ public class ShuffleDash {
         TunablePIDSlot tunableSlot = tunablePIDChooser.getSelected();
         if (tunableSlot != null) {
             if (tunableSlot != this.tunableSlot) {
-                PIDGain pid = tunableSlot.tunable.getPIDGain(tunableSlot.slot);
-                SmartDashboard.putNumber(PID_TUNER_P, pid.kP);
-                SmartDashboard.putNumber(PID_TUNER_I, pid.kI);
-                SmartDashboard.putNumber(PID_TUNER_D, pid.kD);
-                SmartDashboard.putNumber(PID_TUNER_F, pid.kF);
+                PIDGain gains = tunableSlot.tunable.getPIDGain(tunableSlot.slot);
+                SmartDashboard.putNumber(PID_TUNER_P, gains.kP);
+                SmartDashboard.putNumber(PID_TUNER_I, gains.kI);
+                SmartDashboard.putNumber(PID_TUNER_D, gains.kD);
+                SmartDashboard.putNumber(PID_TUNER_F, gains.kF);
             } else {
-                PIDGain pid = new PIDGain(
+                PIDGain gains = new PIDGain(
                     SmartDashboard.getNumber(PID_TUNER_P, 0.0),
                     SmartDashboard.getNumber(PID_TUNER_I, 0.0),
                     SmartDashboard.getNumber(PID_TUNER_D, 0.0),
                     SmartDashboard.getNumber(PID_TUNER_F, 0.0));
-                tunableSlot.tunable.setPIDGain(tunableSlot.slot, pid);
+                tunableSlot.tunable.setPIDGain(tunableSlot.slot, gains);
             }
             this.tunableSlot = tunableSlot;
         }

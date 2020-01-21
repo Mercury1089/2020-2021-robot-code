@@ -149,8 +149,8 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   @Override
-  public void setPIDGain(int slot, PIDGain gain) {
-    this.velocityGains = gain;
+  public void setPIDGain(int slot, PIDGain gains) {
+    this.velocityGains = gains;
 
     shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
     shooterRight.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);

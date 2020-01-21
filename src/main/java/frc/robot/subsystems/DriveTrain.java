@@ -11,6 +11,7 @@ import frc.robot.RobotMap.CAN;
 import frc.robot.util.*;
 import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.interfaces.IMercMotorController;
+import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
 /**
@@ -18,7 +19,7 @@ import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
  * This contains the {@link DriveAssist} needed to driveAssist manually
  * using the motor controllers.
  */
-public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublisher{
+public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublisher, IMercPIDTunable {
 
     public static final int DRIVE_PID_SLOT = 0,
         DRIVE_SMOOTH_MOTION_SLOT = 1,
@@ -39,7 +40,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     public static final double NOMINAL_OUT = 0.0,
                                PEAK_OUT = 1.0;
 
-    private final PIDGain DRIVE_GAINS, SMOOTH_GAINS, MOTION_PROFILE_GAINS, TURN_GAINS;
+    private PIDGain driveGains, smoothGains, motionProfileGains, turnGains;
 
     private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight;
     private DriveAssist driveAssist;
@@ -97,18 +98,10 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         initializeMotionMagicFeedback();
 
         // Config PID
-        DRIVE_GAINS = new PIDGain(0.125, 0.0, 0.05, 0.0, .75);   // .3
-        SMOOTH_GAINS = new PIDGain(0.6, 0.00032, 0.45, getFeedForward(), 1.0);    //.00032
-        MOTION_PROFILE_GAINS = new PIDGain(0.6, 0.0, 0.0, getFeedForward(), 1.0);
-        TURN_GAINS = new PIDGain(0.35, 0.0, 0.27, 0.0, 1.0);
-        leaderRight.configPID(DRIVE_PID_SLOT, DRIVE_GAINS);
-        leaderLeft.configPID(DRIVE_PID_SLOT, DRIVE_GAINS);
-        leaderRight.configPID(DRIVE_SMOOTH_MOTION_SLOT, SMOOTH_GAINS);
-        leaderLeft.configPID(DRIVE_SMOOTH_MOTION_SLOT, SMOOTH_GAINS);
-        leaderRight.configPID(DRIVE_MOTION_PROFILE_SLOT, MOTION_PROFILE_GAINS);
-        leaderLeft.configPID(DRIVE_MOTION_PROFILE_SLOT, MOTION_PROFILE_GAINS);
-        leaderRight.configPID(DRIVE_SMOOTH_TURN_SLOT, TURN_GAINS);
-        leaderLeft.configPID(DRIVE_SMOOTH_TURN_SLOT, TURN_GAINS);
+        setPIDGain(DRIVE_PID_SLOT, new PIDGain(0.125, 0.0, 0.05, 0.0, .75));
+        setPIDGain(DRIVE_SMOOTH_MOTION_SLOT, new PIDGain(0.6, 0.00032, 0.45, getFeedForward(), 1.0));
+        setPIDGain(DRIVE_MOTION_PROFILE_SLOT, new PIDGain(0.6, 0.0, 0.0, getFeedForward(), 1.0));
+        setPIDGain(DRIVE_SMOOTH_TURN_SLOT, new PIDGain(0.35, 0.0, 0.27, 0.0, 1.0));
 
         resetEncoders();
 
@@ -391,5 +384,61 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         //Angle From Pigeon
         SmartDashboard.putNumber("Gyro Angle", getPigeonYaw());
         
+    }
+
+    @Override
+    public int[] getSlots() {
+        return new int[] {
+            DRIVE_PID_SLOT,
+            DRIVE_SMOOTH_MOTION_SLOT,
+            DRIVE_MOTION_PROFILE_SLOT,
+            DRIVE_SMOOTH_TURN_SLOT
+        };
+    }
+
+    @Override
+    public PIDGain getPIDGain(int slot) {
+        PIDGain gains = null;
+        switch (slot) {
+            case DRIVE_PID_SLOT:
+                gains = driveGains;
+                break;
+            case DRIVE_SMOOTH_MOTION_SLOT:
+                gains = smoothGains;
+                break;
+            case DRIVE_MOTION_PROFILE_SLOT:
+                gains = motionProfileGains;
+                break;
+            case DRIVE_SMOOTH_TURN_SLOT:
+                gains = turnGains;
+                break;
+        }
+        return gains;
+    }
+
+    @Override
+    public void setPIDGain(int slot, PIDGain gains) {
+        switch (slot) {
+            case DRIVE_PID_SLOT:
+                driveGains = gains;
+                leaderRight.configPID(DRIVE_PID_SLOT, driveGains);
+                leaderLeft.configPID(DRIVE_PID_SLOT, driveGains);
+                break;
+            case DRIVE_SMOOTH_MOTION_SLOT:
+                smoothGains = gains;
+                leaderRight.configPID(DRIVE_SMOOTH_MOTION_SLOT, smoothGains);
+                leaderLeft.configPID(DRIVE_SMOOTH_MOTION_SLOT, smoothGains);
+                break;
+            case DRIVE_MOTION_PROFILE_SLOT:
+                motionProfileGains = gains;
+                leaderRight.configPID(DRIVE_MOTION_PROFILE_SLOT, motionProfileGains);
+                leaderLeft.configPID(DRIVE_MOTION_PROFILE_SLOT, motionProfileGains);
+                break;
+            case DRIVE_SMOOTH_TURN_SLOT:
+                turnGains = gains;
+                leaderRight.configPID(DRIVE_SMOOTH_TURN_SLOT, turnGains);
+                leaderLeft.configPID(DRIVE_SMOOTH_TURN_SLOT, turnGains);
+                break;
+        }
     }
 }

@@ -5,5 +5,5 @@ import frc.robot.util.PIDGain;
 public interface IMercPIDTunable {
     public int[] getSlots();
     public PIDGain getPIDGain(int slot);
-    public void setPIDGain(int slot, PIDGain gain);
+    public void setPIDGain(int slot, PIDGain gains);
 }
