@@ -32,7 +32,7 @@ public class DriveElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevator.setSpeed(Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.rightY));
+    elevator.setSpeed(elevator.getRunSpeed());
   }
 
   // Called once the command ends or is interrupted.

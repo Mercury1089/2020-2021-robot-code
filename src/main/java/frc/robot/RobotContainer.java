@@ -20,6 +20,7 @@ import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.hopper.RunHopperBelt;
+import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
 
 import frc.robot.commands.shooter.RunShooter;
@@ -31,6 +32,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spinner;
@@ -63,6 +65,7 @@ public class RobotContainer {
     private Hopper hopper;
     private Spinner spinner;
     private Elevator elevator;
+    private Intake intake;
     private LimelightCamera limelightCamera;
     
 
@@ -80,16 +83,11 @@ public class RobotContainer {
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
         feeder = new Feeder();
-        
-        hopper = new Hopper();
-        
+        intake = new Intake();
+        hopper = new Hopper();       
         limelightCamera = new LimelightCamera();
-        
         spinner = new Spinner();
-        spinner.setDefaultCommand(new RunSpinner(spinner));
-        
         elevator = new Elevator();
-        elevator.setDefaultCommand(new DriveElevator(elevator));
         
         shuffleDash = new ShuffleDash();
         shuffleDash.addPublisher(shooter);
@@ -113,8 +111,12 @@ public class RobotContainer {
         left6.whenPressed(new SwitchLEDState(limelightCamera));
         left7.whenPressed(new DegreeRotate(90, driveTrain));
         
+        right1.whileHeld(new RunIntake(intake));
         right2.whileHeld(new RunFeeder(feeder));
+        right3.whileHeld(new DriveElevator(elevator));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+        right5.whileHeld(new RunSpinner(spinner));
+        right6.whileHeld(new RunHopperBelt(hopper));
         right7.whenPressed(new DegreeRotate(90, driveTrain));
 
         gamepadY.whenHeld(new RunFeeder(feeder));

@@ -32,7 +32,7 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
     setName("Spinner");
     spinController = new MercTalonSRX(CAN.SPINNER);
     colorSensor = new REVColor();
-
+    runSpeed = 0.5;
     SmartDashboard.putNumber("Spin speed", 0.0);
   }
 
