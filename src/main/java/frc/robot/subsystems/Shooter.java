@@ -35,7 +35,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   private PIDGain velocityGains;
 
   public enum ShooterMode {
-    OVER_THE_TOP, THROUGH_MIDDLE
+    ONE_WHEEL, TWO_WHEEL
   }
 
   public Shooter(ShooterMode mode) {
@@ -48,16 +48,17 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     shooterLeft.setNeutralMode(NeutralMode.Coast);
     shooterRight.setNeutralMode(NeutralMode.Coast);
 
-    if (mode == ShooterMode.OVER_THE_TOP) {
+    if (mode == ShooterMode.ONE_WHEEL) {
       shooterLeft.setInverted(false);
       shooterRight.setInverted(true);
-    } else if (mode == ShooterMode.THROUGH_MIDDLE) {
+    } else if (mode == ShooterMode.TWO_WHEEL) {
       shooterLeft.setInverted(false);
       shooterRight.setInverted(false);
     }
 
     shooterRight.follow(shooterLeft);
 
+    SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
     setRunSpeed(0.0);
 
     velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
@@ -133,14 +134,13 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
   public void publishValues() {
     SmartDashboard.putString(getName() + "/ShooterMode",
-        getMode() == ShooterMode.OVER_THE_TOP ? "Over the top" : "Through the middle");
+        getMode() == ShooterMode.ONE_WHEEL ? "ONE WHEEL" : "TWO WHEEL");
     SmartDashboard.putNumber(getName() + "/RPM", getRPM());
     
     SmartDashboard.putNumber(getName() + "/PIDGains/P", velocityGains.kP);
     SmartDashboard.putNumber(getName() + "/PIDGains/I", velocityGains.kI);
     SmartDashboard.putNumber(getName() + "/PIDGains/D", velocityGains.kD);
     SmartDashboard.putNumber(getName() + "/PIDGains/F", velocityGains.kF);
-    SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
   }
 
   @Override
