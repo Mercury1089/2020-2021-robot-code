@@ -16,6 +16,7 @@ import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.MoveOnPath;
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.shooter.RunShooterRPMPID;
+import frc.robot.commands.spinner.RunSpinner;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.Spinner;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.subsystems.Shooter.ShooterMode;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
+import frc.robot.commands.elevator.DriveElevator;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.hopper.RunHopperBelt;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
@@ -70,36 +72,41 @@ public class RobotContainer {
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
         feeder = new Feeder();
+        
         hopper = new Hopper();
         
         limelightCamera = new LimelightCamera();
-
-        spinner = new Spinner();
-        elevator = new Elevator();
         
-
+        spinner = new Spinner();
+        spinner.setDefaultCommand(new RunSpinner(spinner));
+        
+        elevator = new Elevator();
+        elevator.setDefaultCommand(new DriveElevator(elevator));
+        
         shuffleDash = new ShuffleDash();
         shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
         shuffleDash.addPublisher(spinner);
         shuffleDash.addPublisher(elevator);
-    
+        
         shuffleDash.addPIDTunable(shooter, "Shooter");
         shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
-
+        
         autonCommand = new SequentialCommandGroup();
         autonCommand.addRequirements(driveTrain);
         initializeAutonCommand();
-
+        
         initalizeJoystickButtons();
-
+        
         left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
         left3.whenPressed(new RunShooter(shooter));
         left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         left5.whenPressed(new RunShooterRPMPID(shooter));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
         left7.whenPressed(new DegreeRotate(90, driveTrain));
-
+        
+        right2.whileHeld(new RunFeeder(feeder));
+        
         gamepadY.whenHeld(new RunFeeder(feeder));
         gamepadX.whenHeld(new RunHopperBelt(hopper));
     }

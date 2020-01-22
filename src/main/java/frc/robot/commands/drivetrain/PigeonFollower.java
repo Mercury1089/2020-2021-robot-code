@@ -11,7 +11,6 @@ import frc.robot.commands.drivetrain.MoveHeading;
 import frc.robot.subsystems.DriveTrain;
 //import frc.robot.commands.drivetrain.MoveOnPath.MPDirection;
 
-@SuppressWarnings("all")
 public class PigeonFollower extends MoveHeading {
   private double currDistAngle;
   private double[][] distAngle;
