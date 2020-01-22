@@ -7,10 +7,12 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.RobotMap.CAN;
 import frc.robot.sensors.REVColor;
+
 import frc.robot.util.MercTalonSRX;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
@@ -47,6 +49,10 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
 
   public void setSpeed(double speed) {
     spinController.setSpeed(speed);
+  }
+
+  public REVColor getColorSensor() {
+    return colorSensor;
   }
 
   @Override
