@@ -64,17 +64,22 @@ public class REVColor {
   public ControlPanelColor get() {
     detectedColor = colorSensor.getColor();
     ColorMatchResult match = colorMatch.matchColor(detectedColor);
-    confidence = match.confidence;
+    if (match != null) {
+      confidence = match.confidence;
 
-    if (match.color == kBlueTarget)
-      return ControlPanelColor.BLUE;
-    else if (match.color == kRedTarget)
-      return ControlPanelColor.RED;
-    else if (match.color == kGreenTarget)
-      return ControlPanelColor.GREEN;
-    else if (match.color == kYellowTarget) 
-      return ControlPanelColor.YELLOW;
-    return ControlPanelColor.UNKNOWN;
+      if (match.color == kBlueTarget)
+        return ControlPanelColor.BLUE;
+      else if (match.color == kRedTarget)
+        return ControlPanelColor.RED;
+      else if (match.color == kGreenTarget)
+        return ControlPanelColor.GREEN;
+      else if (match.color == kYellowTarget) 
+        return ControlPanelColor.YELLOW;
+      return ControlPanelColor.UNKNOWN;  
+    } else {
+      confidence = 0;
+      return ControlPanelColor.UNKNOWN;
+    }
   }
 
   public double getConfidence() {

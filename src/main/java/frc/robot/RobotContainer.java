@@ -15,6 +15,7 @@ import frc.robot.commands.drivetrain.DegreeRotate;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.MoveOnPath;
 import frc.robot.commands.shooter.RunShooter;
+import frc.robot.commands.shooter.RunShooterRPMBangBang;
 import frc.robot.commands.shooter.RunShooterRPMPID;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -66,7 +67,7 @@ public class RobotContainer {
         driveTrain = new DriveTrain(DriveTrainLayout.TALONS_VICTORS);
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
-        shooter = new Shooter(ShooterMode.OVER_THE_TOP);
+        shooter = new Shooter(ShooterMode.THROUGH_MIDDLE);
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
         feeder = new Feeder();
@@ -95,10 +96,12 @@ public class RobotContainer {
 
         left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
         left3.whenPressed(new RunShooter(shooter));
-        left4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+        left4.whenPressed(new RunShooterRPMBangBang(shooter));
         left5.whenPressed(new RunShooterRPMPID(shooter));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
-        left7.whenPressed(new DegreeRotate(90, driveTrain));
+
+        right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+        right7.whenPressed(new DegreeRotate(90, driveTrain));
 
         gamepadY.whenHeld(new RunFeeder(feeder));
         gamepadX.whenHeld(new RunHopperBelt(hopper));

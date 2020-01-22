@@ -5,241 +5,133 @@
       "autoPopulate": true,
       "autoPopulatePrefix": "SmartDashboard/",
       "widgetPane": {
-        "gridSize": 64.0,
-        "showGrid": false,
-        "hgap": 10.0,
-        "vgap": 12.0,
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
         "tiles": {
-          "37,4": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Left Enc in feet",
-              "_title": "Left Enc in feet"
-            }
-          },
-          "40,4": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Right Enc in feet",
-              "_title": "Right Enc in feet"
-            }
-          },
-          "37,6": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Left Wheel RPM",
-              "_title": "Left Wheel RPM"
-            }
-          },
-          "40,6": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Right Wheel RPM",
-              "_title": "Right Wheel RPM"
-            }
-          },
-          "38,10": {
-            "size": [
-              4,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Gyro Angle",
-              "_title": "Gyro Angle"
-            }
-          },
-          "40,0": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/LIDAR Raw Distance (in.)",
-              "_title": "LIDAR Raw Distance (in.)"
-            }
-          },
-          "37,0": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Lime Dist From Vertical",
-              "_title": "Lime Dist From Vertical"
-            }
-          },
-          "37,2": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///limelight-merc/tx",
-              "_title": "Angle to Target"
-            }
-          },
-          "0,0": {
-            "size": [
-              12,
-              11
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://Front",
-              "_title": "Front",
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": 0,
-              "imageHeight": 0
-            }
-          },
-          "44,0": {
-            "size": [
-              5,
-              5
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Elevator Limit Switch Closed",
-              "_title": "Elevator Limit Switch Closed",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "40,2": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Elevator enc",
-              "_title": "Elevator enc"
-            }
-          },
-          "29,10": {
-            "size": [
-              4,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/direction",
-              "_title": "direction"
-            }
-          },
-          "26,10": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FrontCamera",
-              "_title": "FrontCamera"
-            }
-          },
-          "33,10": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/BackCamera",
-              "_title": "BackCamera"
-            }
-          },
-          "37,8": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Hatch pos",
-              "_title": "Hatch pos"
-            }
-          },
-          "26,0": {
-            "size": [
-              11,
-              10
-            ],
-            "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://limelight-merc",
-              "_title": "limelight-merc",
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
-            }
-          },
-          "40,8": {
-            "size": [
-              3,
-              2
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Fangs Enc",
-              "_title": "Fangs Enc"
-            }
-          },
-          "44,5": {
-            "size": [
-              5,
-              5
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Rev Fangs limit",
-              "_title": "Rev Fangs limit",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "25,0": {
+          "2,0": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Limelight_PipelineName",
-              "_title": "Limelight_PipelineName"
+              "_source0": "network_table:///SmartDashboard/Shooter/ShooterMode",
+              "_title": "Shooter/ShooterMode"
             }
           },
-          "43,0": {
+          "4,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/Target",
+              "_title": "PIDTuner/Target"
+            }
+          },
+          "7,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/kD",
+              "_title": "PIDTuner/kD"
+            }
+          },
+          "8,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/kF",
+              "_title": "PIDTuner/kF"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/kI",
+              "_title": "PIDTuner/kI"
+            }
+          },
+          "5,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/kP",
+              "_title": "PIDTuner/kP"
+            }
+          },
+          "2,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/RunSpeed",
+              "_title": "Shooter/RunSpeed"
+            }
+          },
+          "7,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/PIDGains/D",
+              "_title": "Shooter/PIDGains/D"
+            }
+          },
+          "8,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/PIDGains/F",
+              "_title": "Shooter/PIDGains/F"
+            }
+          },
+          "6,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/PIDGains/I",
+              "_title": "Shooter/PIDGains/I"
+            }
+          },
+          "5,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/PIDGains/P",
+              "_title": "Shooter/PIDGains/P"
+            }
+          },
+          "8,1": {
             "size": [
               1,
               1
@@ -250,155 +142,213 @@
               "_title": "Limelight_Stream"
             }
           },
-          "49,0": {
+          "9,1": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Ultrasonic Distance (Some unit)",
-              "_title": "Ultrasonic Distance (Some unit)"
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Direction",
+              "_title": "DriveTrain/Direction"
             }
           },
-          "50,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Sandstorm First Step",
-              "_title": "Sandstorm First Step"
-            }
-          },
-          "25,1": {
+          "3,3": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/ang error, dist error",
-              "_title": "ang error, dist error"
+              "_source0": "network_table:///SmartDashboard/Shooter/RPM",
+              "_title": "Shooter/RPM"
+            }
+          },
+          "2,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/SetRPM",
+              "_title": "Shooter/SetRPM"
+            }
+          },
+          "0,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Limelight_PipelineName",
+              "_title": "Limelight_PipelineName"
+            }
+          },
+          "1,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Limelight_Interface",
+              "_title": "Limelight_Interface"
+            }
+          },
+          "3,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Spin speed",
+              "_title": "Spin speed"
+            }
+          },
+          "4,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Left Encoder (feet)",
+              "_title": "DriveTrain/Left Encoder (feet)"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Right Encoder (feet)",
+              "_title": "DriveTrain/Right Encoder (feet)"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Left RPM",
+              "_title": "DriveTrain/Left RPM"
+            }
+          },
+          "7,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Right RPM",
+              "_title": "DriveTrain/Right RPM"
+            }
+          },
+          "8,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Yaw",
+              "_title": "DriveTrain/Yaw"
+            }
+          },
+          "9,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Spinner/Ticks",
+              "_title": "Spinner/Ticks"
+            }
+          },
+          "10,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Spinner/Color/Detected",
+              "_title": "Spinner/Color/Detected"
+            }
+          },
+          "11,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Spinner/Color/Confidence",
+              "_title": "Spinner/Color/Confidence"
             }
           },
           "12,0": {
             "size": [
-              13,
-              11
+              1,
+              1
             ],
             "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://Back",
-              "_title": "Back",
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Spinner/Color/RGB/Red",
+              "_title": "Spinner/Color/RGB/Red"
             }
           },
-          "43,1": {
+          "0,1": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/limelight-merc_Stream",
-              "_title": "limelight-merc_Stream"
+              "_source0": "network_table:///SmartDashboard/Spinner/Color/RGB/Green",
+              "_title": "Spinner/Color/RGB/Green"
             }
           },
-          "49,1": {
+          "2,1": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/limelight-merc_Interface",
-              "_title": "limelight-merc_Interface"
+              "_source0": "network_table:///SmartDashboard/Spinner/Color/RGB/Blue",
+              "_title": "Spinner/Color/RGB/Blue"
             }
           },
-          "50,1": {
+          "3,1": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/limelight-merc_PipelineName",
-              "_title": "limelight-merc_PipelineName"
+              "_source0": "network_table:///SmartDashboard/Elevator/Height(ticks)",
+              "_title": "Elevator/Height(ticks)"
             }
           },
-          "25,2": {
+          "4,1": {
             "size": [
               1,
               1
             ],
             "content": {
               "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/Safety Mode",
-              "_title": "Safety Mode"
-            }
-          },
-          "43,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Claw State",
-              "_title": "Claw State"
-            }
-          },
-          "51,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Hatch Lidar Dist",
-              "_title": "Hatch Lidar Dist"
-            }
-          },
-          "51,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Left dt enc",
-              "_title": "Left dt enc"
-            }
-          },
-          "49,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Right dt enc",
-              "_title": "Right dt enc"
-            }
-          },
-          "50,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Pidgeon Yaw",
-              "_title": "Pidgeon Yaw"
+              "_source0": "network_table:///SmartDashboard/Auton/First Step",
+              "_title": "Auton/First Step"
             }
           }
         }
@@ -421,165 +371,10 @@
             ],
             "content": {
               "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Ungrouped",
-              "_title": "Ungrouped",
+              "_source0": "network_table:///LiveWindow/Hopper",
+              "_title": "Hopper",
               "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [8]",
-                  "_title": "Victor SPX [8]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [9]",
-                  "_title": "Victor SPX [9]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Boolean Box",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/DigitalInput[0]/Value",
-                  "_title": "DigitalInput[0]/Value",
-                  "Colors/Color when true": "#7CFC00FF",
-                  "Colors/Color when false": "#8B0000FF"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [2]",
-                  "_title": "Talon SRX [2]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [7]",
-                  "_title": "Victor SPX [7]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [6]",
-                  "_title": "Victor SPX [6]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [12]",
-                  "_title": "Talon SRX [12]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [3]",
-                  "_title": "Victor SPX [3]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [4]",
-                  "_title": "Victor SPX [4]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Gyro",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/ADXRS450_Gyro[0]",
-                  "_title": "ADXRS450_Gyro[0]",
-                  "Visuals/Major tick spacing": 45.0,
-                  "Visuals/Starting angle": 180.0,
-                  "Visuals/Show tick mark ring": true,
-                  "Visuals/Counter clockwise": false
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [1]",
-                  "_title": "Talon SRX [1]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [13]",
-                  "_title": "Victor SPX [13]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [5]",
-                  "_title": "Talon SRX [5]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [11]",
-                  "_title": "Talon SRX [11]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [12]",
-                  "_title": "Victor SPX [12]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [17]",
-                  "_title": "Talon SRX [17]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [16]",
-                  "_title": "Talon SRX [16]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [15]",
-                  "_title": "Talon SRX [15]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [14]",
-                  "_title": "Talon SRX [14]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Voltage View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/AnalogInput[1]",
-                  "_title": "AnalogInput[1]",
-                  "Range/Min": 0.0,
-                  "Range/Max": 5.0,
-                  "Range/Center": 0.0,
-                  "Visuals/Orientation": "HORIZONTAL",
-                  "Visuals/Number of tick marks": 5
-                },
-                {
-                  "_type": "Voltage View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/AnalogInput[0]",
-                  "_title": "AnalogInput[0]",
-                  "Range/Min": 0.0,
-                  "Range/Max": 5.0,
-                  "Range/Center": 0.0,
-                  "Visuals/Orientation": "HORIZONTAL",
-                  "Visuals/Number of tick marks": 5
-                },
-                {
-                  "_type": "Speed Controller",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [13]",
-                  "_title": "Talon SRX [13]",
-                  "Visuals/Orientation": "HORIZONTAL"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/DoubleSolenoid[18,0]/Value",
-                  "_title": "DoubleSolenoid[18,0]/Value"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///LiveWindow/Ungrouped/DoubleSolenoid[18,2]/Value",
-                  "_title": "DoubleSolenoid[18,2]/Value"
-                }
-              ]
+              "_children": []
             }
           },
           "2,0": {
@@ -602,26 +397,10 @@
             ],
             "content": {
               "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/CargoEndEffector",
-              "_title": "CargoEndEffector",
+              "_source0": "network_table:///LiveWindow/Shooter",
+              "_title": "Shooter",
               "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Pidgeon Yaw",
-                  "_title": "SmartDashboard/Pidgeon Yaw"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Right dt enc",
-                  "_title": "SmartDashboard/Right dt enc"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Left dt enc",
-                  "_title": "SmartDashboard/Left dt enc"
-                }
-              ]
+              "_children": []
             }
           },
           "6,0": {
@@ -631,10 +410,59 @@
             ],
             "content": {
               "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/CargoIntake",
-              "_title": "CargoIntake",
+              "_source0": "network_table:///LiveWindow/Ungrouped",
+              "_title": "Ungrouped",
               "Layout/Label position": "BOTTOM",
-              "_children": []
+              "_children": [
+                {
+                  "_type": "Speed Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [3]",
+                  "_title": "Victor SPX [3]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Speed Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [1]",
+                  "_title": "Talon SRX [1]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Speed Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [11]",
+                  "_title": "Talon SRX [11]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Speed Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [4]",
+                  "_title": "Victor SPX [4]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Speed Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [2]",
+                  "_title": "Talon SRX [2]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Speed Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [6]",
+                  "_title": "Talon SRX [6]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Speed Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [5]",
+                  "_title": "Talon SRX [5]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Speed Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [12]",
+                  "_title": "Talon SRX [12]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                }
+              ]
             }
           },
           "8,0": {
@@ -644,8 +472,8 @@
             ],
             "content": {
               "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/LimelightRotate",
-              "_title": "LimelightRotate",
+              "_source0": "network_table:///LiveWindow/Spinner",
+              "_title": "Spinner",
               "Layout/Label position": "BOTTOM",
               "_children": []
             }
@@ -657,120 +485,10 @@
             ],
             "content": {
               "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Climber",
-              "_title": "Climber",
+              "_source0": "network_table:///LiveWindow/Feeder",
+              "_title": "Feeder",
               "Layout/Label position": "BOTTOM",
               "_children": []
-            }
-          },
-          "12,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/MouthArticulator",
-              "_title": "MouthArticulator",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "14,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Claw",
-              "_title": "Claw",
-              "Layout/Label position": "BOTTOM",
-              "_children": [
-                {
-                  "_type": "Subsystem Layout",
-                  "_source0": "network_table:///LiveWindow/ClawAndIntake",
-                  "_title": "LiveWindow/ClawAndIntake",
-                  "Layout/Label position": "BOTTOM",
-                  "_children": []
-                }
-              ]
-            }
-          },
-          "16,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Legs",
-              "_title": "Legs",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "18,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/LimelightAssembly",
-              "_title": "LimelightAssembly",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "20,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/MouthIntaker",
-              "_title": "MouthIntaker",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "22,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/DriveTrain",
-              "_title": "DriveTrain",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "24,0": {
-            "size": [
-              2,
-              4
-            ],
-            "content": {
-              "_type": "Subsystem Layout",
-              "_source0": "network_table:///LiveWindow/Stinger",
-              "_title": "Stinger",
-              "Layout/Label position": "BOTTOM",
-              "_children": []
-            }
-          },
-          "0,4": {
-            "size": [
-              2,
-              1
-            ],
-            "content": {
-              "_type": "Basic Subsystem",
-              "_source0": "network_table:///LiveWindow/Shooter",
-              "_title": "Shooter"
             }
           }
         }
@@ -778,9 +496,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -7.199999809265137,
-    "y": -7.199999809265137,
-    "width": 1550.4000244140625,
-    "height": 838.4000244140625
+    "x": -8.0,
+    "y": -8.0,
+    "width": 1936.0,
+    "height": 1056.0
   }
 }

@@ -58,6 +58,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
     shooterRight.follow(shooterLeft);
 
+    SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
     setRunSpeed(0.0);
 
     velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
@@ -140,7 +141,6 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber(getName() + "/PIDGains/I", velocityGains.kI);
     SmartDashboard.putNumber(getName() + "/PIDGains/D", velocityGains.kD);
     SmartDashboard.putNumber(getName() + "/PIDGains/F", velocityGains.kF);
-    SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
   }
 
   @Override
