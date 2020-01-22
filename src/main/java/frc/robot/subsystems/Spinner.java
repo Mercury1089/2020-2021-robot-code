@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
 
 import frc.robot.RobotMap.CAN;
 import frc.robot.sensors.REVColor;
@@ -53,6 +54,10 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
 
   public REVColor getColorSensor() {
     return colorSensor;
+  }
+
+  public Color getDetectedColor() {
+    return colorSensor.getDetectedColor();
   }
 
   @Override
