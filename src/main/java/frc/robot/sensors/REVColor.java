@@ -30,6 +30,7 @@ public class REVColor {
   
   private Color detectedColor;
   private double confidence = 0.0;
+  private double confidenceWePutIntoTheColor;
 
   public REVColor() {
 
@@ -37,21 +38,32 @@ public class REVColor {
     colorSensor = new ColorSensorV3(i2cPort);
     colorMatch = new ColorMatch();
 
-    kBlueTarget = ColorMatch.makeColor(0.2, 0.4, 0.4);
-    kGreenTarget = ColorMatch.makeColor(0.2, 0.6, 0.2);
-    kRedTarget = ColorMatch.makeColor(0.6, 0.2, 0.2);
-    kYellowTarget = ColorMatch.makeColor(0.4, 0.4, 0.2);
+    //Without Light
+    kBlueTarget = ColorMatch.makeColor(0.2, 0.5, 0.3);
+    kGreenTarget = ColorMatch.makeColor(0.25, 0.55, 0.2);
+    kRedTarget = ColorMatch.makeColor(0.6, 0.3, 0.1);
+    kYellowTarget = ColorMatch.makeColor(0.4, 0.5, 0.1);
+
+    //With Light
+    //We haven't tesed this yet
+    //Once we will there will be values here
+    //Unless we don't put them
+    //And then this will still be here
 
     colorMatch.addColorMatch(kBlueTarget);
     colorMatch.addColorMatch(kGreenTarget);
     colorMatch.addColorMatch(kRedTarget);
-    colorMatch.addColorMatch(kYellowTarget);  
+    colorMatch.addColorMatch(kYellowTarget); 
+    
+    confidenceWePutIntoTheColor = 1.0;
+
+    colorMatch.setConfidenceThreshold(confidenceWePutIntoTheColor);
   }
 
 
   public ControlPanelColor get() {
     detectedColor = colorSensor.getColor();
-    ColorMatchResult match = colorMatch.matchClosestColor(detectedColor);
+    ColorMatchResult match = colorMatch.matchColor(detectedColor);
     confidence = match.confidence;
 
     if (match.color == kBlueTarget)
