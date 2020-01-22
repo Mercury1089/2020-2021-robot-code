@@ -36,25 +36,33 @@ public class REVColor {
     i2cPort = I2C.Port.kOnboard;
     colorSensor = new ColorSensorV3(i2cPort);
     colorMatch = new ColorMatch();
-
+    /*
     //Without Light
-    kBlueTarget = ColorMatch.makeColor(0.2, 0.5, 0.3);
-    kGreenTarget = ColorMatch.makeColor(0.25, 0.55, 0.2);
-    kRedTarget = ColorMatch.makeColor(0.6, 0.3, 0.1);
+    kBlueTarget = ColorMatch.makeColor(0.17, 0.475, 0.355);
+    kGreenTarget = ColorMatch.makeColor(0.225, 0.575, 0.2);
+    kRedTarget = ColorMatch.makeColor(0.63, 0.3, 0.07);
     kYellowTarget = ColorMatch.makeColor(0.4, 0.5, 0.1);
-
+    */
+    /*
     //With Light
-    //We haven't tested this yet
-    //Once we will there will be values here
-    //Unless we don't put them
-    //And then this will still be here
+    kBlueTarget = ColorMatch.makeColor(0.135, 0.435, 0.43);
+    kGreenTarget = ColorMatch.makeColor(0.19, 0.56, 0.25);
+    kRedTarget = ColorMatch.makeColor(0.49, 0.365, 0.145);
+    kYellowTarget = ColorMatch.makeColor(0.32, 0.56, 0.12);
+    */
+    //With Light and covering
+    kBlueTarget = ColorMatch.makeColor(0.175, 0.445, 0.38);
+    kGreenTarget = ColorMatch.makeColor(0.21, 0.535, 0.255);
+    kRedTarget = ColorMatch.makeColor(0.40, 0.41, 0.19);
+    kYellowTarget = ColorMatch.makeColor(0.31, 0.52, 0.17);
+    
 
     colorMatch.addColorMatch(kBlueTarget);
     colorMatch.addColorMatch(kGreenTarget);
     colorMatch.addColorMatch(kRedTarget);
     colorMatch.addColorMatch(kYellowTarget); 
     
-    MINIMUM_CONFIDENCE_THRESHOLD = 0.9;
+    MINIMUM_CONFIDENCE_THRESHOLD = 0.90;
     colorMatch.setConfidenceThreshold(MINIMUM_CONFIDENCE_THRESHOLD);
 
   }
@@ -62,8 +70,8 @@ public class REVColor {
 
   public ControlPanelColor get() {
     detectedColor = colorSensor.getColor();
-    ColorMatchResult match = colorMatch.matchColor(detectedColor);
-    if (match != null) {
+    try {
+      ColorMatchResult match = colorMatch.matchColor(detectedColor);
       confidence = match.confidence;
 
       if (match.color == kBlueTarget)
@@ -75,7 +83,7 @@ public class REVColor {
       else if (match.color == kYellowTarget) 
         return ControlPanelColor.YELLOW;
       return ControlPanelColor.UNKNOWN;  
-    } else {
+    } catch (Exception nullPointerException) {
       confidence = 0;
       return ControlPanelColor.UNKNOWN;
     }
