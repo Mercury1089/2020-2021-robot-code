@@ -33,7 +33,6 @@ public class ShuffleDash {
     private SendableChooser<TunablePIDSlot> tunablePIDChooser;
 
     public ShuffleDash() {
-        new Notifier(this::updateDash).startPeriodic(0.020);
 
         ntInstance = NetworkTableInstance.getDefault();
 
@@ -48,6 +47,8 @@ public class ShuffleDash {
         SmartDashboard.putNumber(PID_TUNER_I, 0.0);
         SmartDashboard.putNumber(PID_TUNER_D, 0.0);
         SmartDashboard.putNumber(PID_TUNER_F, 0.0);
+
+        new Notifier(this::updateDash).startPeriodic(0.020);
     }
 
     public void addPublisher(IMercShuffleBoardPublisher publisher) {

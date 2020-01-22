@@ -21,6 +21,7 @@ public class REVColor {
   private final I2C.Port i2cPort;
   private final ColorSensorV3 colorSensor;
   private final ColorMatch colorMatch;
+  private final double MINIMUM_CONFIDENCE_THRESHOLD;
 
   private final Color kBlueTarget;
   private final Color kGreenTarget;
@@ -29,7 +30,6 @@ public class REVColor {
   
   private Color detectedColor;
   private double confidence = 0.0;
-  private double confidenceWePutIntoTheColor;
 
   public REVColor() {
 
@@ -44,7 +44,7 @@ public class REVColor {
     kYellowTarget = ColorMatch.makeColor(0.4, 0.5, 0.1);
 
     //With Light
-    //We haven't tesed this yet
+    //We haven't tested this yet
     //Once we will there will be values here
     //Unless we don't put them
     //And then this will still be here
@@ -54,26 +54,31 @@ public class REVColor {
     colorMatch.addColorMatch(kRedTarget);
     colorMatch.addColorMatch(kYellowTarget); 
     
-    confidenceWePutIntoTheColor = 1.0;
+    MINIMUM_CONFIDENCE_THRESHOLD = 0.9;
+    colorMatch.setConfidenceThreshold(MINIMUM_CONFIDENCE_THRESHOLD);
 
-    colorMatch.setConfidenceThreshold(confidenceWePutIntoTheColor);
   }
 
 
   public ControlPanelColor get() {
     detectedColor = colorSensor.getColor();
     ColorMatchResult match = colorMatch.matchColor(detectedColor);
-    confidence = match.confidence;
+    if (match != null) {
+      confidence = match.confidence;
 
-    if (match.color == kBlueTarget)
-      return ControlPanelColor.BLUE;
-    else if (match.color == kRedTarget)
-      return ControlPanelColor.RED;
-    else if (match.color == kGreenTarget)
-      return ControlPanelColor.GREEN;
-    else if (match.color == kYellowTarget) 
-      return ControlPanelColor.YELLOW;
-    return ControlPanelColor.UNKNOWN;
+      if (match.color == kBlueTarget)
+        return ControlPanelColor.BLUE;
+      else if (match.color == kRedTarget)
+        return ControlPanelColor.RED;
+      else if (match.color == kGreenTarget)
+        return ControlPanelColor.GREEN;
+      else if (match.color == kYellowTarget) 
+        return ControlPanelColor.YELLOW;
+      return ControlPanelColor.UNKNOWN;  
+    } else {
+      confidence = 0;
+      return ControlPanelColor.UNKNOWN;
+    }
   }
 
   public double getConfidence() {
