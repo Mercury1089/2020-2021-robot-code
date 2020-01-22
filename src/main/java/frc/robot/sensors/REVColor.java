@@ -22,6 +22,7 @@ public class REVColor {
   private final I2C.Port i2cPort;
   private final ColorSensorV3 colorSensor;
   private final ColorMatch colorMatch;
+  private final double MINIMUM_CONFIDENCE_THRESHOLD;
 
   private final Color kBlueTarget;
   private final Color kGreenTarget;
@@ -30,7 +31,6 @@ public class REVColor {
   
   private Color detectedColor;
   private double confidence = 0.0;
-  private double confidenceWePutIntoTheColor;
 
   public REVColor() {
 
@@ -55,9 +55,9 @@ public class REVColor {
     colorMatch.addColorMatch(kRedTarget);
     colorMatch.addColorMatch(kYellowTarget); 
     
-    confidenceWePutIntoTheColor = 1.0;
+    MINIMUM_CONFIDENCE_THRESHOLD = 0.9;
 
-    colorMatch.setConfidenceThreshold(confidenceWePutIntoTheColor);
+    colorMatch.setConfidenceThreshold(MINIMUM_CONFIDENCE_THRESHOLD);
   }
 
 
