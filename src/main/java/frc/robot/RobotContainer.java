@@ -8,15 +8,24 @@ import java.io.FileNotFoundException;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
+
 import frc.robot.commands.drivetrain.DegreeRotate;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.MoveOnPath;
+import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
+
+import frc.robot.commands.feeder.RunFeeder;
+import frc.robot.commands.hopper.RunHopperBelt;
+import frc.robot.commands.limelightCamera.SwitchLEDState;
+
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.shooter.RunShooterRPMBangBang;
 import frc.robot.commands.shooter.RunShooterRPMPID;
+
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
@@ -24,12 +33,10 @@ import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spinner;
+
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.subsystems.Shooter.ShooterMode;
-import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
-import frc.robot.commands.feeder.RunFeeder;
-import frc.robot.commands.hopper.RunHopperBelt;
-import frc.robot.commands.limelightCamera.SwitchLEDState;
+
 import frc.robot.util.ShuffleDash;
 
 /**
