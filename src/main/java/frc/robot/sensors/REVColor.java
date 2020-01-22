@@ -30,7 +30,7 @@ public class REVColor {
   
   private Color detectedColor;
   private double confidence = 0.0;
-  private double confidenceWePutIntoTheColor;
+  private double colorConfidence;
 
   public REVColor() {
 
@@ -45,7 +45,7 @@ public class REVColor {
     kYellowTarget = ColorMatch.makeColor(0.4, 0.5, 0.1);
 
     //With Light
-    //We haven't tesed this yet
+    //We haven't tested this yet
     //Once we will there will be values here
     //Unless we don't put them
     //And then this will still be here
@@ -55,9 +55,9 @@ public class REVColor {
     colorMatch.addColorMatch(kRedTarget);
     colorMatch.addColorMatch(kYellowTarget); 
     
-    confidenceWePutIntoTheColor = 1.0;
+    colorConfidence = 1.0;
 
-    colorMatch.setConfidenceThreshold(confidenceWePutIntoTheColor);
+    colorMatch.setConfidenceThreshold(colorConfidence);
   }
 
 
