@@ -43,14 +43,16 @@ public class REVColor {
     kRedTarget = ColorMatch.makeColor(0.63, 0.3, 0.07);
     kYellowTarget = ColorMatch.makeColor(0.4, 0.5, 0.1);
     */
+
     /*
-    //With Light
+    //With Light (need to fix)
     kBlueTarget = ColorMatch.makeColor(0.135, 0.435, 0.43);
     kGreenTarget = ColorMatch.makeColor(0.19, 0.56, 0.25);
     kRedTarget = ColorMatch.makeColor(0.49, 0.365, 0.145);
     kYellowTarget = ColorMatch.makeColor(0.32, 0.56, 0.12);
     */
-    //With Light and covering
+
+    //With Light and Covering
     kBlueTarget = ColorMatch.makeColor(0.175, 0.445, 0.38);
     kGreenTarget = ColorMatch.makeColor(0.21, 0.535, 0.255);
     kRedTarget = ColorMatch.makeColor(0.40, 0.41, 0.19);
