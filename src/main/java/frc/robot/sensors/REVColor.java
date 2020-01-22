@@ -53,10 +53,10 @@ public class REVColor {
     */
 
     //With Light and Covering
-    kBlueTarget = ColorMatch.makeColor(0.175, 0.445, 0.38);
-    kGreenTarget = ColorMatch.makeColor(0.21, 0.535, 0.255);
-    kRedTarget = ColorMatch.makeColor(0.40, 0.41, 0.19);
-    kYellowTarget = ColorMatch.makeColor(0.31, 0.52, 0.17);
+    kBlueTarget = ColorMatch.makeColor(0.245, 0.465, 0.29);
+    kGreenTarget = ColorMatch.makeColor(0.26, 0.49, 0.25);
+    kRedTarget = ColorMatch.makeColor(0.35, 0.435, 0.215);
+    kYellowTarget = ColorMatch.makeColor(0.315, 0.5, 0.185);
     
 
     colorMatch.addColorMatch(kBlueTarget);
@@ -64,7 +64,7 @@ public class REVColor {
     colorMatch.addColorMatch(kRedTarget);
     colorMatch.addColorMatch(kYellowTarget); 
     
-    MINIMUM_CONFIDENCE_THRESHOLD = 0.90;
+    MINIMUM_CONFIDENCE_THRESHOLD = 0.975;
     colorMatch.setConfidenceThreshold(MINIMUM_CONFIDENCE_THRESHOLD);
 
   }
