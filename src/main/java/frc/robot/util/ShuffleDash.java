@@ -3,6 +3,7 @@ package frc.robot.util;
 import java.util.List;
 import java.util.ArrayList;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,8 +32,11 @@ public class ShuffleDash {
     private SendableChooser<String> autonFirstStep;
     private List<IMercShuffleBoardPublisher> publishers;
     private SendableChooser<TunablePIDSlot> tunablePIDChooser;
+    private String positionColor;
 
     public ShuffleDash() {
+
+        //SmartDashboard.putString("Position Control Color", getPositionControlColor());
 
         ntInstance = NetworkTableInstance.getDefault();
 
@@ -92,5 +96,23 @@ public class ShuffleDash {
     public String getFirstStep() {
         return autonFirstStep.getSelected();
         
+    }
+
+    public String getPositionControlColor() {
+        positionColor = DriverStation.getInstance().getGameSpecificMessage();
+        if(positionColor.length() > 0)
+            switch(positionColor.charAt(0)) {
+                case 'R':
+                    return "Red";
+                case 'G':
+                    return "Green";
+                case 'B':
+                    return "Blue";
+                case 'Y':
+                    return "Yellow";
+                default:
+                    return "Unknown/Glitch";
+            }
+        return "Unknown";
     }
 }
