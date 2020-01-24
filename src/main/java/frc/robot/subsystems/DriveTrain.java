@@ -79,6 +79,9 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         podgeboi = new PigeonIMU(CAN.PIGEON);
         podgeboi.configFactoryDefault();
 
+        leaderLeft.configRemoteFeedbackFilter(podgeboi.getDeviceID(), RemoteSensorSource.valueOf(2), 1);
+        leaderRight.configRemoteFeedbackFilter(podgeboi.getDeviceID(), RemoteSensorSource.valueOf(2), 1);
+
         //CANifier and distance sensors
 
         //Account for motor orientation.
@@ -128,6 +131,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     public void initializeNormalMotionFeedback() {
         leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PRIMARY_LOOP);
         leaderRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PRIMARY_LOOP);
+
         //leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, DRIVE_SMOOTH_MOTION_SLOT);
         //leaderRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, DRIVE_SMOOTH_MOTION_SLOT);
         //leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, DRIVE_MOTION_PROFILE_SLOT);
@@ -436,6 +440,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
                 break;
             case DRIVE_SMOOTH_TURN_SLOT:
                 turnGains = gains;
+                leaderRight.configSelectedFeedbackSensor(FeedbackDevice.valueOf(1), 1);
+                leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.valueOf(1), 1);
                 leaderRight.configPID(DRIVE_SMOOTH_TURN_SLOT, turnGains);
                 leaderLeft.configPID(DRIVE_SMOOTH_TURN_SLOT, turnGains);
                 break;

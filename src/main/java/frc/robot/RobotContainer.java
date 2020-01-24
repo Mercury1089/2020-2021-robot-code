@@ -14,6 +14,7 @@ import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
 
 import frc.robot.commands.drivetrain.DegreeRotate;
+import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.MoveOnPath;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
@@ -112,11 +113,11 @@ public class RobotContainer {
         left4.whenPressed(new RunShooterRPMBangBang(shooter));
         left5.whenPressed(new RunShooterRPMPID(shooter));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
-        left7.whenPressed(new DegreeRotate(90, driveTrain));
         
         right2.whileHeld(new RunFeeder(feeder));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         right7.whenPressed(new DegreeRotate(90, driveTrain));
+        right10.whenPressed(new DriveDistance(60.0, driveTrain));
 
         gamepadY.whenHeld(new RunFeeder(feeder));
         gamepadX.whenHeld(new RunHopperBelt(hopper));

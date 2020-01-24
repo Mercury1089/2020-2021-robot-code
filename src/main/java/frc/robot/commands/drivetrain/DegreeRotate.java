@@ -31,7 +31,6 @@ public class DegreeRotate extends MoveHeading {
     @Override
     public void initialize() {
         super.initialize();
-
         this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
     }
 
