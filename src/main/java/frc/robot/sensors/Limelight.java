@@ -193,7 +193,7 @@ public class Limelight implements TableEntryListener {
      * @return the distance based on area
      */
     private double calcDistFromArea() {
-        return areaCoeff * Math.pow(targetArea, areaExp) * 12;
+        return 16.2 * Math.pow(targetArea, -0.479);
     }
 
     /**

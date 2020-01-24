@@ -7,10 +7,12 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.sensors.Limelight;
+import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
-public class LimelightCamera extends SubsystemBase {
+public class LimelightCamera extends SubsystemBase implements IMercShuffleBoardPublisher{
   
   private Limelight limelight;
 
@@ -18,7 +20,9 @@ public class LimelightCamera extends SubsystemBase {
    * Creates a new LimelightCamera.
   */
   public LimelightCamera() {
+    super();
     this.limelight = new Limelight();
+    setName("Limelight Camera");
   }
 
   @Override
@@ -28,5 +32,10 @@ public class LimelightCamera extends SubsystemBase {
 
   public Limelight getLimelight(){
     return this.limelight;
+  }
+
+  @Override
+  public void publishValues() {
+    SmartDashboard.putNumber(getName() + "/Distance from Target", getLimelight().getRawAreaDistance());
   }
 }

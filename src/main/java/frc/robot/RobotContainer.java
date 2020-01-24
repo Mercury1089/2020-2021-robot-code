@@ -92,10 +92,11 @@ public class RobotContainer {
         elevator.setDefaultCommand(new DriveElevator(elevator));
         
         shuffleDash = new ShuffleDash();
-        shuffleDash.addPublisher(shooter);
+        //shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
-        shuffleDash.addPublisher(spinner);
-        shuffleDash.addPublisher(elevator);
+        //shuffleDash.addPublisher(spinner);
+        //shuffleDash.addPublisher(elevator);
+        shuffleDash.addPublisher(limelightCamera);
         
         shuffleDash.addPIDTunable(shooter, "Shooter");
         shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
