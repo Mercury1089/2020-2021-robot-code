@@ -17,7 +17,9 @@ public class RobotMap {
                 SHOOTER_RIGHT = 9,
                 PIGEON = 10,
                 ELEVATOR = 11,
-                SPINNER = 12;
+                SPINNER = 12,
+                CANCODER_ML = 51,
+                CANCODER_MR = 52;
 
         private CAN() {
         }
