@@ -32,6 +32,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spinner;
@@ -60,6 +61,7 @@ public class RobotContainer {
 
     private DriveTrain driveTrain;
     private Shooter shooter;
+    private Intake intake;
     private Feeder feeder;
     private Hopper hopper;
     private Spinner spinner;
@@ -80,6 +82,8 @@ public class RobotContainer {
         shooter = new Shooter(ShooterMode.ONE_WHEEL);
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
+        intake = new Intake();
+    
         feeder = new Feeder();
         
         hopper = new Hopper();
@@ -96,7 +100,7 @@ public class RobotContainer {
         //shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
         //shuffleDash.addPublisher(spinner);
-        //shuffleDash.addPublisher(elevator);
+        shuffleDash.addPublisher(intake);
         shuffleDash.addPublisher(limelightCamera);
         
         shuffleDash.addPIDTunable(shooter, "Shooter");
