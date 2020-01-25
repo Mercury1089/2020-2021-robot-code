@@ -74,7 +74,7 @@ public class RobotContainer {
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
 
-        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS);
+        driveTrain = new DriveTrain(DriveTrainLayout.TALONS_VICTORS);
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
         shooter = new Shooter(ShooterMode.ONE_WHEEL);
