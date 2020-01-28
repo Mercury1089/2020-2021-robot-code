@@ -74,7 +74,7 @@ public class MoveHeading extends CommandBase {
         right.configClosedLoopPeriod(0, closedLoopTimeMs);
         right.configClosedLoopPeriod(1, closedLoopTimeMs);
 
-        right.configAuxPIDPolarity(true);
+        //right.configAuxPIDPolarity(true);
 
         this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
