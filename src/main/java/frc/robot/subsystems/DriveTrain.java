@@ -139,20 +139,10 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     }
 
     public void initializeNormalMotionFeedback() {
-        if (layout == DriveTrainLayout.TALONS_VICTORS){
-            leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PRIMARY_LOOP);
-            leaderRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PRIMARY_LOOP); 
-        } else{
-            leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, PRIMARY_LOOP);
-            leaderRight.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, PRIMARY_LOOP);
-        }
-        //leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, DRIVE_SMOOTH_MOTION_SLOT);
-        //leaderRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, DRIVE_SMOOTH_MOTION_SLOT);
-        //leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, DRIVE_MOTION_PROFILE_SLOT);
-        //leaderRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, DRIVE_MOTION_PROFILE_SLOT);
-        //leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, DRIVE_SMOOTH_TURN_SLOT);
-        //leaderRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, DRIVE_SMOOTH_TURN_SLOT);
 
+        // TODO - set up Falcon encoders here...
+        leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PRIMARY_LOOP);
+        leaderRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PRIMARY_LOOP); 
         leaderRight.configSelectedFeedbackCoefficient(1.0, DriveTrain.PRIMARY_LOOP);
 
         isInMotionMagicMode = false;
