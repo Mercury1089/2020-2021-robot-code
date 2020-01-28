@@ -18,12 +18,15 @@ public class Limelight implements TableEntryListener {
     private final double vertExp = -0.948;
     private final double horizCoeff = 264.0;
     private final double horizExp = -0.953;
-    private final double areaCoeff = 6.64;
-    private final double areaExp = -0.466;
+    private final double areaCoeff = 16.2;
+    private final double areaExp = -0.479;
     private NetworkTable nt; //finds the limelight network table
     private double numTargets, targetCenterXAngle, targetCenterYAngle, targetArea, horizontalLength, verticalLength;
     private double[] cornerx;
     private boolean targetAcquired;
+    private final double LIMELIGHT_HEIGHT = 12.00;
+    private final double TARGET_HEIGHT = 89.75;
+    private final double LIMELIGHT_ANGLE = 45.00;
 
     //private final double LIMELIGHT_HFOV_DEG = 59.6;
     //private final double LIMELIGHT_VFOV_DEG = 45.7;
@@ -193,7 +196,7 @@ public class Limelight implements TableEntryListener {
      * @return the distance based on area
      */
     private double calcDistFromArea() {
-        return areaCoeff * Math.pow(targetArea, areaExp) * 12;
+        return areaCoeff * Math.pow(targetArea, areaExp);
     }
 
     /**
@@ -212,6 +215,15 @@ public class Limelight implements TableEntryListener {
      */
     private double calcDistFromHoriz() {
         return horizCoeff * Math.pow(horizontalLength, horizExp) * 12;
+    }
+
+    /**
+     * Using the angle, it returns the distance between the target and the limelight
+     * 
+     * @return the distance based on vertical angle offset
+     */
+    private double calcDistFromAngle() {
+        return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE + getTargetCenterYAngle());
     }
 
     /**

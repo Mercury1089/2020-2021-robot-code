@@ -15,6 +15,7 @@ import frc.robot.util.MercMath;
 public class DegreeRotate extends MoveHeading {
 
     private DriveTrain driveTrain;
+    private double angleError;
 
     public DegreeRotate(double angleToTurn, DriveTrain driveTrain) {
         super(0, angleToTurn, driveTrain);
@@ -31,7 +32,6 @@ public class DegreeRotate extends MoveHeading {
     @Override
     public void initialize() {
         super.initialize();
-
         this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
     }
 
@@ -44,7 +44,7 @@ public class DegreeRotate extends MoveHeading {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        double angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
+        angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
 
         angleError = MercMath.pigeonUnitsToDegrees(angleError);
 
@@ -67,7 +67,9 @@ public class DegreeRotate extends MoveHeading {
         String sdPrefix = driveTrain.getName() + "/" + getName();
         SmartDashboard.putNumber(sdPrefix + "/onTargetCount", onTargetCount);
         SmartDashboard.putNumber(sdPrefix + "/onTargetMinCount", onTargetMinCount);
+        SmartDashboard.putNumber(sdPrefix + "/angleError", angleError);
         SmartDashboard.putBoolean(sdPrefix + "/isOnTarget", isOnTarget);
+        
 
         return isFinished;
     }

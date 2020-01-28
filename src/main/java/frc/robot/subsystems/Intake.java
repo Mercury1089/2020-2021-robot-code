@@ -7,13 +7,19 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.MercTalonSRX;
+import frc.robot.util.MercVictorSPX;
 import frc.robot.util.interfaces.IMercMotorController;
+import frc.robot.util.interfaces.IMercPIDTunable;
+import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
+import frc.robot.util.interfaces.IMercMotorController.LimitSwitchDirection;
 import frc.robot.RobotMap.CAN;
 
-public class Intake extends SubsystemBase {
-  private final IMercMotorController intake;
+public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher {
+  private final IMercMotorController intakeRoller;
+  private final IMercMotorController intakeArticulator;
   private IntakePosition intakePosition;
 
   public enum IntakePosition {
@@ -25,12 +31,15 @@ public class Intake extends SubsystemBase {
    * Creates a new Intake.
    */
   public Intake() {
-    intake = new MercTalonSRX(CAN.INTAKE);
+    super();
+    setName("Intake");
+    intakeRoller = new MercVictorSPX(CAN.INTAKE_ROLLER);
+    intakeArticulator = new MercTalonSRX(CAN.INTAKE_ARTICULATOR);
     intakePosition = IntakePosition.IN;
   }
 
   public void setSpeed(double speed) {
-    this.intake.setSpeed(speed);
+    this.intakeRoller.setSpeed(speed);
   }
 
   public void setIntakeIn() {
@@ -41,10 +50,6 @@ public class Intake extends SubsystemBase {
     this.intakePosition = IntakePosition.OUT;
   }
 
-  // public void toggleIntakePosition() {
-    
-  // }
-
   public IntakePosition getIntakePosition() {
     return this.intakePosition;
   }
@@ -52,5 +57,11 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  @Override
+  public void publishValues() {
+    SmartDashboard.putBoolean(getName() + "/FwdLimit", intakeArticulator.isLimitSwitchClosed(LimitSwitchDirection.FORWARD));
+    SmartDashboard.putBoolean(getName() + "/RevLimit", intakeArticulator.isLimitSwitchClosed(LimitSwitchDirection.REVERSE));
   }
 }

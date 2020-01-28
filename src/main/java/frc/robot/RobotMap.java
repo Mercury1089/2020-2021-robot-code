@@ -12,12 +12,15 @@ public class RobotMap {
                 DRIVETRAIN_FR = 4,
                 FEEDER = 5,
                 HOPPER_BELT = 6,
-                INTAKE = 7,
+                INTAKE_ROLLER = 7,
+                INTAKE_ARTICULATOR = 13,
                 SHOOTER_LEFT = 8,
                 SHOOTER_RIGHT = 9,
                 PIGEON = 10,
                 ELEVATOR = 11,
-                SPINNER = 12;
+                SPINNER = 12,
+                CANCODER_ML = 51,
+                CANCODER_MR = 52;
 
         private CAN() {
         }
