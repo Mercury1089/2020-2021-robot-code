@@ -14,19 +14,27 @@ public class Limelight implements TableEntryListener {
      * variable, either vertical length (vert), horizontal length (horiz),
      * or area (area).
      */
+    //Redo Coefficients for current game
     private final double vertCoeff = 111.0;
     private final double vertExp = -0.948;
     private final double horizCoeff = 264.0;
     private final double horizExp = -0.953;
-    private final double areaCoeff = 16.2;
-    private final double areaExp = -0.479;
+
     private NetworkTable nt; //finds the limelight network table
     private double numTargets, targetCenterXAngle, targetCenterYAngle, targetArea, horizontalLength, verticalLength;
     private double[] cornerx;
     private boolean targetAcquired;
-    private final double LIMELIGHT_HEIGHT = 12.00;
+
+    //Height of floor to center of Limelight
+    private final double LIMELIGHT_HEIGHT = 15.00;
+    //Center of target to floor
     private final double TARGET_HEIGHT = 89.75;
+    //Angle of Limelight from floor
     private final double LIMELIGHT_ANGLE = 45.00;
+
+    private final double areaCoeff = 16.2;
+    private final double areaExp = -0.479;
+    
 
     //private final double LIMELIGHT_HFOV_DEG = 59.6;
     //private final double LIMELIGHT_VFOV_DEG = 45.7;
@@ -195,7 +203,7 @@ public class Limelight implements TableEntryListener {
      *
      * @return the distance based on area
      */
-    private double calcDistFromArea() {
+    public double calcDistFromArea() {
         return areaCoeff * Math.pow(targetArea, areaExp);
     }
 
@@ -204,7 +212,7 @@ public class Limelight implements TableEntryListener {
      *
      * @return the distance based on vertical distance
      */
-    private double calcDistFromVert() {
+    public double calcDistFromVert() {
         return vertCoeff * Math.pow(verticalLength, vertExp) * 12;
     }
 
@@ -213,7 +221,7 @@ public class Limelight implements TableEntryListener {
      *
      * @return the distance based on horizontal distance
      */
-    private double calcDistFromHoriz() {
+    public double calcDistFromHoriz() {
         return horizCoeff * Math.pow(horizontalLength, horizExp) * 12;
     }
 
@@ -222,12 +230,12 @@ public class Limelight implements TableEntryListener {
      * 
      * @return the distance based on vertical angle offset
      */
-    private double calcDistFromAngle() {
+    public double calcDistFromAngle() {
         return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE + getTargetCenterYAngle());
     }
 
     /**
-     * Set the LED state on the limelight.
+     * Set the LED state on the limelight
      *
      * @param limelightLEDState the state of the LED.
      */

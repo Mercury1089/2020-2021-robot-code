@@ -37,5 +37,12 @@ public class LimelightCamera extends SubsystemBase implements IMercShuffleBoardP
   @Override
   public void publishValues() {
     SmartDashboard.putNumber(getName() + "/Distance from Target", getLimelight().getRawAreaDistance());
+    
+    SmartDashboard.putNumber("From Angle", limelight.calcDistFromAngle());
+    SmartDashboard.putNumber("From Area", limelight.calcDistFromArea());
+    /*
+    SmartDashboard.putNumber("From Horiz", limelight.calcDistFromHoriz());
+    SmartDashboard.putNumber("From Vert", limelight.calcDistFromVert());
+    */
   }
 }
