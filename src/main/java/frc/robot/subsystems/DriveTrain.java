@@ -460,8 +460,6 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
                 break;
             case DRIVE_SMOOTH_TURN_SLOT:
                 turnGains = gains;
-                leaderRight.configSelectedFeedbackSensor(FeedbackDevice.valueOf(1), 1);
-                leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.valueOf(1), 1);
                 leaderRight.configPID(DRIVE_SMOOTH_TURN_SLOT, turnGains);
                 leaderLeft.configPID(DRIVE_SMOOTH_TURN_SLOT, turnGains);
                 break;
