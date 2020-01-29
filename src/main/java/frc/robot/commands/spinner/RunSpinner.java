@@ -32,7 +32,7 @@ public class RunSpinner extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    spinner.setSpeed(Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.rightX));
+    spinner.setSpeed(spinner.getRunSpeed());
   }
 
   // Called once the command ends or is interrupted.

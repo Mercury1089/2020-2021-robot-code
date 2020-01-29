@@ -23,6 +23,7 @@ import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.hopper.RunHopperBelt;
+import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
 
 import frc.robot.commands.shooter.RunShooter;
@@ -87,16 +88,11 @@ public class RobotContainer {
         intake = new Intake();
     
         feeder = new Feeder();
-        
-        hopper = new Hopper();
-        
+        intake = new Intake();
+        hopper = new Hopper();       
         limelightCamera = new LimelightCamera();
-        
         spinner = new Spinner();
-        spinner.setDefaultCommand(new RunSpinner(spinner));
-        
         elevator = new Elevator();
-        elevator.setDefaultCommand(new DriveElevator(elevator));
         
         shuffleDash = new ShuffleDash();
         //shuffleDash.addPublisher(shooter);
@@ -119,9 +115,13 @@ public class RobotContainer {
         left4.whenPressed(new RunShooterRPMBangBang(shooter));
         left5.whenPressed(new RunShooterRPMPID(shooter));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
+        right7.whileHeld(new RunHopperBelt(hopper));
         
+        right1.whileHeld(new RunIntake(intake));
         right2.whileHeld(new RunFeeder(feeder));
+        right3.whileHeld(new DriveElevator(elevator));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+        right5.whileHeld(new RunSpinner(spinner));
         right6.whenPressed(new MoveHeading(0, 90, driveTrain));
         right7.whenPressed(new DegreeRotate(45, driveTrain));
         right8.whenPressed(new DegreeRotate(90, driveTrain));

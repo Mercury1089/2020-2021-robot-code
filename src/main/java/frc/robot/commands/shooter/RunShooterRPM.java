@@ -5,23 +5,24 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.elevator;
+package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
-import frc.robot.RobotMap.GAMEPAD_AXIS;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Shooter;
+import frc.robot.util.interfaces.IMercMotorController;
 
-public class DriveElevator extends CommandBase {
+public class RunShooterRPM extends CommandBase {
 
-  private Elevator elevator;
+  protected IMercMotorController shooterLeft, shooterRight;
+
+  private Shooter shooter;
 
   /**
-   * Creates a new DriveElevator.
+   * Creates a new RunShooter.
    */
-  public DriveElevator(Elevator elevator) {
-    addRequirements(elevator);
-    this.elevator = elevator;
+  public RunShooterRPM(Shooter shooter) {
+    super.addRequirements(shooter);
+    this.shooter = shooter;
   }
 
   // Called when the command is initially scheduled.
@@ -32,12 +33,13 @@ public class DriveElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    elevator.setSpeed(elevator.getRunSpeed());
+    this.shooter.setVelocity(Math.abs(shooter.getRunRPM()));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    this.shooter.setSpeed(0.0);
   }
 
   // Returns true when the command should end.
