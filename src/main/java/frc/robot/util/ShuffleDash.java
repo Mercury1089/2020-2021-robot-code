@@ -36,7 +36,7 @@ public class ShuffleDash {
 
     public ShuffleDash() {
 
-        //SmartDashboard.putString("Position Control Color", getPositionControlColor());
+        SmartDashboard.putString("Position Control Color", getPositionControlColor());
 
         ntInstance = NetworkTableInstance.getDefault();
 

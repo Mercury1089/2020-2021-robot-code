@@ -19,7 +19,6 @@ public class RotationControl extends CommandBase {
   private int colorsCrossed;
 
   private final int MINIMUM_COLORS_CROSSED = 25;
-  private final double SPINNER_SPEED = 0.25;
 
   public RotationControl(Spinner spinner) {
     addRequirements(spinner);
@@ -43,7 +42,7 @@ public class RotationControl extends CommandBase {
       previousColor = currentColor;
     }
 
-    spinner.setSpeed(SPINNER_SPEED);
+    spinner.setSpeed(spinner.getRunSpeed());
   }
 
   // Called once the command ends or is interrupted.

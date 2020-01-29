@@ -22,7 +22,7 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
   
   private IMercMotorController spinController;
   private REVColor colorSensor;
-  private double runSpeed;
+  private final double RUN_SPEED = 0.25;
 
   /**
    * Creates a new Spinner.
@@ -32,16 +32,15 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
     setName("Spinner");
     spinController = new MercTalonSRX(CAN.SPINNER);
     colorSensor = new REVColor();
-    runSpeed = 0.5;
     SmartDashboard.putNumber("Spin speed", 0.0);
   }
 
   public void setRunSpeed(double runSpeed) {
-    this.runSpeed = runSpeed;
+    this.RUN_SPEED = runSpeed;
   }
 
   public double getRunSpeed() {
-    return runSpeed;
+    return RUN_SPEED;
   }
 
   public double getEncTicks() {
