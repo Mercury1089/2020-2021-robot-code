@@ -7,6 +7,8 @@
 
 package frc.robot.commands.drivetrain;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
@@ -68,6 +70,7 @@ public class RotateToTarget extends DegreeRotate {
             onTargetCount = 0;
         }
 
+        SmartDashboard.putNumber("angleError", angleError);
         return isFinished;
     }
 

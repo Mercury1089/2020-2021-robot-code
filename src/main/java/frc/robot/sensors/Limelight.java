@@ -28,9 +28,9 @@ public class Limelight implements TableEntryListener {
     //Height of floor to center of Limelight
     private final double LIMELIGHT_HEIGHT = 15.00;
     //Center of target to floor
-    private final double TARGET_HEIGHT = 89.75;
+    private final double TARGET_HEIGHT = 98.25;
     //Angle of Limelight from floor
-    private final double LIMELIGHT_ANGLE = 45.00;
+    private final double LIMELIGHT_ANGLE = 50.00;
 
     private final double areaCoeff = 16.2;
     private final double areaExp = -0.479;
