@@ -115,7 +115,8 @@ public class RobotContainer {
         left4.whenPressed(new RunShooterRPMBangBang(shooter));
         left5.whenPressed(new RunShooterRPMPID(shooter));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
-        right7.whileHeld(new RunHopperBelt(hopper));
+        left7.whileHeld(new RunHopperBelt(hopper));
+        left8.whenPressed(new RunFeeder(feeder));
         
         right1.whileHeld(new RunIntake(intake));
         right2.whileHeld(new RunFeeder(feeder));

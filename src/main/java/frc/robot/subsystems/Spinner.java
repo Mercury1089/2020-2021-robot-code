@@ -35,10 +35,6 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber("Spin speed", 0.0);
   }
 
-  public void setRunSpeed(double runSpeed) {
-    this.RUN_SPEED = runSpeed;
-  }
-
   public double getRunSpeed() {
     return RUN_SPEED;
   }

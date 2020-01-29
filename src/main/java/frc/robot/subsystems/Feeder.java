@@ -39,7 +39,7 @@ public class Feeder extends SubsystemBase {
   }
 
   public double getRunSpeedSD() {
-    return Math.abs(SmartDashboard.getNumber(getName() + "/RunSpeed", 0.0));
+    return SmartDashboard.getNumber(getName() + "/RunSpeed", 0.0);
   }
 
   public void setSpeed(double speed) {
