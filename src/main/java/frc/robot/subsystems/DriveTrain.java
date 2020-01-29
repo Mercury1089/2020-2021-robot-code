@@ -114,7 +114,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         setPIDGain(DRIVE_PID_SLOT, new PIDGain(0.125, 0.0, 0.05, 0.0, .75));
         setPIDGain(DRIVE_SMOOTH_MOTION_SLOT, new PIDGain(0.6, 0.00032, 0.45, getFeedForward(), 1.0));
         setPIDGain(DRIVE_MOTION_PROFILE_SLOT, new PIDGain(0.6, 0.0, 0.0, getFeedForward(), 1.0));
-        setPIDGain(DRIVE_SMOOTH_TURN_SLOT, new PIDGain(0.35, 0.0, 0.27, 0.0, 1.0));
+        setPIDGain(DRIVE_SMOOTH_TURN_SLOT, new PIDGain(0.35, 0.0, 0.35, 0.0, 1.0));
 
         resetEncoders();
 
