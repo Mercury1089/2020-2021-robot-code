@@ -7,8 +7,11 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.MercTalonSRX;
+import frc.robot.util.MercSparkMax;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.RobotMap.CAN;
 
@@ -21,16 +24,30 @@ public class Feeder extends SubsystemBase {
    * Creates a new Feeder.
    */
   public Feeder() {
-    feedWheel = new MercTalonSRX(CAN.FEEDER);
+    feedWheel = new MercSparkMax(CAN.FEEDER);
     runSpeed = 0.5;
-  }
-
-  public void setSpeed(double speed) {
-    feedWheel.setSpeed(speed);
+    setName("Feeder");
+    setRunSpeed(runSpeed);
   }
 
   public double getRunSpeed() {
     return runSpeed;
+  }
+
+  public void setRunSpeed(double runSpeed) {
+    SmartDashboard.putNumber(getName() + "/RunSpeed", runSpeed);
+  }
+
+  public double getRunSpeedSD() {
+    return Math.abs(SmartDashboard.getNumber(getName() + "/RunSpeed", 0.0));
+  }
+
+  public void setSpeed(double speed) {
+    this.runSpeed = speed;
+
+    feedWheel.setNeutralMode(NeutralMode.Coast);
+
+    feedWheel.setSpeed(speed);
   }
 
   @Override

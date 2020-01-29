@@ -25,12 +25,13 @@ public class RunFeeder extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    feeder.setSpeed(feeder.getRunSpeed());
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    feeder.setSpeed(feeder.getRunSpeedSD());
   }
 
   // Called once the command ends or is interrupted.
