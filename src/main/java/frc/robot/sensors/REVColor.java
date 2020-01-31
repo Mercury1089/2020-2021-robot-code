@@ -64,7 +64,7 @@ public class REVColor {
     colorMatch.addColorMatch(kRedTarget);
     colorMatch.addColorMatch(kYellowTarget); 
     
-    MINIMUM_CONFIDENCE_THRESHOLD = 0.975;
+    MINIMUM_CONFIDENCE_THRESHOLD = 0.1;
     colorMatch.setConfidenceThreshold(MINIMUM_CONFIDENCE_THRESHOLD);
 
   }
@@ -86,7 +86,7 @@ public class REVColor {
         return ControlPanelColor.YELLOW;
       return ControlPanelColor.UNKNOWN;  
     } catch (Exception nullPointerException) {
-      confidence = 0;
+      confidence = -1;
       return ControlPanelColor.UNKNOWN;
     }
   }

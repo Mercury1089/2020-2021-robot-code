@@ -18,14 +18,14 @@ public class RunIntake extends CommandBase {
    * Creates a new RunIntake.
    */
   public RunIntake(Intake intake) {
-    super.addRequirements(intake);
+    addRequirements(intake);
     this.intake = intake;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.intake.setSpeed(0.7);
+    this.intake.setSpeed(0.1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -29,6 +29,7 @@ import frc.robot.commands.limelightCamera.SwitchLEDState;
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.shooter.RunShooterRPMBangBang;
 import frc.robot.commands.shooter.RunShooterRPMPID;
+import frc.robot.commands.spinner.ColorControl;
 import frc.robot.commands.spinner.RunSpinner;
 
 import frc.robot.subsystems.DriveTrain;
@@ -97,7 +98,7 @@ public class RobotContainer {
         shuffleDash = new ShuffleDash();
         //shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
-        //shuffleDash.addPublisher(spinner);
+        shuffleDash.addPublisher(spinner);
         shuffleDash.addPublisher(intake);
         shuffleDash.addPublisher(limelightCamera);
         
@@ -132,6 +133,7 @@ public class RobotContainer {
 
         gamepadY.whenHeld(new RunFeeder(feeder));
         gamepadX.whenHeld(new RunHopperBelt(hopper));
+        gamepadB.whenPressed(new ColorControl(spinner));
     }
 
     public String getAutonFirstStep() {
