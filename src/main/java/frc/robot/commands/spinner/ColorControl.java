@@ -17,8 +17,12 @@ public class ColorControl extends CommandBase {
   private Spinner spinner;
   private ControlPanelColor color;
   private String fmsColor;
+
   private int timeWithoutColor;
   private final int UNKNOWN_THRESHOLD = 5;
+
+  private int ticksAtTarget;
+  private final int TARGET_THRESHOLD = 1;
   
   /**
    * Creates a new ColorControl.
@@ -33,6 +37,7 @@ public class ColorControl extends CommandBase {
   public void initialize() {
     spinner.setSpeed(spinner.getRunSpeed());
     color = getColor();
+    ticksAtTarget = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -49,7 +54,13 @@ public class ColorControl extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return spinner.getColorSensor().get() == color;
+    if (ticksAtTarget >= TARGET_THRESHOLD) {
+      ticksAtTarget = 0;
+      return true;
+    }
+    if (spinner.getColorSensor().get() == color) 
+      ticksAtTarget++;
+    return false;
   }
 
   public ControlPanelColor getColor() {
