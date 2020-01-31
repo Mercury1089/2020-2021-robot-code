@@ -17,8 +17,12 @@ public class ColorControl extends CommandBase {
   private Spinner spinner;
   private ControlPanelColor color;
   private String fmsColor;
+
   private int timeWithoutColor;
   private final int UNKNOWN_THRESHOLD = 5;
+
+  private int ticksAtTarget;
+  private final int TARGET_THRESHOLD = 1;
   
   /**
    * Creates a new ColorControl.
@@ -26,35 +30,19 @@ public class ColorControl extends CommandBase {
   public ColorControl(Spinner spinner) {
     addRequirements(spinner);
     this.spinner = spinner;
-    fmsColor = DriverStation.getInstance().getGameSpecificMessage();
-        if(fmsColor.length() > 0)
-            switch(fmsColor.charAt(0)) {
-                case 'R':
-                    color = ControlPanelColor.BLUE;
-                    break;
-                case 'G':
-                  color = ControlPanelColor.YELLOW;
-                  break;
-                case 'B':
-                  color = ControlPanelColor.RED;
-                  break;
-                case 'Y':
-                  color = ControlPanelColor.GREEN;
-                  break;
-                default:
-                  color = ControlPanelColor.UNKNOWN;
-            }
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    spinner.setSpeed(spinner.getRunSpeed());
+    color = getColor();
+    ticksAtTarget = 0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    spinner.setSpeed(spinner.getRunSpeed());
   }
   
   // Called once the command ends or is interrupted.
@@ -66,13 +54,30 @@ public class ColorControl extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean noColor = false;
-    if (color == ControlPanelColor.UNKNOWN) {
-      if (timeWithoutColor >= UNKNOWN_THRESHOLD) {
-        noColor = true;
-      }
+    if (ticksAtTarget >= TARGET_THRESHOLD) {
+      ticksAtTarget = 0;
+      return true;
     }
-    else noColor = false;
-    return spinner.getColorSensor().get() == color && noColor;
+    if (spinner.getColorSensor().get() == color) 
+      ticksAtTarget++;
+    return false;
+  }
+
+  public ControlPanelColor getColor() {
+    fmsColor = DriverStation.getInstance().getGameSpecificMessage();
+        if(fmsColor.length() > 0)
+            switch(fmsColor.charAt(0)) {
+                case 'R':
+                    return ControlPanelColor.BLUE;
+                case 'G':
+                  return ControlPanelColor.YELLOW;
+                case 'B':
+                  return ControlPanelColor.RED;
+                case 'Y':
+                  return ControlPanelColor.GREEN;
+                default:
+                  return ControlPanelColor.UNKNOWN;
+            }
+        return ControlPanelColor.UNKNOWN;
   }
 }

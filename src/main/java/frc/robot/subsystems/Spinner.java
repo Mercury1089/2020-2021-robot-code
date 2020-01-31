@@ -22,7 +22,7 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
   
   private IMercMotorController spinController;
   private REVColor colorSensor;
-  private final double RUN_SPEED = 0.25;
+  private final double RUN_SPEED = 0.05;
 
   /**
    * Creates a new Spinner.
