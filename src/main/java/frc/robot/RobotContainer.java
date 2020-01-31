@@ -124,7 +124,7 @@ public class RobotContainer {
         right2.whileHeld(new RunFeeder(feeder));
         right3.whileHeld(new DriveElevator(elevator));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
-        right5.whileHeld(new RotationControl(spinner));
+        right5.whenPressed(new RotationControl(spinner));
         right6.whenPressed(new MoveHeading(0, 90, driveTrain));
         right7.whenPressed(new DegreeRotate(45, driveTrain));
         right8.whenPressed(new DegreeRotate(90, driveTrain));
