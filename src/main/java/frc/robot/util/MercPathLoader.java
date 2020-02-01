@@ -9,6 +9,7 @@ package frc.robot.util;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -29,7 +30,7 @@ public class MercPathLoader {
      */
     public static List<TrajectoryPoint> loadPath(String pathName) {
         Trajectory trajectory = null;
-        List<TrajectoryPoint> trajectoryPoints = null;
+        List<TrajectoryPoint> trajectoryPoints = new ArrayList<TrajectoryPoint>();
         List<Trajectory.State> trajectoryStates;
 
         try {
