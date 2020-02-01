@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
+//import jdk.javadoc.internal.doclets.formats.html.resources.standard;
 
 import java.nio.ByteBuffer;
 
@@ -113,6 +114,10 @@ public class MercMath {
 
     public static double hoursToMinutes(double val) {
         return val * 60;
+    }
+
+    public static int secondsToMilliseconds(double val) {
+        return (int)Math.round(val * 1000);
     }
 
     public static double feetToMeters(double val) {
