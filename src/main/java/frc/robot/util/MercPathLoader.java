@@ -13,6 +13,7 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 
@@ -41,6 +42,10 @@ public class MercPathLoader {
             trajectoryStates = trajectory.getStates();
             for(Trajectory.State state : trajectoryStates) {
                 TrajectoryPoint point = new TrajectoryPoint();
+                Pose2d pose;
+                double heading, velocity;
+                int time, pos;
+
                 /*
                 point.timeDur = MercMath.secondsToMilliseconds(state.timeSeconds);
                             // NOTE: Encoder ticks are backwards, we need to work with that.
@@ -67,6 +72,20 @@ public class MercPathLoader {
                 // Set these to true on the last point
                 trajPointL.isLastPoint = trajPointR.isLastPoint = i == TRAJECTORY_SIZE - 1;
                 */
+                //Time
+                time = MercMath.secondsToMilliseconds(state.timeSeconds);
+                point.timeDur = time;
+                //Velocity
+                velocity = MercMath.metersToFeet(state.velocityMetersPerSecond);
+                point.velocity = velocity;
+                //Distance
+                pose = state.poseMeters;
+                //point.position ;
+                //Heading
+                heading = MercMath.pigeonUnitsToDegrees(MercMath.radiansToPigeonUnits(state.curvatureRadPerMeter));
+                point.headingDeg = heading;
+                //Append point to point
+                trajectoryPoints.add(point);
             }
         }
         return trajectoryPoints;
