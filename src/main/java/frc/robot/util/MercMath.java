@@ -6,6 +6,9 @@ import frc.robot.subsystems.DriveTrain;
 
 import java.nio.ByteBuffer;
 
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+
 /**
  * Class that contains various math functions.
  */
@@ -251,5 +254,24 @@ public class MercMath {
         bb.duplicate().get(b);
         bb.rewind();
         return MercMath.bytesToHex(b);
+    }
+
+    public static double distanceFormula(double x1, double x2, double y1, double y2) {
+        double deltaX = x2 - x1,
+               deltaY = y2 - y1;
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    public static double distanceFormula(double deltaX, double deltaY) {
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    public static double pose2dToDistance(Pose2d current, Pose2d previous) {
+        Translation2d delta = current.relativeTo(previous).getTranslation();
+        return distanceFormula(delta.getX(), delta.getY());
+    }
+
+    public static double translation2dToDistance(Translation2d current, Translation2d previous) {
+        return current.getDistance(previous);
     }
 }

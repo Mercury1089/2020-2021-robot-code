@@ -40,50 +40,30 @@ public class MercPathLoader {
         }
         if (trajectory != null) {
             trajectoryStates = trajectory.getStates();
+            Trajectory.State prevState = null;
             for(Trajectory.State state : trajectoryStates) {
                 TrajectoryPoint point = new TrajectoryPoint();
-                Pose2d pose;
-                double heading, velocity;
-                int time, pos;
+                double heading, velocity, pos;
+                int time;
 
-                /*
-                point.timeDur = MercMath.secondsToMilliseconds(state.timeSeconds);
-                            // NOTE: Encoder ticks are backwards, we need to work with that.
-                double currentPosL = Double.parseDouble(profileLeft.get("position")) * dir;
-                double currentPosR = Double.parseDouble(profileRight.get("position")) * dir;
-
-                double velocityL = Double.parseDouble(profileLeft.get("velocity")) * dir;
-                double velocityR = Double.parseDouble(profileRight.get("velocity")) * dir;
-
-                // For each point, fill our structure and pass it to API
-                trajPointL.position = MercMath.feetToEncoderTicks(currentPosL); //Convert Revolutions to Units
-                trajPointR.position = MercMath.feetToEncoderTicks(currentPosR); //Convert Revolutions to Units
-                trajPointL.velocity = MercMath.revsPerMinuteToTicksPerTenth(velocityL); //Convert RPM to Units/100ms
-                trajPointR.velocity = MercMath.revsPerMinuteToTicksPerTenth(velocityR); //Convert RPM to Units/100ms
-
-                trajPointL.profileSlotSelect0 = trajPointR.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
-
-                // Sets the duration of each trajectory point to 20ms
-                trajPointL.timeDur = trajPointR.timeDur = 20;
-
-                // Set these to true on the first point
-                trajPointL.zeroPos = trajPointR.zeroPos = i == 0;
-
-                // Set these to true on the last point
-                trajPointL.isLastPoint = trajPointR.isLastPoint = i == TRAJECTORY_SIZE - 1;
-                */
                 //Time
                 time = MercMath.secondsToMilliseconds(state.timeSeconds);
                 point.timeDur = time;
                 //Velocity
-                velocity = MercMath.metersToFeet(state.velocityMetersPerSecond);
+                velocity = state.velocityMetersPerSecond;
                 point.velocity = velocity;
                 //Distance
-                pose = state.poseMeters;
-                //point.position ;
+                if (prevState == null) {
+                    point.position = 0.0;
+                } else {
+                    pos =  MercMath.pose2dToDistance(state.poseMeters, prevState.poseMeters);
+                    point.position = pos;
+                }
+                prevState = state;
                 //Heading
-                heading = MercMath.pigeonUnitsToDegrees(MercMath.radiansToPigeonUnits(state.curvatureRadPerMeter));
+                heading = MercMath.radiansToDegrees(state.curvatureRadPerMeter);
                 point.headingDeg = heading;
+
                 //Append point to point
                 trajectoryPoints.add(point);
             }
