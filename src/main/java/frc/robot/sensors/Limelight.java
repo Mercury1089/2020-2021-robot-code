@@ -26,7 +26,7 @@ public class Limelight implements TableEntryListener {
     private boolean targetAcquired;
 
     //Height of floor to center of Limelight
-    private final double LIMELIGHT_HEIGHT = 15.00;
+    private final double LIMELIGHT_HEIGHT = 13.25;
     //Center of target to floor
     private final double TARGET_HEIGHT = 98.25;
     //Angle of Limelight from floor
@@ -232,6 +232,7 @@ public class Limelight implements TableEntryListener {
      */
     public double calcDistFromAngle() {
         return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE + getTargetCenterYAngle());
+        //return (TARGET_HEIGHT_INCHES / )
     }
 
     /**
