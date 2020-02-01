@@ -23,6 +23,7 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
   private IMercMotorController spinController;
   private REVColor colorSensor;
   private final double RUN_SPEED = 0.05;
+  private double colorsCrossed;
 
   /**
    * Creates a new Spinner.
@@ -47,6 +48,10 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
     spinController.setSpeed(speed);
   }
 
+  public void setColorsCrossed(double colorsCrossed) {
+    this.colorsCrossed = colorsCrossed;
+  }
+
   public REVColor getColorSensor() {
     return colorSensor;
   }
@@ -69,5 +74,6 @@ public class Spinner extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber(getName() + "/Color/RGB/Red", colorSensor.getDetectedColor().red);
     SmartDashboard.putNumber(getName() + "/Color/RGB/Green", colorSensor.getDetectedColor().green);
     SmartDashboard.putNumber(getName() + "/Color/RGB/Blue", colorSensor.getDetectedColor().blue);
+    SmartDashboard.putNumber("Color Changes", colorsCrossed);
   }
 }

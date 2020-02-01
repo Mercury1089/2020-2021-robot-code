@@ -7,19 +7,18 @@
 
 package frc.robot.commands.spinner;
 
-import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.sensors.REVColor.ControlPanelColor;
 import frc.robot.subsystems.Spinner;
 
-public class RotationControl extends CommandBase {
+public class RotationControl extends CommandBase{
   
   private Spinner spinner;
-  private ControlPanelColor previousColor, currentColor;
+  private ControlPanelColor sensorColor, currentColor, nextColor;
 
   private int colorsCrossed;
 
-  private final int MINIMUM_COLORS_CROSSED = 25;
+  private final int MINIMUM_COLORS_CROSSED = 24;
 
   public RotationControl(Spinner spinner) {
     addRequirements(spinner);
@@ -29,16 +28,39 @@ public class RotationControl extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    spinner.setSpeed(spinner.getRunSpeed());
+    spinner.setSpeed(0.05);
     colorsCrossed = 0;
-    currentColor = spinner.getColorSensor().get();
-    previousColor = currentColor;
-  }
+    sensorColor = spinner.getColorSensor().get();
+    currentColor = sensorColor;
+    if(currentColor == ControlPanelColor.RED)
+        nextColor = ControlPanelColor.GREEN;
+    else if(currentColor == ControlPanelColor.GREEN)
+      nextColor = ControlPanelColor.BLUE;
+    else if(currentColor == ControlPanelColor.BLUE)
+      nextColor = ControlPanelColor.YELLOW;
+    else if(currentColor == ControlPanelColor.YELLOW)
+      nextColor = ControlPanelColor.RED;
+}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    updateColor();
+    sensorColor = spinner.getColorSensor().get(); 
+    //check if the color seen is the next color on the wheel   
+    if(sensorColor == nextColor){
+      currentColor = nextColor;
+      colorsCrossed++;
+      //assign the next color based on what the current color is
+      if(currentColor == ControlPanelColor.RED)
+        nextColor = ControlPanelColor.GREEN;
+      else if(currentColor == ControlPanelColor.GREEN)
+        nextColor = ControlPanelColor.BLUE;
+      else if(currentColor == ControlPanelColor.BLUE)
+        nextColor = ControlPanelColor.YELLOW;
+      else if(currentColor == ControlPanelColor.YELLOW)
+        nextColor = ControlPanelColor.RED;
+    }
+    spinner.setColorsCrossed(colorsCrossed);
   }
 
   // Called once the command ends or is interrupted.
@@ -50,38 +72,6 @@ public class RotationControl extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return colorsCrossed > MINIMUM_COLORS_CROSSED;
-  }
-
-  public void updateColor() {
-    ControlPanelColor sensorColor = spinner.getColorSensor().get();
-    if (previousColor == ControlPanelColor.YELLOW) {
-      if (sensorColor == ControlPanelColor.RED) {
-        previousColor = currentColor;
-        currentColor = ControlPanelColor.RED;
-        colorsCrossed++;
-      }
-    } 
-    else if (previousColor == ControlPanelColor.RED) {
-      if (sensorColor == ControlPanelColor.GREEN) {
-        previousColor = currentColor;
-        currentColor = ControlPanelColor.GREEN;
-        colorsCrossed++;
-      }
-    }
-    else if(previousColor == ControlPanelColor.GREEN) {
-      if (sensorColor == ControlPanelColor.BLUE) {
-        previousColor = currentColor;
-        currentColor = ControlPanelColor.BLUE;
-        colorsCrossed++;
-      }
-    }
-    else if(previousColor == ControlPanelColor.BLUE) {
-      if(sensorColor == ControlPanelColor.YELLOW) {
-        previousColor = currentColor;
-        currentColor = ControlPanelColor.YELLOW;
-        colorsCrossed++;
-      }
-    }
+    return colorsCrossed == MINIMUM_COLORS_CROSSED;
   }
 }
