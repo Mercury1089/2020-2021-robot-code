@@ -1,6 +1,7 @@
 package frc.robot.sensors;
 
 import edu.wpi.first.networktables.*;
+import frc.robot.util.MercMath;
 
 /**
  * A wrapper class for limelight information from the network table.
@@ -32,7 +33,9 @@ public class Limelight implements TableEntryListener {
     //Angle of Limelight from floor
     private final double LIMELIGHT_ANGLE = 50.00;
 
-    private final double TARGET_HEIGHT_INCHES = -1.0;
+    private final double TARGET_HEIGHT_INCHES = 30.00;
+    private final double VERTICAL_CAMERA_RES_PIXEL = 240;
+    private final double VFOV_DEGREES = 41;
 
     private final double areaCoeff = 16.2;
     private final double areaExp = -0.479;
@@ -233,8 +236,8 @@ public class Limelight implements TableEntryListener {
      * @return the distance based on vertical angle offset
      */
     public double calcDistFromAngle() {
-        return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE + getTargetCenterYAngle());
-        //return (TARGET_HEIGHT_INCHES / 12) * (VERTICAL_CAMERA_RES_PIXEL / rectLength[largeRectNum]) / 2.0 / Math.tan(Math.toRadians(config.VFOV_DEGREES / 2));
+        //return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE + getTargetCenterYAngle());
+        return MercMath.inchesToFeet(TARGET_HEIGHT_INCHES) * (VERTICAL_CAMERA_RES_PIXEL / verticalLength) / 2.0 / Math.tan(MercMath.degreesToRadians(VFOV_DEGREES / 2));
     }
 
     /**
