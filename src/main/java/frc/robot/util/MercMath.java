@@ -2,6 +2,7 @@ package frc.robot.util;
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
+//import jdk.javadoc.internal.doclets.formats.html.resources.standard;
 
 import java.nio.ByteBuffer;
 
@@ -99,6 +100,14 @@ public class MercMath {
         return val * 0.393700787;
     }
 
+    public static double inchesToFeet(double inches) {
+        return inches / 12.0;
+    }
+
+    public static double feetToInches(double feet) {
+        return feet * 12.0;
+    }
+
     public static double secondsToMinutes(double val) {
         return val / 60;
     }
@@ -113,6 +122,10 @@ public class MercMath {
 
     public static double hoursToMinutes(double val) {
         return val * 60;
+    }
+
+    public static int secondsToMilliseconds(double val) {
+        return (int)Math.round(val * 1000);
     }
 
     public static double feetToMeters(double val) {
@@ -163,6 +176,14 @@ public class MercMath {
 
     public static double radiansToPigeonUnits(double radians) {
         return DriveTrain.PIGEON_NATIVE_UNITS_PER_ROTATION * Math.toDegrees(radians) / 360;
+    }
+
+    public static double radiansToDegrees(double rad) {
+        return rad * 180.0 / Math.PI;
+    }
+
+    public static double degreesToRadians(double deg) {
+        return deg * Math.PI / 180.0;
     }
 
     public static double encoderTicksToRevs(double ticks) {
