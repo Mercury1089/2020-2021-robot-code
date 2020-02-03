@@ -16,6 +16,8 @@ import frc.robot.subsystems.LimelightCamera;
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class TestSequentialCommandGroup extends SequentialCommandGroup {
   public TestSequentialCommandGroup(DriveTrain driveTrain, LimelightCamera limelightCamera) {
-    super(new MoveHeading(60, 10, driveTrain), new MoveHeading(60, 10, driveTrain), new RotateToTarget(driveTrain, limelightCamera));
+    super(new MoveHeading(60, 10, driveTrain), 
+          new MoveHeading(60, 10, driveTrain), 
+          new RotateToTarget(driveTrain, limelightCamera));
   }
 }
