@@ -14,9 +14,10 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
+
+import frc.robot.subsystems.DriveTrain;
 
 import com.ctre.phoenix.motion.TrajectoryPoint;
 /**
@@ -29,19 +30,21 @@ public class MercPathLoader {
      * @param pathName name + wpilib.json
      */
     public static List<TrajectoryPoint> loadPath(String pathName) {
-        Trajectory trajectory = null;
         List<TrajectoryPoint> trajectoryPoints = new ArrayList<TrajectoryPoint>();
         List<Trajectory.State> trajectoryStates;
+        Trajectory trajectory = null;
 
         try {
             Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(BASE_PATH_LOCATION + pathName);
             trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         } catch (IOException ex) {
             DriverStation.reportError("Unable to open trajectory: " + BASE_PATH_LOCATION + pathName, ex.getStackTrace());
+            return null;
         }
         if (trajectory != null) {
             trajectoryStates = trajectory.getStates();
             Trajectory.State prevState = null;
+            int prevTime = 0;
             for(Trajectory.State state : trajectoryStates) {
                 TrajectoryPoint point = new TrajectoryPoint();
                 double heading, velocity, pos;
@@ -49,25 +52,30 @@ public class MercPathLoader {
 
                 //Time
                 time = MercMath.secondsToMilliseconds(state.timeSeconds);
-                point.timeDur = time;
+                point.timeDur = time - prevTime;
+                prevTime = time;
                 //Velocity
                 velocity = state.velocityMetersPerSecond;
-                point.velocity = velocity;
+                point.velocity = MercMath.revsPerMinuteToTicksPerTenth(velocity);
                 //Distance
                 if (prevState == null) {
                     point.position = 0.0;
+                    point.zeroPos = true;
                 } else {
-                    pos =  MercMath.pose2dToDistance(state.poseMeters, prevState.poseMeters);
-                    point.position = pos;
+                    pos = MercMath.pose2dToDistance(state.poseMeters, prevState.poseMeters);
+                    point.position = MercMath.feetToEncoderTicks(pos);
                 }
                 prevState = state;
                 //Heading
                 heading = MercMath.radiansToDegrees(state.curvatureRadPerMeter);
                 point.headingDeg = heading;
+                //PID Profile
+                point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
 
                 //Append point to point
                 trajectoryPoints.add(point);
             }
+            trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = true;
         }
         return trajectoryPoints;
     }
