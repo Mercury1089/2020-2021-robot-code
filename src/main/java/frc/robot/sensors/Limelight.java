@@ -9,40 +9,38 @@ import frc.robot.util.MercMath;
 public class Limelight implements TableEntryListener {
     private final double safeTurnThreshold = 10.0, limelightResX = 320;
     /*
-     * Coefficients and exponents to help find the distance of a target
-     * Each equation is in the form ax^b where a is the coefficient
-     * (Coeff) of the equation and b is the exponent (Exp). x is the
-     * variable, either vertical length (vert), horizontal length (horiz),
-     * or area (area).
+     * Coefficients and exponents to help find the distance of a target Each
+     * equation is in the form ax^b where a is the coefficient (Coeff) of the
+     * equation and b is the exponent (Exp). x is the variable, either vertical
+     * length (vert), horizontal length (horiz), or area (area).
      */
-    //Redo Coefficients for current game
+    // Redo Coefficients for current game
     private final double vertCoeff = 111.0;
     private final double vertExp = -0.948;
     private final double horizCoeff = 264.0;
     private final double horizExp = -0.953;
 
-    private NetworkTable nt; //finds the limelight network table
+    private NetworkTable nt; // finds the limelight network table
     private double numTargets, targetCenterXAngle, targetCenterYAngle, targetArea, horizontalLength, verticalLength;
     private double[] cornerx;
     private boolean targetAcquired;
 
-    //Height of floor to center of Limelight
+    // Height of floor to center of Limelight
     private final double LIMELIGHT_HEIGHT = 13.25;
-    //Center of target to floor
+    // Center of target to floor
     private final double TARGET_HEIGHT = 98.25;
-    //Angle of Limelight from floor
+    // Angle of Limelight from floor
     private final double LIMELIGHT_ANGLE = 50.00;
-
-    private final double TARGET_HEIGHT_INCHES = 30.00;
+    
+    private final double TARGET_LENGTH_INCHES = 30.00;
     private final double VERTICAL_CAMERA_RES_PIXEL = 240;
     private final double VFOV_DEGREES = 41;
 
     private final double areaCoeff = 16.2;
     private final double areaExp = -0.479;
-    
 
-    //private final double LIMELIGHT_HFOV_DEG = 59.6;
-    //private final double LIMELIGHT_VFOV_DEG = 45.7;
+    // private final double LIMELIGHT_HFOV_DEG = 59.6;
+    // private final double LIMELIGHT_VFOV_DEG = 45.7;
 
     /**
      * Constucts the sensor and adds a listener to the table
@@ -56,7 +54,7 @@ public class Limelight implements TableEntryListener {
         horizontalLength = 0.0;
         verticalLength = 0.0;
         targetAcquired = false;
-        cornerx = new double[]{};
+        cornerx = new double[] {};
         nt.addEntryListener(this, EntryListenerFlags.kUpdate);
     }
 
@@ -71,40 +69,40 @@ public class Limelight implements TableEntryListener {
     public void valueChanged(NetworkTable nt, String key, NetworkTableEntry ne, NetworkTableValue nv, int flags) {
         synchronized (this) {
             switch (key) {
-                case "tx": {
-                    targetCenterXAngle = nv.getDouble();
-                    break;
-                }
-                case "ty": {
-                    targetCenterYAngle = nv.getDouble();
-                    break;
-                }
-                case "ta": {
-                    targetArea = nv.getDouble();
-                    break;
-                }
-                case "tv": {
-                    targetAcquired = nv.getDouble() != 0.0;
-                    break;
-                }
-                case "tl": {
-                    numTargets = nv.getDouble();
-                    break;
-                }
-                case "thor": {
-                    horizontalLength = nv.getDouble();
-                    break;
-                }
-                case "tvert": {
-                    verticalLength = nv.getDouble();
-                    break;
-                }
-                case "tcornx": {
-                    cornerx = nv.getDoubleArray();
-                }
-                default: {
-                    break;
-                }
+            case "tx": {
+                targetCenterXAngle = nv.getDouble();
+                break;
+            }
+            case "ty": {
+                targetCenterYAngle = nv.getDouble();
+                break;
+            }
+            case "ta": {
+                targetArea = nv.getDouble();
+                break;
+            }
+            case "tv": {
+                targetAcquired = nv.getDouble() != 0.0;
+                break;
+            }
+            case "tl": {
+                numTargets = nv.getDouble();
+                break;
+            }
+            case "thor": {
+                horizontalLength = nv.getDouble();
+                break;
+            }
+            case "tvert": {
+                verticalLength = nv.getDouble();
+                break;
+            }
+            case "tcornx": {
+                cornerx = nv.getDoubleArray();
+            }
+            default: {
+                break;
+            }
             }
         }
     }
@@ -231,16 +229,6 @@ public class Limelight implements TableEntryListener {
     }
 
     /**
-     * Using the angle, it returns the distance between the target and the limelight
-     * 
-     * @return the distance based on vertical angle offset
-     */
-    public double calcDistFromAngle() {
-        //return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE + getTargetCenterYAngle());
-        return MercMath.inchesToFeet(TARGET_HEIGHT_INCHES) * (VERTICAL_CAMERA_RES_PIXEL / verticalLength) / 2.0 / Math.tan(MercMath.degreesToRadians(VFOV_DEGREES / 2));
-    }
-
-    /**
      * Set the LED state on the limelight
      *
      * @param limelightLEDState the state of the LED.
@@ -249,10 +237,10 @@ public class Limelight implements TableEntryListener {
         nt.getEntry("ledMode").setNumber(limelightLEDState.value);
     }
 
-    public void switchLEDState(){
-        if ((double)(nt.getEntry("ledMode").getNumber(0.0)) == LimelightLEDState.OFF.getValue()){
+    public void switchLEDState() {
+        if ((double) (nt.getEntry("ledMode").getNumber(0.0)) == LimelightLEDState.OFF.getValue()) {
             setLEDState(LimelightLEDState.ON);
-        } else{
+        } else {
             setLEDState(LimelightLEDState.OFF);
         }
     }
@@ -272,10 +260,7 @@ public class Limelight implements TableEntryListener {
     }
 
     public enum LimelightLEDState {
-        ON(3.0),
-        OFF(1.0),
-        BLINKING(2.0),
-        PIPELINE_DEFAULT(0.0);
+        ON(3.0), OFF(1.0), BLINKING(2.0), PIPELINE_DEFAULT(0.0);
 
         private double value;
 
@@ -287,4 +272,18 @@ public class Limelight implements TableEntryListener {
             return value;
         }
     }
+    /**
+     * Using the angle, it returns the distance between the target and the limelight
+     * 
+     * @return the distance based on vertical angle offset
+     */
+
+    public double calcDistFromAngle() {
+        // return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE +
+        // getTargetCenterYAngle());
+        return MercMath.inchesToFeet(TARGET_LENGTH_INCHES)
+                * (VERTICAL_CAMERA_RES_PIXEL / getVerticalLength()) / 2.0
+                / Math.tan(MercMath.degreesToRadians(VFOV_DEGREES / 2));
+    }
+
 }
