@@ -18,7 +18,8 @@ public class RotationControl extends CommandBase{
 
   private int colorsCrossed;
 
-  private final int MINIMUM_COLORS_CROSSED = 24;
+  private final int MINIMUM_COLORS_CROSSED = 25;
+  private final int SLOWDOWN_RANGE = 2;
 
   public RotationControl(Spinner spinner) {
     addRequirements(spinner);
@@ -28,18 +29,11 @@ public class RotationControl extends CommandBase{
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    spinner.setSpeed(0.05);
+    spinner.setSpeed(spinner.getRunSpeed());
     colorsCrossed = 0;
     sensorColor = spinner.getColorSensor().get();
     currentColor = sensorColor;
-    if(currentColor == ControlPanelColor.RED)
-        nextColor = ControlPanelColor.GREEN;
-    else if(currentColor == ControlPanelColor.GREEN)
-      nextColor = ControlPanelColor.BLUE;
-    else if(currentColor == ControlPanelColor.BLUE)
-      nextColor = ControlPanelColor.YELLOW;
-    else if(currentColor == ControlPanelColor.YELLOW)
-      nextColor = ControlPanelColor.RED;
+    nextColor = spinner.getNextColor(currentColor);
 }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -50,16 +44,10 @@ public class RotationControl extends CommandBase{
     if(sensorColor == nextColor){
       currentColor = nextColor;
       colorsCrossed++;
-      //assign the next color based on what the current color is
-      if(currentColor == ControlPanelColor.RED)
-        nextColor = ControlPanelColor.GREEN;
-      else if(currentColor == ControlPanelColor.GREEN)
-        nextColor = ControlPanelColor.BLUE;
-      else if(currentColor == ControlPanelColor.BLUE)
-        nextColor = ControlPanelColor.YELLOW;
-      else if(currentColor == ControlPanelColor.YELLOW)
-        nextColor = ControlPanelColor.RED;
+      nextColor = spinner.getNextColor(currentColor);
     }
+    if(colorsCrossed >= MINIMUM_COLORS_CROSSED - SLOWDOWN_RANGE)
+      spinner.setSpeed(spinner.getRunSpeed() - spinner.getRunSpeed() / SLOWDOWN_RANGE)
     spinner.setColorsCrossed(colorsCrossed);
   }
 
