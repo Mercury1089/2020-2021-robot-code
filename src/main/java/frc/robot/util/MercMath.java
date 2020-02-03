@@ -2,8 +2,12 @@ package frc.robot.util;
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.DriveTrain;
+//import jdk.javadoc.internal.doclets.formats.html.resources.standard;
 
 import java.nio.ByteBuffer;
+
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 
 /**
  * Class that contains various math functions.
@@ -99,6 +103,14 @@ public class MercMath {
         return val * 0.393700787;
     }
 
+    public static double inchesToFeet(double inches) {
+        return inches / 12.0;
+    }
+
+    public static double feetToInches(double feet) {
+        return feet * 12.0;
+    }
+
     public static double secondsToMinutes(double val) {
         return val / 60;
     }
@@ -113,6 +125,10 @@ public class MercMath {
 
     public static double hoursToMinutes(double val) {
         return val * 60;
+    }
+
+    public static int secondsToMilliseconds(double val) {
+        return (int)Math.round(val * 1000);
     }
 
     public static double feetToMeters(double val) {
@@ -163,6 +179,14 @@ public class MercMath {
 
     public static double radiansToPigeonUnits(double radians) {
         return DriveTrain.PIGEON_NATIVE_UNITS_PER_ROTATION * Math.toDegrees(radians) / 360;
+    }
+
+    public static double radiansToDegrees(double rad) {
+        return rad * 180.0 / Math.PI;
+    }
+
+    public static double degreesToRadians(double deg) {
+        return deg * Math.PI / 180.0;
     }
 
     public static double encoderTicksToRevs(double ticks) {
@@ -230,5 +254,24 @@ public class MercMath {
         bb.duplicate().get(b);
         bb.rewind();
         return MercMath.bytesToHex(b);
+    }
+
+    public static double distanceFormula(double x1, double x2, double y1, double y2) {
+        double deltaX = x2 - x1,
+               deltaY = y2 - y1;
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    public static double distanceFormula(double deltaX, double deltaY) {
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
+
+    public static double pose2dToDistance(Pose2d current, Pose2d previous) {
+        Translation2d delta = current.relativeTo(previous).getTranslation();
+        return distanceFormula(delta.getX(), delta.getY());
+    }
+
+    public static double translation2dToDistance(Translation2d current, Translation2d previous) {
+        return current.getDistance(previous);
     }
 }
