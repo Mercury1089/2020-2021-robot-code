@@ -18,6 +18,7 @@ import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.MoveHeading;
 import frc.robot.commands.drivetrain.MoveOnPath;
+import frc.robot.commands.drivetrain.MoveOnTrajectory;
 import frc.robot.commands.drivetrain.RotateToTarget;
 import frc.robot.commands.drivetrain.TestSequentialCommandGroup;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
@@ -225,8 +226,8 @@ public class RobotContainer {
         
         autonCommand.addRequirements(this.driveTrain);
         try{
-            autonCommand.addCommands(new MoveOnPath("StraightProfile", this.driveTrain));            
-        }catch(FileNotFoundException e){
+            autonCommand.addCommands(new MoveOnTrajectory("Unnamed.wpilib.json", this.driveTrain));            
+        } catch(FileNotFoundException e){
             System.out.println(e);
         }
 

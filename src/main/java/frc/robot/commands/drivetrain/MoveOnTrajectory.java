@@ -7,6 +7,7 @@
 
 package frc.robot.commands.drivetrain;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import com.ctre.phoenix.motion.MotionProfileStatus;
@@ -38,7 +39,7 @@ public class MoveOnTrajectory extends CommandBase {
   private PigeonIMU podgeboi;
   private String pathName;
 
-  public MoveOnTrajectory(String path, DriveTrain driveTrain) {
+  public MoveOnTrajectory(String path, DriveTrain driveTrain) throws FileNotFoundException{
     addRequirements(driveTrain);
     this.driveTrain = driveTrain;
     setName("Move On Trajectory" + path);
