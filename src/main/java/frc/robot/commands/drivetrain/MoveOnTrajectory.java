@@ -16,6 +16,7 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -32,47 +33,48 @@ public class MoveOnTrajectory extends CommandBase {
   
   private boolean isRunning;
   private DriveTrain driveTrain;
-  private MercTalonSRX right;
+  private TalonSRX right;
   private MotionProfileStatus statusRight;
   private List<TrajectoryPoint> trajectoryPoints;
   private PigeonIMU podgeboi;
   private String pathName;
 
   public MoveOnTrajectory(String path, DriveTrain driveTrain) throws FileNotFoundException{
-    this.addRequirements(driveTrain);
-    this.setName("Move On Trajectory" + path);
+    addRequirements(driveTrain);
+    setName("Move On Trajectory" + path);
 
-    this.pathName = path;
+    pathName = path;
     this.driveTrain = driveTrain;
-    this.podgeboi = this.driveTrain.getPigeon();
-    this.statusRight = new MotionProfileStatus();
-    this.trajectoryPoints = MercPathLoader.loadPath(pathName);
-    this.right = (MercTalonSRX) this.driveTrain.getRightLeader();
+    podgeboi = this.driveTrain.getPigeon();
+    statusRight = new MotionProfileStatus();
+    trajectoryPoints = MercPathLoader.loadPath(pathName);
+    right = ((MercTalonSRX) this.driveTrain.getRightLeader()).get();
 
     trajectoryProcessor = new Notifier(() -> {
-      this.right.get().processMotionProfileBuffer();
+      right.processMotionProfileBuffer();
     });
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (this.trajectoryPoints == null)
+    if (trajectoryPoints == null)
       DriverStation.reportError("No trajectory to load", false);
-    if (!this.driveTrain.isInMotionMagicMode())
-      this.driveTrain.initializeMotionMagicFeedback();
+    if (!driveTrain.isInMotionMagicMode())
+      driveTrain.initializeMotionMagicFeedback();
 
-    this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
-    this.driveTrain.setNeutralMode(NeutralMode.Brake);
-    this.driveTrain.resetPigeonYaw();
+    reset();
+    
+    driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+    driveTrain.setNeutralMode(NeutralMode.Brake);
+    driveTrain.resetPigeonYaw();
 
-    this.right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
-    this.right.get().changeMotionControlFramePeriod(10);
-    this.right.get().configAuxPIDPolarity(false);
+    podgeboi.configFactoryDefault();
 
-    this.podgeboi.configFactoryDefault();
+    right.changeMotionControlFramePeriod(10);
+    right.configAuxPIDPolarity(false);
 
-    this.fillTopBuffer();
+    fillTopBuffer();
     
     trajectoryProcessor.startPeriodic(0.005);
   }
@@ -80,7 +82,7 @@ public class MoveOnTrajectory extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.right.get().getMotionProfileStatus(statusRight);
+    right.getMotionProfileStatus(statusRight);
 
     if (!isRunning && statusRight.btmBufferCnt >= 5) {
       right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
@@ -95,26 +97,46 @@ public class MoveOnTrajectory extends CommandBase {
     if (interrupted) {
       DriverStation.reportError(getName() + " is interrupted", false);
     }
+    DriverStation.reportError("MoveOnTrajectory END", false);
+
     trajectoryProcessor.stop();
 
-    this.isRunning = false;
-    this.driveTrain.stop();
-    this.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
-    this.right.get().setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10, RobotMap.CTRE_TIMEOUT);
+    reset();
+    driveTrain.stop();
+    driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
+    right.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10, RobotMap.CTRE_TIMEOUT);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.statusRight.activePointValid && 
-           this.statusRight.isLast &&
-           this.isRunning;
+    boolean isFinished = statusRight.activePointValid && 
+                         statusRight.isLast &&
+                         isRunning;
+    DriverStation.reportError("MoveOnTrajectory" + isFinished, false);
+
+    return isFinished;
   }
 
+  //Fills talon with trajectory states
   public void fillTopBuffer() {
     for(TrajectoryPoint point : trajectoryPoints) {
-      this.right.get().pushMotionProfileTrajectory(point);
+      right.pushMotionProfileTrajectory(point);
+      if(point.isLastPoint)
+        System.out.println("IS TRU BRO");
     }
   }
 
+  public void setMotionProfileMode () {
+    right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
+  }
+
+  public void reset() {
+    //Reset motion profile mode and flags
+    isRunning = false;
+    setMotionProfileMode();
+    right.getSensorCollection().setQuadraturePosition(0, RobotMap.CTRE_TIMEOUT);
+    //Clear trajectory buffer
+    right.clearMotionProfileTrajectories();
+  }
 }
