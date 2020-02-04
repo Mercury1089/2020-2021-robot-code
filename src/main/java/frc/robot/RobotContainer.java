@@ -34,7 +34,7 @@ import frc.robot.commands.shooter.RunShooterRPMPID;
 import frc.robot.commands.spinner.ColorControl;
 import frc.robot.commands.spinner.RotationControl;
 import frc.robot.commands.spinner.RunSpinner;
-
+import frc.robot.commands.spinner.ShiftOnScale;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
@@ -137,6 +137,7 @@ public class RobotContainer {
         gamepadY.whenHeld(new RunFeeder(feeder));
         gamepadX.whenHeld(new RunHopperBelt(hopper));
         gamepadB.whenPressed(new ColorControl(spinner));
+        gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
     }
 
     public String getAutonFirstStep() {

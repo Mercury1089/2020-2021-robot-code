@@ -8,13 +8,20 @@
 package frc.robot.commands.spinner;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Robot;
+import frc.robot.RobotMap.GAMEPAD_AXIS;
+import frc.robot.subsystems.Spinner;
 
 public class ShiftOnScale extends CommandBase {
+
+  private Spinner spinner;
+
   /**
    * Creates a new SpinWithJoystick.
    */
-  public ShiftOnScale() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  public ShiftOnScale(Spinner spinner) {
+    addRequirements(spinner);
+    this.spinner = spinner;
   }
 
   // Called when the command is initially scheduled.
@@ -25,11 +32,13 @@ public class ShiftOnScale extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    spinner.setSpeed(Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.rightX));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    spinner.setSpeed(0.0);
   }
 
   // Returns true when the command should end.
