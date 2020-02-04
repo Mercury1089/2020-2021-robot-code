@@ -9,11 +9,11 @@ package frc.robot.commands.spinner;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class SpinWithJoystick extends CommandBase {
+public class ShiftOnScale extends CommandBase {
   /**
    * Creates a new SpinWithJoystick.
    */
-  public SpinWithJoystick() {
+  public ShiftOnScale() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

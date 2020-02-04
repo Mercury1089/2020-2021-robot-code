@@ -223,15 +223,12 @@ public class RobotContainer {
 
     //Eventually this will link to our auton app on the shuffledash
     public void initializeAutonCommand(){
-        
         autonCommand.addRequirements(this.driveTrain);
         try{
             autonCommand.addCommands(new MoveOnTrajectory("Unnamed.wpilib.json", this.driveTrain));            
         } catch(FileNotFoundException e){
             System.out.println(e);
         }
-
-        autonCommand.addCommands(new DegreeRotate(90, this.driveTrain));
     }
 
     public CommandGroupBase getAutonCommand(){

@@ -24,7 +24,7 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
  * Add your docs here.
  */
 public class MercPathLoader {
-    private static final String BASE_PATH_LOCATION = "trajectories\\PathWeaver\\output";
+    private static final String BASE_PATH_LOCATION = "/home/lvuser/deploy/trajectories/PathWeaver/output/";
 
     /**
      * @param pathName name + wpilib.json
