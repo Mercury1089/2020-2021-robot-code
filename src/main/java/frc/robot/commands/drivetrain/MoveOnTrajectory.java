@@ -80,8 +80,13 @@ public class MoveOnTrajectory extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.isRunning = true;
     this.right.get().getMotionProfileStatus(statusRight);
+
+    if (!isRunning && statusRight.btmBufferCnt >= 5) {
+      right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
+
+      isRunning = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
