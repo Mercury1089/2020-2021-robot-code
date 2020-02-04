@@ -34,7 +34,7 @@ public class RotationControl extends CommandBase{
     sensorColor = spinner.getColorSensor().get();
     currentColor = sensorColor;
     nextColor = spinner.getNextColor(currentColor);
-}
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -46,8 +46,10 @@ public class RotationControl extends CommandBase{
       colorsCrossed++;
       nextColor = spinner.getNextColor(currentColor);
     }
-    if(colorsCrossed >= MINIMUM_COLORS_CROSSED - SLOWDOWN_RANGE)
-      spinner.setSpeed(spinner.getRunSpeed() - spinner.getRunSpeed() / SLOWDOWN_RANGE)
+    //slow down the motor if the rotation is almost over
+    if(colorsCrossed >= MINIMUM_COLORS_CROSSED - SLOWDOWN_RANGE
+    && colorsCrossed < MINIMUM_COLORS_CROSSED)
+      spinner.setSpeed(spinner.getRunSpeed() - spinner.getRunSpeed() / SLOWDOWN_RANGE);
     spinner.setColorsCrossed(colorsCrossed);
   }
 
@@ -60,6 +62,6 @@ public class RotationControl extends CommandBase{
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return colorsCrossed == MINIMUM_COLORS_CROSSED;
+    return colorsCrossed >= MINIMUM_COLORS_CROSSED;
   }
 }
