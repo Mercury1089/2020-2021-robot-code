@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,7 +26,7 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   
   public enum ElevatorPosition{
     MAX_HEIGHT(100000),     //Test enc values
-    IN_ROBOT(1000),         //1nd and lowest position
+    BOTTOM(1000),         //1nd and lowest position
     CONTROL_PANEL(7000),    //2rd lowest position
     CLIMB(50000),           //Highest position
     HANGING(5000);          //3st position
@@ -97,6 +98,25 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   public void periodic() {
     // This method will be called once per scheduler run
   }
+
+  /**
+   * @return the motor controller for the elevator
+   */
+  public IMercMotorController getElevatorLeader() {
+    return elevator;
+  }
+
+  /**
+   * Get current height of claw on elevator.
+   *
+   * @return height of claw as read by the encoder, in ticks
+   */
+  public double getCurrentHeight() {
+    return elevator.getEncTicks();
+  }
+
+
+
 
   @Override
   public void publishValues() {
