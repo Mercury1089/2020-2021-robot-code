@@ -15,18 +15,17 @@ import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.MercPathLoader;
 import frc.robot.util.MercTalonSRX;
-import frc.robot.util.interfaces.IMercMotorController;
 
 public class MoveOnTrajectory extends CommandBase {
   private static Notifier trajectoryProcessor;
@@ -40,26 +39,25 @@ public class MoveOnTrajectory extends CommandBase {
   private String pathName;
 
   public MoveOnTrajectory(String path, DriveTrain driveTrain) throws FileNotFoundException{
-    addRequirements(driveTrain);
-    this.driveTrain = driveTrain;
-    setName("Move On Trajectory" + path);
-    pathName = path;
-    trajectoryPoints = MercPathLoader.loadPath(pathName);
-    right = (MercTalonSRX)this.driveTrain.getRightLeader();
-    this.statusRight = new MotionProfileStatus();
-    podgeboi = this.driveTrain.getPigeon();
+    this.addRequirements(driveTrain);
+    this.setName("Move On Trajectory" + path);
 
-    /*
+    this.pathName = path;
+    this.driveTrain = driveTrain;
+    this.podgeboi = this.driveTrain.getPigeon();
+    this.statusRight = new MotionProfileStatus();
+    this.trajectoryPoints = MercPathLoader.loadPath(pathName);
+    this.right = (MercTalonSRX) this.driveTrain.getRightLeader();
+
     trajectoryProcessor = new Notifier(() -> {
-      left.processMotionProfileBuffer();
+      this.right.get().processMotionProfileBuffer();
     });
-    */
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (trajectoryPoints == null)
+    if (this.trajectoryPoints == null)
       DriverStation.reportError("No trajectory to load", false);
     if (!this.driveTrain.isInMotionMagicMode())
       this.driveTrain.initializeMotionMagicFeedback();
@@ -68,19 +66,22 @@ public class MoveOnTrajectory extends CommandBase {
     this.driveTrain.setNeutralMode(NeutralMode.Brake);
     this.driveTrain.resetPigeonYaw();
 
-    this.podgeboi.configFactoryDefault();
-
+    this.right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
+    this.right.get().changeMotionControlFramePeriod(10);
     this.right.get().configAuxPIDPolarity(false);
 
-    this.fillTopBuffer();
+    this.podgeboi.configFactoryDefault();
 
-    right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
+    this.fillTopBuffer();
+    
+    trajectoryProcessor.startPeriodic(0.005);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    right.get().getMotionProfileStatus(statusRight);
+    this.isRunning = true;
+    this.right.get().getMotionProfileStatus(statusRight);
   }
 
   // Called once the command ends or is interrupted.
@@ -89,21 +90,25 @@ public class MoveOnTrajectory extends CommandBase {
     if (interrupted) {
       DriverStation.reportError(getName() + " is interrupted", false);
     }
+    trajectoryProcessor.stop();
+
+    this.isRunning = false;
     this.driveTrain.stop();
     this.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
+    this.right.get().setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10, RobotMap.CTRE_TIMEOUT);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return statusRight.activePointValid && 
-           statusRight.isLast &&
-           isRunning;
+    return this.statusRight.activePointValid && 
+           this.statusRight.isLast &&
+           this.isRunning;
   }
 
   public void fillTopBuffer() {
     for(TrajectoryPoint point : trajectoryPoints) {
-      right.get().pushMotionProfileTrajectory(point);
+      this.right.get().pushMotionProfileTrajectory(point);
     }
   }
 
