@@ -159,6 +159,14 @@ public class MercMath {
         return inchesToEncoderTicks(feet * 12);
     }
 
+    public static double inchesPerSecondToRevsPerMinute(double inchesPerSecond) {
+        return (inchesPerSecond / (DriveTrain.WHEEL_DIAMETER_INCHES * Math.PI)) * 60;
+    }
+
+    public static double inchesPerSecondToTicksPerTenth(double inchesPerSecond) {
+        return revsPerMinuteToTicksPerTenth(inchesPerSecondToRevsPerMinute(inchesPerSecond));
+    }
+
     public static double inchesToEncoderTicks(double inches) {
         return inches / (Math.PI * DriveTrain.WHEEL_DIAMETER_INCHES) *
                 (DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION);

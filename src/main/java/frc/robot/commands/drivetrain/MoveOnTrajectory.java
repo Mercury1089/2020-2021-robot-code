@@ -48,6 +48,7 @@ public class MoveOnTrajectory extends CommandBase {
     podgeboi = this.driveTrain.getPigeon();
     statusRight = new MotionProfileStatus();
     trajectoryPoints = MercPathLoader.loadPath(pathName);
+
     right = ((MercTalonSRX) this.driveTrain.getRightLeader()).get();
 
     trajectoryProcessor = new Notifier(() -> {
@@ -113,17 +114,14 @@ public class MoveOnTrajectory extends CommandBase {
     boolean isFinished = statusRight.activePointValid && 
                          statusRight.isLast &&
                          isRunning;
-    DriverStation.reportError("MoveOnTrajectory" + isFinished, false);
 
-    return isFinished;
+    return false;
   }
 
   //Fills talon with trajectory states
   public void fillTopBuffer() {
     for(TrajectoryPoint point : trajectoryPoints) {
       right.pushMotionProfileTrajectory(point);
-      if(point.isLastPoint)
-        System.out.println("IS TRU BRO");
     }
   }
 

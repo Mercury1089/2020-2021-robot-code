@@ -51,32 +51,46 @@ public class MercPathLoader {
                 int time;
 
                 //Time
-                
+                /*
                 time = MercMath.secondsToMilliseconds(state.timeSeconds);
                 point.timeDur = time - prevTime;
                 prevTime = time;
-                
-                //point.timeDur = 20;
+                */
+                point.timeDur = 20;
                 //Velocity
                 velocity = state.velocityMetersPerSecond;
-                point.velocity = MercMath.revsPerMinuteToTicksPerTenth(velocity);
+                point.velocity = MercMath.inchesPerSecondToTicksPerTenth(velocity);
                 //Distance
                 if (prevState == null) {
                     point.position = 0.0;
                     point.zeroPos = true;
+                    pos = 0.0;
                 } else {
-                    pos = MercMath.pose2dToDistance(state.poseMeters, prevState.poseMeters);
-                    point.position = MercMath.feetToEncoderTicks(pos);
+                    double prevX, prevY, x, y;
+                    prevX = prevState.poseMeters.getTranslation().getX();
+                    prevY = prevState.poseMeters.getTranslation().getY();
+                    x = state.poseMeters.getTranslation().getX();
+                    y = state.poseMeters.getTranslation().getY();
+                    pos = MercMath.distanceFormula(prevX, x, prevY, y);
+                    state.poseMeters.getTranslation().getDistance(prevState.poseMeters.getTranslation());
+                    point.position = MercMath.inchesToEncoderTicks(pos);
                 }
                 prevState = state;
                 //Heading
-                heading = MercMath.radiansToDegrees(state.curvatureRadPerMeter);
-                point.headingDeg = heading;
+                heading = state.poseMeters.getRotation().getDegrees();
+                point.headingDeg = MercMath.degreesToPigeonUnits(heading);
                 //PID Profile
                 point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
+                //Says that point is not a last point
                 point.isLastPoint = false;
                 //Append point to point
                 trajectoryPoints.add(point);
+                System.out.println("velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) +
+                                         " heading: " + state.poseMeters.getRotation().getDegrees() + 
+                                         " distance: " + distance + 
+                                         " state.pose2d.getTranslation.getX: " + state.poseMeters.getTranslation().getX() +
+                                         " state.pose2d.getTranslation.getY: " + state.poseMeters.getTranslation().getY()
+                );
             }
             trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = true;
         }
