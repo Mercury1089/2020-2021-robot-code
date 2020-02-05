@@ -101,7 +101,7 @@ public class RobotContainer {
         shuffleDash = new ShuffleDash();
         //shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
-        shuffleDash.addPublisher(spinner);
+        //shuffleDash.addPublisher(spinner);
         shuffleDash.addPublisher(intake);
         shuffleDash.addPublisher(limelightCamera);
         

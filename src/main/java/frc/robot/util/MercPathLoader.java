@@ -51,12 +51,12 @@ public class MercPathLoader {
                 int time;
 
                 //Time
-                /*
+                
                 time = MercMath.secondsToMilliseconds(state.timeSeconds);
                 point.timeDur = time - prevTime;
                 prevTime = time;
-                */
-                point.timeDur = 20;
+                
+                //point.timeDur = 20;
                 //Velocity
                 velocity = state.velocityMetersPerSecond;
                 point.velocity = MercMath.revsPerMinuteToTicksPerTenth(velocity);
@@ -74,7 +74,7 @@ public class MercPathLoader {
                 point.headingDeg = heading;
                 //PID Profile
                 point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
-
+                point.isLastPoint = false;
                 //Append point to point
                 trajectoryPoints.add(point);
             }
