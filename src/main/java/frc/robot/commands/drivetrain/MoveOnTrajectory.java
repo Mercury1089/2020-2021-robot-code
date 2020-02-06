@@ -64,32 +64,25 @@ public class MoveOnTrajectory extends CommandBase {
     if (!driveTrain.isInMotionMagicMode())
       driveTrain.initializeMotionMagicFeedback();
 
-    reset();
-    
     driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
     driveTrain.setNeutralMode(NeutralMode.Brake);
     driveTrain.resetPigeonYaw();
 
-    podgeboi.configFactoryDefault();
-
+    right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
     right.changeMotionControlFramePeriod(10);
     right.configAuxPIDPolarity(false);
 
+    podgeboi.configFactoryDefault();
+
     fillTopBuffer();
-    
     trajectoryProcessor.startPeriodic(0.005);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    isRunning = true;
     right.getMotionProfileStatus(statusRight);
-
-    if (!isRunning && statusRight.btmBufferCnt >= 5) {
-      right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
-
-      isRunning = true;
-    }
   }
 
   // Called once the command ends or is interrupted.
@@ -98,11 +91,9 @@ public class MoveOnTrajectory extends CommandBase {
     if (interrupted) {
       DriverStation.reportError(getName() + " is interrupted", false);
     }
-    DriverStation.reportError("MoveOnTrajectory END", false);
-
     trajectoryProcessor.stop();
 
-    reset();
+    isRunning = false;
     driveTrain.stop();
     driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
     right.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10, RobotMap.CTRE_TIMEOUT);
@@ -118,23 +109,10 @@ public class MoveOnTrajectory extends CommandBase {
     return false;
   }
 
-  //Fills talon with trajectory states
   public void fillTopBuffer() {
     for(TrajectoryPoint point : trajectoryPoints) {
       right.pushMotionProfileTrajectory(point);
     }
   }
 
-  public void setMotionProfileMode () {
-    right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
-  }
-
-  public void reset() {
-    //Reset motion profile mode and flags
-    isRunning = false;
-    setMotionProfileMode();
-    right.getSensorCollection().setQuadraturePosition(0, RobotMap.CTRE_TIMEOUT);
-    //Clear trajectory buffer
-    right.clearMotionProfileTrajectories();
-  }
 }

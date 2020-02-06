@@ -45,9 +45,11 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spinner;
 
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
+import frc.robot.subsystems.Elevator.ElevatorPosition;
 import frc.robot.subsystems.Shooter.ShooterMode;
 import frc.robot.commands.elevator.DriveElevator;
-
+import frc.robot.commands.elevator.GoToSetPosition;
+import frc.robot.commands.elevator.ManualElevator;
 import frc.robot.util.ShuffleDash;
 
 /**
@@ -104,6 +106,7 @@ public class RobotContainer {
         //shuffleDash.addPublisher(spinner);
         shuffleDash.addPublisher(intake);
         shuffleDash.addPublisher(limelightCamera);
+        shuffleDash.addPublisher(elevator);
         
         shuffleDash.addPIDTunable(shooter, "Shooter");
         shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
@@ -137,7 +140,11 @@ public class RobotContainer {
         gamepadY.whenHeld(new RunFeeder(feeder));
         gamepadX.whenHeld(new RunHopperBelt(hopper));
         gamepadB.whenPressed(new ColorControl(spinner));
+        gamepadA.whenPressed(new GoToSetPosition(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
+        gamepadLeftStickButton.toggleWhenPressed(new ManualElevator(elevator));
+        
+
     }
 
     public String getAutonFirstStep() {

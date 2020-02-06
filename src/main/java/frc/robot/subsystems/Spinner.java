@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
-
 import frc.robot.RobotMap.CAN;
 import frc.robot.sensors.REVColor;
 import frc.robot.sensors.REVColor.ControlPanelColor;
