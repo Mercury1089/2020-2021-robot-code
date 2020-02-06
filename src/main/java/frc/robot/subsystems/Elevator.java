@@ -65,7 +65,7 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     elevator.configMotionAcceleration((int)(MercMath.revsPerMinuteToTicksPerTenth(18000 * 2)));
     elevator.configMotionCruiseVelocity((int) MercMath.revsPerMinuteToTicksPerTenth(MAX_ELEV_RPM));
 
-    elevator.setSensorPhase(false);
+    elevator.setSensorPhase(true);
     elevator.setInverted(true);
     elevator.configVoltage(0.125, 1.0);
     elevator.configClosedLoopPeriod(0, 1);
@@ -74,6 +74,7 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     elevator.configSetParameter(ParamEnum.eClearPositionOnLimitR, 1, 0, 0);
     elevator.setForwardSoftLimit((int) ElevatorPosition.MAX_HEIGHT.encPos);
     elevator.enableForwardSoftLimit();
+    elevator.resetEncoder();
 
     elevator.configPID(Elevator.PRIMARY_PID_LOOP, new PIDGain(NORMAL_P_VAL, 0.0, 0.0, MercMath.calculateFeedForward(MAX_ELEV_RPM)));
   }
