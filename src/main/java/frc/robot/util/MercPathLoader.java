@@ -45,9 +45,10 @@ public class MercPathLoader {
             trajectoryStates = trajectory.getStates();
             Trajectory.State prevState = null;
             int prevTime = 0;
+            double pos = 0.0;
             for(Trajectory.State state : trajectoryStates) {
                 TrajectoryPoint point = new TrajectoryPoint();
-                double heading, velocity, pos;
+                double heading, velocity;
                 int time;
 
                 //Time
@@ -64,14 +65,13 @@ public class MercPathLoader {
                 if (prevState == null) {
                     point.position = 0.0;
                     point.zeroPos = true;
-                    pos = 0.0;
                 } else {
                     double prevX, prevY, x, y;
                     prevX = prevState.poseMeters.getTranslation().getX();
                     prevY = prevState.poseMeters.getTranslation().getY();
                     x = state.poseMeters.getTranslation().getX();
                     y = state.poseMeters.getTranslation().getY();
-                    pos = MercMath.distanceFormula(prevX, x, prevY, y);
+                    pos += MercMath.distanceFormula(prevX, x, prevY, y);
                     state.poseMeters.getTranslation().getDistance(prevState.poseMeters.getTranslation());
                     point.position = MercMath.inchesToEncoderTicks(pos);
                 }
@@ -87,12 +87,20 @@ public class MercPathLoader {
                 trajectoryPoints.add(point);
                 System.out.println("velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) +
                                          " heading: " + state.poseMeters.getRotation().getDegrees() + 
-                                         " distance: " + distance + 
+                                         " pos: " + pos + 
                                          " state.pose2d.getTranslation.getX: " + state.poseMeters.getTranslation().getX() +
                                          " state.pose2d.getTranslation.getY: " + state.poseMeters.getTranslation().getY()
                 );
             }
             trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = true;
+            for (TrajectoryPoint trajectoryPoint : trajectoryPoints) {
+                System.out.println("trajectoryPoint.velocity: " + trajectoryPoint.velocity +
+                                         " trajectoryPoint.headingDeg: " + trajectoryPoint.headingDeg + 
+                                         " trajectoryPoint.position: " + trajectoryPoint.position +
+                                         " trajectoryPoint.isLastPoint " + trajectoryPoint.isLastPoint
+                );
+
+            }
         }
         return trajectoryPoints;
     }
