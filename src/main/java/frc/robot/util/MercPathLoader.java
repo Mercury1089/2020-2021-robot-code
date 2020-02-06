@@ -74,33 +74,34 @@ public class MercPathLoader {
                     pos += MercMath.distanceFormula(prevX, x, prevY, y);
                     state.poseMeters.getTranslation().getDistance(prevState.poseMeters.getTranslation());
                     point.position = MercMath.inchesToEncoderTicks(pos);
+                    point.zeroPos = false;
                 }
                 prevState = state;
                 //Heading
                 heading = state.poseMeters.getRotation().getDegrees();
-                point.headingDeg = MercMath.degreesToPigeonUnits(heading);
+                point.auxiliaryPos = MercMath.degreesToPigeonUnits(heading); // heading stored as auxilliaryPos
                 //PID Profile
                 point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
+                point.profileSlotSelect1 = DriveTrain.DRIVE_SMOOTH_TURN_SLOT;
                 //Says that point is not a last point
                 point.isLastPoint = false;
                 //Append point to point
                 trajectoryPoints.add(point);
-                System.out.println("velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) +
-                                         " heading: " + state.poseMeters.getRotation().getDegrees() + 
-                                         " pos: " + pos + 
-                                         " state.pose2d.getTranslation.getX: " + state.poseMeters.getTranslation().getX() +
-                                         " state.pose2d.getTranslation.getY: " + state.poseMeters.getTranslation().getY()
-                );
+//                System.out.println("velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) +
+//                                         " heading: " + state.poseMeters.getRotation().getDegrees() + 
+//                                         " pos: " + pos + 
+//                                         " state.pose2d.getTranslation.getX: " + state.poseMeters.getTranslation().getX() +
+//                                         " state.pose2d.getTranslation.getY: " + state.poseMeters.getTranslation().getY()
+//                );
             }
             trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = true;
-            for (TrajectoryPoint trajectoryPoint : trajectoryPoints) {
-                System.out.println("trajectoryPoint.velocity: " + trajectoryPoint.velocity +
-                                         " trajectoryPoint.headingDeg: " + trajectoryPoint.headingDeg + 
-                                         " trajectoryPoint.position: " + trajectoryPoint.position +
-                                         " trajectoryPoint.isLastPoint " + trajectoryPoint.isLastPoint
-                );
-
-            }
+//            for (TrajectoryPoint trajectoryPoint : trajectoryPoints) {
+//                System.out.println("trajectoryPoint.velocity: " + trajectoryPoint.velocity +
+//                                         " trajectoryPoint.headingDeg: " + trajectoryPoint.headingDeg + 
+//                                         " trajectoryPoint.position: " + trajectoryPoint.position +
+//                                         " trajectoryPoint.isLastPoint " + trajectoryPoint.isLastPoint
+//                );
+//            }
         }
         return trajectoryPoints;
     }
