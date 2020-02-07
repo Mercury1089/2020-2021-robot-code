@@ -32,7 +32,7 @@ public class Limelight implements TableEntryListener {
     // Angle of Limelight from floor
     private final double LIMELIGHT_ANGLE = 50.00;
     
-    private final double TARGET_LENGTH_INCHES = 30.00;
+    private final double TARGET_LENGTH_INCHES = 17.00;
     private final double VERTICAL_CAMERA_RES_PIXEL = 240;
     private final double VFOV_DEGREES = 41;
 
@@ -279,11 +279,11 @@ public class Limelight implements TableEntryListener {
      */
 
     public double calcDistFromAngle() {
-        // return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE +
-        // getTargetCenterYAngle());
+        // return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE + getTargetCenterYAngle());
+        
         return MercMath.inchesToFeet(TARGET_LENGTH_INCHES)
                 * (VERTICAL_CAMERA_RES_PIXEL / getVerticalLength()) / 2.0
                 / Math.tan(MercMath.degreesToRadians(VFOV_DEGREES / 2));
-    }
 
+    }
 }
