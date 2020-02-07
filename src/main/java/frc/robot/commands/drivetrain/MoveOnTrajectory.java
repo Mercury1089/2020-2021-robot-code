@@ -14,6 +14,7 @@ import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motion.SetValueMotionProfile;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -33,7 +34,7 @@ public class MoveOnTrajectory extends CommandBase {
   
   private boolean isRunning;
   private DriveTrain driveTrain;
-  private TalonSRX right;
+  private TalonSRX left, right;
   private MotionProfileStatus statusRight;
   private List<TrajectoryPoint> trajectoryPoints;
   private PigeonIMU podgeboi;
@@ -49,8 +50,9 @@ public class MoveOnTrajectory extends CommandBase {
     statusRight = new MotionProfileStatus();
     trajectoryPoints = MercPathLoader.loadPath(pathName);
 
+    left = ((MercTalonSRX) this.driveTrain.getLeftLeader()).get();
     right = ((MercTalonSRX) this.driveTrain.getRightLeader()).get();
-
+    
     trajectoryProcessor = new Notifier(() -> {
       right.processMotionProfileBuffer();
     });
@@ -74,6 +76,7 @@ public class MoveOnTrajectory extends CommandBase {
   @Override
   public void execute() {
     right.getMotionProfileStatus(statusRight);
+    left.follow(right, FollowerType.AuxOutput1);
     // If motion profile has not started running, and buffer is too low
     if(!isRunning && statusRight.btmBufferCnt >= 20) {
       right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
@@ -99,9 +102,6 @@ public class MoveOnTrajectory extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    DriverStation.reportError("isActivePoint Valid" + statusRight.activePointValid, false);
-    DriverStation.reportError("isLastPoint" + statusRight.isLast , false);
-
     return statusRight.activePointValid && 
            statusRight.isLast &&
            isRunning;
@@ -128,6 +128,7 @@ public class MoveOnTrajectory extends CommandBase {
     driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
     driveTrain.setNeutralMode(NeutralMode.Brake);
     driveTrain.resetPigeonYaw();
+    driveTrain.resetEncoders();
 
     // Reset pigeon
     podgeboi.configFactoryDefault();
