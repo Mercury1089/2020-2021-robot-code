@@ -21,6 +21,7 @@ public class ShootAccurately extends CommandBase {
    */
   public ShootAccurately(double distance, double targetAngle, Shooter shooter) {
     super.addRequirements(shooter);
+    setName("ShootAccurately");
     this.shooter = shooter;
 
     this.distance = distance;

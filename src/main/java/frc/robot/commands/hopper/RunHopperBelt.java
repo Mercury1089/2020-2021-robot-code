@@ -19,6 +19,7 @@ public class RunHopperBelt extends CommandBase {
    */
   public RunHopperBelt(Hopper hopper) {
     addRequirements(hopper);
+    setName("RunHopperBelt");
     this.hopper = hopper;
   }
 

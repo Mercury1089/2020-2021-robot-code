@@ -18,6 +18,7 @@ public class SwitchDrive extends CommandBase {
 
     public SwitchDrive(DriveDirection driveDir, DriveTrain driveTrain) {
         dd = driveDir;
+        setName("SwitchDrive");
 
         this.driveTrain = driveTrain;
     }

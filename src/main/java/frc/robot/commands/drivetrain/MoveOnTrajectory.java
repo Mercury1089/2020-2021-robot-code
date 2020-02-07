@@ -46,6 +46,7 @@ public class MoveOnTrajectory extends CommandBase {
 
     pathName = path;
     this.driveTrain = driveTrain;
+    setName("MoveOnTrajectory");
     podgeboi = this.driveTrain.getPigeon();
     statusRight = new MotionProfileStatus();
     trajectoryPoints = MercPathLoader.loadPath(pathName);

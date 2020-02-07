@@ -43,8 +43,10 @@ public class MoveOnPath extends CommandBase {
     private int dir;
     private String name;
     private DriveTrain driveTrain;
+
     public MoveOnPath(String filename, MPDirection direction, DriveTrain driveTrain) throws FileNotFoundException {
         this(filename, driveTrain);
+        setName("MoveOnPath");
         switch (direction) {
             case BACKWARD:
                 dir = -1;

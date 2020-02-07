@@ -27,6 +27,7 @@ public class ColorControl extends CommandBase {
    */
   public ColorControl(Spinner spinner) {
     addRequirements(spinner);
+    setName("ColorControl");
     this.spinner = spinner;
   }
 

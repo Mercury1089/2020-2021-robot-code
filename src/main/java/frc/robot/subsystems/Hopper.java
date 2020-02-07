@@ -23,6 +23,7 @@ public class Hopper extends SubsystemBase {
   public Hopper() {
     hopperBelt = new MercTalonSRX(CAN.HOPPER_BELT);
     runSpeed = 0.5;
+    setName("Hopper");
   }
 
   public void setSpeed(double speed) {

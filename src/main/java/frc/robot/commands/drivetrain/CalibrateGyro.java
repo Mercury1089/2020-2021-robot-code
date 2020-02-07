@@ -10,6 +10,7 @@ public class CalibrateGyro extends CommandBase {
 
     public CalibrateGyro(DriveTrain driveTrain){
         this.driveTrain = driveTrain;
+        setName("CalibrateGyro");
     }
 
     

@@ -19,6 +19,7 @@ public class RunSpinner extends CommandBase {
    */
   public RunSpinner(Spinner spinner) {
     addRequirements(spinner);
+    setName("RunSpinner");
     this.spinner = spinner;
   }
 

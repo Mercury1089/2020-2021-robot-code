@@ -19,6 +19,7 @@ public class RunFeeder extends CommandBase {
    */
   public RunFeeder(Feeder feeder) {
     addRequirements(feeder);
+    setName("RunFeeder");
     this.feeder = feeder;
   }
 

@@ -22,6 +22,7 @@ public class RunShooterRPM extends CommandBase {
    */
   public RunShooterRPM(Shooter shooter) {
     super.addRequirements(shooter);
+    setName("RunShooterRPM");
     this.shooter = shooter;
   }
 

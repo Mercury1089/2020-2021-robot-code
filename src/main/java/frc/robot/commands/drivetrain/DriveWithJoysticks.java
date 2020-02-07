@@ -21,6 +21,7 @@ public class DriveWithJoysticks extends CommandBase{
     public DriveWithJoysticks(DriveType type, DriveTrain driveTrain) {
         super();
         super.addRequirements(driveTrain);
+        setName("DriveWithJoysticks");
         this.driveTrain = driveTrain;
         driveType = type;
     }

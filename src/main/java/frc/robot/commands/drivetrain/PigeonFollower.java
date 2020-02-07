@@ -18,6 +18,7 @@ public class PigeonFollower extends MoveHeading {
 
   public PigeonFollower(double distance, double[][] distAngle, DriveTrain driveTrain) {
     super(distance, 0, driveTrain);
+    setName("PigeonFollower");
     this.driveTrain = driveTrain;
     this.distAngle = distAngle;
   }

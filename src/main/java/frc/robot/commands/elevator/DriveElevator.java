@@ -21,6 +21,7 @@ public class DriveElevator extends CommandBase {
    */
   public DriveElevator(Elevator elevator) {
     addRequirements(elevator);
+    setName("DriveElevator");
     this.elevator = elevator;
   }
 

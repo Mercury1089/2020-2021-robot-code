@@ -20,6 +20,7 @@ public class ManualElevator extends CommandBase {
 
   public ManualElevator(Elevator elevator) {
     addRequirements(elevator);
+    setName("ManualElevator");
     this.elevator = elevator;
   }
 

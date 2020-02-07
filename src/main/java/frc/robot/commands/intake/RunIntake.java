@@ -19,6 +19,7 @@ public class RunIntake extends CommandBase {
    */
   public RunIntake(Intake intake) {
     addRequirements(intake);
+    setName("RunIntake");
     this.intake = intake;
   }
 
