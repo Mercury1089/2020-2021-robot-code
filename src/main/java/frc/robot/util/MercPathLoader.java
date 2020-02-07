@@ -58,6 +58,7 @@ public class MercPathLoader {
                 prevTime = time;
                 */
                 point.timeDur = 20;
+
                 //Velocity
                 velocity = state.velocityMetersPerSecond;
                 point.velocity = MercMath.inchesPerSecondToTicksPerTenth(velocity);

@@ -238,7 +238,7 @@ public class RobotContainer {
     public void initializeAutonCommand(){
         autonCommand.addRequirements(this.driveTrain);
         try{
-            autonCommand.addCommands(new MoveOnTrajectory("Unnamed.wpilib.json", this.driveTrain));            
+            autonCommand.addCommands(new MoveOnTrajectory("Curvy.wpilib.json", this.driveTrain));            
         } catch(FileNotFoundException e){
             System.out.println(e);
         }
