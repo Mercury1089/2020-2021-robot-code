@@ -83,6 +83,7 @@ public class MercPathLoader {
                 //PID Profile
                 point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
                 point.profileSlotSelect1 = DriveTrain.DRIVE_SMOOTH_TURN_SLOT;
+                point.useAuxPID = true;
                 //Says that point is not a last point
                 point.isLastPoint = false;
                 //Append point to point
