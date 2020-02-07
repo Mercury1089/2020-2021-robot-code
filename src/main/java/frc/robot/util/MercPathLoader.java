@@ -52,12 +52,9 @@ public class MercPathLoader {
                 int time;
 
                 //Time
-                /*
                 time = MercMath.secondsToMilliseconds(state.timeSeconds);
                 point.timeDur = time - prevTime;
-                prevTime = time;
-                */
-                point.timeDur = 20;
+                prevTime = time;    
 
                 //Velocity
                 velocity = state.velocityMetersPerSecond;
