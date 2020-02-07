@@ -75,9 +75,10 @@ public class MoveOnTrajectory extends CommandBase {
   public void execute() {
     right.getMotionProfileStatus(statusRight);
     // If motion profile has not started running, and buffer is too low
-    if(!isRunning && statusRight.btmBufferCnt >= 5) {
+    if(!isRunning && statusRight.btmBufferCnt >= 20) {
       right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
       isRunning = true;
+      DriverStation.reportError("IsRunning", false);
     }
   }
 
@@ -98,6 +99,9 @@ public class MoveOnTrajectory extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    DriverStation.reportError("isActivePoint Valid" + statusRight.activePointValid, false);
+    DriverStation.reportError("isLastPoint" + statusRight.isLast , false);
+
     return statusRight.activePointValid && 
            statusRight.isLast &&
            isRunning;
@@ -115,6 +119,7 @@ public class MoveOnTrajectory extends CommandBase {
     isRunning = false;
     right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Disable.value);
     right.getSensorCollection().setQuadraturePosition(0, RobotMap.CTRE_TIMEOUT);
+    right.configMotionProfileTrajectoryPeriod(0, RobotMap.CTRE_TIMEOUT);
 
     // Clear the trajectory buffer
     right.clearMotionProfileTrajectories();
