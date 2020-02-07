@@ -14,7 +14,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorPosition;
 import frc.robot.util.interfaces.IMercMotorController;
 
-public class GoToSetPosition extends CommandBase {
+public class AutomaticElevator extends CommandBase {
 
   private Elevator elevator;
   private final int ELEVATOR_THRESHOLD = 3000;
@@ -26,17 +26,21 @@ public class GoToSetPosition extends CommandBase {
   /**
    * Creates a new GoToSetPosition.
    */
-  public GoToSetPosition(Elevator elevator, ElevatorPosition pos) {
+  public AutomaticElevator(Elevator elevator, ElevatorPosition pos) {
     addRequirements(elevator);
     this.elevator = elevator;
     targetPos = pos;
     endable = true;
-    down = false;
+    if(elevator.getEncTicks() > pos.encPos)
+      down = true;
+    else
+      down = false;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    elevator.getElevatorLeader().resetEncoder();
     if(down) {
       elevator.getElevatorLeader().set(ControlMode.MotionMagic, targetPos.encPos);
     }

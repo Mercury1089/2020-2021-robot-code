@@ -27,9 +27,9 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   public enum ElevatorPosition{
     MAX_HEIGHT(100000),     //Test enc values
     BOTTOM(1000),         //1nd and lowest position
-    CONTROL_PANEL(7000),    //2rd lowest position
+    CONTROL_PANEL(20000),    //2rd lowest position
     CLIMB(50000),           //Highest position
-    HANGING(5000);          //3st position
+    HANGING(7000);          //3st position
 
     public final double encPos;
 
