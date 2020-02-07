@@ -64,25 +64,21 @@ public class MoveOnTrajectory extends CommandBase {
     if (!driveTrain.isInMotionMagicMode())
       driveTrain.initializeMotionMagicFeedback();
 
-    driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
-    driveTrain.setNeutralMode(NeutralMode.Brake);
-    driveTrain.resetPigeonYaw();
-
-    right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
-    right.changeMotionControlFramePeriod(10);
-    right.configAuxPIDPolarity(false);
-
-    podgeboi.configFactoryDefault();
-
+    reset();
     fillTopBuffer();
+
     trajectoryProcessor.startPeriodic(0.005);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    isRunning = true;
     right.getMotionProfileStatus(statusRight);
+    // If motion profile has not started running, and buffer is too low
+    if(!isRunning && statusRight.btmBufferCnt >= 5) {
+      right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
+      isRunning = true;
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -102,17 +98,36 @@ public class MoveOnTrajectory extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    boolean isFinished = statusRight.activePointValid && 
-                         statusRight.isLast &&
-                         isRunning;
-
-    return false;
+    return statusRight.activePointValid && 
+           statusRight.isLast &&
+           isRunning;
   }
-
+  // Feeds TalonSRX with trajectory points
   public void fillTopBuffer() {
     for(TrajectoryPoint point : trajectoryPoints) {
       right.pushMotionProfileTrajectory(point);
     }
   }
 
+  // Resets values to rerun command
+  private void reset() {
+    // Reset flags and motion profile modes
+    isRunning = false;
+    right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Disable.value);
+    right.getSensorCollection().setQuadraturePosition(0, RobotMap.CTRE_TIMEOUT);
+
+    // Clear the trajectory buffer
+    right.clearMotionProfileTrajectories();
+
+    // Reconfigure driveTrain settings
+    driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+    driveTrain.setNeutralMode(NeutralMode.Brake);
+    driveTrain.resetPigeonYaw();
+
+    // Reset pigeon
+    podgeboi.configFactoryDefault();
+
+    right.changeMotionControlFramePeriod(10);
+    right.configAuxPIDPolarity(false);
+  }
 }
