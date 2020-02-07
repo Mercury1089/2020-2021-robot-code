@@ -33,7 +33,7 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
   public Intake() {
     super();
     setName("Intake");
-    intakeRoller = new MercTalonSRX(CAN.INTAKE_ROLLER);
+    intakeRoller = new MercVictorSPX(CAN.INTAKE_ROLLER);
     intakeArticulator = new MercTalonSRX(CAN.INTAKE_ARTICULATOR);
     intakePosition = IntakePosition.IN;
   }

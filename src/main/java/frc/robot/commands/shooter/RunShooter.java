@@ -22,6 +22,7 @@ public class RunShooter extends CommandBase {
    */
   public RunShooter(Shooter shooter) {
     super.addRequirements(shooter);
+    setName("RunShooter");
     this.shooter = shooter;
   }
 

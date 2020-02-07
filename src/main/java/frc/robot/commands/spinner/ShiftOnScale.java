@@ -21,6 +21,7 @@ public class ShiftOnScale extends CommandBase {
    */
   public ShiftOnScale(Spinner spinner) {
     addRequirements(spinner);
+    setName("ShiftOnScale");
     this.spinner = spinner;
   }
 

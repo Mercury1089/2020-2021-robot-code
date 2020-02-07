@@ -40,7 +40,7 @@ public class MoveHeading extends CommandBase {
      */
     public MoveHeading(double distance, double heading, DriveTrain driveTrain) {
         super.addRequirements(driveTrain);
-
+        setName("MoveHeading");
         this.driveTrain = driveTrain;
 
         left = this.driveTrain.getLeftLeader();

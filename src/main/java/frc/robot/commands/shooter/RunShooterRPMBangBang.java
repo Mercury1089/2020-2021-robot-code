@@ -22,6 +22,7 @@ public class RunShooterRPMBangBang extends CommandBase {
 
   public RunShooterRPMBangBang(Shooter shooter) {
     super.addRequirements(shooter);
+    setName("RunShooterRPMBangBang");
     this.shooter = shooter;
   }
 

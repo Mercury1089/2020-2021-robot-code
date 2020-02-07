@@ -18,7 +18,7 @@ public class DriveDistance extends MoveHeading{
      */
     public DriveDistance(double distance, DriveTrain driveTrain) {
         super(distance, 0, driveTrain);
-
+        setName("DriveDistance");
         moveThresholdTicks = 500;
         angleThresholdDeg = 2;
         onTargetMinCount = 10;

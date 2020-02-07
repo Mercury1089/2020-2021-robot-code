@@ -22,6 +22,7 @@ public class RunShooterRPMPID extends CommandBase {
    */
   public RunShooterRPMPID(Shooter shooter) {
     super.addRequirements(shooter);
+    setName("RunShooterRPMPID");
     this.shooter = shooter;
   }
 

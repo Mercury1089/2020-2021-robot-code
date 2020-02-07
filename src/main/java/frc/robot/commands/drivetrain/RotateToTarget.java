@@ -21,6 +21,7 @@ public class RotateToTarget extends DegreeRotate {
 
     public RotateToTarget(DriveTrain driveTrain, LimelightCamera limelightCamera) {
         super(0, driveTrain);
+        setName("RotateToTarget");
 
         this.driveTrain = driveTrain;
         this.limelightCamera = limelightCamera;

@@ -23,6 +23,7 @@ public class RotationControl extends CommandBase{
 
   public RotationControl(Spinner spinner) {
     addRequirements(spinner);
+    setName("RotationControl");
     this.spinner = spinner;
   }
 

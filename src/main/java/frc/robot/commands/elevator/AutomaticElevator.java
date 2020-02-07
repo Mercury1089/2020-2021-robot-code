@@ -28,6 +28,7 @@ public class AutomaticElevator extends CommandBase {
    */
   public AutomaticElevator(Elevator elevator, ElevatorPosition pos) {
     addRequirements(elevator);
+    setName("AutomaticElevator");
     this.elevator = elevator;
     targetPos = pos;
     endable = true;
