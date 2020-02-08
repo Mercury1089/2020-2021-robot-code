@@ -142,9 +142,9 @@ public class RobotContainer {
         right11.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
 
         gamepadY.whenHeld(new RunFeeder(feeder));
-        gamepadX.whenHeld(new RunHopperBelt(hopper));
+        gamepadX.whenHeld(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadB.whenPressed(new ColorControl(spinner));
-        gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
+        gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.MAX_HEIGHT));
         gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         gamepadLeftStickButton.toggleWhenPressed(new ManualElevator(elevator));
         

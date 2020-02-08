@@ -41,7 +41,6 @@ public class AutomaticElevator extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevator.getElevatorLeader().resetEncoder();
     if(down) {
       elevator.getElevatorLeader().set(ControlMode.MotionMagic, targetPos.encPos);
     }

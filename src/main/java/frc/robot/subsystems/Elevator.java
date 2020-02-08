@@ -46,7 +46,7 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   }
 
   private static final int MAX_ELEV_RPM = 18000;
-  public static final double NORMAL_P_VAL = 0.12;
+  public static final double NORMAL_P_VAL = 0.21;
   public static final int PRIMARY_PID_LOOP = 0;
 
   private IMercMotorController elevator;
