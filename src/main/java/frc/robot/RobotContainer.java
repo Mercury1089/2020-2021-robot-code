@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 import frc.robot.RobotMap.DS_USB;
+import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
 
@@ -26,6 +27,7 @@ import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.hopper.RunHopperBelt;
 import frc.robot.commands.intake.RunIntake;
+import frc.robot.commands.intake.RunManualIntake;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.shooter.RunShooterRPMBangBang;
@@ -84,7 +86,7 @@ public class RobotContainer {
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
 
-        driveTrain = new DriveTrain(DriveTrainLayout.TALONS_VICTORS);
+        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS);
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
         shooter = new Shooter(ShooterMode.ONE_WHEEL);
@@ -145,10 +147,9 @@ public class RobotContainer {
         gamepadX.whenHeld(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadB.whenPressed(new ColorControl(spinner));
         gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.MAX_HEIGHT));
+        gamepadLB.toggleWhenPressed(new RunManualIntake(intake));
         gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         gamepadLeftStickButton.toggleWhenPressed(new ManualElevator(elevator));
-        
-
     }
 
     public String getAutonFirstStep() {

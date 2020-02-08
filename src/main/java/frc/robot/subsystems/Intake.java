@@ -16,6 +16,7 @@ import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 import frc.robot.util.interfaces.IMercMotorController.LimitSwitchDirection;
 import frc.robot.RobotMap.CAN;
+import frc.robot.commands.intake.RunManualIntake;
 
 public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher {
   private final IMercMotorController intakeRoller;
@@ -35,6 +36,7 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
     setName("Intake");
     intakeRoller = new MercVictorSPX(CAN.INTAKE_ROLLER);
     intakeArticulator = new MercTalonSRX(CAN.INTAKE_ARTICULATOR);
+    intakeArticulator.setInverted(true);
     intakePosition = IntakePosition.IN;
   }
 
@@ -63,5 +65,6 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
   public void publishValues() {
     SmartDashboard.putBoolean(getName() + "/FwdLimit", intakeArticulator.isLimitSwitchClosed(LimitSwitchDirection.FORWARD));
     SmartDashboard.putBoolean(getName() + "/RevLimit", intakeArticulator.isLimitSwitchClosed(LimitSwitchDirection.REVERSE));
+    SmartDashboard.putNumber(getName() + "/ArticulateSpeed", intakeArticulator.getSpeed());
   }
 }
