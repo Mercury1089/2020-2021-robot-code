@@ -229,6 +229,7 @@ public class MercMath {
 
     public static double ticksPerTenthToMetersPerSecond(double ticksPerTenth) {
         return revsPerMinuteToMetersPerSecond(ticksPerTenthToRevsPerMinute(ticksPerTenth));
+
     }
 
     public static double calculateFeedForward(double rpm) {

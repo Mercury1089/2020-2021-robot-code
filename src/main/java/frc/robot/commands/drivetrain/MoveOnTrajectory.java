@@ -77,10 +77,10 @@ public class MoveOnTrajectory extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    timeDuration = statusRight.timeDurMs / 2;
-    if(timeDuration < 1)
-      timeDuration = 1;
-    right.changeMotionControlFramePeriod(timeDuration);
+    //timeDuration = statusRight.timeDurMs / 2;
+    //if(timeDuration < 1)
+    //  timeDuration = 1;
+    //right.changeMotionControlFramePeriod(timeDuration);
     right.getMotionProfileStatus(statusRight);
     left.follow(right, FollowerType.AuxOutput1);
 
@@ -140,7 +140,7 @@ public class MoveOnTrajectory extends CommandBase {
     // Reset pigeon
     podgeboi.configFactoryDefault();
 
-    right.changeMotionControlFramePeriod(10);
+    right.changeMotionControlFramePeriod(2);
     right.configAuxPIDPolarity(false);
   }
 }

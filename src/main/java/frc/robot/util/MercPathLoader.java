@@ -35,10 +35,10 @@ public class MercPathLoader {
         Trajectory trajectory = null;
 
         try {
-            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(BASE_PATH_LOCATION + pathName);
+            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(BASE_PATH_LOCATION + pathName + ".wpilib.json");
             trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         } catch (IOException ex) {
-            DriverStation.reportError("Unable to open trajectory: " + BASE_PATH_LOCATION + pathName, ex.getStackTrace());
+            DriverStation.reportError("Unable to open trajectory: " + pathName, ex.getStackTrace());
             return null;
         }
         if (trajectory != null) {
@@ -52,10 +52,13 @@ public class MercPathLoader {
                 int time;
 
                 //Time
+                /*
                 time = MercMath.secondsToMilliseconds(state.timeSeconds);
                 point.timeDur = time - prevTime;
                 prevTime = time;    
-
+                */
+                time = 4;
+                point.timeDur = time;
                 //Velocity
                 velocity = state.velocityMetersPerSecond;
                 point.velocity = MercMath.inchesPerSecondToTicksPerTenth(velocity);
@@ -75,6 +78,9 @@ public class MercPathLoader {
                     point.zeroPos = false;
                 }
                 prevState = state;
+
+
+
                 //Heading
                 heading = state.poseMeters.getRotation().getDegrees();
                 point.auxiliaryPos = MercMath.degreesToPigeonUnits(heading); // heading stored as auxilliaryPos
@@ -86,21 +92,20 @@ public class MercPathLoader {
                 point.isLastPoint = false;
                 //Append point to point
                 trajectoryPoints.add(point);
-//                System.out.println("velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) +
-//                                         " heading: " + state.poseMeters.getRotation().getDegrees() + 
-//                                         " pos: " + pos + 
-//                                         " state.pose2d.getTranslation.getX: " + state.poseMeters.getTranslation().getX() +
-//                                         " state.pose2d.getTranslation.getY: " + state.poseMeters.getTranslation().getY()
-//                );
+                /*
+                System.out.println("time: " + time
+                                    + " velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond)
+                                    + " heading: " + state.poseMeters.getRotation().getDegrees()
+                                    + " pos: " + pos
+                                    + " TicksPerTenth Values " + MercMath.revsPerMinuteToTicksPerTenth(MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond))
+                                    + " point.time: " + point.timeDur
+                                    + " point.velocity: " + point.velocity
+                                    + " point.headingDeg: " + point.headingDeg
+                                    + " point.position: " + point.position
+                );
+                */
             }
             trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = true;
-//            for (TrajectoryPoint trajectoryPoint : trajectoryPoints) {
-//                System.out.println("trajectoryPoint.velocity: " + trajectoryPoint.velocity +
-//                                         " trajectoryPoint.headingDeg: " + trajectoryPoint.headingDeg + 
-//                                         " trajectoryPoint.position: " + trajectoryPoint.position +
-//                                         " trajectoryPoint.isLastPoint " + trajectoryPoint.isLastPoint
-//                );
-//            }
         }
         return trajectoryPoints;
     }

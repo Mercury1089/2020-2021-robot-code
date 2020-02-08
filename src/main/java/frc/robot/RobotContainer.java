@@ -27,6 +27,7 @@ import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.hopper.RunHopperBelt;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
+
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.shooter.RunShooterRPMBangBang;
 import frc.robot.commands.shooter.RunShooterRPMPID;
@@ -34,10 +35,6 @@ import frc.robot.commands.spinner.ColorControl;
 import frc.robot.commands.spinner.RotationControl;
 import frc.robot.commands.spinner.RunSpinner;
 import frc.robot.commands.spinner.ShiftOnScale;
-import frc.robot.commands.elevator.AutomaticElevator;
-import frc.robot.commands.elevator.DriveElevator;
-import frc.robot.commands.elevator.ManualElevator;
-
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
@@ -46,9 +43,13 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Spinner;
+
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.subsystems.Elevator.ElevatorPosition;
 import frc.robot.subsystems.Shooter.ShooterMode;
+import frc.robot.commands.elevator.DriveElevator;
+//import frc.robot.commands.elevator.GoToSetPosition;
+import frc.robot.commands.elevator.ManualElevator;
 import frc.robot.util.ShuffleDash;
 
 /**
@@ -124,7 +125,7 @@ public class RobotContainer {
         left7.whileHeld(new RunHopperBelt(hopper));
         left8.whenPressed(new RunFeeder(feeder));
         try{
-            left9.whenPressed(new MoveOnTrajectory("Unnamed.wpilib.json", driveTrain));            
+            left9.whenPressed(new MoveOnTrajectory("Straight", driveTrain));            
         } catch(FileNotFoundException e){
             System.out.println(e);
         }
@@ -144,7 +145,7 @@ public class RobotContainer {
         gamepadY.whenHeld(new RunFeeder(feeder));
         gamepadX.whenHeld(new RunHopperBelt(hopper));
         gamepadB.whenPressed(new ColorControl(spinner));
-        gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
+        //gamepadA.whenPressed(new GoToSetPosition(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         gamepadLeftStickButton.toggleWhenPressed(new ManualElevator(elevator));
         
@@ -237,10 +238,11 @@ public class RobotContainer {
     public void initializeAutonCommand(){
         autonCommand.addRequirements(this.driveTrain);
         try{
-            autonCommand.addCommands(new MoveOnTrajectory("Curvy.wpilib.json", this.driveTrain));            
+            autonCommand.addCommands(new MoveOnTrajectory("Straight", this.driveTrain));            
         } catch(FileNotFoundException e){
             System.out.println(e);
         }
+        
     }
 
     public CommandGroupBase getAutonCommand(){
