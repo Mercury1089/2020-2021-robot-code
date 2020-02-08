@@ -229,7 +229,26 @@ public class MercMath {
 
     public static double ticksPerTenthToMetersPerSecond(double ticksPerTenth) {
         return revsPerMinuteToMetersPerSecond(ticksPerTenthToRevsPerMinute(ticksPerTenth));
+    }
 
+    public static double metersPerSecondToTicksPerTenth(double metersPerSecond) {
+        return revsPerMinuteToTicksPerTenth(metersPerSecondToRevsPerMinute(metersPerSecond));
+    }
+
+    public static double metersPerSecondToRevsPerMinute(double metersPerSecond) {
+        return (metersPerSecond / (inchesToMeters(DriveTrain.WHEEL_DIAMETER_INCHES) * Math.PI)) * 60;
+    }
+
+    public static double inchesToMeters(double inches) {
+        return inches * 0.0254;
+    }    
+
+    public static double metersToEncoderTicks(double meters) {
+        return inchesToEncoderTicks(metersToInches(meters));
+    }
+
+    public static double metersToInches(double meters) {
+        return meters / 0.0254;
     }
 
     public static double calculateFeedForward(double rpm) {

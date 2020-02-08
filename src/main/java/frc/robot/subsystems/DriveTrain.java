@@ -113,8 +113,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         // Config PID
         setPIDGain(DRIVE_PID_SLOT, new PIDGain(0.125, 0.0, 0.05, 0.0, .75));
         setPIDGain(DRIVE_SMOOTH_MOTION_SLOT, new PIDGain(0.6, 0.00032, 0.45, getFeedForward(), 1.0));
-        setPIDGain(DRIVE_MOTION_PROFILE_SLOT, new PIDGain(0.6, 0.0
-        , 0.0, getFeedForward(), 1.0));
+        setPIDGain(DRIVE_MOTION_PROFILE_SLOT, new PIDGain(0.15, 0.0, 0.0, getFeedForward(), 1.0));
         setPIDGain(DRIVE_SMOOTH_TURN_SLOT, new PIDGain(0.35, 0.0, 0.35, 0.0, 1.0));
 
         resetEncoders();
@@ -453,12 +452,13 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         //Encoder positions
         SmartDashboard.putNumber(getName() + "/Left Encoder (feet)", getLeftEncPositionInFeet());
         SmartDashboard.putNumber(getName() + "/Right Encoder (feet)", getRightEncPositionInFeet());
+        SmartDashboard.putNumber(getName() + "/Left Encoder (ticks)", getLeftEncPositionInTicks());
+        SmartDashboard.putNumber(getName() + "/Right Encoder (ticks)", getRightEncPositionInTicks());
         //Wheel RPM
         SmartDashboard.putNumber(getName() + "/Left RPM", MercMath.ticksPerTenthToRevsPerMinute(getLeftLeader().getEncVelocity()));
         SmartDashboard.putNumber(getName() + "/Right RPM", MercMath.ticksPerTenthToRevsPerMinute(getRightLeader().getEncVelocity()));
         //Angle From Pigeon
         SmartDashboard.putNumber(getName() + "/Yaw", getPigeonYaw());
-        
     }
 
     @Override

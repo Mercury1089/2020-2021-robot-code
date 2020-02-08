@@ -140,7 +140,10 @@ public class MoveOnTrajectory extends CommandBase {
     // Reset pigeon
     podgeboi.configFactoryDefault();
 
-    right.changeMotionControlFramePeriod(2);
+    int halfFramePeriod = MercPathLoader.getMinTime() / 2;
+    if(halfFramePeriod < 1)
+      halfFramePeriod = 1;
+    right.changeMotionControlFramePeriod(halfFramePeriod);
     right.configAuxPIDPolarity(false);
   }
 }
