@@ -25,7 +25,7 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
  */
 public class MercPathLoader {
     private static final String BASE_PATH_LOCATION = "/home/lvuser/deploy/trajectories/PathWeaver/output/";
-
+    private static int minTime = 0;
     /**
      * @param pathName name + wpilib.json
      */
@@ -35,10 +35,10 @@ public class MercPathLoader {
         Trajectory trajectory = null;
 
         try {
-            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(BASE_PATH_LOCATION + pathName);
+            Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(BASE_PATH_LOCATION + pathName + ".wpilib.json");
             trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
         } catch (IOException ex) {
-            DriverStation.reportError("Unable to open trajectory: " + BASE_PATH_LOCATION + pathName, ex.getStackTrace());
+            DriverStation.reportError("Unable to open trajectory: " + pathName, ex.getStackTrace());
             return null;
         }
         if (trajectory != null) {
@@ -52,16 +52,16 @@ public class MercPathLoader {
                 int time;
 
                 //Time
-                /*
                 time = MercMath.secondsToMilliseconds(state.timeSeconds);
                 point.timeDur = time - prevTime;
-                prevTime = time;
-                */
-                point.timeDur = 20;
-
+                prevTime = time;    
+                if(minTime == 0)
+                    minTime = point.timeDur;
+                //time = 20;
+                //point.timeDur = time;
                 //Velocity
                 velocity = state.velocityMetersPerSecond;
-                point.velocity = MercMath.inchesPerSecondToTicksPerTenth(velocity);
+                point.velocity = MercMath.metersPerSecondToTicksPerTenth(velocity);
                 //Distance
                 if (prevState == null) {
                     point.position = 0.0;
@@ -74,10 +74,11 @@ public class MercPathLoader {
                     y = state.poseMeters.getTranslation().getY();
                     pos += MercMath.distanceFormula(prevX, x, prevY, y);
                     state.poseMeters.getTranslation().getDistance(prevState.poseMeters.getTranslation());
-                    point.position = MercMath.inchesToEncoderTicks(pos);
+                    point.position = MercMath.metersToEncoderTicks(pos);
                     point.zeroPos = false;
                 }
                 prevState = state;
+
                 //Heading
                 heading = state.poseMeters.getRotation().getDegrees();
                 point.auxiliaryPos = MercMath.degreesToPigeonUnits(heading); // heading stored as auxilliaryPos
@@ -89,22 +90,27 @@ public class MercPathLoader {
                 point.isLastPoint = false;
                 //Append point to point
                 trajectoryPoints.add(point);
-//                System.out.println("velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) +
-//                                         " heading: " + state.poseMeters.getRotation().getDegrees() + 
-//                                         " pos: " + pos + 
-//                                         " state.pose2d.getTranslation.getX: " + state.poseMeters.getTranslation().getX() +
-//                                         " state.pose2d.getTranslation.getY: " + state.poseMeters.getTranslation().getY()
-//                );
+                
+                System.out.println("time: " + time
+                                    + " velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond)
+                                    + " heading: " + state.poseMeters.getRotation().getDegrees()
+                                    + " pos: " + pos
+                                    + " TicksPerTenth Values " + MercMath.revsPerMinuteToTicksPerTenth(MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond))
+                                    + " point.time: " + point.timeDur
+                                    + " point.velocity: " + point.velocity
+                                    + " point.headingDeg: " + point.headingDeg
+                                    + " point.position: " + point.position
+                );
+                
+                minTime = Math.min(point.timeDur, minTime);
             }
             trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = true;
-//            for (TrajectoryPoint trajectoryPoint : trajectoryPoints) {
-//                System.out.println("trajectoryPoint.velocity: " + trajectoryPoint.velocity +
-//                                         " trajectoryPoint.headingDeg: " + trajectoryPoint.headingDeg + 
-//                                         " trajectoryPoint.position: " + trajectoryPoint.position +
-//                                         " trajectoryPoint.isLastPoint " + trajectoryPoint.isLastPoint
-//                );
-//            }
+            DriverStation.reportError("Min Time: " + minTime , false);
         }
         return trajectoryPoints;
+    }
+
+    public static int getMinTime() {
+        return minTime;
     }
 }

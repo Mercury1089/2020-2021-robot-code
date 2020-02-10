@@ -37,6 +37,7 @@ public class MoveOnTrajectory extends CommandBase {
   private TalonSRX left, right;
   private MotionProfileStatus statusRight;
   private List<TrajectoryPoint> trajectoryPoints;
+  private int timeDuration;
   private PigeonIMU podgeboi;
   private String pathName;
 
@@ -76,8 +77,13 @@ public class MoveOnTrajectory extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //timeDuration = statusRight.timeDurMs / 2;
+    //if(timeDuration < 1)
+    //  timeDuration = 1;
+    //right.changeMotionControlFramePeriod(timeDuration);
     right.getMotionProfileStatus(statusRight);
     left.follow(right, FollowerType.AuxOutput1);
+
     // If motion profile has not started running, and buffer is too low
     if(!isRunning && statusRight.btmBufferCnt >= 20) {
       right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);
@@ -134,7 +140,10 @@ public class MoveOnTrajectory extends CommandBase {
     // Reset pigeon
     podgeboi.configFactoryDefault();
 
-    right.changeMotionControlFramePeriod(10);
+    int halfFramePeriod = MercPathLoader.getMinTime() / 2;
+    if(halfFramePeriod < 1)
+      halfFramePeriod = 1;
+    right.changeMotionControlFramePeriod(halfFramePeriod);
     right.configAuxPIDPolarity(false);
   }
 }

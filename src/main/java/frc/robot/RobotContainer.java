@@ -8,11 +8,12 @@ import java.io.FileNotFoundException;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
+import frc.robot.RobotMap.JOYSTICK_TRIGGERS;
 
 import frc.robot.commands.drivetrain.DegreeRotate;
 import frc.robot.commands.drivetrain.DriveDistance;
@@ -115,7 +116,7 @@ public class RobotContainer {
         autonCommand = new SequentialCommandGroup();
         autonCommand.addRequirements(driveTrain);
         initializeAutonCommand();
-        
+
         initalizeJoystickButtons();
         
         left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
