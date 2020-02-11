@@ -3,20 +3,20 @@ package frc.robot.util;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class TriggerButton {
-
+public class PovButton {
+    
   private Joystick gamepad;
-  private int trigger;
+  private int pov;
   private boolean held;
   private final double PRESS_THRESHOLD;
 
-  public TriggerButton(Joystick gamepad, int trigger) {
-    this(gamepad, trigger, 0.1);
+  public PovButton(Joystick gamepad, int pov) {
+    this(gamepad, pov, 0.1);
   }
 
-  public TriggerButton(Joystick gamepad, int trigger, double press_threshold) {
+  public PovButton(Joystick gamepad, int pov, double press_threshold) {
     this.gamepad = gamepad;
-    this.trigger = trigger;
+    this.pov = pov;
     PRESS_THRESHOLD = press_threshold;
   }
   
@@ -24,7 +24,7 @@ public class TriggerButton {
    * @return whether or not the trigger is pressed past the set threshold
    */
   public boolean isPressed(){
-    if(gamepad.getRawAxis(trigger) > PRESS_THRESHOLD)
+    if(gamepad.getPOV(pov) > PRESS_THRESHOLD)
       return true;
     return false;
   }
@@ -58,7 +58,7 @@ public class TriggerButton {
   }
 
   /**
-   * Runs the command repeatedly while the trigger is held.
+   * Runs the command repeatedly while the button is held.
    * @param command the command to run
    */
   public void whileHeld(Command command) {
@@ -67,7 +67,7 @@ public class TriggerButton {
   }
     
   /**
-   * Starts the command when the trigger is pressed pressed, stops the command when it is pressed again.
+   * Starts the command when the button is pressed, stops the command when it is pressed again.
    * @param command the command to run
    */
   public void toggleWhenPressed(Command command) {
