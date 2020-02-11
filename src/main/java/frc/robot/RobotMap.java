@@ -97,10 +97,20 @@ public class RobotMap {
         private GAMEPAD_BUTTONS() {
         }
     }
-
-    public static class JOYSTICK_TRIGGERS {
-        public static final int LT = 1;
-        public static final int RT = 2;
+    
+    /**
+    *From 0 in the up direction, and counter clockwise in degrees (right is 90 and upper left is 315).
+    */
+    public static class GAMEPAD_POV {
+        public static final int MIDDLE = -1;
+        public static final int UP = 0;
+        public static final int UP_RIGHT = 45;
+        public static final int RIGHT = 90;
+        public static final int DOWN_RIGHT = 135;
+        public static final int DOWN = 180;
+        public static final int DOWN_LEFT = 225;
+        public static final int LEFT = 270;
+        public static final int UP_LEFT = 315;
     }
 
     public static class JOYSTICK_BUTTONS {
