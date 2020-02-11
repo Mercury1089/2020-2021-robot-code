@@ -15,7 +15,9 @@ import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 import frc.robot.util.interfaces.IMercMotorController.LimitSwitchDirection;
+import frc.robot.Robot;
 import frc.robot.RobotMap.CAN;
+import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.commands.intake.RunManualIntake;
 
 public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher {
@@ -66,5 +68,6 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
     SmartDashboard.putBoolean(getName() + "/FwdLimit", intakeArticulator.isLimitSwitchClosed(LimitSwitchDirection.FORWARD));
     SmartDashboard.putBoolean(getName() + "/RevLimit", intakeArticulator.isLimitSwitchClosed(LimitSwitchDirection.REVERSE));
     SmartDashboard.putNumber(getName() + "/ArticulateSpeed", intakeArticulator.getSpeed());
+    SmartDashboard.putNumber(getName() + "ArticulateInput", Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.rightY));
   }
 }

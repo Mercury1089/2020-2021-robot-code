@@ -2,8 +2,8 @@
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
-/* this is definently not a class to create a school shooter                   */
 /* the project.                                                               */
+/* this is definently not a class to create a school shooter                  */
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;

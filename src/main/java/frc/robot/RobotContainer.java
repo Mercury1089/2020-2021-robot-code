@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import java.io.FileNotFoundException;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotMap.DS_USB;
@@ -69,6 +70,7 @@ public class RobotContainer {
     private JoystickButton left1, left2, left3, left4, left5, left6, left7, left8, left9, left10, left11;
     private JoystickButton right1, right2, right3, right4, right5, right6, right7, right8, right9, right10, right11;
     private JoystickButton gamepadA, gamepadB, gamepadX, gamepadY, gamepadRB, gamepadLB, gamepadBack, gamepadStart, gamepadLeftStickButton, gamepadRightStickButton;
+    private Button gamepadLT, gamepadRT;
 
     private DriveTrain driveTrain;
     private Shooter shooter;
@@ -79,6 +81,7 @@ public class RobotContainer {
     private Elevator elevator;
     private LimelightCamera limelightCamera;
     
+
 
     private CommandGroupBase autonCommand;
 
@@ -151,6 +154,7 @@ public class RobotContainer {
         gamepadLB.toggleWhenPressed(new RunManualIntake(intake));
         gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         gamepadLeftStickButton.toggleWhenPressed(new ManualElevator(elevator));
+        
     }
 
     public String getAutonFirstStep() {

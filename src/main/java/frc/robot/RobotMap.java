@@ -98,6 +98,11 @@ public class RobotMap {
         }
     }
 
+    public static class JOYSTICK_TRIGGERS {
+        public static final int LT = 1;
+        public static final int RT = 2;
+    }
+
     public static class JOYSTICK_BUTTONS {
         public static final int BTN1 = 1;
         public static final int BTN2 = 2;
