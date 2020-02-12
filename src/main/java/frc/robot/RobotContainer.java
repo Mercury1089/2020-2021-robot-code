@@ -53,6 +53,7 @@ import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.subsystems.Elevator.ElevatorPosition;
 import frc.robot.subsystems.Shooter.ShooterMode;
 import frc.robot.util.ShuffleDash;
+import frc.robot.util.TriggerButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -69,7 +70,7 @@ public class RobotContainer {
     private JoystickButton left1, left2, left3, left4, left5, left6, left7, left8, left9, left10, left11;
     private JoystickButton right1, right2, right3, right4, right5, right6, right7, right8, right9, right10, right11;
     private JoystickButton gamepadA, gamepadB, gamepadX, gamepadY, gamepadRB, gamepadLB, gamepadBack, gamepadStart, gamepadLeftStickButton, gamepadRightStickButton;
-    private Button gamepadLT, gamepadRT;
+    private TriggerButton gamepadLT, gamepadRT;
 
     private DriveTrain driveTrain;
     private Shooter shooter;
@@ -111,7 +112,7 @@ public class RobotContainer {
         shuffleDash.addPublisher(intake);
         shuffleDash.addPublisher(limelightCamera);
         shuffleDash.addPublisher(elevator);
-        
+        shuffleDash.addPublisher(feeder);
         shuffleDash.addPIDTunable(shooter, "Shooter");
         shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
         
@@ -150,10 +151,10 @@ public class RobotContainer {
         gamepadX.whenHeld(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadB.whenPressed(new ColorControl(spinner));
         gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.MAX_HEIGHT));
-        gamepadLB.toggleWhenPressed(new RunManualIntake(intake));
+        gamepadLB.whenPressed(new RunCommand(() -> intake.setIntakeIn(), intake));
+        gamepadRB.whenPressed(new RunCommand(() -> intake.setIntakeOut(), intake));
         gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
-        gamepadLeftStickButton.toggleWhenPressed(new ManualElevator(elevator));
-        
+        gamepadLT.toggleWhenPressed(new RunIntake(intake));
     }
 
     public String getAutonFirstStep() {
@@ -236,6 +237,8 @@ public class RobotContainer {
         gamepadStart = new JoystickButton(gamepad, GAMEPAD_BUTTONS.START);
         gamepadLeftStickButton = new JoystickButton(gamepad, GAMEPAD_BUTTONS.L3);
         gamepadRightStickButton = new JoystickButton(gamepad, GAMEPAD_BUTTONS.R3);
+        gamepadLT = new TriggerButton(gamepad, GAMEPAD_AXIS.leftTrigger);
+        gamepadRT = new TriggerButton(gamepad, GAMEPAD_AXIS.rightTrigger);
     }
 
     //Eventually this will link to our auton app on the shuffledash

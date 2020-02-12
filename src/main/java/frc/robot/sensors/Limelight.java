@@ -15,8 +15,8 @@ public class Limelight implements TableEntryListener {
      * length (vert), horizontal length (horiz), or area (area).
      */
     // Redo Coefficients for current game
-    private final double vertCoeff = 111.0;
-    private final double vertExp = -0.948;
+    private final double vertCoeff = 5368;
+    private final double vertExp = -1.07;
     private final double horizCoeff = 264.0;
     private final double horizExp = -0.953;
 
@@ -216,7 +216,7 @@ public class Limelight implements TableEntryListener {
      * @return the distance based on vertical distance
      */
     public double calcDistFromVert() {
-        return vertCoeff * Math.pow(verticalLength, vertExp) * 12;
+        return vertCoeff * Math.pow(getVerticalLength(), vertExp);
     }
 
     /**

@@ -24,6 +24,7 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
   private final IMercMotorController intakeRoller;
   private final IMercMotorController intakeArticulator;
   private IntakePosition intakePosition;
+  private final double ARTICULATOR_SPEED = 0.2;
 
   public enum IntakePosition {
     OUT,
@@ -42,16 +43,18 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
     intakePosition = IntakePosition.IN;
   }
 
-  public void setSpeed(double speed) {
+  public void setRollerSpeed(double speed) {
     this.intakeRoller.setSpeed(speed);
   }
 
   public void setIntakeIn() {
     this.intakePosition = IntakePosition.IN;
+    intakeArticulator.setSpeed(ARTICULATOR_SPEED);
   }
 
   public void setIntakeOut() {
     this.intakePosition = IntakePosition.OUT;
+    intakeArticulator.setSpeed(-ARTICULATOR_SPEED);
   }
 
   public IntakePosition getIntakePosition() {
@@ -68,6 +71,5 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
     SmartDashboard.putBoolean(getName() + "/FwdLimit", intakeArticulator.isLimitSwitchClosed(LimitSwitchDirection.FORWARD));
     SmartDashboard.putBoolean(getName() + "/RevLimit", intakeArticulator.isLimitSwitchClosed(LimitSwitchDirection.REVERSE));
     SmartDashboard.putNumber(getName() + "/ArticulateSpeed", intakeArticulator.getSpeed());
-    SmartDashboard.putNumber(getName() + "ArticulateInput", Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.rightY));
   }
 }
