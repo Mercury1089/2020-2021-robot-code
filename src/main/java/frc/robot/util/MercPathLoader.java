@@ -113,4 +113,8 @@ public class MercPathLoader {
     public static int getMinTime() {
         return minTime;
     }
+
+    public static String getBasePathLocation() {
+        return BASE_PATH_LOCATION;
+    }
 }
