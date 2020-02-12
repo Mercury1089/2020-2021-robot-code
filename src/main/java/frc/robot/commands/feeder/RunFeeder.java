@@ -7,6 +7,8 @@
 
 package frc.robot.commands.feeder;
 
+import com.ctre.phoenix.Logger;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Feeder;
 
@@ -26,13 +28,13 @@ public class RunFeeder extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    feeder.setSpeed(1.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    feeder.setSpeed(feeder.getRunSpeedSD());
+    System.out.println("Running Feeder");
   }
 
   // Called once the command ends or is interrupted.

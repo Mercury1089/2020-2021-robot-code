@@ -27,19 +27,19 @@ public class RunManualIntake extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intake.setSpeed(0.0);
+    intake.setRollerSpeed(0.0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    intake.setSpeed(Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.rightY));
+    intake.setRollerSpeed(Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.rightY));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intake.setSpeed(0.0);
+    intake.setRollerSpeed(0.0);
   }
 
   // Returns true when the command should end.
