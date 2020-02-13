@@ -21,7 +21,7 @@ public class IntakeOut extends ParallelCommandGroup {
   public IntakeOut(Intake intake) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
-    super(new RunCommand(() -> intake.setIntakeOut(), intake), 
-          new RunIntake(intake));
+    // super(new RunCommand(() -> intake.setIntakeOut(), intake), 
+    //       new RunIntake(intake));
   }
 }

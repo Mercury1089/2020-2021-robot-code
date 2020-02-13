@@ -7,8 +7,6 @@
 
 package frc.robot.commands.feeder;
 
-import com.ctre.phoenix.Logger;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Feeder;
 
