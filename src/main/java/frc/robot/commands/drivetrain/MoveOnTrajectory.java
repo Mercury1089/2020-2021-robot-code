@@ -26,6 +26,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
+import frc.robot.util.MercMotionProfiles;
 import frc.robot.util.MercPathLoader;
 import frc.robot.util.MercTalonSRX;
 
@@ -40,6 +41,7 @@ public class MoveOnTrajectory extends CommandBase {
   private int timeDuration;
   private PigeonIMU podgeboi;
   private String pathName;
+  private MercMotionProfiles profile;
 
   public MoveOnTrajectory(String path, DriveTrain driveTrain) throws FileNotFoundException{
     addRequirements(driveTrain);
@@ -51,6 +53,25 @@ public class MoveOnTrajectory extends CommandBase {
     podgeboi = this.driveTrain.getPigeon();
     statusRight = new MotionProfileStatus();
     trajectoryPoints = MercPathLoader.loadPath(pathName);
+
+    left = ((MercTalonSRX) this.driveTrain.getLeftLeader()).get();
+    right = ((MercTalonSRX) this.driveTrain.getRightLeader()).get();
+    
+    trajectoryProcessor = new Notifier(() -> {
+      right.processMotionProfileBuffer();
+    });
+  }
+
+  public MoveOnTrajectory(MercMotionProfiles profile, DriveTrain driveTrain) throws FileNotFoundException {
+    this.profile = profile;
+    this.driveTrain = driveTrain;
+
+    addRequirements(driveTrain);
+    setName("MoveOnTrajectory");
+    pathName = profile.getName();
+    podgeboi = this.driveTrain.getPigeon();
+    statusRight = new MotionProfileStatus();
+    trajectoryPoints = profile.getPathForward();
 
     left = ((MercTalonSRX) this.driveTrain.getLeftLeader()).get();
     right = ((MercTalonSRX) this.driveTrain.getRightLeader()).get();

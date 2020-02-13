@@ -121,7 +121,7 @@ public class RobotContainer {
         left7.whileHeld(new RunHopperBelt(hopper));
         left8.whenPressed(new RunFeeder(feeder));
         try{
-            left9.whenPressed(new MoveOnTrajectory("Unnamed.wpilib.json", driveTrain));            
+            left9.whenPressed(new MoveOnTrajectory("Straight", driveTrain));            
         } catch(FileNotFoundException e){
             System.out.println(e);
         }
