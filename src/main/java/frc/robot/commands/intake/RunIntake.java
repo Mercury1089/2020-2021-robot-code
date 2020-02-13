@@ -9,7 +9,6 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Intake.IntakePosition;
 
 public class RunIntake extends CommandBase {
 
@@ -38,7 +37,6 @@ public class RunIntake extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.intake.setIntakeOut();
     this.intake.setRollerSpeed(0.0);
   }
 

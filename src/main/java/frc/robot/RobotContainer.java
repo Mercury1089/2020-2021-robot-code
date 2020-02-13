@@ -38,6 +38,7 @@ import frc.robot.subsystems.Elevator.ElevatorPosition;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeArticulator;
 import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.ShooterMode;
@@ -65,6 +66,7 @@ public class RobotContainer {
     private DriveTrain driveTrain;
     private Shooter shooter;
     private Intake intake;
+    private IntakeArticulator intakeArticulator;
     private Feeder feeder;
     private Hopper hopper;
     private Spinner spinner;
@@ -87,7 +89,7 @@ public class RobotContainer {
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
         intake = new Intake();
-    
+        intakeArticulator = new IntakeArticulator();
         feeder = new Feeder();
         intake = new Intake();
         hopper = new Hopper();       
@@ -101,6 +103,7 @@ public class RobotContainer {
         //shuffleDash.addPublisher(spinner);
         shuffleDash.addPublisher(intake);
         shuffleDash.addPublisher(limelightCamera);
+        shuffleDash.addPublisher(intakeArticulator);
         shuffleDash.addPublisher(elevator);
         shuffleDash.addPublisher(feeder);
         shuffleDash.addPIDTunable(shooter, "Shooter");
@@ -141,8 +144,8 @@ public class RobotContainer {
         gamepadX.whenHeld(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadB.whenPressed(new ColorControl(spinner));
         gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.MAX_HEIGHT));
-        gamepadLB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setIntakeOut(), intake), new RunIntake(intake)));
-        gamepadRB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setIntakeIn(), intake), new RunCommand(() -> intake.setRollerSpeed(0.0), intake)));
+        gamepadLB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
+        gamepadRB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
         gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
     }
 
