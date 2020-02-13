@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
-import frc.robot.util.MercMotionProfiles;
+import frc.robot.util.MercMotionProfile;
 import frc.robot.util.MercPathLoader;
 import frc.robot.util.MercTalonSRX;
 
@@ -42,7 +42,7 @@ public class MoveOnTrajectory extends CommandBase {
   private int timeDuration;
   private PigeonIMU podgeboi;
   private String pathName;
-  private MercMotionProfiles profile;
+  private MercMotionProfile profile;
 
   public MoveOnTrajectory(String path, DriveTrain driveTrain) throws FileNotFoundException{
     addRequirements(driveTrain);
@@ -63,7 +63,7 @@ public class MoveOnTrajectory extends CommandBase {
     });
   }
 
-  public MoveOnTrajectory(MercMotionProfiles profile, DriveTrain driveTrain) throws FileNotFoundException {
+  public MoveOnTrajectory(MercMotionProfile profile, DriveTrain driveTrain) throws FileNotFoundException {
     this.profile = profile;
     this.driveTrain = driveTrain;
 
