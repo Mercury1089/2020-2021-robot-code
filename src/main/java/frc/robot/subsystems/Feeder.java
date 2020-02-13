@@ -26,6 +26,7 @@ public class Feeder extends SubsystemBase implements IMercShuffleBoardPublisher 
    */
   public Feeder() {
     feedWheel = new MercSparkMax(CAN.FEEDER);
+    feedWheel.setInverted(true);
     runSpeed = 0.5;
     setName("Feeder");
     setRunSpeed(runSpeed);
