@@ -13,6 +13,7 @@ import frc.robot.RobotMap.CAN;
 import frc.robot.util.MercTalonSRX;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
+import frc.robot.util.interfaces.IMercMotorController.LimitSwitchDirection;
 
 public class IntakeArticulator extends SubsystemBase implements IMercShuffleBoardPublisher{
 
