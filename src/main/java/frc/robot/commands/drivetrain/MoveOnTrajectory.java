@@ -22,6 +22,7 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.DriveTrain;
@@ -104,7 +105,8 @@ public class MoveOnTrajectory extends CommandBase {
     //right.changeMotionControlFramePeriod(timeDuration);
     right.getMotionProfileStatus(statusRight);
     left.follow(right, FollowerType.AuxOutput1);
-
+    SmartDashboard.putNumber("Primary PID Error", right.getClosedLoopError(0));
+    SmartDashboard.putNumber("Aux PID Error", right.getClosedLoopError(1));
     // If motion profile has not started running, and buffer is too low
     if(!isRunning && statusRight.btmBufferCnt >= 20) {
       right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Enable.value);

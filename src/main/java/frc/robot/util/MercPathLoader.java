@@ -81,6 +81,8 @@ public class MercPathLoader {
 
                 //Heading
                 heading = state.poseMeters.getRotation().getDegrees();
+                if(heading < 0)
+                    heading += 360;
                 point.auxiliaryPos = MercMath.degreesToPigeonUnits(heading); // heading stored as auxilliaryPos
                 //PID Profile
                 point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
@@ -93,12 +95,12 @@ public class MercPathLoader {
                 
                 System.out.println("time: " + time
                                     + " velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond)
-                                    + " heading: " + state.poseMeters.getRotation().getDegrees()
+                                    + " heading: " + heading
                                     + " pos: " + pos
                                     + " TicksPerTenth Values " + MercMath.revsPerMinuteToTicksPerTenth(MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond))
                                     + " point.time: " + point.timeDur
                                     + " point.velocity: " + point.velocity
-                                    + " point.headingDeg: " + point.headingDeg
+                                    + " point.auxiliaryPos: " + point.auxiliaryPos
                                     + " point.position: " + point.position
                 );
                 
