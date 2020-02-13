@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -22,8 +23,6 @@ import frc.robot.commands.elevator.AutomaticElevator;
 import frc.robot.commands.elevator.DriveElevator;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.hopper.RunHopperBelt;
-import frc.robot.commands.intake.IntakeIn;
-import frc.robot.commands.intake.IntakeOut;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
 import frc.robot.commands.shooter.RunShooter;
@@ -142,8 +141,8 @@ public class RobotContainer {
         gamepadX.whenHeld(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadB.whenPressed(new ColorControl(spinner));
         gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.MAX_HEIGHT));
-        gamepadLB.whenPressed(new IntakeOut(intake));
-        gamepadRB.whenPressed(new IntakeIn(intake));
+        gamepadLB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setIntakeOut(), intake), new RunIntake(intake)));
+        gamepadRB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setIntakeIn(), intake), new RunCommand(() -> intake.setRollerSpeed(0.0), intake)));
         gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
     }
 
