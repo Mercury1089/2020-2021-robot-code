@@ -15,12 +15,12 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 /**
  * Add your docs here.
  */
-public class MercMotionProfiles {
+public class MercMotionProfile {
     private final String name;
     private final String pathDirectory;
     List<TrajectoryPoint> trajectoryPoints;
 
-    public MercMotionProfiles(String name) {
+    public MercMotionProfile(String name) {
         this.name = name;
         pathDirectory = MercPathLoader.getBasePathLocation() + name + ".wpilib.json"; 
         trajectoryPoints = MercPathLoader.loadPath(name);

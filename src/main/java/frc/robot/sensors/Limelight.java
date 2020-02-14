@@ -15,7 +15,7 @@ public class Limelight implements TableEntryListener {
      * length (vert), horizontal length (horiz), or area (area).
      */
     // Redo Coefficients for current game
-    private final double vertCoeff = 5368;
+    private final double vertCoeff = 5206;
     private final double vertExp = -1.07;
     private final double horizCoeff = 264.0;
     private final double horizExp = -0.953;
@@ -26,11 +26,11 @@ public class Limelight implements TableEntryListener {
     private boolean targetAcquired;
 
     // Height of floor to center of Limelight
-    private final double LIMELIGHT_HEIGHT = 13.25;
+    private final double LIMELIGHT_HEIGHT = 14.125;
     // Center of target to floor
     private final double TARGET_HEIGHT = 98.25;
     // Angle of Limelight from floor
-    private final double LIMELIGHT_ANGLE = 50.00;
+    private final double LIMELIGHT_ANGLE = 70.00;
     
     private final double TARGET_LENGTH_INCHES = 17.00;
     private final double VERTICAL_CAMERA_RES_PIXEL = 240;
@@ -279,7 +279,7 @@ public class Limelight implements TableEntryListener {
      */
 
     public double calcDistFromAngle() {
-        // return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE + getTargetCenterYAngle());
+        //return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE + getTargetCenterYAngle());
         
         return MercMath.inchesToFeet(TARGET_LENGTH_INCHES)
                 * (VERTICAL_CAMERA_RES_PIXEL / getVerticalLength()) / 2.0
