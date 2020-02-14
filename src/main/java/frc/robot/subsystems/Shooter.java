@@ -49,8 +49,8 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     shooterRight.setNeutralMode(NeutralMode.Coast);
 
     if (mode == ShooterMode.ONE_WHEEL) {
-      shooterLeft.setInverted(false);
-      shooterRight.setInverted(true);
+      shooterLeft.setInverted(true);
+      shooterRight.setInverted(false);
     } else if (mode == ShooterMode.TWO_WHEEL) {
       shooterLeft.setInverted(false);
       shooterRight.setInverted(false);

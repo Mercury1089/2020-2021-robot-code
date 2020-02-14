@@ -30,6 +30,7 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
     super();
     setName("Intake");
     intakeRoller = new MercVictorSPX(CAN.INTAKE_ROLLER);
+    intakeRoller.setInverted(true);
   }
 
   public void setRollerSpeed(double speed) {

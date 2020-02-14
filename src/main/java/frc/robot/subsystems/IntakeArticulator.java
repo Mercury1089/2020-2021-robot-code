@@ -19,7 +19,7 @@ public class IntakeArticulator extends SubsystemBase implements IMercShuffleBoar
 
   private final IMercMotorController intakeArticulator;
   private IntakePosition intakePosition;
-  private final double ARTICULATOR_SPEED = 0.2;
+  private final double OUT_SPEED = 0.4, IN_SPEED = -0.6;
 
   /**
    * Creates a new IntakeArticulator.
@@ -39,12 +39,12 @@ public class IntakeArticulator extends SubsystemBase implements IMercShuffleBoar
   
   public void setIntakeIn() {
     this.intakePosition = IntakePosition.IN;
-    intakeArticulator.setSpeed(ARTICULATOR_SPEED);
+    intakeArticulator.setSpeed(IN_SPEED);
   }
 
   public void setIntakeOut() {
     this.intakePosition = IntakePosition.OUT;
-    intakeArticulator.setSpeed(-ARTICULATOR_SPEED);
+    intakeArticulator.setSpeed(OUT_SPEED);
   }
 
   public IntakePosition getIntakePosition() {
