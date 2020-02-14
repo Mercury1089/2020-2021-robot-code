@@ -45,7 +45,10 @@ public class MercPathLoader {
             trajectoryStates = trajectory.getStates();
             Trajectory.State prevState = null;
             int prevTime = 0;
+            double prevHeading = 0;
             double pos = 0.0;
+            boolean add360 = false;
+            boolean minus360 = false;
             for(Trajectory.State state : trajectoryStates) {
                 TrajectoryPoint point = new TrajectoryPoint();
                 double heading, velocity;
@@ -81,8 +84,20 @@ public class MercPathLoader {
 
                 //Heading
                 heading = state.poseMeters.getRotation().getDegrees();
-                if(heading < 0)
-                    heading += 360;
+                if(heading > -180 && heading < 0 && prevHeading <= 180 && prevHeading >= 170) {
+                    add360 = true;
+                    minus360 = false;
+                }
+                else if(heading < 180 && heading > 0 && (prevHeading > -180 && prevHeading < -170) || prevHeading == 180) {
+                    minus360 = true;
+                    add360 = false;
+                }
+                
+                if(add360 && !minus360)
+                    heading += 360;   
+                else if(!add360 && minus360)
+                    heading -= 360;
+                prevHeading = heading;
                 point.auxiliaryPos = MercMath.degreesToPigeonUnits(heading); // heading stored as auxilliaryPos
                 //PID Profile
                 point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
