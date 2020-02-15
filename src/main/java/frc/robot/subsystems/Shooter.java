@@ -35,35 +35,37 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   private PIDGain velocityGains;
 
   public enum ShooterMode {
-    ONE_WHEEL, TWO_WHEEL
+    ONE_WHEEL, NONE
   }
 
   public Shooter(ShooterMode mode) {
     setName("Shooter");
-    // flywheel = new MercTalonSRX(CAN.SHOOTER_FLYWHEEL);
-    shooterLeft = new MercSparkMax(CAN.SHOOTER_LEFT);
-    shooterRight = new MercSparkMax(CAN.SHOOTER_RIGHT);
-    configVoltage(NOMINAL_OUT, PEAK_OUT);
     this.mode = mode;
-    shooterLeft.setNeutralMode(NeutralMode.Coast);
-    shooterRight.setNeutralMode(NeutralMode.Coast);
 
     if (mode == ShooterMode.ONE_WHEEL) {
+      shooterLeft = new MercSparkMax(CAN.SHOOTER_LEFT);
+      shooterRight = new MercSparkMax(CAN.SHOOTER_RIGHT);
+
+      shooterLeft.configVoltage(NOMINAL_OUT, PEAK_OUT);
+      shooterRight.configVoltage(NOMINAL_OUT, PEAK_OUT);
+
+      shooterLeft.setNeutralMode(NeutralMode.Coast);
+      shooterRight.setNeutralMode(NeutralMode.Coast);
+
       shooterLeft.setInverted(true);
       shooterRight.setInverted(false);
-    } else if (mode == ShooterMode.TWO_WHEEL) {
-      shooterLeft.setInverted(false);
-      shooterRight.setInverted(false);
+      shooterRight.follow(shooterLeft);
+    } else if (mode == ShooterMode.NONE) {
+      shooterLeft = shooterRight = null;
     }
 
-    shooterRight.follow(shooterLeft);
 
     SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
     setRunSpeed(0.0);
 
     velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
 
-    shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), velocityGains);
+    setPIDGain(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), velocityGains);
   }
 
   @Override
@@ -74,15 +76,12 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   public void setSpeed(double speed) {
     this.currentSpeed = speed;
 
-    shooterLeft.setNeutralMode(NeutralMode.Coast);
-    shooterRight.setNeutralMode(NeutralMode.Coast);
-
-    shooterLeft.setSpeed(speed);
-  }
-
-  public void configVoltage(double nominalOutput, double peakOutput) {
-    shooterLeft.configVoltage(nominalOutput, peakOutput);
-    shooterRight.configVoltage(nominalOutput, peakOutput);
+    if (shooterLeft != null && shooterRight != null) {
+      shooterLeft.setNeutralMode(NeutralMode.Coast);
+      shooterRight.setNeutralMode(NeutralMode.Coast);
+  
+      shooterLeft.setSpeed(speed);        
+    }
   }
 
   public void increaseSpeed() {
@@ -96,7 +95,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public double getRPM() {
-    return shooterLeft.getEncVelocity();
+    return shooterLeft != null ? shooterLeft.getEncVelocity() : 0.0;
   }
 
   public Command getDefaultCommand() {
@@ -116,12 +115,15 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public void setVelocity(double rpm) {
-    // Ensures shooter is in coast mode
-    shooterLeft.setNeutralMode(NeutralMode.Coast);
-    shooterRight.setNeutralMode(NeutralMode.Coast);
-    // Sets RPM
-    shooterLeft.setVelocity(rpm);
-    // shooterRight.setVelocity(rpm);
+    if (shooterLeft != null && shooterRight != null)
+    {
+      // Ensures shooter is in coast mode
+      shooterLeft.setNeutralMode(NeutralMode.Coast);
+      shooterRight.setNeutralMode(NeutralMode.Coast);
+      // Sets RPM
+      shooterLeft.setVelocity(rpm);
+      // shooterRight.setVelocity(rpm);
+    }
   }
 
   public double getRunRPM() {
@@ -134,7 +136,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
   public void publishValues() {
     SmartDashboard.putString(getName() + "/ShooterMode",
-        getMode() == ShooterMode.ONE_WHEEL ? "ONE WHEEL" : "TWO WHEEL");
+        getMode() == ShooterMode.ONE_WHEEL ? "ONE WHEEL" : "NONE");
     SmartDashboard.putNumber(getName() + "/RPM", getRPM());
     
     SmartDashboard.putNumber(getName() + "/PIDGains/P", velocityGains.kP);
@@ -152,8 +154,10 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   public void setPIDGain(int slot, PIDGain gains) {
     this.velocityGains = gains;
 
-    shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
-    shooterRight.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
+    if (shooterLeft != null && shooterRight != null) {
+      shooterLeft.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
+      shooterRight.configPID(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
+    }
   }
 
   @Override

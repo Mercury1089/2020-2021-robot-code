@@ -82,10 +82,10 @@ public class RobotContainer {
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
 
-        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS);
+        driveTrain = new DriveTrain(DriveTrainLayout.TALONS_VICTORS);
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
-        shooter = new Shooter(ShooterMode.ONE_WHEEL);
+        shooter = new Shooter(ShooterMode.NONE);
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
         intake = new Intake();
@@ -98,7 +98,7 @@ public class RobotContainer {
         elevator = new Elevator();
         
         shuffleDash = new ShuffleDash();
-        //shuffleDash.addPublisher(shooter);
+        shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
         //shuffleDash.addPublisher(spinner);
         shuffleDash.addPublisher(intake);
