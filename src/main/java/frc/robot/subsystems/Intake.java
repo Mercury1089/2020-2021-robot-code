@@ -22,13 +22,6 @@ import frc.robot.commands.intake.RunManualIntake;
 
 public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher {
   private final IMercMotorController intakeRoller;
-  private final IMercMotorController intakeArticulator;
-  private IntakePosition intakePosition;
-
-  public enum IntakePosition {
-    OUT,
-    IN
-  }
 
   /**
    * Creates a new Intake.
@@ -37,25 +30,11 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
     super();
     setName("Intake");
     intakeRoller = new MercVictorSPX(CAN.INTAKE_ROLLER);
-    intakeArticulator = new MercTalonSRX(CAN.INTAKE_ARTICULATOR);
-    intakeArticulator.setInverted(true);
-    intakePosition = IntakePosition.IN;
+    intakeRoller.setInverted(true);
   }
 
-  public void setSpeed(double speed) {
+  public void setRollerSpeed(double speed) {
     this.intakeRoller.setSpeed(speed);
-  }
-
-  public void setIntakeIn() {
-    this.intakePosition = IntakePosition.IN;
-  }
-
-  public void setIntakeOut() {
-    this.intakePosition = IntakePosition.OUT;
-  }
-
-  public IntakePosition getIntakePosition() {
-    return this.intakePosition;
   }
 
   @Override
@@ -65,9 +44,6 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
 
   @Override
   public void publishValues() {
-    SmartDashboard.putBoolean(getName() + "/FwdLimit", intakeArticulator.isLimitSwitchClosed(LimitSwitchDirection.FORWARD));
-    SmartDashboard.putBoolean(getName() + "/RevLimit", intakeArticulator.isLimitSwitchClosed(LimitSwitchDirection.REVERSE));
-    SmartDashboard.putNumber(getName() + "/ArticulateSpeed", intakeArticulator.getSpeed());
-    SmartDashboard.putNumber(getName() + "ArticulateInput", Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.rightY));
+    
   }
 }

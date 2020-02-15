@@ -13,9 +13,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.MercSparkMax;
 import frc.robot.util.interfaces.IMercMotorController;
+import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 import frc.robot.RobotMap.CAN;
 
-public class Feeder extends SubsystemBase {
+public class Feeder extends SubsystemBase implements IMercShuffleBoardPublisher {
   
   private IMercMotorController feedWheel;
   private double runSpeed;
@@ -25,6 +26,7 @@ public class Feeder extends SubsystemBase {
    */
   public Feeder() {
     feedWheel = new MercSparkMax(CAN.FEEDER);
+    feedWheel.setInverted(true);
     runSpeed = 0.5;
     setName("Feeder");
     setRunSpeed(runSpeed);
@@ -53,5 +55,10 @@ public class Feeder extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  @Override
+  public void publishValues() {
+    SmartDashboard.putNumber("Speed", feedWheel.getSpeed());
   }
 }
