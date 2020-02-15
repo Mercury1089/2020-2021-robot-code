@@ -35,7 +35,7 @@ public class PixySPI {
     static final int PIXY_SIGNATURE_NUM = 1;
 
     //private final ArrayList<ArrayList<BoundingBox>> PACKETS;
-    public final ArrayList<BoundingBox> BOXES;
+    public final ArrayList<ArrayList<BoundingBox>> SIGNATURES;
     private ArrayDeque<Byte> outBuf = new ArrayDeque<>(); // Future use for sending commands to Pixy.
 
     private boolean skipStart = false;
@@ -59,7 +59,10 @@ public class PixySPI {
 
         SPI = new SPI(pValue);
 
-        BOXES = new ArrayList<>();
+        SIGNATURES = new ArrayList<ArrayList<BoundingBox>>();
+        for(int i = 1; i <= 8; i++) {
+            SIGNATURES.add(i, new ArrayList<BoundingBox>());
+        }
 
         // Set some SPI parameters.
         SPI.setMSBFirst();
@@ -80,7 +83,7 @@ public class PixySPI {
      */
     public void getBoxes(int max) {
         // Clear out BOXES array list for reuse.
-        BOXES.clear();
+        SIGNATURES.clear();
         long count = 0;
 
         // If we haven't found the start of a block, find it.
@@ -95,7 +98,7 @@ public class PixySPI {
         }
 
         // Loop until we hit the maximum size allowed for BOXES, or until we know we have a complete setClawState of BOXES.
-        while (BOXES.size() < max && BOXES.size() < PIXY_MAXIMUM_ARRAYSIZE) {
+        while (true) {
             // Since this is our first time in, bytes 2 and 3 are the checksum, grab them and store for future use.
             // NOTE: getWord grabs the entire 16 bits in one shot.
             int checksum = getWord();
@@ -122,7 +125,9 @@ public class PixySPI {
 
             // See if we received the data correctly.
             // Also make sure the target is for the first signature
-            if (checksum == trialsum && box[0] == PIXY_SIGNATURE_NUM) {
+            if (checksum == trialsum) {
+                int signum = box[0];
+
                 BoundingBox bound = new BoundingBox(
                     box[1],
                     box[2],
@@ -130,7 +135,7 @@ public class PixySPI {
                     box[4]
                 );
                 // Data has been validated, add the current block of data to the overall BOXES buffer.
-                BOXES.add(bound);
+                SIGNATURES.get(signum).add(bound);
             }
 
             // Check the next word from the Pixy to confirm it's the start of the next block.
@@ -140,8 +145,9 @@ public class PixySPI {
 
             if (w != PIXY_START_WORD) {
                 // Sort array before returning
-                BOXES.sort(BoundingBox::compareTo);
-
+                for(ArrayList<BoundingBox> boxes : SIGNATURES) {
+                    boxes.sort(BoundingBox::compareTo);
+                }
                 return;
             }
         }
@@ -149,7 +155,7 @@ public class PixySPI {
         // Should never get here, but if we happen to get a massive number of BOXES
         // and exceed the limit it will happen. In that case something is wrong
         // or you have a super natural Pixy and SPI link.
-        DriverStation.reportWarning("PIXY: Massive number of boxes!", false);
+        //DriverStation.reportWarning("PIXY: Massive number of boxes!", false);
     }
 
     // region Comms
