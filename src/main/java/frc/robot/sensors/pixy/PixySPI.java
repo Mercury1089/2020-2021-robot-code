@@ -1,8 +1,6 @@
-package frc.robot.sensors;
+package frc.robot.sensors.pixy;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,7 +19,7 @@ import java.util.ArrayList;
  *
  * @deprecated since we cannot use the SPI interface on the RIO.
  */
-public class PixySPI implements PIDSource {
+public class PixySPI {
 
     private final SPI SPI;
 
@@ -72,20 +70,6 @@ public class PixySPI implements PIDSource {
 
         RES_X = SensorsSettings.getCameraResolution().width;
 
-    }
-
-    /**
-     * Gets object displacement from center of camera
-     *
-     * @return RES_X / 2 - BOXES.get(0).getCenterX()
-     */
-    public double getDisplacement() {
-        double val = Double.NEGATIVE_INFINITY;
-
-        if (!BOXES.isEmpty())
-            val = RES_X / 2 - BOXES.get(0).getX();
-
-        return val;
     }
 
     /**
@@ -166,21 +150,6 @@ public class PixySPI implements PIDSource {
         // and exceed the limit it will happen. In that case something is wrong
         // or you have a super natural Pixy and SPI link.
         DriverStation.reportWarning("PIXY: Massive number of boxes!", false);
-    }
-
-    @Override
-    public void setPIDSourceType(PIDSourceType pidSource) {
-        // Don't use
-    }
-
-    @Override
-    public PIDSourceType getPIDSourceType() {
-        return PIDSourceType.kDisplacement;
-    }
-
-    @Override
-    public double pidGet() {
-        return getDisplacement();
     }
 
     // region Comms
