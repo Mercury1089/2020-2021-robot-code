@@ -109,13 +109,14 @@ public class RobotContainer {
         shuffleDash.addPublisher(feeder);
         shuffleDash.addPIDTunable(shooter, "Shooter");
         shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
-        
+    
+        initializeMotionProfiles();
+        initializeJoystickButtons();
+
         autonCommand = new SequentialCommandGroup();
         autonCommand.addRequirements(driveTrain);
         initializeAutonCommand();
 
-        initalizeJoystickButtons();
-        
         left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
         left3.whenPressed(new RunShooter(shooter));
         left4.whenPressed(new RunShooterRPMBangBang(shooter));
@@ -123,9 +124,9 @@ public class RobotContainer {
         left6.whenPressed(new SwitchLEDState(limelightCamera));
         left7.whileHeld(new RunHopperBelt(hopper));
         left8.whenPressed(new RunFeeder(feeder));
-        try{
+        try {
             left9.whenPressed(new MoveOnTrajectory("Straight", driveTrain));            
-        } catch(FileNotFoundException e){
+        } catch(FileNotFoundException e) {
             System.out.println(e);
         }
         
@@ -135,11 +136,19 @@ public class RobotContainer {
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         right5.whenPressed(new RotationControl(spinner));
         right6.whenPressed(new TestSequentialCommandGroup(driveTrain, limelightCamera));
-        right7.whenPressed(new DegreeRotate(45, driveTrain));
-        right8.whenPressed(new DegreeRotate(90, driveTrain));
-        right9.whenPressed(new DegreeRotate(135, driveTrain));
-        right10.whenPressed(new DriveDistance(150.0, driveTrain));
-        right11.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
+        right7.whenPressed(new DegreeRotate(90, driveTrain));
+        right8.whenPressed(new DriveDistance(150.0, driveTrain));
+        right9.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
+        try {
+            right10.whenPressed(new MoveOnTrajectory(straight, driveTrain));            
+        } catch(FileNotFoundException e) {
+            System.out.println(e);
+        }
+        try {
+            right11.whenPressed(new MoveOnTrajectory(curvy, driveTrain));            
+        } catch(FileNotFoundException e) {
+            System.out.println(e);
+        }
 
         gamepadY.whenHeld(new RunFeeder(feeder));
         gamepadX.whenHeld(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
@@ -195,7 +204,7 @@ public class RobotContainer {
         //shuffleDash.updateDash();
     }
 
-    private void initalizeJoystickButtons() {
+    private void initializeJoystickButtons() {
         left1 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN1);
         left2 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN2);
         left3 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN3);
@@ -246,9 +255,9 @@ public class RobotContainer {
     //Eventually this will link to our auton app on the shuffledash
     public void initializeAutonCommand(){
         autonCommand.addRequirements(this.driveTrain);
-        try{
-            autonCommand.addCommands(new MoveOnTrajectory("Curvy", this.driveTrain));            
-        } catch(FileNotFoundException e){
+        try {
+            autonCommand.addCommands(new MoveOnTrajectory(straight, this.driveTrain));            
+        } catch(FileNotFoundException e) {
             System.out.println(e);
         }
     }
