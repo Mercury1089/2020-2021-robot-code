@@ -76,7 +76,7 @@ public class RobotContainer {
     
     private CommandGroupBase autonCommand;
 
-    private MercMotionProfile circle, curveBack, curvy, digonal, hardRight, straight;
+    private MercMotionProfile circle, curveBack, curvy, digonal, hardRight, redCenterToTrench, straight;
 
     public RobotContainer() {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
@@ -145,7 +145,7 @@ public class RobotContainer {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(curvy, driveTrain));            
+            right11.whenPressed(new MoveOnTrajectory(redCenterToTrench, driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
@@ -249,6 +249,7 @@ public class RobotContainer {
         curvy = new MercMotionProfile("Curvy");
         digonal = new MercMotionProfile("Digonal");
         hardRight = new MercMotionProfile("HardRight");
+        redCenterToTrench = new MercMotionProfile("RedCenterToTrench");
         straight = new MercMotionProfile("Straight");
     }
 
