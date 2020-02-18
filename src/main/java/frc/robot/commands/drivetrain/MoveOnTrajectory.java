@@ -46,11 +46,10 @@ public class MoveOnTrajectory extends CommandBase {
 
   public MoveOnTrajectory(String path, DriveTrain driveTrain) throws FileNotFoundException{
     addRequirements(driveTrain);
-    setName("Move On Trajectory" + path);
+    setName("MoveOn " + profile.getName() + "Path");
 
     pathName = path;
     this.driveTrain = driveTrain;
-    setName("MoveOnTrajectory");
     podgeboi = this.driveTrain.getPigeon();
     statusRight = new MotionProfileStatus();
     trajectoryPoints = MercPathLoader.loadPath(pathName);
@@ -68,7 +67,7 @@ public class MoveOnTrajectory extends CommandBase {
     this.driveTrain = driveTrain;
 
     addRequirements(driveTrain);
-    setName("MoveOnTrajectory");
+    setName("MoveOn " + profile.getName() + "Path");
     pathName = profile.getName();
     podgeboi = this.driveTrain.getPigeon();
     statusRight = new MotionProfileStatus();
