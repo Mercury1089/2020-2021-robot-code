@@ -43,6 +43,7 @@ import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.ShooterMode;
 import frc.robot.subsystems.Spinner;
+import frc.robot.util.MercMotionProfile;
 import frc.robot.util.ShuffleDash;
 import frc.robot.util.TriggerButton;
 
@@ -73,9 +74,9 @@ public class RobotContainer {
     private Elevator elevator;
     private LimelightCamera limelightCamera;
     
-
-
     private CommandGroupBase autonCommand;
+
+    private MercMotionProfile circle, curveBack, curvy, digonal, hardRight, straight;
 
     public RobotContainer() {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
@@ -233,11 +234,20 @@ public class RobotContainer {
         gamepadRT = new TriggerButton(gamepad, GAMEPAD_AXIS.rightTrigger);
     }
 
+    public void initializeMotionProfiles() {
+        circle = new MercMotionProfile("Circle");
+        curveBack = new MercMotionProfile("CurveBack");
+        curvy = new MercMotionProfile("Curvy");
+        digonal = new MercMotionProfile("Digonal");
+        hardRight = new MercMotionProfile("HardRight");
+        straight = new MercMotionProfile("Straight");
+    }
+
     //Eventually this will link to our auton app on the shuffledash
     public void initializeAutonCommand(){
         autonCommand.addRequirements(this.driveTrain);
         try{
-            autonCommand.addCommands(new MoveOnTrajectory("Curvy.wpilib.json", this.driveTrain));            
+            autonCommand.addCommands(new MoveOnTrajectory("Curvy", this.driveTrain));            
         } catch(FileNotFoundException e){
             System.out.println(e);
         }
