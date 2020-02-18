@@ -28,7 +28,6 @@ public class ShootManualVoltage extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.shooter.configVoltage(Shooter.NOMINAL_OUT, Shooter.PEAK_OUT);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
