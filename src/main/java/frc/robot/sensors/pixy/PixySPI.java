@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * PixyCam implementation using SPI interface
  *
- * @deprecated since we cannot use the SPI interface on the RIO.
+ * deprecated since we cannot use the SPI interface on the RIO.
  */
 public class PixySPI {
 
