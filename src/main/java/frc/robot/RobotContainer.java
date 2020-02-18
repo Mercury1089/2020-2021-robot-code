@@ -137,7 +137,7 @@ public class RobotContainer {
         right5.whenPressed(new RotationControl(spinner));
         right6.whenPressed(new TestSequentialCommandGroup(driveTrain, limelightCamera));
         right7.whenPressed(new DegreeRotate(90, driveTrain));
-        right8.whenPressed(new DriveDistance(150.0, driveTrain));
+        right8.whenPressed(new DriveDistance(120.0, driveTrain));
         right9.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         try {
             right10.whenPressed(new MoveOnTrajectory(straight, driveTrain));            

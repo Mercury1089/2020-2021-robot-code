@@ -144,8 +144,8 @@ public class MercMath {
     }
 
     public static double getEncPosition(double ticks) {
-        return ((Math.PI * DriveTrain.WHEEL_DIAMETER_INCHES) /
-                DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION);
+        return inchesToFeet((ticks / DriveTrain.MAG_ENCODER_TICKS_PER_REVOLUTION) *
+                            (Math.PI * DriveTrain.WHEEL_DIAMETER_INCHES));
     }
 
     /**
