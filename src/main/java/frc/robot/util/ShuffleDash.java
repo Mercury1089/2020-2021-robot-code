@@ -18,6 +18,8 @@ public class ShuffleDash {
     private static final String PID_TUNER_D = "PIDTuner/kD";
     private static final String PID_TUNER_F = "PIDTuner/kF";
 
+    private static final double UPDATE_PERIOD_SECONDS = 0.100; // Update every 100ms
+
     private class TunablePIDSlot {
         public IMercPIDTunable tunable;
         public int slot;
@@ -33,6 +35,7 @@ public class ShuffleDash {
     private List<IMercShuffleBoardPublisher> publishers;
     private SendableChooser<TunablePIDSlot> tunablePIDChooser;
     private String positionColor;
+    private Notifier shuffleDashUpdater;
 
     public ShuffleDash() {
 
@@ -52,7 +55,8 @@ public class ShuffleDash {
         SmartDashboard.putNumber(PID_TUNER_D, 0.0);
         SmartDashboard.putNumber(PID_TUNER_F, 0.0);
 
-        new Notifier(this::updateDash).startPeriodic(0.020);
+        shuffleDashUpdater = new Notifier(this::updateDash);
+        shuffleDashUpdater.startPeriodic(UPDATE_PERIOD_SECONDS);
     }
 
     public void addPublisher(IMercShuffleBoardPublisher publisher) {
