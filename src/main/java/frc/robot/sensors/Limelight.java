@@ -1,6 +1,7 @@
 package frc.robot.sensors;
 
 import edu.wpi.first.networktables.*;
+import edu.wpi.first.wpilibj.LinearFilter;
 import frc.robot.util.MercMath;
 
 /**
@@ -15,8 +16,8 @@ public class Limelight implements TableEntryListener {
      * length (vert), horizontal length (horiz), or area (area).
      */
     // Redo Coefficients for current game
-    private final double vertCoeff = 5206;
-    private final double vertExp = -1.07;
+    private final double vertCoeff = 20428;
+    private final double vertExp = -1.11;
     private final double horizCoeff = 264.0;
     private final double horizExp = -0.953;
 
@@ -31,13 +32,15 @@ public class Limelight implements TableEntryListener {
     private final double TARGET_HEIGHT = 98.25;
     // Angle of Limelight from floor
     private final double LIMELIGHT_ANGLE = 70.00;
-    
+
     private final double TARGET_LENGTH_INCHES = 17.00;
     private final double VERTICAL_CAMERA_RES_PIXEL = 240;
     private final double VFOV_DEGREES = 41;
 
     private final double areaCoeff = 16.2;
     private final double areaExp = -0.479;
+
+    private LinearFilter movingAverage = LinearFilter.movingAverage(5);
 
     // private final double LIMELIGHT_HFOV_DEG = 59.6;
     // private final double LIMELIGHT_VFOV_DEG = 45.7;
@@ -216,7 +219,7 @@ public class Limelight implements TableEntryListener {
      * @return the distance based on vertical distance
      */
     public double calcDistFromVert() {
-        return vertCoeff * Math.pow(getVerticalLength(), vertExp);
+        return movingAverage.calculate(vertCoeff * Math.pow(getVerticalLength(), vertExp));
     }
 
     /**
@@ -272,6 +275,7 @@ public class Limelight implements TableEntryListener {
             return value;
         }
     }
+
     /**
      * Using the angle, it returns the distance between the target and the limelight
      * 
@@ -279,11 +283,13 @@ public class Limelight implements TableEntryListener {
      */
 
     public double calcDistFromAngle() {
-        //return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE + getTargetCenterYAngle());
-        
-        return MercMath.inchesToFeet(TARGET_LENGTH_INCHES)
-                * (VERTICAL_CAMERA_RES_PIXEL / getVerticalLength()) / 2.0
-                / Math.tan(MercMath.degreesToRadians(VFOV_DEGREES / 2));
-
+        // return (TARGET_HEIGHT - LIMELIGHT_HEIGHT) / Math.tan(LIMELIGHT_ANGLE +
+        // getTargetCenterYAngle());
+        /*
+         * return MercMath.inchesToFeet(TARGET_LENGTH_INCHES) (VERTICAL_CAMERA_RES_PIXEL
+         * / getVerticalLength()) / 2.0 /
+         * Math.tan(MercMath.degreesToRadians(VFOV_DEGREES / 2));
+         */
+        return getVerticalLength();
     }
 }

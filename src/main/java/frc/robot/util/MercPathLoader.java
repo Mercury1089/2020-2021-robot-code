@@ -121,7 +121,21 @@ public class MercPathLoader {
                 
                 minTime = Math.min(point.timeDur, minTime);
             }
-            trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = true;
+            TrajectoryPoint point = new TrajectoryPoint(), lastPoint;
+            lastPoint = trajectoryPoints.get(trajectoryPoints.size() - 1);
+
+            point.timeDur = lastPoint.timeDur + 20;
+            point.velocity = lastPoint.velocity;
+            point.position = lastPoint.position;
+            point.zeroPos = false;
+            point.auxiliaryPos = lastPoint.auxiliaryPos;
+            point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
+            point.profileSlotSelect1 = DriveTrain.DRIVE_SMOOTH_TURN_SLOT;
+            point.useAuxPID = true;
+            point.isLastPoint = true;
+
+            trajectoryPoints.add(point);
+
             DriverStation.reportError("Min Time: " + minTime , false);
         }
         return trajectoryPoints;
