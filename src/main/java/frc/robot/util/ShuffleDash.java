@@ -31,7 +31,8 @@ public class ShuffleDash {
     private TunablePIDSlot tunableSlot = null;
 
     private NetworkTableInstance ntInstance;
-    private SendableChooser<String> autonFirstStep;
+    private SendableChooser<StartingPosition> autonPositionChooser;
+    private SendableChooser<StartingPosition> autonChooser;
     private List<IMercShuffleBoardPublisher> publishers;
     private SendableChooser<TunablePIDSlot> tunablePIDChooser;
     private String positionColor;
@@ -43,7 +44,24 @@ public class ShuffleDash {
 
         ntInstance = NetworkTableInstance.getDefault();
 
-        autonFirstStep = new SendableChooser<>();
+        autonPositionChooser = new SendableChooser<>();
+        autonPositionChooser.addOption("Left", StartingPosition.LEFT);
+        autonPositionChooser.addOption("Center", StartingPosition.CENTER);
+        autonPositionChooser.addOption("Right", StartingPosition.RIGHT);
+
+        if(getStartingPosition().equals(StartingPosition.LEFT)) {
+            autonChooser = new SendableChooser<>();
+            addLeftAutons();
+        } else if(getStartingPosition().equals(StartingPosition.RIGHT)) {
+            autonChooser = new SendableChooser<>();
+            addRightAutons();
+        } else if(getStartingPosition().equals(StartingPosition.CENTER)) {
+            autonChooser = new SendableChooser<>();
+            addCenterAutons();
+        } else {
+            autonChooser = new SendableChooser<>();
+            autonChooser.addOption("No Option", null);
+        }
 
         publishers = new ArrayList<IMercShuffleBoardPublisher>();
 
@@ -94,12 +112,28 @@ public class ShuffleDash {
             }
             this.tunableSlot = tunableSlot;
         }
-        SmartDashboard.putData("Auton/First Step", autonFirstStep);
     }
 
-    public String getFirstStep() {
-        return autonFirstStep.getSelected();
-        
+    public StartingPosition getStartingPosition() {
+        return autonPositionChooser.getSelected();
+    }
+
+    public void addLeftAutons() {
+        autonChooser.addOption("Straight", StartingPosition.LEFT);
+        autonChooser.addOption("Option", StartingPosition.LEFT);
+        autonChooser.addOption("Option", StartingPosition.LEFT);
+    }
+
+    public void addRightAutons() {
+        autonChooser.addOption("Option", StartingPosition.RIGHT);
+        autonChooser.addOption("Option", StartingPosition.RIGHT);
+        autonChooser.addOption("Option", StartingPosition.RIGHT);
+    }
+
+    public void addCenterAutons() {
+        autonChooser.addOption("Option", StartingPosition.CENTER);
+        autonChooser.addOption("Option", StartingPosition.CENTER);
+        autonChooser.addOption("Option", StartingPosition.CENTER);
     }
 
     public String getPositionControlColor() {
@@ -118,5 +152,12 @@ public class ShuffleDash {
                     return "Unknown/Glitch";
             }
         return "Unknown";
+    }
+
+    public enum StartingPosition{
+        LEFT,
+        RIGHT,
+        CENTER,
+        NULL
     }
 }
