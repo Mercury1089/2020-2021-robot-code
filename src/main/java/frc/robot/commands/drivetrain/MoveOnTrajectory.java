@@ -62,7 +62,7 @@ public class MoveOnTrajectory extends CommandBase {
     });
   }
 
-  public MoveOnTrajectory(MercMotionProfile profile, DriveTrain driveTrain, boolean backwards) throws FileNotFoundException {
+  public MoveOnTrajectory(MercMotionProfile profile, DriveTrain driveTrain/*, boolean backwards*/) throws FileNotFoundException {
     this.profile = profile;
     this.driveTrain = driveTrain;
     this.pathName = this.profile.getName();
@@ -72,9 +72,9 @@ public class MoveOnTrajectory extends CommandBase {
     
     podgeboi = this.driveTrain.getPigeon();
     statusRight = new MotionProfileStatus();
-    if(backwards)
+    /*if(backwards)
       trajectoryPoints = profile.getPathBackwards();
-    else
+    else*/
       trajectoryPoints = profile.getPathForward();
 
     left = ((MercTalonSRX) this.driveTrain.getLeftLeader()).get();
