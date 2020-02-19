@@ -108,7 +108,6 @@ public class RobotContainer {
         shuffleDash.addPublisher(elevator);
         shuffleDash.addPublisher(feeder);
         shuffleDash.addPublisher(hopper);
-        
         shuffleDash.addPIDTunable(shooter, "Shooter");
         shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
     
@@ -159,10 +158,6 @@ public class RobotContainer {
         gamepadLB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
         gamepadRB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
         gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
-    }
-
-    public String getAutonFirstStep() {
-        return shuffleDash.getFirstStep();
     }
 
     public double getJoystickX(int port) {
