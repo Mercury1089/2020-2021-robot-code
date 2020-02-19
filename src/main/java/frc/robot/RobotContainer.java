@@ -12,6 +12,7 @@ import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
+import frc.robot.auton.CrossInitiationLine;
 import frc.robot.commands.drivetrain.DegreeRotate;
 import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
@@ -75,6 +76,8 @@ public class RobotContainer {
     private LimelightCamera limelightCamera;
     
     private CommandGroupBase autonCommand;
+    
+    private CrossInitiationLine crossInitiationLine;
 
     private MercMotionProfile circle, curveBack, curvy, digonal, hardRight, redCenterToTrench, straight;
 
@@ -115,6 +118,7 @@ public class RobotContainer {
         initializeJoystickButtons();
 
         autonCommand = new SequentialCommandGroup();
+        crossInitiationLine = new CrossInitiationLine(driveTrain);
         autonCommand.addRequirements(driveTrain);
         initializeAutonCommand();
 
