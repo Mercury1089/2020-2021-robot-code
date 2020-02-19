@@ -7,16 +7,20 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.CAN;
+import frc.robot.sensors.BallCounter;
 import frc.robot.util.MercTalonSRX;
 import frc.robot.util.interfaces.IMercMotorController;
+import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
-public class Hopper extends SubsystemBase {
+public class Hopper extends SubsystemBase implements IMercShuffleBoardPublisher {
   
   private IMercMotorController hopperBelt;
   private double runSpeed;
 
+  private BallCounter ballCounter;
   /**
    * Creates a new Hopper.
    */
@@ -24,6 +28,8 @@ public class Hopper extends SubsystemBase {
     hopperBelt = new MercTalonSRX(CAN.HOPPER_BELT);
     runSpeed = 0.5;
     setName("Hopper");
+
+    ballCounter = new BallCounter();
   }
 
   public void setSpeed(double speed) {
@@ -37,5 +43,15 @@ public class Hopper extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+  @Override
+  public void publishValues() {
+    SmartDashboard.putNumber(getName() + "/BallCount", ballCounter.getCount());
+    SmartDashboard.putNumber(getName() + "/Sig1", ballCounter.pixyCam.getBoxes(1).size());
+    SmartDashboard.putNumber(getName() + "/Sig2", ballCounter.pixyCam.getBoxes(2).size());
+    SmartDashboard.putNumber(getName() + "/Sig3", ballCounter.pixyCam.getBoxes(3).size());
+    SmartDashboard.putNumber(getName() + "/Sig4", ballCounter.pixyCam.getBoxes(4).size());
+    SmartDashboard.putNumber(getName() + "/Sig5", ballCounter.pixyCam.getBoxes(5).size());
   }
 }

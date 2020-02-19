@@ -107,6 +107,8 @@ public class RobotContainer {
         shuffleDash.addPublisher(intakeArticulator);
         shuffleDash.addPublisher(elevator);
         shuffleDash.addPublisher(feeder);
+        shuffleDash.addPublisher(hopper);
+        
         shuffleDash.addPIDTunable(shooter, "Shooter");
         shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
     
