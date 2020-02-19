@@ -79,7 +79,7 @@ public class RobotContainer {
     
     private CrossInitiationLine crossInitiationLine;
 
-    private MercMotionProfile circle, curveBack, curvy, digonal, hardRight, redCenterToTrench, straight;
+    private MercMotionProfile circle, curveBack, curvy, digonal, hardRight, straight, targetZoneToRendezvousBalls, targetZoneToTrench;
 
     public RobotContainer() {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
@@ -150,7 +150,7 @@ public class RobotContainer {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(redCenterToTrench, driveTrain));            
+            right11.whenPressed(new MoveOnTrajectory(targetZoneToTrench, driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
@@ -250,8 +250,9 @@ public class RobotContainer {
         curvy = new MercMotionProfile("Curvy");
         digonal = new MercMotionProfile("Digonal");
         hardRight = new MercMotionProfile("HardRight");
-        redCenterToTrench = new MercMotionProfile("RedCenterToTrench");
         straight = new MercMotionProfile("Straight");
+        targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls");
+        targetZoneToTrench = new MercMotionProfile("TargetZoneToTrench");
     }
 
     //Eventually this will link to our auton app on the shuffledash
