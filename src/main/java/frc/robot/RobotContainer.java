@@ -145,12 +145,12 @@ public class RobotContainer {
         right8.whenPressed(new DriveDistance(120.0, driveTrain));
         right9.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         try {
-            right10.whenPressed(new MoveOnTrajectory(curvy, driveTrain));            
+            right10.whenPressed(new MoveOnTrajectory(straight, driveTrain, false));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(targetZoneToTrench, driveTrain));            
+            right11.whenPressed(new MoveOnTrajectory(straight, driveTrain, true));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
@@ -259,7 +259,7 @@ public class RobotContainer {
     public void initializeAutonCommand(){
         autonCommand.addRequirements(this.driveTrain);
         try {
-            autonCommand.addCommands(new MoveOnTrajectory(straight, this.driveTrain));            
+            autonCommand.addCommands(new MoveOnTrajectory(straight, this.driveTrain, false));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
