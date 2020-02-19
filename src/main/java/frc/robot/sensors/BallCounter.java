@@ -18,6 +18,7 @@ public class BallCounter {
         int ballCount = 0;
         for (int i = 1; i <= NUM_SIGNATURES; i++) {
             if (pixyCam.getBoxes(i).size() == 0) {
+                // If the boxes array for the signature is empty, the target is covered by a ball.
                 ballCount++;
             }
         }

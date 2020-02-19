@@ -3,25 +3,26 @@ package frc.robot.sensors.pixy;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.util.BoundingBox;
+import frc.robot.util.MercMath;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 
 
 /**
- * PixyCam implementation using SPI interface
- *
- * deprecated since we cannot use the SPI interface on the RIO.
+ * RoboRio implementation for V1 PixyCam. Supports I2C or SPI.
+ * Once instantiated, this class will obtain updated data from the Pixy every 50 ms.
+ * Box data is stored for a configurable number of signatures (set at construction time)
+ * Signatures can be retrieved by ID (1-8) if available
  */
 public class Pixy {
 
+    /**
+     * Indicates either an SPI or I2C Pixy connection
+     */
     public enum LinkType {
         SPI, I2C;
     }
-
-    private IPixyLink pixyLink;
-    private int maxBlocks;
-    private int numSignatures;
-    private final Notifier pixyUpdateNotifier;
 
     // Variables used for SPI comms, derived from https://github.com/omwah/pixy_rpi
     private static final byte PIXY_SYNC_BYTE = 0x5a;
@@ -30,42 +31,59 @@ public class Pixy {
     private static final int PIXY_START_WORD = 0xaa55;
     private static final int PIXY_START_WORDX = 0x55aa;
     private static final int BLOCK_LEN = 5;
-    private static final double PIXY_UPDATE_PERIOD_SECONDS = 0.050; // Update every 50ms.
 
-    public final Hashtable<Integer, ArrayList<BoundingBox>> signatures;
-  
+    private static final double PIXY_UPDATE_PERIOD_SECONDS = 0.050; // Update every 50ms.
+    private static final int PIXY_MAX_BOXES = 1000;
+
+    private final Hashtable<Integer, ArrayList<BoundingBox>> signatures;
+    private final Notifier pixyUpdateNotifier;
+
+    private IPixyLink pixyLink;
+    private int maxBoxes;
+    private int numSignatures;
+
     private boolean skipStart = false;
     private int debug = 0; // 0 - none, 1 - SmartDashboard, 2 - log to console/file
-
     private long getStart = 0;
   
-    public Pixy(LinkType linkType, int numSignatures, int maxBlocks) {
+    /**
+     * Create a new Pixy for the specified link type
+     * @param linkType Communications link to the Pixy (I2C or SPI)
+     * @param numSignatures Number of signatures to retrieve and store (1-8)
+     * @param maxBoxes
+     */
+    public Pixy(LinkType linkType, int numSignatures, int maxBoxes) {
         this(linkType == LinkType.I2C ? new I2CPixyLink() :
              linkType == LinkType.SPI ? new SPIPixyLink() :
              new SPIPixyLink(), // Default to SPI (even though there are only two options currently)
-             numSignatures, maxBlocks);
+             numSignatures, maxBoxes);
     }
     /**
      * Instantiate new Pixy
      * @param pixyLink The IPixyLink (SPI or I2C) of the pixy
      * @param numSignatures The number of signature slots in use on the Pixy
-     * @param maxBlocks Maximum number of blocks (configured in Pixy Blocks tab)
+     * @param maxBoxes Maximum number of blocks (configured in Pixy Blocks tab)
      */
-    public Pixy(IPixyLink pixyLink, int numSignatures, int maxBlocks) {
+    public Pixy(IPixyLink pixyLink, int numSignatures, int maxBoxes) {
 
         this.pixyLink = pixyLink;
-        this.numSignatures = numSignatures;
-        this.maxBlocks = maxBlocks;
+        this.numSignatures = MercMath.clamp(numSignatures, 1, 8);
+        this.maxBoxes = MercMath.clamp(maxBoxes, 1, PIXY_MAX_BOXES);
 
         signatures = new Hashtable<Integer, ArrayList<BoundingBox>>();
-        for(int i = 1; i <= maxBlocks; i++) {
+        for(int i = 1; i <= maxBoxes; i++) {
             signatures.put(i, new ArrayList<BoundingBox>());
         }
 
-        pixyUpdateNotifier = new Notifier(this::getBlocks);
+        pixyUpdateNotifier = new Notifier(this::getSignatureBoxes);
         pixyUpdateNotifier.startPeriodic(PIXY_UPDATE_PERIOD_SECONDS);
     }
 
+    /**
+     * Return the boxes for the specified signature
+     * @param signum Signature to get boxes for (1-8)
+     * @return Arraylist containing 0 or more boxes detected by Pixy
+     */
     public ArrayList<BoundingBox> getBoxes(int signum) {
         if (signum > 0 && signum <= numSignatures) {
             return signatures.get(signum);
@@ -73,13 +91,13 @@ public class Pixy {
             return null;
         }
     }
+
     /**
      * Reads from SPI for data "words," and parses
      * all words into bounding boxes.
      */
-    private void getBlocks() {
-        // Clear out BOXES array list for reuse.
-        signatures.clear();
+    private void getSignatureBoxes() {
+
         long count = 0;
         boolean loading = true;
 
@@ -95,10 +113,10 @@ public class Pixy {
         }
 
         // Loop until we hit the maximum number of blocks.
-        while (loading && count < maxBlocks) {
+        while (loading && count < maxBoxes) {
             if (count == 0) {
                 // Beginning of loading - clear the previous signatures.
-                for(int i = 1; i <= maxBlocks; i++) {
+                for(int i = 1; i <= maxBoxes; i++) {
                     signatures.get(i).clear();
                 }
             }
@@ -155,7 +173,7 @@ public class Pixy {
                     loading = false;
                 }
             }
-            for(int i = 1; i <= maxBlocks; i++) {
+            for(int i = 1; i <= maxBoxes; i++) {
                 signatures.get(i).sort(BoundingBox::compareTo);
             }
         }
