@@ -124,8 +124,6 @@ public class RobotContainer {
         initializeJoystickButtons();
 
         autonCommand = new SequentialCommandGroup();
-        crossInitiationLine = new CrossInitiationLine(driveTrain);
-        autonCommand.addRequirements(driveTrain);
         initializeAutonCommand();
 
         left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
@@ -151,12 +149,12 @@ public class RobotContainer {
         right8.whenPressed(new DriveDistance(120.0, driveTrain));
         right9.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         try {
-            right10.whenPressed(new MoveOnTrajectory(bTrenchToTargetZone, driveTrain));            
+            right10.whenPressed(new MoveOnTrajectory(fTrenchOtherBall, driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(curvy, driveTrain));            
+            right11.whenPressed(new MoveOnTrajectory(bTrenchOtherBall, driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
@@ -270,11 +268,17 @@ public class RobotContainer {
     //Eventually this will link to our auton app on the shuffledash
     public void initializeAutonCommand(){
         autonCommand.addRequirements(this.driveTrain);
-        try {
-            autonCommand.addCommands(new MoveOnTrajectory(straight, this.driveTrain));            
-        } catch(FileNotFoundException e) {
-            System.out.println(e);
+        
+        SequentialCommandGroup auton = shuffleDash.getAuton();
+        if(auton == null) {
+            System.out.println("No Auton My Dude");
+            return;
         }
+        try {
+            autonCommand.addCommands(auton);      
+        } catch (Exception e) {
+            System.out.println(e);
+        }      
     }
 
     public CommandGroupBase getAutonCommand(){
