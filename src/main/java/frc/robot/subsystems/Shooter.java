@@ -108,6 +108,10 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     return distance; //TODO find and implement function for finding RPM
   }
 
+  public boolean atTargetRpm() {
+    return Math.abs(getRPM() - getTargetRPM()) <= 0.005 * getTargetRPM();
+  }
+
   public Command getDefaultCommand() {
     return CommandScheduler.getInstance().getDefaultCommand(this);
   }
