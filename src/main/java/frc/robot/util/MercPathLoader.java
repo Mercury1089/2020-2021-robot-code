@@ -108,16 +108,16 @@ public class MercPathLoader {
                 //Append point to point
                 trajectoryPoints.add(point);
                 
-                // System.out.println("time: " + time
-                //                     + " velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond)
-                //                     + " heading: " + heading
-                //                     + " pos: " + pos
-                //                     + " TicksPerTenth Values " + MercMath.revsPerMinuteToTicksPerTenth(MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond))
-                //                     + " point.time: " + point.timeDur
-                //                     + " point.velocity: " + point.velocity
-                //                     + " point.auxiliaryPos: " + point.auxiliaryPos
-                //                     + " point.position: " + point.position
-                // );
+                /*System.out.println(//"time: " + time + 
+                                   //" velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) + 
+                                   //" heading: " + heading +
+                                   //" pos: " + pos +
+                                   //" TicksPerTenth Values " + MercMath.revsPerMinuteToTicksPerTenth(MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond)) +
+                                   //" point.time: " + point.timeDur +
+                                   //" point.velocity: " + point.velocity //+ 
+                                   //" point.auxiliaryPos: " + point.auxiliaryPos +
+                                   //" point.position: " + point.position
+                );*/
                 
                 minTime = Math.min(point.timeDur, minTime);
             }
@@ -136,7 +136,7 @@ public class MercPathLoader {
 
             trajectoryPoints.add(point);
 
-            DriverStation.reportError("Min Time: " + minTime , false);
+            DriverStation.reportError(pathName + "\nMin Time: " + minTime , false);
         }
         return trajectoryPoints;
     }
