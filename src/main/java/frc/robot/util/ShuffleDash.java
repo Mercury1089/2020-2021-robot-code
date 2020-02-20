@@ -60,7 +60,7 @@ public class ShuffleDash {
             addCenterAutons();
         } else {
             autonChooser = new SendableChooser<>();
-            autonChooser.addOption("No Option", null);
+            autonChooser.addOption("No Option", StartingPosition.NULL);
         }
 
         publishers = new ArrayList<IMercShuffleBoardPublisher>();
@@ -115,7 +115,7 @@ public class ShuffleDash {
     }
 
     public StartingPosition getStartingPosition() {
-        return autonPositionChooser.getSelected();
+        return autonPositionChooser.getSelected() == null ? StartingPosition.NULL: autonPositionChooser.getSelected();
     }
 
     public void addLeftAutons() {
