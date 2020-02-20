@@ -12,6 +12,7 @@ import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
+import frc.robot.auton.CrossInitiationLine;
 import frc.robot.commands.drivetrain.DegreeRotate;
 import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
@@ -75,8 +76,10 @@ public class RobotContainer {
     private LimelightCamera limelightCamera;
     
     private CommandGroupBase autonCommand;
+    
+    private CrossInitiationLine crossInitiationLine;
 
-    private MercMotionProfile circle, curveBack, curvy, digonal, hardRight, redCenterToTrench, straight;
+    private MercMotionProfile circle, curveBack, curvy, digonal, hardRight, straight, targetZoneToRendezvousBalls, targetZoneToTrench;
 
     public RobotContainer() {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
@@ -108,7 +111,6 @@ public class RobotContainer {
         shuffleDash.addPublisher(elevator);
         shuffleDash.addPublisher(feeder);
         shuffleDash.addPublisher(hopper);
-        
         shuffleDash.addPIDTunable(shooter, "Shooter");
         shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
     
@@ -116,6 +118,7 @@ public class RobotContainer {
         initializeJoystickButtons();
 
         autonCommand = new SequentialCommandGroup();
+        crossInitiationLine = new CrossInitiationLine(driveTrain);
         autonCommand.addRequirements(driveTrain);
         initializeAutonCommand();
 
@@ -142,12 +145,12 @@ public class RobotContainer {
         right8.whenPressed(new DriveDistance(120.0, driveTrain));
         right9.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         try {
-            right10.whenPressed(new MoveOnTrajectory(straight, driveTrain));            
+            right10.whenPressed(new MoveOnTrajectory(straight, driveTrain/*, false*/));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(redCenterToTrench, driveTrain));            
+            right11.whenPressed(new MoveOnTrajectory(straight, driveTrain/*, true*/));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
@@ -159,10 +162,6 @@ public class RobotContainer {
         gamepadLB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
         gamepadRB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
         gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
-    }
-
-    public String getAutonFirstStep() {
-        return shuffleDash.getFirstStep();
     }
 
     public double getJoystickX(int port) {
@@ -251,15 +250,16 @@ public class RobotContainer {
         curvy = new MercMotionProfile("Curvy");
         digonal = new MercMotionProfile("Digonal");
         hardRight = new MercMotionProfile("HardRight");
-        redCenterToTrench = new MercMotionProfile("RedCenterToTrench");
         straight = new MercMotionProfile("Straight");
+        targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls");
+        targetZoneToTrench = new MercMotionProfile("TargetZoneToTrench");
     }
 
     //Eventually this will link to our auton app on the shuffledash
     public void initializeAutonCommand(){
         autonCommand.addRequirements(this.driveTrain);
         try {
-            autonCommand.addCommands(new MoveOnTrajectory(straight, this.driveTrain));            
+            autonCommand.addCommands(new MoveOnTrajectory(straight, this.driveTrain/*, false*/));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
