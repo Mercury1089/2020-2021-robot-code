@@ -151,7 +151,7 @@ public class RobotContainer {
         right8.whenPressed(new DriveDistance(120.0, driveTrain));
         right9.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         try {
-            right10.whenPressed(new MoveOnTrajectory(straight, driveTrain));            
+            right10.whenPressed(new MoveOnTrajectory(bTrenchToTargetZone, driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
