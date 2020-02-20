@@ -43,7 +43,7 @@ public class Pixy {
     private int numSignatures;
 
     private boolean skipStart = false;
-    private int debug = 0; // 0 - none, 1 - SmartDashboard, 2 - log to console/file
+    private boolean debug = false; // set true to log to console
     private long getStart = 0;
   
     /**
@@ -97,15 +97,17 @@ public class Pixy {
      * all words into bounding boxes.
      */
     private void getSignatureBoxes() {
-
+        if (debug) System.out.println("getSignatureBoxes(): Entering.");
         long count = 0;
         boolean loading = true;
 
         // If we haven't found the start of a block, find it.
         if (!skipStart) {
             // If we can't find the start of a block, drop out.
-            if (!getStart())
+            if (!getStart()) {
                 loading = false;
+                if (debug) System.out.println("getSignatureBoxes(): getStart() got nothing.");
+            }
         } else {
             // Clear flag that tells us to find the next block as the logic below will loop
             // the appropriate number of times to retrieve a complete block.
@@ -130,12 +132,13 @@ public class Pixy {
             // in which case return the current set of BOXES found and set the flag
             // to skip looking for the beginning of the next block since we already found it.
             if (checksum == PIXY_START_WORD) {
+                if (debug) System.out.println("getSignatureBoxes(): checksum is start word.");
                 skipStart = true;
                 loading = false;
             }
-
             // See if we received a empty buffer, if so, assume end of comms for now and return what we have.
             else if (checksum == 0) {
+                if (debug) System.out.println("getSignatureBoxes(): empty buffer");
                 loading = false;
             }
 
@@ -152,6 +155,12 @@ public class Pixy {
                 // Also make sure the target is for the first signature
                 int signum = box[0];
                 if (checksum == trialsum && signum <= numSignatures) {
+                    if (debug) System.out.println("getSignatureBoxes: count: " + count
+                                    + " box[0]: " + box[0]
+                                    + " box[1]: " + box[1]
+                                    + " box[2]: " + box[2]
+                                    + " box[3]: " + box[3]
+                                    + " box[4]: " + box[4]);
 
                     BoundingBox bound = new BoundingBox(
                         box[1], // X
@@ -161,6 +170,7 @@ public class Pixy {
                     );
                     // Data has been validated, add the current block of data to the overall BOXES buffer.
                     signatures.get(signum).add(bound);
+                    count++;
                 }
 
                 // Check the next word from the Pixy to confirm it's the start of the next block.
@@ -169,33 +179,35 @@ public class Pixy {
                 int w = pixyLink.getWord();
 
                 if (w != PIXY_START_WORD) {
-                    // Sort array before returning
+                    if (debug) System.out.println("getSignatureBoxes(): Not start word: " + w);
                     loading = false;
+                } else {
+                    if (debug) System.out.println("getSignatureBoxes(): Got start word: " + w);
                 }
-            }
-            for(int i = 1; i <= maxBoxes; i++) {
-                signatures.get(i).sort(BoundingBox::compareTo);
             }
         }
 
+        // Sort arrays before returning
+        for(int i = 1; i <= maxBoxes; i++) {
+            signatures.get(i).sort(BoundingBox::compareTo);
+        }
         // Should never get here, but if we happen to get a massive number of BOXES
         // and exceed the limit it will happen. In that case something is wrong
         // or you have a super natural Pixy and SPI link.
         //DriverStation.reportWarning("PIXY: Massive number of boxes!", false);
+        if (debug) System.out.println("getSignatureBoxes(): LEaving.");
+
     }
 
     private boolean getStart() {
         int lastw = 0xff;
         int count = 0;
 
-        if (debug >= 1) {
-            SmartDashboard.putNumber("getStart: count: ", getStart++);
-        }
-
         // Loop until we get a start word from the Pixy.
         while (true) {
             int w = pixyLink.getWord();
-
+            if (debug) System.out.println("getStart: count: " + count++);
+    
             if ((w == 0x00) && (lastw == 0x00))
                 // Could delay a bit to give time for next data block, but to get accurate time would tie up cpu.
                 // So might as well return and let caller call this getStart again.
