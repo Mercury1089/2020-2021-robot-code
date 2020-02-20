@@ -79,7 +79,13 @@ public class RobotContainer {
     
     private CrossInitiationLine crossInitiationLine;
 
-    private MercMotionProfile circle, curveBack, curvy, digonal, hardRight, straight, targetZoneToRendezvousBalls, targetZoneToTrench;
+    //These go forwards
+    private MercMotionProfile fTargetZoneToTrench, fTrenchBall, fTrenchOtherBall;
+    //These go backwards
+    private MercMotionProfile bTrenchBall, bTrenchOtherBall, bTrenchToTargetZone;
+
+    //These are for testing (or are being worked upon)
+    private MercMotionProfile circle, curveBack, curvy, straight, targetZoneToRendezvousBalls;
 
     public RobotContainer() {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
@@ -245,14 +251,20 @@ public class RobotContainer {
     }
 
     public void initializeMotionProfiles() {
+        //These go forwards
+        fTargetZoneToTrench = new MercMotionProfile("FTargetZoneToTrench", false);
+        fTrenchBall = new MercMotionProfile("FTrenchBall", false);
+        fTrenchOtherBall = new MercMotionProfile("FTrenchOtherBall", false);
+        //These go backwards
+        bTrenchBall = new MercMotionProfile("BTrenchBall", true);
+        bTrenchOtherBall = new MercMotionProfile("BTrenchOtherBall", true);
+        bTrenchToTargetZone = new MercMotionProfile("BTrenchToTargetZone", true);
+        //These are for testing (or are being worked upon)
         circle = new MercMotionProfile("Circle", false);
         curveBack = new MercMotionProfile("CurveBack", false);
         curvy = new MercMotionProfile("Curvy", true);
-        digonal = new MercMotionProfile("Digonal", false);
-        hardRight = new MercMotionProfile("HardRight", false);
         straight = new MercMotionProfile("Straight", true);
         targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls", false);
-        targetZoneToTrench = new MercMotionProfile("TargetZoneToTrench", false);
     }
 
     //Eventually this will link to our auton app on the shuffledash
