@@ -21,7 +21,7 @@ public class RunShooterRPMPID extends CommandBase {
    * Creates a new RunShooter.
    */
   public RunShooterRPMPID(Shooter shooter) {
-    super.addRequirements(shooter);
+    addRequirements(shooter);
     setName("RunShooterRPMPID");
     this.shooter = shooter;
   }
@@ -34,13 +34,12 @@ public class RunShooterRPMPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.shooter.setVelocity(Math.abs(shooter.getRunRPM()));
+    this.shooter.setVelocity(Math.abs(shooter.getTargetRPM()));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.shooter.setSpeed(0.0);
   }
 
   // Returns true when the command should end.

@@ -26,12 +26,12 @@ public class RunHopperBelt extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    hopper.setSpeed(hopper.getRunSpeed());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    hopper.setSpeed(hopper.getRunSpeed());
   }
 
   // Called once the command ends or is interrupted.
