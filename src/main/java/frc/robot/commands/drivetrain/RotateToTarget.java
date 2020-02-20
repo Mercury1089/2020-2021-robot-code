@@ -25,8 +25,6 @@ public class RotateToTarget extends DegreeRotate {
 
         this.driveTrain = driveTrain;
         this.limelightCamera = limelightCamera;
-
-        angleThresholdDeg = 1.2;
     }
 
     // Called just before this Command runs the first time
@@ -57,7 +55,7 @@ public class RotateToTarget extends DegreeRotate {
 
         boolean isFinished = false;
 
-        boolean isOnTarget = (Math.abs(angleError) < angleThresholdDeg);
+        boolean isOnTarget = (Math.abs(angleError) < DriveTrain.ANGLE_THRESHOLD_DEG);
 
         if (isOnTarget) {
             onTargetCount++;
