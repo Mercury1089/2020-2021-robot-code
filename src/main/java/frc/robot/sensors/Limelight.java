@@ -25,26 +25,11 @@ public class Limelight implements TableEntryListener {
     private double numTargets, targetCenterXAngle, targetCenterYAngle, targetArea, horizontalLength, verticalLength;
     private double[] cornerx;
     private boolean targetAcquired;
-
-    // Height of floor to center of Limelight
-    private final double LIMELIGHT_HEIGHT = 14.125;
-    // Center of target to floor
-    private final double TARGET_HEIGHT = 98.25;
-    // Angle of Limelight from floor
-    private final double LIMELIGHT_ANGLE = 70.00;
-
-    private final double TARGET_LENGTH_INCHES = 17.00;
-    private final double VERTICAL_CAMERA_RES_PIXEL = 240;
-    private final double VFOV_DEGREES = 41;
-
     private final double areaCoeff = 16.2;
     private final double areaExp = -0.479;
 
     private LinearFilter movingAverage = LinearFilter.movingAverage(5);
-
-    // private final double LIMELIGHT_HFOV_DEG = 59.6;
-    // private final double LIMELIGHT_VFOV_DEG = 45.7;
-
+    
     /**
      * Constucts the sensor and adds a listener to the table
      */
@@ -229,6 +214,7 @@ public class Limelight implements TableEntryListener {
      */
     public double calcDistFromHoriz() {
         return horizCoeff * Math.pow(horizontalLength, horizExp) * 12;
+        //This is from 2019. Needs to be recalibrated for 2020
     }
 
     /**
