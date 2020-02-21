@@ -11,6 +11,8 @@ import frc.robot.subsystems.DriveTrain;
 
 public class DriveDistance extends MoveHeading{
 
+    private int angleThresholdDeg;
+
     /**
      * Construct Drive Distance w / Motion Magic
      *

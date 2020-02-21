@@ -72,7 +72,7 @@ public class TrackTarget extends MoveHeading {
         boolean isFinished = false;
 
         boolean isOnTarget = (Math.abs(distError) < moveThresholdTicks &&
-                Math.abs(angleError) < angleThresholdDeg &&
+                Math.abs(angleError) < DriveTrain.ANGLE_THRESHOLD_DEG &&
                 this.limelightCamera.getLimelight().isSafeToTrack());
 
         if (isOnTarget) {

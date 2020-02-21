@@ -16,6 +16,7 @@ public class DegreeRotate extends MoveHeading {
 
     private DriveTrain driveTrain;
     private double angleError;
+    private int angleThresholdDeg;
 
     public DegreeRotate(double angleToTurn, DriveTrain driveTrain) {
         super(0, angleToTurn, driveTrain);
