@@ -7,6 +7,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
+import frc.robot.auton.*;
 import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
@@ -32,7 +35,7 @@ public class ShuffleDash {
 
     private NetworkTableInstance ntInstance;
     private SendableChooser<StartingPosition> autonPositionChooser;
-    private SendableChooser<StartingPosition> autonChooser;
+    private SendableChooser<SequentialCommandGroup> autonChooser;
     private List<IMercShuffleBoardPublisher> publishers;
     private SendableChooser<TunablePIDSlot> tunablePIDChooser;
     private String positionColor;
@@ -48,20 +51,9 @@ public class ShuffleDash {
         autonPositionChooser.addOption("Left", StartingPosition.LEFT);
         autonPositionChooser.addOption("Center", StartingPosition.CENTER);
         autonPositionChooser.addOption("Right", StartingPosition.RIGHT);
+        SmartDashboard.putData("Auton Position", autonPositionChooser);
 
-        if(getStartingPosition().equals(StartingPosition.LEFT)) {
-            autonChooser = new SendableChooser<>();
-            addLeftAutons();
-        } else if(getStartingPosition().equals(StartingPosition.RIGHT)) {
-            autonChooser = new SendableChooser<>();
-            addRightAutons();
-        } else if(getStartingPosition().equals(StartingPosition.CENTER)) {
-            autonChooser = new SendableChooser<>();
-            addCenterAutons();
-        } else {
-            autonChooser = new SendableChooser<>();
-            autonChooser.addOption("No Option", StartingPosition.NULL);
-        }
+        updateAutonChooser();
 
         publishers = new ArrayList<IMercShuffleBoardPublisher>();
 
@@ -112,28 +104,45 @@ public class ShuffleDash {
             }
             this.tunableSlot = tunableSlot;
         }
+
+        updateAutonChooser();
     }
 
     public StartingPosition getStartingPosition() {
         return autonPositionChooser.getSelected() == null ? StartingPosition.NULL: autonPositionChooser.getSelected();
     }
 
+    public SequentialCommandGroup getAuton() {
+        return autonChooser.getSelected();
+    }
+
     public void addLeftAutons() {
-        autonChooser.addOption("Straight", StartingPosition.LEFT);
-        autonChooser.addOption("Option", StartingPosition.LEFT);
-        autonChooser.addOption("Option", StartingPosition.LEFT);
+        autonChooser.addOption("Left", null);
     }
 
     public void addRightAutons() {
-        autonChooser.addOption("Option", StartingPosition.RIGHT);
-        autonChooser.addOption("Option", StartingPosition.RIGHT);
-        autonChooser.addOption("Option", StartingPosition.RIGHT);
+        autonChooser.addOption("Right", null);
     }
 
     public void addCenterAutons() {
-        autonChooser.addOption("Option", StartingPosition.CENTER);
-        autonChooser.addOption("Option", StartingPosition.CENTER);
-        autonChooser.addOption("Option", StartingPosition.CENTER);
+        autonChooser.addOption("Center", null);
+    }
+
+    public void updateAutonChooser() {
+        if(getStartingPosition().equals(StartingPosition.LEFT)) {
+            autonChooser = new SendableChooser<SequentialCommandGroup>();
+            addLeftAutons();
+        } else if(getStartingPosition().equals(StartingPosition.RIGHT)) {
+            autonChooser = new SendableChooser<>();
+            addRightAutons();
+        } else if(getStartingPosition().equals(StartingPosition.CENTER)) {
+            autonChooser = new SendableChooser<>();
+            addCenterAutons();
+        } else {
+            autonChooser = new SendableChooser<>();
+            autonChooser.addOption("No Option", null);
+        }
+        SmartDashboard.putData("Choose Auton", autonChooser);
     }
 
     public String getPositionControlColor() {
