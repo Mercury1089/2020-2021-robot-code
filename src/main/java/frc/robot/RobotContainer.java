@@ -79,7 +79,13 @@ public class RobotContainer {
     
     private CrossInitiationLine crossInitiationLine;
 
-    private MercMotionProfile circle, curveBack, curvy, digonal, hardRight, straight, targetZoneToRendezvousBalls, targetZoneToTrench;
+    //These go forwards
+    private MercMotionProfile fTargetZoneToTrench, fTrenchBall, fTrenchOtherBall;
+    //These go backwards
+    private MercMotionProfile bTrenchBall, bTrenchOtherBall, bTrenchToTargetZone;
+
+    //These are for testing (or are being worked upon)
+    private MercMotionProfile circle, curveBack, curvy, straight, targetZoneToRendezvousBalls;
 
     public RobotContainer() {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
@@ -145,12 +151,12 @@ public class RobotContainer {
         right8.whenPressed(new DriveDistance(120.0, driveTrain));
         right9.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         try {
-            right10.whenPressed(new MoveOnTrajectory(straight, driveTrain/*, false*/));            
+            right10.whenPressed(new MoveOnTrajectory(straight, driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(straight, driveTrain/*, true*/));            
+            right11.whenPressed(new MoveOnTrajectory(curvy, driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
@@ -245,21 +251,27 @@ public class RobotContainer {
     }
 
     public void initializeMotionProfiles() {
-        circle = new MercMotionProfile("Circle");
-        curveBack = new MercMotionProfile("CurveBack");
-        curvy = new MercMotionProfile("Curvy");
-        digonal = new MercMotionProfile("Digonal");
-        hardRight = new MercMotionProfile("HardRight");
-        straight = new MercMotionProfile("Straight");
-        targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls");
-        targetZoneToTrench = new MercMotionProfile("TargetZoneToTrench");
+        //These go forwards
+        fTargetZoneToTrench = new MercMotionProfile("FTargetZoneToTrench", false);
+        fTrenchBall = new MercMotionProfile("FTrenchBall", false);
+        fTrenchOtherBall = new MercMotionProfile("FTrenchOtherBall", false);
+        //These go backwards
+        bTrenchBall = new MercMotionProfile("BTrenchBall", true);
+        bTrenchOtherBall = new MercMotionProfile("BTrenchOtherBall", true);
+        bTrenchToTargetZone = new MercMotionProfile("BTrenchToTargetZone", true);
+        //These are for testing (or are being worked upon)
+        circle = new MercMotionProfile("Circle", false);
+        curveBack = new MercMotionProfile("CurveBack", false);
+        curvy = new MercMotionProfile("Curvy", true);
+        straight = new MercMotionProfile("Straight", true);
+        targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls", false);
     }
 
     //Eventually this will link to our auton app on the shuffledash
     public void initializeAutonCommand(){
         autonCommand.addRequirements(this.driveTrain);
         try {
-            autonCommand.addCommands(new MoveOnTrajectory(straight, this.driveTrain/*, false*/));            
+            autonCommand.addCommands(new MoveOnTrajectory(straight, this.driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }

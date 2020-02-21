@@ -18,12 +18,16 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 public class MercMotionProfile {
     private final String name;
     private final String pathDirectory;
-    List<TrajectoryPoint> trajectoryPoints;
+    private final boolean backwards;
+    private final List<TrajectoryPoint> trajectoryPoints;
 
-    public MercMotionProfile(String name) {
+    public MercMotionProfile(String name, boolean backwards) {
         this.name = name;
+        this.backwards = backwards;
         pathDirectory = MercPathLoader.getBasePathLocation() + name + ".wpilib.json"; 
         trajectoryPoints = MercPathLoader.loadPath(name);
+        if(this.backwards)
+            driveBackwards();
     }
 
     public String getName() {
@@ -38,18 +42,13 @@ public class MercMotionProfile {
         return trajectoryPoints;
     }
 
-    public List<TrajectoryPoint> getPathForward() {
-        return trajectoryPoints;
-    }
-
-    public List<TrajectoryPoint> getPathBackwards() {
-        List<TrajectoryPoint> points = new ArrayList<TrajectoryPoint>();
-        for (int i = trajectoryPoints.size() - 1; i >= 0; i--) {
-            TrajectoryPoint p = trajectoryPoints.get(i);
-            p.velocity *= -1;
-           // p.headingDeg = 90 - p.headingDeg;
-           points.add(p);
+    public void driveBackwards() {
+        for (int i = 0; i < trajectoryPoints.size(); i++) {
+            trajectoryPoints.get(i).velocity *= -1;
+            trajectoryPoints.get(i).position *= -1;
+            //trajectoryPoints.get(i).headingDeg =
+            //(trajectoryPoints.get(i).headingDeg + 4096) % 8192;
+            //System.out.println("Velocity: " + trajectoryPoints.get(i).velocity);
         }
-        return points;
     }
 }
