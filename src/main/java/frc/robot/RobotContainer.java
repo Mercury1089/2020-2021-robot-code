@@ -13,6 +13,7 @@ import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
 import frc.robot.auton.CrossInitiationLine;
+import frc.robot.auton.TargetZoneToTrenchAndShoot;
 import frc.robot.commands.drivetrain.DegreeRotate;
 import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
@@ -76,14 +77,11 @@ public class RobotContainer {
     private LimelightCamera limelightCamera;
     
     private CommandGroupBase autonCommand;
-    
-    private CrossInitiationLine crossInitiationLine;
 
     //These go forwards
     private MercMotionProfile fTargetZoneToTrench, fTrenchBall, fTrenchOtherBall;
     //These go backwards
     private MercMotionProfile bTrenchBall, bTrenchOtherBall, bTrenchToTargetZone;
-
     //These are for testing (or are being worked upon)
     private MercMotionProfile circle, curveBack, curvy, straight, targetZoneToRendezvousBalls;
 
@@ -145,9 +143,14 @@ public class RobotContainer {
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         right5.whenPressed(new RotationControl(spinner));
         right6.whenPressed(new TestSequentialCommandGroup(driveTrain, limelightCamera));
-        right7.whenPressed(new DegreeRotate(90, driveTrain));
-        right8.whenPressed(new DriveDistance(120.0, driveTrain));
-        right9.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
+        right7.whenPressed(new DriveDistance(120.0, driveTrain));
+        right8.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
+        try {
+            TargetZoneToTrenchAndShoot targetZoneToTrenchAndShoot = new TargetZoneToTrenchAndShoot(fTargetZoneToTrench, fTrenchBall, bTrenchBall, fTrenchOtherBall, bTrenchOtherBall, bTrenchToTargetZone, driveTrain);
+            right9.whenPressed(targetZoneToTrenchAndShoot);            
+        } catch(FileNotFoundException e) {
+            System.out.println(e);
+        }
         try {
             right10.whenPressed(new MoveOnTrajectory(fTrenchOtherBall, driveTrain));            
         } catch(FileNotFoundException e) {
@@ -265,7 +268,6 @@ public class RobotContainer {
         targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls", false);
     }
 
-    //Eventually this will link to our auton app on the shuffledash
     public void initializeAutonCommand(){
         autonCommand.addRequirements(this.driveTrain);
         
