@@ -17,6 +17,7 @@ import frc.robot.util.DriveAssist.DriveDirection;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
+import frc.robot.sensors.Limelight;
 
 /**
  * Subsystem that encapsulates the driveAssist train.
@@ -41,6 +42,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     public static final double GEAR_RATIO = 1,
         MAX_RPM = 545,
         WHEEL_DIAMETER_INCHES = 5.8;
+    public static final double ANGLE_THRESHOLD_DEG = 1.2;
     public static final double NOMINAL_OUT = 0.0,
                                PEAK_OUT = 1.0;
 
@@ -52,6 +54,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     //private LIDAR lidar;
     private DriveTrainLayout layout;
     private boolean isInMotionMagicMode;
+    private Limelight limelight;
 
     /**
      * Creates the drivetrain, assuming that there are four controllers.
@@ -128,6 +131,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         setMaxOutput(PEAK_OUT);
 
         stop();
+
+        limelight = new Limelight();
     }
 
     public Command getDefaultCommand(){
@@ -321,6 +326,10 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         else{
             setDirection(DriveDirection.LIMELIGHT);
         }
+    }
+
+    public boolean isAligned(){
+        return Math.abs(limelight.getTargetCenterXAngle()) <= ANGLE_THRESHOLD_DEG;
     }
 
     public PigeonIMU getPigeon() {
