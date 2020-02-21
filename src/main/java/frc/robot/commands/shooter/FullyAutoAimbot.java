@@ -21,13 +21,15 @@ import frc.robot.subsystems.Shooter;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class FullyAutoAimbot extends SequentialCommandGroup {
+public class FullyAutoAimbot extends ParallelCommandGroup {
   /**
    * Creates a new ShootFullyAutomatic.
    */
   public FullyAutoAimbot(DriveTrain driveTrain, LimelightCamera limelight, Shooter shooter, Feeder feeder, Hopper hopper) {
     //Rotates to target and revs shooter to target rpm, THEN it runs the feeder and hopper
-    super(new ParallelCommandGroup(new RotateToTarget(driveTrain, limelight), new RunShooterRPMPID(shooter)),
-          new ParallelCommandGroup(new RunFeeder(feeder), new RunHopperBelt(hopper)));
+    super(new RotateToTarget(driveTrain, limelight),
+          new RunShooterRPMPID(shooter), 
+          new RunFeeder(feeder), 
+          new RunHopperBelt(hopper));
   }
 }
