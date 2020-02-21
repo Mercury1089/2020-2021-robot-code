@@ -19,7 +19,6 @@ import frc.robot.util.interfaces.IMercMotorController;
 public class MoveHeading extends CommandBase {
     protected final int CLOSED_LOOP_TIME_MS = 1;
     protected int moveThresholdTicks;   // ticks
-    protected double angleThresholdDeg; // degrees
     protected int onTargetMinCount; // 100 millis
     protected int checkThreshold = 50;
     protected IMercMotorController left, right;
@@ -47,7 +46,6 @@ public class MoveHeading extends CommandBase {
         right = this.driveTrain.getRightLeader();
 
         moveThresholdTicks = 500;
-        angleThresholdDeg = 5;
         onTargetMinCount = 4;
 
         dirFactor = this.driveTrain.getDirection().dir;
@@ -104,7 +102,7 @@ public class MoveHeading extends CommandBase {
         boolean isFinished = false;
 
         boolean isOnTarget = (Math.abs(distError) < moveThresholdTicks &&
-                Math.abs(angleError) < angleThresholdDeg);
+                Math.abs(angleError) < DriveTrain.ANGLE_THRESHOLD_DEG);
 
         if (isOnTarget) {
             onTargetCount++;
