@@ -20,6 +20,7 @@ import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 import frc.robot.RobotMap.*;
+import frc.robot.sensors.Limelight;
 
 public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher, IMercPIDTunable {
   // private IMercMotorController flywheel;
@@ -33,6 +34,8 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   private ShooterMode mode;
 
   private PIDGain velocityGains;
+
+  private Limelight limelight;
 
   public enum ShooterMode {
     ONE_WHEEL, NONE
@@ -64,6 +67,8 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     setRunSpeed(0.0);
 
     velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
+    
+    limelight = new Limelight();
 
     setPIDGain(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), velocityGains);
   }
@@ -96,6 +101,11 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
   public double getRPM() {
     return shooterLeft != null ? shooterLeft.getEncVelocity() : 0.0;
+  }
+
+  public double getTargetRPM() {
+    double distance = limelight.getRawVertDistance();
+    return distance; //TODO find and implement function for finding RPM
   }
 
   public Command getDefaultCommand() {
