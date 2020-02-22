@@ -18,15 +18,15 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 public class MercMotionProfile {
     private final String name;
     private final String pathDirectory;
-    private final boolean backwards;
+    private final ProfileDirection direction;
     private final List<TrajectoryPoint> trajectoryPoints;
 
-    public MercMotionProfile(String name, boolean backwards) {
+    public MercMotionProfile(String name, ProfileDirection direction) {
         this.name = name;
-        this.backwards = backwards;
+        this.direction = direction;
         pathDirectory = MercPathLoader.getBasePathLocation() + name + ".wpilib.json"; 
         trajectoryPoints = MercPathLoader.loadPath(name);
-        if(this.backwards)
+        if(this.direction == ProfileDirection.BACKWARDS)
             driveBackwards();
     }
 
@@ -50,5 +50,10 @@ public class MercMotionProfile {
             //(trajectoryPoints.get(i).headingDeg + 4096) % 8192;
             //System.out.println("Velocity: " + trajectoryPoints.get(i).velocity);
         }
+    }
+
+    public enum ProfileDirection{
+        FORWARD,
+        BACKWARDS
     }
 }
