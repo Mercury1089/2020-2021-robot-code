@@ -40,7 +40,7 @@ public class ShuffleDash {
 
     private NetworkTableInstance ntInstance;
     private SendableChooser<StartingPosition> autonPositionChooser;
-    private SendableChooser<SequentialCommandGroup> autonChooser;
+    private SendableChooser<String> autonChooser;
     private List<IMercShuffleBoardPublisher> publishers;
     private SendableChooser<TunablePIDSlot> tunablePIDChooser;
     private String positionColor;
@@ -115,7 +115,7 @@ public class ShuffleDash {
         return autonPositionChooser.getSelected() == null ? StartingPosition.NULL : autonPositionChooser.getSelected();
     }
 
-    public SequentialCommandGroup getAuton() {
+    public String getAuton() {
         return autonChooser.getSelected();
     }
 
@@ -129,29 +129,18 @@ public class ShuffleDash {
 
     public void addCenterAutons() {
         autonChooser.addOption("Center", null);
-        try {
-            autonChooser.addOption("TargetZoneToTrenchAndShoot", new TargetZoneTrenchRun5Ball(
-                Robot.robotContainer.getDriveTrain(), 
-                Robot.robotContainer.getIntake(),
-                Robot.robotContainer.getIntakeArticulator(),
-                Robot.robotContainer.getLimelightCamera(),
-                Robot.robotContainer.getShooter()
-                )
-            );
-        } catch (FileNotFoundException e) {
-            System.out.println("Some problem my dude: " + e);
-        }
+        autonChooser.addOption("TargetZoneToTrenchRun5Ball", "TargetZoneToTrenchRun5Ball");
     }
 
     public void updateAutonChooser() {
         if(getStartingPosition().equals(StartingPosition.LEFT)) {
-            autonChooser = new SendableChooser<SequentialCommandGroup>();
+            autonChooser = new SendableChooser<String>();
             addLeftAutons();
         } else if(getStartingPosition().equals(StartingPosition.RIGHT)) {
-            autonChooser = new SendableChooser<>();
+            autonChooser = new SendableChooser<String>();
             addRightAutons();
         } else if(getStartingPosition().equals(StartingPosition.CENTER)) {
-            autonChooser = new SendableChooser<>();
+            autonChooser = new SendableChooser<String>();
             addCenterAutons();
         } else {
             autonChooser = new SendableChooser<>();
