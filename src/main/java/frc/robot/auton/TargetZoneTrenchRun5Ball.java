@@ -19,32 +19,38 @@ import frc.robot.commands.intake.RunIntake;
 import frc.robot.subsystems.*;
 import frc.robot.util.MercMotionProfile;
 import frc.robot.util.MercPathGroup;
+import frc.robot.util.MercMotionProfile.ProfileDirection;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
 public class TargetZoneTrenchRun5Ball extends SequentialCommandGroup {
+  List<MoveOnTrajectory> paths;
+
   public TargetZoneTrenchRun5Ball(DriveTrain driveTrain, Intake intake, IntakeArticulator intakeArticulator, LimelightCamera limelightCamera, Shooter shooter) throws FileNotFoundException {
       super();
-      
+      paths = new ArrayList<MoveOnTrajectory>();
+      paths.add(new MoveOnTrajectory(new MercMotionProfile("FTargetZoneToTrench", ProfileDirection.FORWARD), driveTrain));
+      paths.add(new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARDS), driveTrain));
+      paths.add(new MoveOnTrajectory(new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD), driveTrain));
+      paths.add(new MoveOnTrajectory(new MercMotionProfile("BTrenchToTargetZone", ProfileDirection.FORWARD), driveTrain));
+      /*
       MercPathGroup fCenter5Ball = new MercPathGroup("FCenter5BallCenter");
-
-      List<MoveOnTrajectory> paths = new ArrayList<MoveOnTrajectory>();
 
       for (MercMotionProfile p : fCenter5Ball.getProfiles()){
         paths.add(new MoveOnTrajectory(p, driveTrain));
       }
-
+      */
       //addCommands(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator));
 
-      for(int i = 0; i < paths.size(); i++){
+      for(int i = 0; i < paths.size(); i++) {
         /*
         switch (i) {
-          case 1:
-          case 3:
+          case 0:
+          case 2:
             addCommands(new ParallelCommandGroup(paths.get(i), new RunIntake(intake)));
             break;
-          case 5:
+          case 3:
             addCommands(new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator));
           default:
             addCommands(paths.get(i));
@@ -52,6 +58,7 @@ public class TargetZoneTrenchRun5Ball extends SequentialCommandGroup {
         */
         addCommands(paths.get(i));
       }
+      
       //TODO: Add commands to aim and shoot
   }
 }
