@@ -15,12 +15,13 @@ import java.util.ArrayList;
 public class MercPathGroup{
 
     private List<MercMotionProfile> profiles;
-    
+    private final String BASE_PATH_LOCATION = "/home/lvuser/deploy/trajectories/PathWeaver/Groups/";
+
     public MercPathGroup(String name){
         profiles = new ArrayList<MercMotionProfile>();
 
         try{
-            Scanner groupReader = new Scanner(new File("/home/lvuser/deploy/trajectories/PathWeaver/Groups/" + name));
+            Scanner groupReader = new Scanner(BASE_PATH_LOCATION + name);
             List<String> pathNames = new ArrayList<String>();
             String path;
 
