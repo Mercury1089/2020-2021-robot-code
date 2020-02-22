@@ -240,19 +240,15 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     }
 
     public void setStatusFramePeriod(int framePeriodMs) {
+        leaderLeft.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, framePeriodMs);
+        leaderRight.setStatusFramePeriod(StatusFrame.Status_10_Targets, framePeriodMs);
         leaderRight.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, framePeriodMs);
         leaderRight.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, framePeriodMs);
         leaderRight.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, framePeriodMs);
-        leaderRight.setStatusFramePeriod(StatusFrame.Status_10_Targets, framePeriodMs);
-        leaderLeft.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, framePeriodMs);
     }
 
     public void setStatusFramePeriod(int framePeriodMs, int pigeonFramePeriodMs) {
-        leaderRight.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, framePeriodMs);
-        leaderRight.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, framePeriodMs);
-        leaderRight.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, framePeriodMs);
-        leaderRight.setStatusFramePeriod(StatusFrame.Status_10_Targets, framePeriodMs);
-        leaderLeft.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, framePeriodMs);
+        setStatusFramePeriod(framePeriodMs);
         getPigeon().setStatusFramePeriod(PigeonIMU_StatusFrame.CondStatus_9_SixDeg_YPR, pigeonFramePeriodMs);
     }
 
