@@ -121,6 +121,14 @@ public class ShuffleDash {
 
     public void addLeftAutons() {
         autonChooser.addOption("Left", null);
+    }
+
+    public void addRightAutons() {
+        autonChooser.addOption("Right", null);
+    }
+
+    public void addCenterAutons() {
+        autonChooser.addOption("Center", null);
         try {
             autonChooser.addOption("TargetZoneToTrenchAndShoot", new TargetZoneTrenchRun5Ball(
                 Robot.robotContainer.getDriveTrain(), 
@@ -133,14 +141,6 @@ public class ShuffleDash {
         } catch (FileNotFoundException e) {
             System.out.println("Some problem my dude: " + e);
         }
-    }
-
-    public void addRightAutons() {
-        autonChooser.addOption("Right", null);
-    }
-
-    public void addCenterAutons() {
-        autonChooser.addOption("Center", null);
     }
 
     public void updateAutonChooser() {
