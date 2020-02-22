@@ -17,9 +17,10 @@ public class MercPathGroup{
     private List<MercMotionProfile> profiles;
     
     public MercPathGroup(String name){
+        profiles = new ArrayList<MercMotionProfile>();
+
         try{
             Scanner groupReader = new Scanner(new File("/home/lvuser/deploy/trajectories/PathWeaver/Groups/" + name));
-            List<MercMotionProfile> profiles = new ArrayList<MercMotionProfile>();
             List<String> pathNames = new ArrayList<String>();
             String path;
 
@@ -37,6 +38,8 @@ public class MercPathGroup{
                 profiles.add((p.charAt(0) == 'B') ? new MercMotionProfile(p, ProfileDirection.BACKWARDS) : new MercMotionProfile(p, ProfileDirection.FORWARD));
             }
             
+            groupReader.close();
+
         } catch (Exception ex){
             DriverStation.reportError("Problem Loading Path Group", ex.getStackTrace());
         }
