@@ -287,4 +287,32 @@ public class RobotContainer {
     public CommandGroupBase getAutonCommand(){
         return this.autonCommand;
     }
+
+    public DriveTrain getDriveTrain() {
+        return driveTrain;
+    }
+    public Shooter getShooter() {
+        return shooter;
+    }
+    public Intake getIntake() {
+        return intake;
+    }
+    public IntakeArticulator getIntakeArticulator() {
+        return intakeArticulator;
+    }
+    public Feeder getFeeder() {
+        return feeder;
+    }
+    public Hopper getHopper() {
+        return hopper;
+    }
+    public Spinner getSpinner() {
+        return spinner;
+    }
+    public Elevator getElevator() {
+        return elevator;
+    }
+    public LimelightCamera getLimelightCamera() {
+        return limelightCamera;
+    }
 }
