@@ -13,7 +13,7 @@ import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
 import frc.robot.auton.CrossInitiationLine;
-import frc.robot.auton.TargetZoneToTrenchAndShoot;
+import frc.robot.auton.TargetZoneTrenchRun5Ball;
 import frc.robot.commands.drivetrain.DegreeRotate;
 import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
@@ -48,6 +48,7 @@ import frc.robot.subsystems.Spinner;
 import frc.robot.util.MercMotionProfile;
 import frc.robot.util.ShuffleDash;
 import frc.robot.util.TriggerButton;
+import frc.robot.util.MercMotionProfile.ProfileDirection;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -146,7 +147,7 @@ public class RobotContainer {
         right7.whenPressed(new DriveDistance(120.0, driveTrain));
         right8.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         try {
-            TargetZoneToTrenchAndShoot targetZoneToTrenchAndShoot = new TargetZoneToTrenchAndShoot(fTargetZoneToTrench, fTrenchBall, bTrenchBall, fTrenchOtherBall, bTrenchOtherBall, bTrenchToTargetZone, driveTrain);
+            TargetZoneTrenchRun5Ball targetZoneToTrenchAndShoot = new TargetZoneTrenchRun5Ball(driveTrain, intake, intakeArticulator, limelightCamera, shooter);
             right9.whenPressed(targetZoneToTrenchAndShoot);            
         } catch(FileNotFoundException e) {
             System.out.println(e);
@@ -253,19 +254,19 @@ public class RobotContainer {
 
     public void initializeMotionProfiles() {
         //These go forwards
-        fTargetZoneToTrench = new MercMotionProfile("FTargetZoneToTrench", false);
-        fTrenchBall = new MercMotionProfile("FTrenchBall", false);
-        fTrenchOtherBall = new MercMotionProfile("FTrenchOtherBall", false);
+        fTargetZoneToTrench = new MercMotionProfile("FTargetZoneToTrench", ProfileDirection.FORWARD);
+        fTrenchBall = new MercMotionProfile("FTrenchBall", ProfileDirection.FORWARD);
+        fTrenchOtherBall = new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD);
         //These go backwards
-        bTrenchBall = new MercMotionProfile("BTrenchBall", true);
-        bTrenchOtherBall = new MercMotionProfile("BTrenchOtherBall", true);
-        bTrenchToTargetZone = new MercMotionProfile("BTrenchToTargetZone", true);
+        bTrenchBall = new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARDS);
+        bTrenchOtherBall = new MercMotionProfile("BTrenchOtherBall", ProfileDirection.BACKWARDS);
+        bTrenchToTargetZone = new MercMotionProfile("BTrenchToTargetZone", ProfileDirection.BACKWARDS);
         //These are for testing (or are being worked upon)
-        circle = new MercMotionProfile("Circle", false);
-        curveBack = new MercMotionProfile("CurveBack", false);
-        curvy = new MercMotionProfile("Curvy", true);
-        straight = new MercMotionProfile("Straight", true);
-        targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls", false);
+        circle = new MercMotionProfile("Circle", ProfileDirection.FORWARD);
+        curveBack = new MercMotionProfile("CurveBack", ProfileDirection.FORWARD);
+        curvy = new MercMotionProfile("Curvy", ProfileDirection.BACKWARDS);
+        straight = new MercMotionProfile("Straight", ProfileDirection.BACKWARDS);
+        targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls", ProfileDirection.FORWARD);
     }
 
     public void initializeAutonCommand(){
