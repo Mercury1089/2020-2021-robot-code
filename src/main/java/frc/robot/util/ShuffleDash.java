@@ -1,6 +1,7 @@
 package frc.robot.util;
 
 import java.util.List;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -10,6 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 import frc.robot.auton.*;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
@@ -26,11 +29,13 @@ public class ShuffleDash {
     private class TunablePIDSlot {
         public IMercPIDTunable tunable;
         public int slot;
+
         public TunablePIDSlot(IMercPIDTunable tunable, int slot) {
             this.tunable = tunable;
             this.slot = slot;
         }
     }
+
     private TunablePIDSlot tunableSlot = null;
 
     private NetworkTableInstance ntInstance;
@@ -73,15 +78,15 @@ public class ShuffleDash {
         publishers.add(publisher);
     }
 
-    public void addPIDTunable(IMercPIDTunable pidTunable, String pidName){
-        for(int slot : pidTunable.getSlots()) {
+    public void addPIDTunable(IMercPIDTunable pidTunable, String pidName) {
+        for (int slot : pidTunable.getSlots()) {
             tunablePIDChooser.addOption(pidName + "." + Integer.toString(slot), new TunablePIDSlot(pidTunable, slot));
         }
     }
 
     public void updateDash() {
-        
-        for(IMercShuffleBoardPublisher publisher: publishers) {
+
+        for (IMercShuffleBoardPublisher publisher : publishers) {
             publisher.publishValues();
         }
 
@@ -95,11 +100,9 @@ public class ShuffleDash {
                 SmartDashboard.putNumber(PID_TUNER_D, gains.kD);
                 SmartDashboard.putNumber(PID_TUNER_F, gains.kF);
             } else {
-                PIDGain gains = new PIDGain(
-                    SmartDashboard.getNumber(PID_TUNER_P, 0.0),
-                    SmartDashboard.getNumber(PID_TUNER_I, 0.0),
-                    SmartDashboard.getNumber(PID_TUNER_D, 0.0),
-                    SmartDashboard.getNumber(PID_TUNER_F, 0.0));
+                PIDGain gains = new PIDGain(SmartDashboard.getNumber(PID_TUNER_P, 0.0),
+                        SmartDashboard.getNumber(PID_TUNER_I, 0.0), SmartDashboard.getNumber(PID_TUNER_D, 0.0),
+                        SmartDashboard.getNumber(PID_TUNER_F, 0.0));
                 tunableSlot.tunable.setPIDGain(tunableSlot.slot, gains);
             }
             this.tunableSlot = tunableSlot;
@@ -109,7 +112,7 @@ public class ShuffleDash {
     }
 
     public StartingPosition getStartingPosition() {
-        return autonPositionChooser.getSelected() == null ? StartingPosition.NULL: autonPositionChooser.getSelected();
+        return autonPositionChooser.getSelected() == null ? StartingPosition.NULL : autonPositionChooser.getSelected();
     }
 
     public SequentialCommandGroup getAuton() {
@@ -118,6 +121,18 @@ public class ShuffleDash {
 
     public void addLeftAutons() {
         autonChooser.addOption("Left", null);
+        try {
+            autonChooser.addOption("TargetZoneToTrenchAndShoot", new TargetZoneTrenchRun5Ball(
+                Robot.robotContainer.getDriveTrain(), 
+                Robot.robotContainer.getIntake(),
+                Robot.robotContainer.getIntakeArticulator(),
+                Robot.robotContainer.getLimelightCamera(),
+                Robot.robotContainer.getShooter()
+                )
+            );
+        } catch (FileNotFoundException e) {
+            System.out.println("Some problem my dude: " + e);
+        }
     }
 
     public void addRightAutons() {
