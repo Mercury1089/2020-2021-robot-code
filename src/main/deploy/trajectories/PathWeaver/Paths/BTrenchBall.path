@@ -1,3 +1,3 @@
 X,Y,Tangent X,Tangent Y,Fixed Theta,Name
-8.524,-0.523,1.0,0.0,true,
-9.577,-0.523,1.0,0.0,false,
+9.577,-0.523,-1.0,0.0,true,
+8.524,-0.523,-1.0,0.0,false,

@@ -596,6 +596,28 @@
               "_source0": "network_table:///SmartDashboard/Choose Auton",
               "_title": "Choose Auton"
             }
+          },
+          "0,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Auton Chosen",
+              "_title": "Auton Chosen"
+            }
+          },
+          "1,4": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Auton/TargetZoneTrenchRun5Ball",
+              "_title": "Auton/TargetZoneTrenchRun5Ball"
+            }
           }
         }
       }
@@ -711,13 +733,13 @@
                 {
                   "_type": "Speed Controller",
                   "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [7]",
-                  "_title": "/LiveWindow/Ungrouped/Talon SRX [7]",
+                  "_title": "Talon SRX [7]",
                   "Visuals/Orientation": "HORIZONTAL"
                 },
                 {
                   "_type": "Speed Controller",
                   "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [13]",
-                  "_title": "/LiveWindow/Ungrouped/Victor SPX [13]",
+                  "_title": "Victor SPX [13]",
                   "Visuals/Orientation": "HORIZONTAL"
                 }
               ]
@@ -872,7 +894,7 @@
               "_title": "/SmartDashboard/DriveTrain/Yaw"
             }
           },
-          "2,0": {
+          "3,2": {
             "size": [
               1,
               1
@@ -1138,6 +1160,17 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Shooter/ShooterMode",
               "_title": "/SmartDashboard/Shooter/ShooterMode"
+            }
+          },
+          "2,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Auton Chosen",
+              "_title": "SmartDashboard/Auton Chosen"
             }
           }
         }
