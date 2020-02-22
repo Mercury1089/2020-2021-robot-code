@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 
 public class MercPathGroup{
-
+    /*
     private List<MercMotionProfile> profiles;
     private final String BASE_PATH_LOCATION = "/home/lvuser/deploy/trajectories/PathWeaver/Groups/";
 
@@ -50,4 +50,5 @@ public class MercPathGroup{
     public List<MercMotionProfile> getProfiles(){
         return profiles;
     }
+    */
 }
