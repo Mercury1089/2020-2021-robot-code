@@ -49,6 +49,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     private PIDGain driveGains, smoothGains, motionProfileGains, turnGains;
 
     private IMercMotorController leaderLeft, leaderRight, followerLeft, followerRight;
+    private CANCoder encLeft, encRight;
     private DriveAssist driveAssist;
     private PigeonIMU podgeboi;
     //private LIDAR lidar;
@@ -77,14 +78,16 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
                 //Initialize CAN Coder
 
-                //TODO leftCANCoder = new CANCoder(RobotMap.CAN.CANCODER_ML);
-                //TODO rightCANCoder = new CANCoder(RobotMap.CAN.CANCODER_MR);
+                encLeft = new CANCoder(RobotMap.CAN.CANCODER_ML);
+                encRight = new CANCoder(RobotMap.CAN.CANCODER_MR);
                 break;
             case TALONS_VICTORS:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
                 leaderRight = new MercTalonSRX(CAN.DRIVETRAIN_MR);
                 followerLeft = new MercVictorSPX(CAN.DRIVETRAIN_FL);
                 followerRight = new MercVictorSPX(CAN.DRIVETRAIN_FR);
+
+                encLeft = encRight = null;
                 break;
         }
 
@@ -141,16 +144,6 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
     public void setDefaultCommand(Command command){
         CommandScheduler.getInstance().setDefaultCommand(this, command);
-    }
-
-    public void initializeNormalMotionFeedback() {
-
-        // TODO - set up Falcon encoders here...
-        leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PRIMARY_LOOP);
-        leaderRight.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, PRIMARY_LOOP); 
-        leaderRight.configSelectedFeedbackCoefficient(1.0, DriveTrain.PRIMARY_LOOP);
-
-        isInMotionMagicMode = false;
     }
 
     public void initializeMotionMagicFeedback() {
