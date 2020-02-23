@@ -78,7 +78,7 @@ public class RobotContainer {
     //These go backwards
     private MercMotionProfile bTrenchBall, bTrenchOtherBall, bTrenchToTargetZone;
     //These are for testing (or are being worked upon)
-    private MercMotionProfile circle, curveBack, curvy, straight, targetZoneToRendezvousBalls;
+    private MercMotionProfile circle, curveBack, curvy, straight, targetZoneToRendezvousBalls, testBack;
 
     public RobotContainer() {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
@@ -162,12 +162,12 @@ public class RobotContainer {
             System.out.println(e);
         }
         try {
-            right10.whenPressed(new MoveOnTrajectory(fTrenchOtherBall, driveTrain));            
+            right10.whenPressed(new MoveOnTrajectory(testBack, driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(bTrenchOtherBall, driveTrain));            
+            right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("testBack", ProfileDirection.FORWARD), driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
@@ -276,6 +276,7 @@ public class RobotContainer {
         curvy = new MercMotionProfile("Curvy", ProfileDirection.BACKWARDS);
         straight = new MercMotionProfile("Straight", ProfileDirection.BACKWARDS);
         targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls", ProfileDirection.FORWARD);
+        testBack = new MercMotionProfile("testBack", ProfileDirection.BACKWARDS);
     }
 
     public void initializeAutonCommand(){

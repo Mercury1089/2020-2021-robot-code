@@ -12,6 +12,8 @@ import java.util.List;
 
 import com.ctre.phoenix.motion.TrajectoryPoint;
 
+import edu.wpi.first.wpilibj.DriverStation;
+
 /**
  * Add your docs here.
  */
@@ -43,6 +45,10 @@ public class MercMotionProfile {
     }
 
     public void driveBackwards() {
+        if(trajectoryPoints == null) {
+            DriverStation.reportError("No Trajectory To Load", false);
+            return;
+        }
         for (int i = 0; i < trajectoryPoints.size(); i++) {
             trajectoryPoints.get(i).velocity *= -1;
             trajectoryPoints.get(i).position *= -1;
