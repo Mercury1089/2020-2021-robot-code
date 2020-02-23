@@ -154,32 +154,36 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
             /* Configure the Remote Talon's selected sensor as a remote sensor for the right Talon */
             leaderRight.configRemoteFeedbackFilter(leaderLeft.getPort(), RemoteSensorSource.TalonSRX_SelectedSensor, DriveTrain.REMOTE_DEVICE_0);
-
-            /* Configure the Pigeon IMU to the other remote slot available on the right Talon */
-            leaderRight.configRemoteFeedbackFilter(getPigeon().getDeviceID(), RemoteSensorSource.Pigeon_Yaw, DriveTrain.REMOTE_DEVICE_1);
-
             /* Setup Sum signal to be used for Distance */
             leaderRight.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0);
             leaderRight.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.CTRE_MagEncoder_Relative);
-
             /* Configure Sum [Sum of both QuadEncoders] to be used for Primary PID Index */
             leaderRight.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, DriveTrain.PRIMARY_LOOP);
-
             /* Scale Feedback by 0.5 to half the sum of Distance */
             leaderRight.configSelectedFeedbackCoefficient(0.5, DriveTrain.PRIMARY_LOOP);
 
-            /* Configure Remote 1 [Pigeon IMU's Yaw] to be used for Auxiliary PID Index */
-            leaderRight.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, DriveTrain.AUXILIARY_LOOP);
-
-            /* Scale the Feedback Sensor using a coefficient */
-            leaderRight.configSelectedFeedbackCoefficient(1, DriveTrain.AUXILIARY_LOOP);
-
-            /* Set status frame periods to ensure we don't have stale data */
-            setStatusFramePeriod(framePeriodMs, pigeonFramePeriodMs);
         } else {
-            leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, DriveTrain.PRIMARY_LOOP);
-
+            /* Set up a Sum signal from both CANCoders on leaderLeft */
+            leaderLeft.configRemoteFeedbackFilter(encLeft.getDeviceID(), RemoteSensorSource.CANCoder, DriveTrain.REMOTE_DEVICE_0);
+            leaderLeft.configRemoteFeedbackFilter(encRight.getDeviceID(), RemoteSensorSource.CANCoder, DriveTrain.REMOTE_DEVICE_1);
+            leaderLeft.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0);
+            leaderLeft.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.RemoteSensor1);
+            /* Configure the sensor sum as the selected sensor for leaderLeft with a coefficient of 0.5 (average) */
+            leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, DriveTrain.PRIMARY_LOOP);
+            leaderLeft.configSelectedFeedbackCoefficient(0.5, DriveTrain.PRIMARY_LOOP);
+            /* Configure the selected sensor on leaderLeft (the avg.) as the remote sensor 0 for leaderRight */
+            leaderRight.configRemoteFeedbackFilter(leaderLeft.getPort(), RemoteSensorSource.TalonFX_SelectedSensor, DriveTrain.REMOTE_DEVICE_0);
+            leaderRight.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, DriveTrain.PRIMARY_LOOP);
         }
+        /* Configure the Pigeon IMU to the other remote slot available on the right Talon */
+        leaderRight.configRemoteFeedbackFilter(getPigeon().getDeviceID(), RemoteSensorSource.Pigeon_Yaw, DriveTrain.REMOTE_DEVICE_1);
+        /* Configure Remote 1 [Pigeon IMU's Yaw] to be used for Auxiliary PID Index */
+        leaderRight.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor1, DriveTrain.AUXILIARY_LOOP);
+        /* Scale the Feedback Sensor using a coefficient */
+        leaderRight.configSelectedFeedbackCoefficient(1, DriveTrain.AUXILIARY_LOOP);
+
+        /* Set status frame periods to ensure we don't have stale data */
+        setStatusFramePeriod(framePeriodMs, pigeonFramePeriodMs);
 
         isInMotionMagicMode = true;
     }
