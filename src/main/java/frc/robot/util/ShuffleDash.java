@@ -131,7 +131,7 @@ public class ShuffleDash {
 
     public void addCenterAutons() {
         autonChooser.addOption("Center", null);
-        autonChooser.addOption("FCenter5BallTrench", "FCenter5BallTrench");
+        autonChooser.addOption("5BallTrench", "Center5BallTrench");
     }
 
     public void addFarRightAutons() {

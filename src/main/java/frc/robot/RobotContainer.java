@@ -166,7 +166,7 @@ public class RobotContainer {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("testBack", ProfileDirection.FORWARD), driveTrain));            
+            right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
@@ -275,7 +275,7 @@ public class RobotContainer {
         curvy = new MercMotionProfile("Curvy", ProfileDirection.BACKWARDS);
         straight = new MercMotionProfile("Straight", ProfileDirection.BACKWARDS);
         targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls", ProfileDirection.FORWARD);
-        testBack = new MercMotionProfile("testBack", ProfileDirection.BACKWARDS);
+        testBack = new MercMotionProfile("ShootInTrench", ProfileDirection.BACKWARDS);
     }
 
     public void initializeAutonCommand(){
@@ -283,23 +283,23 @@ public class RobotContainer {
         if(selectedAuton == null) {
             System.out.println("No Auton My Dude");
             return;
-        } else if (selectedAuton.equals("FCenter5BallTrench")) {
-            DriverStation.reportError("FCenter5BallTrench Auton", false);
+        } else if (selectedAuton.equals("Center5BallTrench")) {
+            DriverStation.reportError("Center5BallTrench Auton", false);
             try {
                 autonCommand = new SequentialCommandGroup(
                     //shooting
                     //new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("FCenterTargetZoneToTrench", ProfileDirection.FORWARD), driveTrain),
+                        new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARDS), driveTrain),
                     //    new RunIntake(intake)
                     //), 
-                    new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARDS), driveTrain),
+                    new MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD), driveTrain),
+                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARDS), driveTrain),
                     //    new RunIntake(intake)
                     //),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("BTrenchToCenterTargetZone", ProfileDirection.BACKWARDS), driveTrain)//,
+                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain)//,
                     //    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
                     //)
                     //Fully auto-aim bot
