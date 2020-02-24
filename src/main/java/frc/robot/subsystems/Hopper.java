@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.CAN;
 import frc.robot.sensors.BallCounter;
 import frc.robot.util.MercTalonSRX;
+import frc.robot.util.MercVictorSPX;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
@@ -25,8 +26,8 @@ public class Hopper extends SubsystemBase implements IMercShuffleBoardPublisher 
    * Creates a new Hopper.
    */
   public Hopper() {
-    hopperBelt = new MercTalonSRX(CAN.HOPPER_BELT);
-    runSpeed = 0.5;
+    hopperBelt = new MercVictorSPX(CAN.HOPPER_BELT);
+    runSpeed = -0.5;
     setName("Hopper");
 
     ballCounter = new BallCounter();

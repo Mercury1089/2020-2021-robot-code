@@ -12,6 +12,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.util.MercSparkMax;
+import frc.robot.util.MercTalonSRX;
+import frc.robot.util.MercVictorSPX;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 import frc.robot.RobotMap.CAN;
@@ -19,34 +21,27 @@ import frc.robot.RobotMap.CAN;
 public class Feeder extends SubsystemBase implements IMercShuffleBoardPublisher {
   
   private IMercMotorController feedWheel;
-  private double runSpeed;
+  private static final double RUN_SPEED = 1.0;
 
   /**
    * Creates a new Feeder.
    */
   public Feeder() {
-    feedWheel = new MercSparkMax(CAN.FEEDER);
-    feedWheel.setInverted(true);
-    runSpeed = 0.5;
+    feedWheel = new MercTalonSRX(CAN.FEEDER);
+    feedWheel.setInverted(false);
+    feedWheel.setNeutralMode(NeutralMode.Coast);
     setName("Feeder");
-    setRunSpeed(runSpeed);
   }
 
   public double getRunSpeed() {
-    return runSpeed;
+    return RUN_SPEED;
   }
 
-  public void setRunSpeed(double runSpeed) {
-    SmartDashboard.putNumber(getName() + "/RunSpeed", runSpeed);
-  }
-
-  public double getRunSpeedSD() {
-    return SmartDashboard.getNumber(getName() + "/RunSpeed", 0.0);
+  public void runFeeder() {
+    feedWheel.setSpeed(RUN_SPEED);
   }
 
   public void setSpeed(double speed) {
-    this.runSpeed = speed;
-
     feedWheel.setNeutralMode(NeutralMode.Coast);
 
     feedWheel.setSpeed(speed);

@@ -85,10 +85,10 @@ public class RobotContainer {
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
 
-        driveTrain = new DriveTrain(DriveTrainLayout.TALONS_VICTORS);
+        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS);
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
-        shooter = new Shooter(ShooterMode.NONE);
+        shooter = new Shooter(ShooterMode.ONE_WHEEL);
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
 
         intake = new Intake();
@@ -130,7 +130,6 @@ public class RobotContainer {
         }
         
         right1.whileHeld(new RunIntake(intake));
-        right2.whileHeld(new RunFeeder(feeder));
         right3.whileHeld(new DriveElevator(elevator));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         right5.whenPressed(new RotationControl(spinner));
@@ -172,7 +171,7 @@ public class RobotContainer {
             System.out.println(e);
         }
 
-        gamepadY.whenHeld(new RunFeeder(feeder));
+        gamepadY.whileHeld(new ParallelCommandGroup(new RunHopperBelt(hopper), new RunFeeder(feeder)));
         gamepadX.whenHeld(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadB.whenPressed(new ColorControl(spinner));
         gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.MAX_HEIGHT));

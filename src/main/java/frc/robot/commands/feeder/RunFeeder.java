@@ -26,7 +26,7 @@ public class RunFeeder extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    feeder.setSpeed(1.0);
+    feeder.runFeeder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
