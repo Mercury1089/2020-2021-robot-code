@@ -33,7 +33,7 @@ public class ShiftOnScale extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    spinner.setSpeed(Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.rightX));
+    spinner.setSpeed(Robot.robotContainer.getGamepadAxis(GAMEPAD_AXIS.leftX));
   }
 
   // Called once the command ends or is interrupted.

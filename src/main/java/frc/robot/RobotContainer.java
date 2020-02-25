@@ -24,11 +24,11 @@ import frc.robot.commands.drivetrain.MoveOnTrajectory;
 import frc.robot.commands.drivetrain.RotateToTarget;
 import frc.robot.commands.drivetrain.TestSequentialCommandGroup;
 import frc.robot.commands.elevator.AutomaticElevator;
-import frc.robot.commands.elevator.DriveElevator;
 import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.hopper.RunHopperBelt;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
+import frc.robot.commands.shooter.FullyAutoAimbot;
 import frc.robot.commands.shooter.RunShooter;
 import frc.robot.commands.shooter.RunShooterRPMBangBang;
 import frc.robot.commands.shooter.RunShooterRPMPID;
@@ -38,6 +38,7 @@ import frc.robot.commands.spinner.ShiftOnScale;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.subsystems.Elevator.ElevatorPosition;
+import frc.robot.subsystems.IntakeArticulator.IntakePosition;
 import frc.robot.subsystems.Shooter.ShooterMode;
 import frc.robot.util.MercMotionProfile;
 import frc.robot.util.ShuffleDash;
@@ -116,26 +117,24 @@ public class RobotContainer {
         initializeMotionProfiles();
         initializeJoystickButtons();
 
-        left2.whenPressed(() -> shooter.setSpeed(0.0), shooter);
-        left3.whenPressed(new RunShooter(shooter));
-        left4.whenPressed(new RunShooterRPMBangBang(shooter));
-        left5.whenPressed(new RunShooterRPMPID(shooter));
+        //driver controls
+        //toggle intake in and out
+        if(intakeArticulator.getIntakePosition() == IntakePosition.IN)
+            left1.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
+        if(intakeArticulator.getIntakePosition() == IntakePosition.OUT)
+            left1.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
+        System.out.println(intakeArticulator.getIntakePosition().toString());
         left6.whenPressed(new SwitchLEDState(limelightCamera));
-        left7.whileHeld(new RunHopperBelt(hopper));
-        left8.whenPressed(new RunFeeder(feeder));
         try {
             left9.whenPressed(new MoveOnTrajectory("Straight", driveTrain));            
         } catch(FileNotFoundException e) {
             System.out.println(e);
-        }
-        
-        right1.whileHeld(new RunIntake(intake));
-        right3.whileHeld(new DriveElevator(elevator));
+        } 
+
+        right1.toggleWhenPressed(new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
-        right5.whenPressed(new RotationControl(spinner));
         right6.whenPressed(new TestSequentialCommandGroup(driveTrain, limelightCamera));
         right7.whenPressed(new DriveDistance(120.0, driveTrain));
-        right8.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         try {
             SequentialCommandGroup cmd = new SequentialCommandGroup(
                 //shooting
@@ -171,13 +170,14 @@ public class RobotContainer {
             System.out.println(e);
         }
 
-        gamepadY.whileHeld(new ParallelCommandGroup(new RunHopperBelt(hopper), new RunFeeder(feeder)));
-        gamepadX.whenHeld(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
-        gamepadB.whenPressed(new ColorControl(spinner));
+        //operator controls
+        gamepadRB.whenPressed(new RotationControl(spinner));
+        gamepadLB.whenPressed(new ColorControl(spinner));
+
         gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.MAX_HEIGHT));
-        gamepadLB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
-        gamepadRB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
-        gamepadRightStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
+        gamepadY.whileHeld(new ParallelCommandGroup(new RunHopperBelt(hopper), new RunFeeder(feeder)));
+        gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
+        gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
     }
 
     public double getJoystickX(int port) {
