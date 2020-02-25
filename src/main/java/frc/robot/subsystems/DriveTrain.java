@@ -96,11 +96,6 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         podgeboi = new PigeonIMU(CAN.PIGEON);
         podgeboi.configFactoryDefault();
 
-        leaderLeft.configRemoteFeedbackFilter(podgeboi.getDeviceID(), RemoteSensorSource.valueOf(2), 1);
-        leaderRight.configRemoteFeedbackFilter(podgeboi.getDeviceID(), RemoteSensorSource.valueOf(2), 1);
-
-        //CANifier and distance sensors
-
         //Account for motor orientation.
         leaderLeft.setInverted(false);
         followerLeft.setInverted(false);
