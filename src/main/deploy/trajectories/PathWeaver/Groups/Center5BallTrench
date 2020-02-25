@@ -1,4 +1,4 @@
 CenterTargetZoneToTrench.path
-TrenchBall.path
-TrenchOtherBall.path
+BTrenchBall.path
+FTrenchOtherBall.path
 ShootInTrench.path

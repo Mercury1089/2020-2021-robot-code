@@ -85,7 +85,7 @@ public class RobotContainer {
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
 
-        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS);
+        driveTrain = new DriveTrain(DriveTrainLayout.TALONS_VICTORS);//make sure to switch it back to Falcons
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
         shooter = new Shooter(ShooterMode.ONE_WHEEL);
@@ -144,13 +144,13 @@ public class RobotContainer {
                     new MoveOnTrajectory(new MercMotionProfile("FTargetZoneToTrench", ProfileDirection.FORWARD), driveTrain),
                 //    new RunIntake(intake)
                 //), 
-                new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARDS), driveTrain),
+                new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARD), driveTrain),
                 //new ParallelCommandGroup(
                     new MoveOnTrajectory(new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD), driveTrain),
                 //    new RunIntake(intake)
                 //),
                 //new ParallelCommandGroup(
-                    new MoveOnTrajectory(new MercMotionProfile("BTrenchToTargetZone", ProfileDirection.BACKWARDS), driveTrain)//,
+                    new MoveOnTrajectory(new MercMotionProfile("BTrenchToTargetZone", ProfileDirection.BACKWARD), driveTrain)//,
                 //    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
                 //)
                 //Fully auto-aim bot
@@ -161,7 +161,13 @@ public class RobotContainer {
             System.out.println(e);
         }
         try {
-            right10.whenPressed(new MoveOnTrajectory(testBack, driveTrain));            
+            SequentialCommandGroup auton = new SequentialCommandGroup(
+                new MoveOnTrajectory(new MercMotionProfile("FRightTargetZoneToTrench", ProfileDirection.FORWARD), driveTrain),
+                new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARD), driveTrain),
+                new MoveOnTrajectory(new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD), driveTrain),
+                new MoveOnTrajectory(new MercMotionProfile("BTrenchToRightTargetZone", ProfileDirection.BACKWARD), driveTrain)
+            );
+            right10.whenPressed(auton);       
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
@@ -266,16 +272,16 @@ public class RobotContainer {
         fTrenchBall = new MercMotionProfile("FTrenchBall", ProfileDirection.FORWARD);
         fTrenchOtherBall = new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD);
         //These go backwards
-        bTrenchBall = new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARDS);
-        bTrenchOtherBall = new MercMotionProfile("BTrenchOtherBall", ProfileDirection.BACKWARDS);
-        bTrenchToTargetZone = new MercMotionProfile("BTrenchToTargetZone", ProfileDirection.BACKWARDS);
+        bTrenchBall = new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARD);
+        bTrenchOtherBall = new MercMotionProfile("BTrenchOtherBall", ProfileDirection.BACKWARD);
+        bTrenchToTargetZone = new MercMotionProfile("BTrenchToTargetZone", ProfileDirection.BACKWARD);
         //These are for testing (or are being worked upon)
         circle = new MercMotionProfile("Circle", ProfileDirection.FORWARD);
         curveBack = new MercMotionProfile("CurveBack", ProfileDirection.FORWARD);
-        curvy = new MercMotionProfile("Curvy", ProfileDirection.BACKWARDS);
-        straight = new MercMotionProfile("Straight", ProfileDirection.BACKWARDS);
+        curvy = new MercMotionProfile("Curvy", ProfileDirection.BACKWARD);
+        straight = new MercMotionProfile("Straight", ProfileDirection.BACKWARD);
         targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls", ProfileDirection.FORWARD);
-        testBack = new MercMotionProfile("ShootInTrench", ProfileDirection.BACKWARDS);
+        testBack = new MercMotionProfile("ShootInTrench", ProfileDirection.BACKWARD);
     }
 
     public void initializeAutonCommand(){
@@ -290,12 +296,12 @@ public class RobotContainer {
                     //shooting
                     //new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARDS), driveTrain),
+                        new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
                     //    new RunIntake(intake)
                     //), 
                     new MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARDS), driveTrain),
+                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
                     //    new RunIntake(intake)
                     //),
                     //new ParallelCommandGroup(
@@ -318,13 +324,13 @@ public class RobotContainer {
                         new MoveOnTrajectory(new MercMotionProfile("FLeftTargetZoneToTrench", ProfileDirection.FORWARD), driveTrain),
                     //    new RunIntake(intake)
                     //), 
-                    new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARDS), driveTrain),
+                    new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARD), driveTrain),
                     //new ParallelCommandGroup(
                         new MoveOnTrajectory(new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD), driveTrain),
                     //    new RunIntake(intake)
                     //),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("BTrenchToLeftTargetZone", ProfileDirection.BACKWARDS), driveTrain)//,
+                        new MoveOnTrajectory(new MercMotionProfile("BTrenchToLeftTargetZone", ProfileDirection.BACKWARD), driveTrain)//,
                     //    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
                     //)
                     //Fully auto-aim bot
