@@ -23,12 +23,12 @@ public class MercMotionProfile {
     private final ProfileDirection direction;
     private final List<TrajectoryPoint> trajectoryPoints;
 
-    public MercMotionProfile(String name, ProfileDirection direction) {
+    public MercMotionProfile(final String name, final ProfileDirection direction) {
         this.name = name;
         this.direction = direction;
         pathDirectory = MercPathLoader.getBasePathLocation() + name + ".wpilib.json"; 
         trajectoryPoints = MercPathLoader.loadPath(name);
-        if(this.direction == ProfileDirection.BACKWARDS)
+        if(this.direction == ProfileDirection.BACKWARD)
             driveBackwards();
     }
 
@@ -60,6 +60,6 @@ public class MercMotionProfile {
 
     public enum ProfileDirection{
         FORWARD,
-        BACKWARDS
+        BACKWARD
     }
 }

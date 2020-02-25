@@ -31,7 +31,7 @@ public class DriveWithJoysticks extends CommandBase{
     public void initialize() {
         this.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
         tDrive = this.driveTrain.getDriveAssist();
-        this.driveTrain.setNeutralMode(NeutralMode.Coast);
+        this.driveTrain.setNeutralMode(NeutralMode.Brake);
     }
 
     // Called repeatedly when this Command is scheduled to run
