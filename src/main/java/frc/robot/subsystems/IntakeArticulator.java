@@ -19,7 +19,7 @@ public class IntakeArticulator extends SubsystemBase implements IMercShuffleBoar
 
   private final IMercMotorController intakeArticulator;
   private IntakePosition intakePosition;
-  private final double OUT_SPEED = 0.4, IN_SPEED = -0.6;
+  private final double OUT_SPEED = 0.5, IN_SPEED = -0.6;
 
   /**
    * Creates a new IntakeArticulator.

@@ -81,6 +81,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
                 encLeft = new CANCoder(RobotMap.CAN.CANCODER_ML);
                 encRight = new CANCoder(RobotMap.CAN.CANCODER_MR);
+                encLeft.configSensorDirection(false);
+                encRight.configSensorDirection(true);
                 break;
             case TALONS_VICTORS:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
@@ -222,8 +224,13 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     }
 
     public void resetEncoders() {
-        leaderLeft.resetEncoder();
-        leaderRight.resetEncoder();
+        if(layout == DriveTrainLayout.TALONS_VICTORS) {
+            leaderLeft.resetEncoder();
+            leaderRight.resetEncoder();
+        } else {
+            encLeft.setPosition(0.0);
+            encRight.setPosition(0.0);
+        }
     }
 
     @Override
@@ -303,11 +310,17 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     }
 
     public double getLeftEncPositionInTicks() {
-        return leaderLeft.getEncTicks();
+        if (layout == DriveTrainLayout.TALONS_VICTORS)
+            return leaderLeft.getEncTicks();
+        else
+            return encLeft.getPosition();
     }
 
     public double getRightEncPositionInTicks() {
-        return leaderRight.getEncTicks();
+        if (layout == DriveTrainLayout.TALONS_VICTORS)
+            return leaderRight.getEncTicks();
+        else
+            return encRight.getPosition();
     }
 
     public double getLeftEncPositionInFeet() {

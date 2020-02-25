@@ -31,7 +31,7 @@ public class DriveWithJoysticks extends CommandBase{
     public void initialize() {
         this.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
         tDrive = this.driveTrain.getDriveAssist();
-        this.driveTrain.setNeutralMode(NeutralMode.Brake);
+        this.driveTrain.setNeutralMode(NeutralMode.Coast);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -43,7 +43,7 @@ public class DriveWithJoysticks extends CommandBase{
                     tDrive.tankDrive(Robot.robotContainer.getJoystickY(DS_USB.LEFT_STICK), Robot.robotContainer.getJoystickY(DS_USB.RIGHT_STICK));
                     break;
                 case ARCADE:
-                    tDrive.arcadeDrive(-Robot.robotContainer.getJoystickY(DS_USB.LEFT_STICK), Robot.robotContainer.getJoystickX(DS_USB.RIGHT_STICK), true);
+                    tDrive.arcadeDrive(-Robot.robotContainer.getJoystickY(DS_USB.LEFT_STICK), Robot.robotContainer.getJoystickX(DS_USB.RIGHT_STICK), false);
                     break;
             }
         }

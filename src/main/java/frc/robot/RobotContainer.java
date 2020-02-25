@@ -86,7 +86,7 @@ public class RobotContainer {
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
 
-        driveTrain = new DriveTrain(DriveTrainLayout.TALONS_VICTORS);//make sure to switch it back to Falcons
+        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS);//make sure to switch it back to Falcons
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
         shooter = new Shooter(ShooterMode.ONE_WHEEL);
@@ -119,10 +119,8 @@ public class RobotContainer {
 
         //driver controls
         //toggle intake in and out
-        if(intakeArticulator.getIntakePosition() == IntakePosition.IN)
-            left1.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
-        if(intakeArticulator.getIntakePosition() == IntakePosition.OUT)
-            left1.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
+        left1.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
+        left2.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
         System.out.println(intakeArticulator.getIntakePosition().toString());
         left6.whenPressed(new SwitchLEDState(limelightCamera));
         try {
@@ -132,6 +130,7 @@ public class RobotContainer {
         } 
 
         right1.toggleWhenPressed(new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper));
+        right2.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         right6.whenPressed(new TestSequentialCommandGroup(driveTrain, limelightCamera));
         right7.whenPressed(new DriveDistance(120.0, driveTrain));
@@ -179,11 +178,11 @@ public class RobotContainer {
         //operator controls
         gamepadRB.whenPressed(new RotationControl(spinner));
         gamepadLB.whenPressed(new ColorControl(spinner));
-
         gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.MAX_HEIGHT));
-        gamepadY.whileHeld(new ParallelCommandGroup(new RunHopperBelt(hopper), new RunFeeder(feeder)));
         gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
+        gamepadLT.toggleWhenPressed(new RunShooter(shooter));
+        gamepadRT.toggleWhenPressed(new ParallelCommandGroup(new RunHopperBelt(hopper), new RunFeeder(feeder)));
     }
 
     public double getJoystickX(int port) {
