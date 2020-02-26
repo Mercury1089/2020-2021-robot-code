@@ -7,6 +7,7 @@
 
 package frc.robot.commands.shooter;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.util.interfaces.IMercMotorController;

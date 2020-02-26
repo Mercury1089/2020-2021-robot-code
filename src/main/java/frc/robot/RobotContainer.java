@@ -4,52 +4,50 @@ import java.io.FileNotFoundException;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
-
 import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.drivetrain.MoveOnTrajectory;
 import frc.robot.commands.drivetrain.RotateToTarget;
 import frc.robot.commands.drivetrain.TestSequentialCommandGroup;
-
 import frc.robot.commands.elevator.AutomaticElevator;
-
+import frc.robot.commands.feeder.AutoFeedBalls;
 import frc.robot.commands.feeder.RunFeeder;
-
 import frc.robot.commands.hopper.RunHopperBelt;
-
 import frc.robot.commands.intake.RunIntake;
-
 import frc.robot.commands.limelightCamera.SwitchLEDState;
-
 import frc.robot.commands.shooter.FullyAutoAimbot;
 import frc.robot.commands.shooter.RunShooter;
-
+import frc.robot.commands.shooter.RunShooterRPMPID;
 import frc.robot.commands.spinner.ColorControl;
 import frc.robot.commands.spinner.RotationControl;
 import frc.robot.commands.spinner.ShiftOnScale;
-
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorPosition;
+import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeArticulator;
+import frc.robot.subsystems.LimelightCamera;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.ShooterMode;
-
+import frc.robot.subsystems.Spinner;
 import frc.robot.util.MercMotionProfile;
+import frc.robot.util.MercMotionProfile.ProfileDirection;
 import frc.robot.util.ShuffleDash;
 import frc.robot.util.TriggerButton;
-import frc.robot.util.MercMotionProfile.ProfileDirection;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -119,6 +117,8 @@ public class RobotContainer {
         //toggle intake in and out
         left1.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
         left2.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
+        left3.toggleWhenPressed(new RunShooterRPMPID(shooter));
+
         System.out.println(intakeArticulator.getIntakePosition().toString());
         left6.whenPressed(new SwitchLEDState(limelightCamera));
         try {
@@ -174,7 +174,7 @@ public class RobotContainer {
         gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         gamepadLT.toggleWhenPressed(new RunShooter(shooter));
-        gamepadRT.toggleWhenPressed(new ParallelCommandGroup(new RunHopperBelt(hopper), new RunFeeder(feeder)));
+        gamepadRT.toggleWhenPressed(new ParallelCommandGroup(new RunHopperBelt(hopper), new RunFeeder(feeder, shooter)));
     }
 
     public double getJoystickX(int port) {
@@ -287,8 +287,33 @@ public class RobotContainer {
             } catch (FileNotFoundException e) {
                 System.out.println(e);
             }  
-        } else if (selectedAuton.equals("FLeft5BallTrench")) {
-            DriverStation.reportError("FLeft5BallTrench Auton", false);
+        } else if (selectedAuton.equals("Left5BallTrench")) {
+            DriverStation.reportError("Left5BallTrench Auton", false);
+            try {
+                autonCommand = new SequentialCommandGroup(
+                    //shooting
+                    //new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                    //new ParallelCommandGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("FLeftTargetZoneToTrench", ProfileDirection.FORWARD), driveTrain),
+                    //    new RunIntake(intake)
+                    //), 
+                    new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARD), driveTrain),
+                    //new ParallelCommandGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD), driveTrain),
+                    //    new RunIntake(intake)
+                    //),
+                    //new ParallelCommandGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("BTrenchToLeftTargetZone", ProfileDirection.BACKWARD), driveTrain)//,
+                    //    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
+                    //)
+                    //Fully auto-aim bot
+                    //shoot
+                );
+            } catch (FileNotFoundException e) {
+                System.out.println(e);
+            }  
+        } else if (selectedAuton.equals("Right5BallRendezvous")) {
+            DriverStation.reportError("Right5BallRendezvous Auton", false);
             try {
                 autonCommand = new SequentialCommandGroup(
                     //shooting

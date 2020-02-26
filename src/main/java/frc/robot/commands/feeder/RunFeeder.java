@@ -9,30 +9,37 @@ package frc.robot.commands.feeder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Shooter;
 
 public class RunFeeder extends CommandBase {
   
   private Feeder feeder;
+  private Shooter shooter;
 
   /**
    * Creates a new RunFeeder.
    */
-  public RunFeeder(Feeder feeder) {
+  public RunFeeder(Feeder feeder, Shooter shooter) {
     addRequirements(feeder);
     setName("RunFeeder");
     this.feeder = feeder;
+    this.shooter = shooter;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    feeder.runFeeder();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("Running Feeder");
+    if(shooter.atTargetRpm()) {
+      feeder.runFeeder();
+    }
+    else {
+      feeder.setSpeed(0.0);
+    }
   }
 
   // Called once the command ends or is interrupted.

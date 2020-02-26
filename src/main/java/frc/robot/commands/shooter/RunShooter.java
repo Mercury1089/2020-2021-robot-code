@@ -29,7 +29,7 @@ public class RunShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.shooter.setSpeed(Math.abs(1.0));
+    this.shooter.setSpeed(Math.abs(0.1));
   }
 
   // Called every time the scheduler runs while the command is scheduled.

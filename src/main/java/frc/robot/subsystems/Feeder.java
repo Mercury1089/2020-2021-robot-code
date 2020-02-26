@@ -29,7 +29,7 @@ public class Feeder extends SubsystemBase implements IMercShuffleBoardPublisher 
   public Feeder() {
     feedWheel = new MercTalonSRX(CAN.FEEDER);
     feedWheel.setInverted(false);
-    feedWheel.setNeutralMode(NeutralMode.Coast);
+    feedWheel.setNeutralMode(NeutralMode.Brake);
     setName("Feeder");
   }
 

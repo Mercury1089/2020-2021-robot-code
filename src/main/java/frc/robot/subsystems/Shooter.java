@@ -104,8 +104,9 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public double getTargetRPM() {
-    double distance = limelight.getRawVertDistance();
-    return distance; //TODO find and implement function for finding RPM
+    // double distance = limelight.getRawVertDistance();
+    // return distance; //TODO find and implement function for finding RPM
+    return getRunRPM();
   }
 
   public boolean atTargetRpm() {
