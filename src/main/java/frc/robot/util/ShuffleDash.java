@@ -53,6 +53,9 @@ public class ShuffleDash {
         autonPositionChooser.addOption("Left", StartingPosition.LEFT);
         autonPositionChooser.addOption("Center", StartingPosition.CENTER);
         autonPositionChooser.addOption("Right", StartingPosition.RIGHT);
+        autonPositionChooser.addOption("Far Right", StartingPosition.FAR_RIGHT);
+        autonPositionChooser.addOption("Any Position", StartingPosition.ANY_POSITION);
+        
         SmartDashboard.putData("Auton Position", autonPositionChooser);
 
         updateAutonChooser();
@@ -118,20 +121,28 @@ public class ShuffleDash {
 
     public void addLeftAutons() {
         autonChooser.addOption("Left", null);
-        autonChooser.addOption("TargetZoneTrenchRun5Ball", "TargetZoneTrenchRun5Ball");
+        autonChooser.addOption("5BallTrenchRun", "Left5BallTrench");
     }
 
     public void addRightAutons() {
         autonChooser.addOption("Right", null);
+        autonChooser.addOption("5BallRendezvousRun", "Right5BallRendezvous");
     }
 
     public void addCenterAutons() {
         autonChooser.addOption("Center", null);
-        autonChooser.addOption("5BallTrench", "Center5BallTrench");
+        autonChooser.addOption("5BallTrenchRun", "Center5BallTrench");
+        autonChooser.addOption("5BallRendezvousRun", "Center5BallRendezvous");
     }
 
     public void addFarRightAutons() {
-        autonChooser.addOption("Far Right", null);        
+        autonChooser.addOption("Far Right", null);     
+        autonChooser.addOption("Opposite Trench Run", "StealOpponentTwoBall");       
+    }
+
+    public void addAnyPositionAutons() {
+        autonChooser.addOption("Any Position", null);     
+        autonChooser.addOption("Cross Initiation Line", "InitiationLine");     
     }
 
     public void updateAutonChooser() {
@@ -157,6 +168,9 @@ public class ShuffleDash {
                 case FAR_RIGHT:
                     addFarRightAutons();
                     oldPosition = StartingPosition.FAR_RIGHT;
+                case ANY_POSITION:
+                    addAnyPositionAutons();
+                    oldPosition = StartingPosition.ANY_POSITION;
                 default:
                     autonChooser.addOption("No Option", "No Option");
                     oldPosition = StartingPosition.NULL;
@@ -186,6 +200,7 @@ public class ShuffleDash {
     }
 
     public enum StartingPosition{
+        ANY_POSITION,
         CENTER,
         FAR_RIGHT,
         LEFT,
