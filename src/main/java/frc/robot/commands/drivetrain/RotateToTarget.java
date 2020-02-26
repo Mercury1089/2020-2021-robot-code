@@ -48,30 +48,29 @@ public class RotateToTarget extends DegreeRotate {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        // double angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+        double angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
-        // angleError = MercMath.pigeonUnitsToDegrees(angleError);
-        // System.out.println(angleError);
+        angleError = MercMath.pigeonUnitsToDegrees(angleError);
+        System.out.println(angleError);
 
-        // boolean isFinished = false;
+        boolean isFinished = false;
 
-        // boolean isOnTarget = (Math.abs(angleError) < DriveTrain.ANGLE_THRESHOLD_DEG);
+        boolean isOnTarget = (Math.abs(angleError) < DriveTrain.ANGLE_THRESHOLD_DEG);
 
-        // if (isOnTarget) {
-        //     onTargetCount++;
-        // } else {
-        //     if (onTargetCount > 0)
-        //         onTargetCount = 0;
-        // }
+        if (isOnTarget) {
+            onTargetCount++;
+        } else {
+            if (onTargetCount > 0)
+                onTargetCount = 0;
+        }
 
-        // if (onTargetCount > onTargetMinCount) {
-        //     isFinished = true;
-        //     onTargetCount = 0;
-        // }
+        if (onTargetCount > onTargetMinCount) {
+            isFinished = true;
+            onTargetCount = 0;
+        }
 
-        // SmartDashboard.putNumber("angleError", angleError);
-        // return isFinished;
-        return false;
+        SmartDashboard.putNumber("angleError", angleError);
+        return isFinished;
     }
 
     // Called once after isFinished returns true
