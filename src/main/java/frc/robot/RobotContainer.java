@@ -4,42 +4,48 @@ import java.io.FileNotFoundException;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
-import frc.robot.auton.*;
-import frc.robot.commands.drivetrain.DegreeRotate;
+
 import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.drivetrain.MoveOnTrajectory;
 import frc.robot.commands.drivetrain.RotateToTarget;
 import frc.robot.commands.drivetrain.TestSequentialCommandGroup;
+
 import frc.robot.commands.elevator.AutomaticElevator;
+
 import frc.robot.commands.feeder.RunFeeder;
+
 import frc.robot.commands.hopper.RunHopperBelt;
+
 import frc.robot.commands.intake.RunIntake;
+
 import frc.robot.commands.limelightCamera.SwitchLEDState;
+
 import frc.robot.commands.shooter.FullyAutoAimbot;
 import frc.robot.commands.shooter.RunShooter;
-import frc.robot.commands.shooter.RunShooterRPMBangBang;
-import frc.robot.commands.shooter.RunShooterRPMPID;
+
 import frc.robot.commands.spinner.ColorControl;
 import frc.robot.commands.spinner.RotationControl;
 import frc.robot.commands.spinner.ShiftOnScale;
+
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.subsystems.Elevator.ElevatorPosition;
-import frc.robot.subsystems.IntakeArticulator.IntakePosition;
 import frc.robot.subsystems.Shooter.ShooterMode;
+
 import frc.robot.util.MercMotionProfile;
 import frc.robot.util.ShuffleDash;
 import frc.robot.util.TriggerButton;

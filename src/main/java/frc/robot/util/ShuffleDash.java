@@ -1,18 +1,14 @@
 package frc.robot.util;
 
 import java.util.List;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-import frc.robot.auton.*;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
