@@ -74,19 +74,12 @@ public class RobotContainer {
     
     private CommandGroupBase autonCommand = null;
 
-    //These go forwards
-    private MercMotionProfile fTargetZoneToTrench, fTrenchBall, fTrenchOtherBall;
-    //These go backwards
-    private MercMotionProfile bTrenchBall, bTrenchOtherBall, bTrenchToTargetZone;
-    //These are for testing (or are being worked upon)
-    private MercMotionProfile circle, curveBack, curvy, straight, targetZoneToRendezvousBalls, testBack;
-
     public RobotContainer() {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
 
-        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS);//make sure to switch it back to Falcons
+        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS); //make sure to switch it back to Falcons
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
         shooter = new Shooter(ShooterMode.ONE_WHEEL);
@@ -114,7 +107,6 @@ public class RobotContainer {
         shuffleDash.addPIDTunable(shooter, "Shooter");
         shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
     
-        initializeMotionProfiles();
         initializeJoystickButtons();
 
         //driver controls
@@ -129,8 +121,8 @@ public class RobotContainer {
             System.out.println(e);
         } 
 
-        right1.toggleWhenPressed(new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper));
-        right2.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
+        right2.whenPressed(new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper));
+        right3.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         right6.whenPressed(new TestSequentialCommandGroup(driveTrain, limelightCamera));
         right7.whenPressed(new DriveDistance(120.0, driveTrain));
@@ -159,13 +151,7 @@ public class RobotContainer {
             System.out.println(e);
         }
         try {
-            SequentialCommandGroup auton = new SequentialCommandGroup(
-                new MoveOnTrajectory(new MercMotionProfile("FRightTargetZoneToTrench", ProfileDirection.FORWARD), driveTrain),
-                new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARD), driveTrain),
-                new MoveOnTrajectory(new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD), driveTrain),
-                new MoveOnTrajectory(new MercMotionProfile("BTrenchToRightTargetZone", ProfileDirection.BACKWARD), driveTrain)
-            );
-            right10.whenPressed(auton);       
+            right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Center5BallRendezvous", ProfileDirection.BACKWARD), driveTrain));     
         } catch(FileNotFoundException e) {
             System.out.println(e);
         }
@@ -264,25 +250,7 @@ public class RobotContainer {
         gamepadLT = new TriggerButton(gamepad, GAMEPAD_AXIS.leftTrigger);
         gamepadRT = new TriggerButton(gamepad, GAMEPAD_AXIS.rightTrigger);
     }
-
-    public void initializeMotionProfiles() {
-        //These go forwards
-        fTargetZoneToTrench = new MercMotionProfile("FTargetZoneToTrench", ProfileDirection.FORWARD);
-        fTrenchBall = new MercMotionProfile("FTrenchBall", ProfileDirection.FORWARD);
-        fTrenchOtherBall = new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD);
-        //These go backwards
-        bTrenchBall = new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARD);
-        bTrenchOtherBall = new MercMotionProfile("BTrenchOtherBall", ProfileDirection.BACKWARD);
-        bTrenchToTargetZone = new MercMotionProfile("BTrenchToTargetZone", ProfileDirection.BACKWARD);
-        //These are for testing (or are being worked upon)
-        circle = new MercMotionProfile("Circle", ProfileDirection.FORWARD);
-        curveBack = new MercMotionProfile("CurveBack", ProfileDirection.FORWARD);
-        curvy = new MercMotionProfile("Curvy", ProfileDirection.BACKWARD);
-        straight = new MercMotionProfile("Straight", ProfileDirection.BACKWARD);
-        targetZoneToRendezvousBalls = new MercMotionProfile("TargetZoneToRendezvousBalls", ProfileDirection.FORWARD);
-        testBack = new MercMotionProfile("ShootInTrench", ProfileDirection.BACKWARD);
-    }
-
+    
     public void initializeAutonCommand(){
         String selectedAuton = shuffleDash.getAuton();
         if(selectedAuton == null) {
