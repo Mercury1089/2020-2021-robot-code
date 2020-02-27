@@ -126,7 +126,7 @@ public class RobotContainer {
         } catch(FileNotFoundException e) {
             System.out.println(e);
         } 
-
+        left4.whenPressed(new RunCommand(() -> driveTrain.resetEncoders(), driveTrain));
         right2.whenPressed(new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper));
         right3.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
@@ -294,16 +294,16 @@ public class RobotContainer {
                     //shooting
                     //new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("FLeftTargetZoneToTrench", ProfileDirection.FORWARD), driveTrain),
+                        new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
                     //    new RunIntake(intake)
                     //), 
-                    new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARD), driveTrain),
+                    new MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD), driveTrain),
+                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
                     //    new RunIntake(intake)
                     //),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("BTrenchToLeftTargetZone", ProfileDirection.BACKWARD), driveTrain)//,
+                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain)//,
                     //    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
                     //)
                     //Fully auto-aim bot

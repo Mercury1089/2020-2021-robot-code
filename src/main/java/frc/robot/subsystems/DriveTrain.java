@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
+import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.revrobotics.CANEncoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -81,6 +82,10 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
                 encLeft = new CANCoder(RobotMap.CAN.CANCODER_ML);
                 encRight = new CANCoder(RobotMap.CAN.CANCODER_MR);
+
+                encLeft.configFeedbackCoefficient(1.0, "Ticks", SensorTimeBase.PerSecond);
+                encRight.configFeedbackCoefficient(1.0, "Ticks", SensorTimeBase.PerSecond);
+
                 encLeft.configSensorDirection(false);
                 encRight.configSensorDirection(true);
                 break;
@@ -108,7 +113,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         setNeutralMode(NeutralMode.Brake);
 
         //Account for encoder orientation.
-        leaderLeft.setSensorPhase(true);
+        leaderLeft.setSensorPhase(false);
         leaderRight.setSensorPhase(true);
 
         //Config feedback sensors for each PID slot, ready for MOTION PROFILING
@@ -370,6 +375,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         followerRight.setNeutralMode(neutralMode);
     }
 
+
+
     public enum DriveTrainLayout {
         TALONS_VICTORS,
         FALCONS
@@ -420,11 +427,18 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         SmartDashboard.putNumber(getName() + "/Right Encoder (feet)", getRightEncPositionInFeet());
         SmartDashboard.putNumber(getName() + "/Left Encoder (ticks)", getLeftEncPositionInTicks());
         SmartDashboard.putNumber(getName() + "/Right Encoder (ticks)", getRightEncPositionInTicks());
+        //Selected Sensor Position
+        SmartDashboard.putNumber(getName() + "/PID0 Sensor primary left", ((MercTalonSRX)leaderLeft).get().getSelectedSensorPosition(PRIMARY_LOOP));
+        SmartDashboard.putNumber(getName() + "/PID0 Sensor auxiliary left", ((MercTalonSRX)leaderLeft).get().getSelectedSensorPosition(AUXILIARY_LOOP));
+
+        SmartDashboard.putNumber(getName() + "/PID0 Sensor right", ((MercTalonSRX)leaderRight).get().getSelectedSensorPosition(PRIMARY_LOOP));
+        SmartDashboard.putNumber(getName() + "/PID1 Sensor", ((MercTalonSRX)leaderRight).get().getSelectedSensorPosition(AUXILIARY_LOOP));
         //Wheel RPM
         SmartDashboard.putNumber(getName() + "/Left RPM", MercMath.ticksPerTenthToRevsPerMinute(getLeftLeader().getEncVelocity()));
         SmartDashboard.putNumber(getName() + "/Right RPM", MercMath.ticksPerTenthToRevsPerMinute(getRightLeader().getEncVelocity()));
         //Angle From Pigeon
         SmartDashboard.putNumber(getName() + "/Yaw", getPigeonYaw());
+
     }
 
     @Override
