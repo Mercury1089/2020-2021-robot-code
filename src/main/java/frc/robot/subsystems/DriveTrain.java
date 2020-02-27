@@ -439,6 +439,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         //Angle From Pigeon
         SmartDashboard.putNumber(getName() + "/Yaw", getPigeonYaw());
 
+        SmartDashboard.putBoolean(getName() + "/IsAligned", isAligned());
+
     }
 
     @Override

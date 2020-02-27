@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.CAN;
@@ -27,6 +29,7 @@ public class Hopper extends SubsystemBase implements IMercShuffleBoardPublisher 
    */
   public Hopper() {
     hopperBelt = new MercVictorSPX(CAN.HOPPER_BELT);
+    hopperBelt.setNeutralMode(NeutralMode.Brake);
     runSpeed = -0.5;
     setName("Hopper");
 

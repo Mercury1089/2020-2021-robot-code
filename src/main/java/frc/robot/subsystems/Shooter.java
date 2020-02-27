@@ -110,7 +110,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public boolean atTargetRpm() {
-    return Math.abs(getRPM() - getTargetRPM()) <= 0.005 * getTargetRPM();
+    return Math.abs(getRPM() - getTargetRPM()) <= 0.01 * getTargetRPM();
   }
 
   public Command getDefaultCommand() {
@@ -158,6 +158,8 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber(getName() + "/PIDGains/I", velocityGains.kI);
     SmartDashboard.putNumber(getName() + "/PIDGains/D", velocityGains.kD);
     SmartDashboard.putNumber(getName() + "/PIDGains/F", velocityGains.kF);
+
+    SmartDashboard.putBoolean(getName() + "/AtTargetRPM", atTargetRpm());
   }
 
   @Override

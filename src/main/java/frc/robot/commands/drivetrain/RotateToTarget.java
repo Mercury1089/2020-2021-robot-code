@@ -42,6 +42,14 @@ public class RotateToTarget extends DegreeRotate {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
+        if(onTargetCount > onTargetMinCount) {
+            double checkTarget = limelightCamera.getLimelight().getTargetCenterXAngle();
+            if(Math.abs(checkTarget) > DriveTrain.ANGLE_THRESHOLD_DEG) {
+                    targetHeading = -MercMath.degreesToPigeonUnits(checkTarget);
+                    driveTrain.resetPigeonYaw();
+                    onTargetCount = 0;
+            } 
+        }
         super.execute();
     }
 

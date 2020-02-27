@@ -10,19 +10,22 @@ package frc.robot.commands.feeder;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Shooter;
 
 public class AutoFeedBalls extends CommandBase {
   private Feeder feeder;
+  private Hopper hopper;
   private Shooter shooter;
   private DriveTrain driveTrain;
 
   /**
    * Creates a new AutoFeedBalls.
    */
-  public AutoFeedBalls(Feeder feeder, Shooter shooter, DriveTrain driveTrain) {
+  public AutoFeedBalls(Feeder feeder, Hopper hopper, Shooter shooter, DriveTrain driveTrain) {
     addRequirements(feeder);
     this.feeder = feeder;
+    this.hopper = hopper;
     this.shooter = shooter;
     this.driveTrain = driveTrain;
   }
@@ -35,10 +38,14 @@ public class AutoFeedBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(shooter.atTargetRpm() && driveTrain.isAligned())
+    if(shooter.atTargetRpm() && driveTrain.isAligned()) {
       feeder.setSpeed(feeder.getRunSpeed());
-    else
+      hopper.setSpeed(hopper.getRunSpeed());
+    }
+    else {
       feeder.setSpeed(0.0);
+      hopper.setSpeed(0.0);
+    }
   }
 
   // Called once the command ends or is interrupted.

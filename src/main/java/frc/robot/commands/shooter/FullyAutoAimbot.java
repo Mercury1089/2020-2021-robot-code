@@ -8,12 +8,9 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.drivetrain.RotateToTarget;
+import frc.robot.commands.drivetrain.StayOnTarget;
 import frc.robot.commands.feeder.AutoFeedBalls;
-import frc.robot.commands.feeder.RunFeeder;
 import frc.robot.commands.hopper.AutoRunHopperBelt;
-import frc.robot.commands.hopper.RunHopperBelt;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
@@ -29,9 +26,8 @@ public class FullyAutoAimbot extends ParallelCommandGroup {
    */
   public FullyAutoAimbot(DriveTrain driveTrain, LimelightCamera limelight, Shooter shooter, Feeder feeder, Hopper hopper) {
     //Rotates to target and revs shooter to target rpm, THEN it runs the feeder and hopper
-    super(new RotateToTarget(driveTrain, limelight),
+    super(new StayOnTarget(driveTrain, limelight),
           new RunShooterRPMPID(shooter), 
-          new AutoFeedBalls(feeder, shooter, driveTrain), 
-          new AutoRunHopperBelt(hopper, shooter, driveTrain));
+          new AutoFeedBalls(feeder, hopper, shooter, driveTrain));
   }
 }

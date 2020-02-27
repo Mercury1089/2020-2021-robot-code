@@ -14,6 +14,7 @@ import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
+import frc.robot.commands.drivetrain.DegreeRotate;
 import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
@@ -22,8 +23,6 @@ import frc.robot.commands.drivetrain.RotateToTarget;
 import frc.robot.commands.drivetrain.TestSequentialCommandGroup;
 import frc.robot.commands.elevator.AutomaticElevator;
 import frc.robot.commands.feeder.AutoFeedBalls;
-import frc.robot.commands.feeder.RunFeeder;
-import frc.robot.commands.hopper.RunHopperBelt;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
 import frc.robot.commands.shooter.FullyAutoAimbot;
@@ -88,12 +87,14 @@ public class RobotContainer {
 
         shooter = new Shooter(ShooterMode.ONE_WHEEL);
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
+        
+        hopper = new Hopper();       
+        hopper.setDefaultCommand(new RunCommand(() -> hopper.setSpeed(0.0), hopper));
 
         intake = new Intake();
         intakeArticulator = new IntakeArticulator();
         feeder = new Feeder();
         intake = new Intake();
-        hopper = new Hopper();       
         limelightCamera = new LimelightCamera();
         spinner = new Spinner();
         elevator = new Elevator();
@@ -119,7 +120,7 @@ public class RobotContainer {
         left2.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
         left3.toggleWhenPressed(new RunShooterRPMPID(shooter));
         left4.whenPressed(new RunCommand(() -> driveTrain.resetEncoders(), driveTrain));
-
+        
         System.out.println(intakeArticulator.getIntakePosition().toString());
         left6.whenPressed(new SwitchLEDState(limelightCamera));
         try {
@@ -127,10 +128,11 @@ public class RobotContainer {
         } catch(FileNotFoundException e) {
             System.out.println(e);
         } 
-        
+
         right2.whenPressed(new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper));
         right3.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+        right5.whenPressed(new DegreeRotate(90, driveTrain));
         right6.whenPressed(new TestSequentialCommandGroup(driveTrain, limelightCamera));
         right7.whenPressed(new DriveDistance(120.0, driveTrain));
         try {
@@ -138,16 +140,16 @@ public class RobotContainer {
                 //shooting
                 //new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
                 //new ParallelCommandGroup(
-                    new MoveOnTrajectory(new MercMotionProfile("FTargetZoneToTrench", ProfileDirection.FORWARD), driveTrain),
+                    new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
                 //    new RunIntake(intake)
                 //), 
-                new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARD), driveTrain),
+                new MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
                 //new ParallelCommandGroup(
-                    new MoveOnTrajectory(new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD), driveTrain),
+                    new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
                 //    new RunIntake(intake)
                 //),
                 //new ParallelCommandGroup(
-                    new MoveOnTrajectory(new MercMotionProfile("BTrenchToTargetZone", ProfileDirection.BACKWARD), driveTrain)//,
+                    new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain)//,
                 //    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
                 //)
                 //Fully auto-aim bot
@@ -175,7 +177,7 @@ public class RobotContainer {
         gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         gamepadLT.toggleWhenPressed(new RunShooter(shooter));
-        gamepadRT.toggleWhenPressed(new ParallelCommandGroup(new RunHopperBelt(hopper), new RunFeeder(feeder, shooter)));
+        gamepadRT.toggleWhenPressed(new AutoFeedBalls(feeder, hopper, shooter, driveTrain));
     }
 
     public double getJoystickX(int port) {
@@ -292,7 +294,7 @@ public class RobotContainer {
             DriverStation.reportError("Left5BallTrench Auton", false);
             try {
                 autonCommand = new SequentialCommandGroup(
-                    //shooting
+                    
                     //new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
                     //new ParallelCommandGroup(
                         new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
@@ -320,16 +322,11 @@ public class RobotContainer {
                     //shooting
                     //new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("FLeftTargetZoneToTrench", ProfileDirection.FORWARD), driveTrain),
+                        new MoveOnTrajectory(new MercMotionProfile("Right5BallRendezvous", ProfileDirection.BACKWARD), driveTrain),
                     //    new RunIntake(intake)
                     //), 
-                    new MoveOnTrajectory(new MercMotionProfile("BTrenchBall", ProfileDirection.BACKWARD), driveTrain),
                     //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("FTrenchOtherBall", ProfileDirection.FORWARD), driveTrain),
-                    //    new RunIntake(intake)
-                    //),
-                    //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("BTrenchToLeftTargetZone", ProfileDirection.BACKWARD), driveTrain)//,
+                        new MoveOnTrajectory(new MercMotionProfile("RendezvousToShoot", ProfileDirection.FORWARD), driveTrain)//,
                     //    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
                     //)
                     //Fully auto-aim bot
@@ -338,7 +335,23 @@ public class RobotContainer {
             } catch (FileNotFoundException e) {
                 System.out.println(e);
             }  
-        }
+        } else if (selectedAuton.equals("StealFromOpponent2Ball")) { 
+            DriverStation.reportError("StealFromOpponent Auton", false);
+            try {
+                autonCommand = new SequentialCommandGroup(
+                    //new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                    //new ParallelCommandGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("StealFromOpponentTrench", ProfileDirection.BACKWARD), driveTrain)
+                    //    new RunIntake(intake)
+                    //), 
+                    //new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
+                    //Fully auto-aim bot
+                    //shoot
+                );
+            } catch (FileNotFoundException e) {
+                System.out.println(e);
+            }  
+        } 
     }
 
     public Command getAutonCommand(){

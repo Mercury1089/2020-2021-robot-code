@@ -42,8 +42,6 @@ public class Feeder extends SubsystemBase implements IMercShuffleBoardPublisher 
   }
 
   public void setSpeed(double speed) {
-    feedWheel.setNeutralMode(NeutralMode.Coast);
-
     feedWheel.setSpeed(speed);
   }
 
