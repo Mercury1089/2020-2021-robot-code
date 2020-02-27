@@ -118,6 +118,7 @@ public class RobotContainer {
         left1.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
         left2.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
         left3.toggleWhenPressed(new RunShooterRPMPID(shooter));
+        left4.whenPressed(new RunCommand(() -> driveTrain.resetEncoders(), driveTrain));
 
         System.out.println(intakeArticulator.getIntakePosition().toString());
         left6.whenPressed(new SwitchLEDState(limelightCamera));
@@ -126,7 +127,7 @@ public class RobotContainer {
         } catch(FileNotFoundException e) {
             System.out.println(e);
         } 
-        left4.whenPressed(new RunCommand(() -> driveTrain.resetEncoders(), driveTrain));
+        
         right2.whenPressed(new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper));
         right3.whenPressed(new RotateToTarget(driveTrain, limelightCamera));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
