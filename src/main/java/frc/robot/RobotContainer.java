@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
@@ -291,30 +292,72 @@ public class RobotContainer {
                 System.out.println(e);
             }  
         } else if (selectedAuton.equals("Left5BallTrench")) {
-            DriverStation.reportError("Left5BallTrench Auton", false);
-            try {
-                autonCommand = new SequentialCommandGroup(
-                    
-                    //new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                    //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
-                    //    new RunIntake(intake)
-                    //), 
-                    new MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                    //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
-                    //    new RunIntake(intake)
-                    //),
-                    //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain)//,
-                    //    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
-                    //)
-                    //Fully auto-aim bot
-                    //shoot
-                );
-            } catch (FileNotFoundException e) {
-                System.out.println(e);
-            }  
+            if(driveTrain.isAligned()) {
+                DriverStation.reportError("Left5BallTrench Auton", false);
+                try {
+                    autonCommand = new SequentialCommandGroup(
+                        new ParallelCommandGroup(
+                            new RunShooterRPMPID(shooter),
+                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain),
+                            new WaitCommand(5)
+                        ),
+                        new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                        new ParallelCommandGroup(
+                            new RunIntake(intake),
+                            new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain)
+                        ),
+                        new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
+                        new ParallelCommandGroup(
+                            new RunIntake(intake),
+                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain)
+                        ),
+                        new ParallelCommandGroup(
+                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
+                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.BACKWARD), driveTrain)
+                        ),
+                        new ParallelCommandGroup(
+                            new RotateToTarget(driveTrain, limelightCamera),
+                            new RunShooterRPMPID(shooter),
+                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                        )
+                    );
+                } catch (FileNotFoundException e) {
+                    System.out.println(e);
+                }      
+            } else {          
+                DriverStation.reportError("Left5BallTrench Auton", false);
+                try {
+                    autonCommand = new SequentialCommandGroup(
+                        new ParallelCommandGroup(
+                            new RotateToTarget(driveTrain, limelightCamera),
+                            new RunShooterRPMPID(shooter),
+                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain),
+                            new WaitCommand(5)
+                        ),
+                        new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                        new ParallelCommandGroup(
+                            new RunIntake(intake),
+                            new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain)
+                        ),
+                        new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
+                        new ParallelCommandGroup(
+                            new RunIntake(intake),
+                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain)
+                        ),
+                        new ParallelCommandGroup(
+                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
+                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.BACKWARD), driveTrain)
+                        ),
+                        new ParallelCommandGroup(
+                            new RotateToTarget(driveTrain, limelightCamera),
+                            new RunShooterRPMPID(shooter),
+                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                        )
+                    );
+                } catch (FileNotFoundException e) {
+                    System.out.println(e);
+                } 
+            }
         } else if (selectedAuton.equals("Right5BallRendezvous")) {
             DriverStation.reportError("Right5BallRendezvous Auton", false);
             try {
