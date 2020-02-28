@@ -37,6 +37,7 @@ public class ShuffleDash {
     private NetworkTableInstance ntInstance;
     private SendableChooser<StartingPosition> autonPositionChooser;
     private SendableChooser<String> autonChooser;
+    //private SendableChooser<Autons> autonChooser;
     private StartingPosition oldPosition = StartingPosition.NULL;
     private List<IMercShuffleBoardPublisher> publishers;
     private SendableChooser<TunablePIDSlot> tunablePIDChooser;
@@ -122,36 +123,44 @@ public class ShuffleDash {
     public void addLeftAutons() {
         autonChooser.addOption("Left", null);
         autonChooser.addOption("5BallTrenchRun", "Left5BallTrench");
+        //autonChooser.addOption("5BallTrenchRun", Autons.LEFT_5BALL_TRENCH);
     }
 
     public void addRightAutons() {
         autonChooser.addOption("Right", null);
         autonChooser.addOption("5BallRendezvousRun", "Right5BallRendezvous");
+        //autonChooser.addOption("5BallRendezvousRun", Autons.RIGHT_5BALL_RENDEZVOUS);
     }
 
     public void addCenterAutons() {
         autonChooser.addOption("Center", null);
-        autonChooser.addOption("5BallTrenchRun", "Center5BallTrench");
         autonChooser.addOption("5BallRendezvousRun", "Center5BallRendezvous");
+        autonChooser.addOption("5BallTrenchRun", "Center5BallTrench");
+        //autonChooser.addOption("5BallRendezvousRun", Autons.CENTER_5BALL_RENDEZVOUS);
+        //autonChooser.addOption("5BallTrenchRun", Autons.CENTER_5BALL_TRENCH);
     }
 
     public void addFarRightAutons() {
         autonChooser.addOption("Far Right", null);     
-        autonChooser.addOption("Opposite Trench Run", "StealOpponentTwoBall");       
+        autonChooser.addOption("Opposite Trench Run", "StealOpponentTwoBall");
+        //autonChooser.addOption("Opposite Trench Run", Autons.STEAL_OPPONENT_2BALL);       
     }
 
     public void addAnyPositionAutons() {
         autonChooser.addOption("Any Position", null);     
-        autonChooser.addOption("Cross Initiation Line", "InitiationLine");     
+        autonChooser.addOption("Cross Initiation Line", "InitiationLine");
+        //autonChooser.addOption("Cross Initiation Line", Autons.INITIATION_LINE);     
     }
 
     public void updateAutonChooser() {
         StartingPosition startingPosition = getStartingPosition();
         if(oldPosition == StartingPosition.NULL && startingPosition == StartingPosition.NULL)
             autonChooser = new SendableChooser<String>();
+            //autonChooser = new SendableChooser<Autons>();
             
         if(startingPosition != oldPosition) {
             autonChooser = new SendableChooser<String>();
+            //autonChooser = new SendableChooser<Autons>();
             switch(startingPosition) {
                 case LEFT:
                     addLeftAutons();
@@ -179,6 +188,7 @@ public class ShuffleDash {
 
         SmartDashboard.putData("Choose Auton", autonChooser);
         SmartDashboard.putString("Auton Chosen", autonChooser.getSelected() == null ? "Nothing" : autonChooser.getSelected());
+        //SmartDashboard.putString("Auton Chosen", autonChooser.getSelected() == null ? "Nothing" : autonChooser.getSelected().toString());
     }
 
     public String getPositionControlColor() {
