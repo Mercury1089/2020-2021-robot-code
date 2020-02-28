@@ -27,7 +27,7 @@ public class FullyAutoAimbot extends ParallelCommandGroup {
   public FullyAutoAimbot(DriveTrain driveTrain, LimelightCamera limelight, Shooter shooter, Feeder feeder, Hopper hopper) {
     //Rotates to target and revs shooter to target rpm, THEN it runs the feeder and hopper
     super(new StayOnTarget(driveTrain, limelight),
-          new RunShooterRPMPID(shooter), 
+          new RunShooterRPMPID(shooter, limelight), 
           new AutoFeedBalls(feeder, hopper, shooter, driveTrain));
   }
 }

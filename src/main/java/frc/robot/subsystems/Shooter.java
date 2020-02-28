@@ -30,6 +30,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   private IMercMotorController shooterLeft, shooterRight;
 
   private double currentSpeed;
+  private double targetRPM;
 
   private ShooterMode mode;
 
@@ -65,7 +66,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
     SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
     setRunSpeed(0.0);
-
+    targetRPM = 0.0;
     velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
     
     limelight = new Limelight();
@@ -104,9 +105,11 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public double getTargetRPM() {
-    // double distance = limelight.getRawVertDistance();
-    // return distance; //TODO find and implement function for finding RPM
-    return getRunRPM();
+    return targetRPM;
+  }
+
+  public void updateTargetRPM(double distance) {
+    targetRPM = 62261 - 1032*distance + 4.6*Math.pow(distance, 2) + 0.0132*Math.pow(distance, 3) - 1.44E-4*Math.pow(distance, 4) + 2.77E-7*Math.pow(distance, 5);
   }
 
   public boolean atTargetRpm() {

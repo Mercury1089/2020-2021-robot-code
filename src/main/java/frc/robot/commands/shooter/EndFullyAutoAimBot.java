@@ -7,28 +7,15 @@
 
 package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LimelightCamera;
-import frc.robot.subsystems.Shooter;
-import frc.robot.util.interfaces.IMercMotorController;
+import frc.robot.subsystems.*;
 
-public class RunShooterRPMPID extends CommandBase {
-
-  protected IMercMotorController shooterLeft, shooterRight;
-
-  private Shooter shooter;
-
-  private LimelightCamera limelightCamera;
-
+public class EndFullyAutoAimBot extends CommandBase {
   /**
-   * Creates a new RunShooter.
+   * Creates a new EndFullyAutoAimBot.
    */
-  public RunShooterRPMPID(Shooter shooter, LimelightCamera limelightCamera) {
-    addRequirements(shooter);
-    setName("RunShooterRPMPID");
-    this.shooter = shooter;
-    this.limelightCamera = limelightCamera;
+  public EndFullyAutoAimBot(DriveTrain driveTrain, Feeder feeder, Hopper hopper, Shooter shooter) {
+    addRequirements(driveTrain, feeder, hopper, shooter);
   }
 
   // Called when the command is initially scheduled.
@@ -39,8 +26,6 @@ public class RunShooterRPMPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.shooter.updateTargetRPM(limelightCamera.getLimelight().calcDistFromVert());
-    this.shooter.setVelocity(Math.abs(shooter.getTargetRPM()));
   }
 
   // Called once the command ends or is interrupted.
@@ -51,6 +36,6 @@ public class RunShooterRPMPID extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

@@ -22,6 +22,7 @@ import frc.robot.commands.intake.RunManualIntake;
 
 public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher {
   private final IMercMotorController intakeRoller;
+  public final double INTAKE_SPEED = 1.0;
 
   /**
    * Creates a new Intake.
