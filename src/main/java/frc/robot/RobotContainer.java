@@ -442,6 +442,201 @@ public class RobotContainer {
                 System.out.println(e);
             }
         } 
+        /*
+        else {
+            switch(selectedAuton) {
+                case CENTER_5BALL_RENDEZVOUS:
+                    initCenter5BallRendezvous();
+                    break;
+                case CENTER_5BALL_TRENCH:
+                    initCenter5BallTrench();
+                    break;
+                case INITIATION_LINE:
+                    initInitiationLine();
+                    break;
+                case LEFT_5BALL_TRENCH:
+                    initLeft5BallTrench();
+                    break;
+                case RIGHT_5BALL_RENDEZVOUS:
+                    initRight5BallRendezvous();
+                    break;
+                case STEAL_OPPONENT_2BALL:
+                    initStealOpponent2Ball();
+                    break;
+            }
+        }
+        */
+    }
+
+    public void initCenter5BallRendezvous() {
+        
+    } 
+        
+    public void initCenter5BallTrench() {
+        if(driveTrain.isAligned()) {
+            DriverStation.reportError("Center5BallTrench Auton", false);
+            try {
+                autonCommand = new SequentialCommandGroup(
+                    new ParallelDeadlineGroup(
+                        new WaitCommand(5),
+                        new RunShooterRPMPID(shooter),
+                        new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                    ),
+                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
+                        new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
+                    ),
+                    new ParallelCommandGroup(
+                        new RotateToTarget(driveTrain, limelightCamera),
+                        new RunShooterRPMPID(shooter),
+                        new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                    )
+                );
+            } catch (FileNotFoundException e) {
+                System.out.println(e);
+            }      
+        } else {          
+            DriverStation.reportError("Center5BallTrench Auton", false);
+            try {
+                autonCommand = new SequentialCommandGroup(
+                    new ParallelDeadlineGroup(
+                        new WaitCommand(5),
+                        new RotateToTarget(driveTrain, limelightCamera),
+                        new RunShooterRPMPID(shooter),
+                        new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                    ),
+                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
+                        new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
+                    ),
+                    new ParallelCommandGroup(
+                        new RotateToTarget(driveTrain, limelightCamera),
+                        new RunShooterRPMPID(shooter),
+                        new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                    )
+                );
+            } catch (FileNotFoundException e) {
+                System.out.println(e);
+            } 
+        }
+    }
+
+    public void initInitiationLine() {
+        
+    }
+
+    public void initLeft5BallTrench() {
+        if(driveTrain.isAligned()) {
+            DriverStation.reportError("Left5BallTrench Auton", false);
+            try {
+                autonCommand = new SequentialCommandGroup(
+                    new ParallelDeadlineGroup(
+                        new WaitCommand(5),
+                        new RunShooterRPMPID(shooter),
+                        new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                    ),
+                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
+                        new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
+                    ),
+                    new ParallelCommandGroup(
+                        new RotateToTarget(driveTrain, limelightCamera),
+                        new RunShooterRPMPID(shooter),
+                        new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                    )
+                );
+            } catch (FileNotFoundException e) {
+                System.out.println(e);
+            }      
+        } else {          
+            DriverStation.reportError("Left5BallTrench Auton", false);
+            try {
+                autonCommand = new SequentialCommandGroup(
+                    new ParallelDeadlineGroup(
+                        new WaitCommand(5),
+                        new RotateToTarget(driveTrain, limelightCamera),
+                        new RunShooterRPMPID(shooter),
+                        new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                    ),
+                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
+                        new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
+                    ),
+                    new ParallelCommandGroup(
+                        new RotateToTarget(driveTrain, limelightCamera),
+                        new RunShooterRPMPID(shooter),
+                        new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                    )
+                );
+            } catch (FileNotFoundException e) {
+                System.out.println(e);
+            } 
+        }
+    }
+
+    public void initRight5BallRendezvous() {
+        
+    }
+
+    public void initStealOpponent2Ball() {
+        DriverStation.reportError("StealFromOpponentTrench Auton", false);
+        try {
+            autonCommand = new SequentialCommandGroup(
+                new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                new ParallelDeadlineGroup(
+                    new MoveOnTrajectory(new MercMotionProfile("StealFromOpponentTrench", ProfileDirection.BACKWARD), driveTrain),
+                    new RunIntake(intake)
+                ),
+                new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
+                new ParallelCommandGroup(
+                    new RotateToTarget(driveTrain, limelightCamera),
+                    new RunShooterRPMPID(shooter),
+                    new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                )
+            );
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public Command getAutonCommand(){
