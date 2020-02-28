@@ -313,7 +313,7 @@ public class RobotContainer {
                         ),
                         new ParallelCommandGroup(
                             new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
-                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.BACKWARD), driveTrain)
+                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain)
                         ),
                         new ParallelCommandGroup(
                             new RotateToTarget(driveTrain, limelightCamera),
