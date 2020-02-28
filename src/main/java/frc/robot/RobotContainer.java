@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -271,24 +273,24 @@ public class RobotContainer {
                 DriverStation.reportError("Center5BallTrench Auton", false);
                 try {
                     autonCommand = new SequentialCommandGroup(
-                        new ParallelCommandGroup(
+                        new ParallelDeadlineGroup(
+                            new WaitCommand(5),
                             new RunShooterRPMPID(shooter),
-                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain),
-                            new WaitCommand(5)
+                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                         ),
                         new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                        new ParallelCommandGroup(
-                            new RunIntake(intake),
-                            new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
+                            new RunIntake(intake)
                         ),
                         new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                        new ParallelCommandGroup(
-                            new RunIntake(intake),
-                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
+                            new RunIntake(intake)
                         ),
-                        new ParallelCommandGroup(
-                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
-                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
+                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
                         ),
                         new ParallelCommandGroup(
                             new RotateToTarget(driveTrain, limelightCamera),
@@ -303,25 +305,25 @@ public class RobotContainer {
                 DriverStation.reportError("Center5BallTrench Auton", false);
                 try {
                     autonCommand = new SequentialCommandGroup(
-                        new ParallelCommandGroup(
+                        new ParallelDeadlineGroup(
+                            new WaitCommand(5),
                             new RotateToTarget(driveTrain, limelightCamera),
                             new RunShooterRPMPID(shooter),
-                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain),
-                            new WaitCommand(5)
+                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                         ),
                         new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                        new ParallelCommandGroup(
-                            new RunIntake(intake),
-                            new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
+                            new RunIntake(intake)
                         ),
                         new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                        new ParallelCommandGroup(
-                            new RunIntake(intake),
-                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
+                            new RunIntake(intake)
                         ),
-                        new ParallelCommandGroup(
-                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
-                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
+                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
                         ),
                         new ParallelCommandGroup(
                             new RotateToTarget(driveTrain, limelightCamera),
@@ -338,24 +340,24 @@ public class RobotContainer {
                 DriverStation.reportError("Left5BallTrench Auton", false);
                 try {
                     autonCommand = new SequentialCommandGroup(
-                        new ParallelCommandGroup(
+                        new ParallelDeadlineGroup(
+                            new WaitCommand(5),
                             new RunShooterRPMPID(shooter),
-                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain),
-                            new WaitCommand(5)
+                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                         ),
                         new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                        new ParallelCommandGroup(
-                            new RunIntake(intake),
-                            new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
+                            new RunIntake(intake)
                         ),
                         new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                        new ParallelCommandGroup(
-                            new RunIntake(intake),
-                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
+                            new RunIntake(intake)
                         ),
-                        new ParallelCommandGroup(
-                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
-                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
+                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
                         ),
                         new ParallelCommandGroup(
                             new RotateToTarget(driveTrain, limelightCamera),
@@ -370,25 +372,25 @@ public class RobotContainer {
                 DriverStation.reportError("Left5BallTrench Auton", false);
                 try {
                     autonCommand = new SequentialCommandGroup(
-                        new ParallelCommandGroup(
+                        new ParallelDeadlineGroup(
+                            new WaitCommand(5),
                             new RotateToTarget(driveTrain, limelightCamera),
                             new RunShooterRPMPID(shooter),
-                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain),
-                            new WaitCommand(5)
+                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                         ),
                         new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                        new ParallelCommandGroup(
-                            new RunIntake(intake),
-                            new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
+                            new RunIntake(intake)
                         ),
                         new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                        new ParallelCommandGroup(
-                            new RunIntake(intake),
-                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
+                            new RunIntake(intake)
                         ),
-                        new ParallelCommandGroup(
-                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
-                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain)
+                        new ParallelDeadlineGroup(
+                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
+                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
                         ),
                         new ParallelCommandGroup(
                             new RotateToTarget(driveTrain, limelightCamera),
@@ -421,21 +423,24 @@ public class RobotContainer {
                 System.out.println(e);
             }  
         } else if (selectedAuton.equals("StealFromOpponent2Ball")) { 
-            DriverStation.reportError("StealFromOpponent Auton", false);
+            DriverStation.reportError("StealFromOpponentTrench Auton", false);
             try {
                 autonCommand = new SequentialCommandGroup(
-                    //new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                    //new ParallelCommandGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("StealFromOpponentTrench", ProfileDirection.BACKWARD), driveTrain)
-                    //    new RunIntake(intake)
-                    //), 
-                    //new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
-                    //Fully auto-aim bot
-                    //shoot
+                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("StealFromOpponentTrench", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
+                    new ParallelCommandGroup(
+                        new RotateToTarget(driveTrain, limelightCamera),
+                        new RunShooterRPMPID(shooter),
+                        new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                    )
                 );
-            } catch (FileNotFoundException e) {
+            } catch (Exception e) {
                 System.out.println(e);
-            }  
+            }
         } 
     }
 
