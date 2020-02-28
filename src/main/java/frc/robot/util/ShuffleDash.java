@@ -199,12 +199,21 @@ public class ShuffleDash {
         return "Unknown";
     }
 
-    public enum StartingPosition{
+    public enum StartingPosition {
         ANY_POSITION,
         CENTER,
         FAR_RIGHT,
         LEFT,
         NULL,
         RIGHT
+    }
+
+    public enum Autons {
+        CENTER_5BALL_RENDEZVOUS,
+        CENTER_5BALL_TRENCH,
+        INITIATION_LINE,
+        LEFT_5BALL_TRENCH,
+        RIGHT_5BALL_RENDEZVOUS,
+        STEAL_OPPONENT_2BALL
     }
 }
