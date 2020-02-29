@@ -8,34 +8,34 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import frc.robot.sensors.Limelight;
+import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.MercMath;
 
 public class RotateToTarget extends DegreeRotate {
 
     private DriveTrain driveTrain;
-    private LimelightCamera limelightCamera;
+    private Limelight limelight;
 
-    public RotateToTarget(DriveTrain driveTrain, LimelightCamera limelightCamera) {
+    public RotateToTarget(DriveTrain driveTrain) {
         super(0, driveTrain);
         setName("RotateToTarget");
 
         this.driveTrain = driveTrain;
-        this.limelightCamera = limelightCamera;
+        this.limelight = driveTrain.getLimelight();
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
         super.initialize();
-
+        limelight.setLEDState(LimelightLEDState.ON);
         this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
-        targetHeading = -MercMath.degreesToPigeonUnits(this.limelightCamera.getLimelight().getTargetCenterXAngle());
-        System.out.println("RotateToTarget initialized with angle " + this.limelightCamera.getLimelight().getTargetCenterXAngle());
+        targetHeading = -MercMath.degreesToPigeonUnits(limelight.getTargetCenterXAngle());
+        System.out.println("RotateToTarget initialized with angle " + limelight.getTargetCenterXAngle());
 
     }
 
@@ -43,7 +43,7 @@ public class RotateToTarget extends DegreeRotate {
     @Override
     public void execute() {
         if(onTargetCount > onTargetMinCount) {
-            double checkTarget = limelightCamera.getLimelight().getTargetCenterXAngle();
+            double checkTarget = limelight.getTargetCenterXAngle();
             if(Math.abs(checkTarget) > DriveTrain.ANGLE_THRESHOLD_DEG) {
                     targetHeading = -MercMath.degreesToPigeonUnits(checkTarget);
                     driveTrain.resetPigeonYaw();

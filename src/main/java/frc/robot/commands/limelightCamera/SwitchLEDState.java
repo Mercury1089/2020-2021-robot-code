@@ -8,6 +8,8 @@
 package frc.robot.commands.limelightCamera;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.sensors.Limelight;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimelightCamera;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

@@ -226,6 +226,11 @@ public class Limelight implements TableEntryListener {
         nt.getEntry("ledMode").setNumber(limelightLEDState.value);
     }
 
+    public boolean getLEDState() {
+        return nt.getEntry("ledMode").getNumber(0.0).doubleValue() == LimelightLEDState.ON.value ||
+               nt.getEntry("ledMode").getNumber(0.0).doubleValue() == LimelightLEDState.PIPELINE_DEFAULT.value;
+    }
+
     public void switchLEDState() {
         if ((double) (nt.getEntry("ledMode").getNumber(0.0)) == LimelightLEDState.OFF.getValue()) {
             setLEDState(LimelightLEDState.ON);

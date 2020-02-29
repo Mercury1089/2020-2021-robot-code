@@ -43,7 +43,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     public static final double GEAR_RATIO = 1,
         MAX_RPM = 545,
         WHEEL_DIAMETER_INCHES = 5.8;
-    public static final double ANGLE_THRESHOLD_DEG = 1.2;
+    public static final double ANGLE_THRESHOLD_DEG = 1.2, ON_TARGET_THRESHOLD_DEG = 2.0;
     public static final double NOMINAL_OUT = 0.0,
                                PEAK_OUT = 1.0;
  
@@ -194,6 +194,10 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         initializeMotionMagicFeedback(MOTOR_CONTROLLER_STATUS_FRAME_PERIOD_MS, PIGEON_STATUS_FRAME_PERIOD_MS);
     }
 
+    public Limelight getLimelight() {
+        return this.limelight;
+    }
+
     public void setStatusFramePeriod(int framePeriodMs) {
         leaderLeft.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, framePeriodMs);
         leaderRight.setStatusFramePeriod(StatusFrame.Status_10_Targets, framePeriodMs);
@@ -285,7 +289,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     }
 
     public boolean isAligned(){
-        return Math.abs(limelight.getTargetCenterXAngle()) <= ANGLE_THRESHOLD_DEG;
+        return Math.abs(limelight.getTargetCenterXAngle()) <= ON_TARGET_THRESHOLD_DEG;
     }
 
     public PigeonIMU getPigeon() {
@@ -440,7 +444,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         SmartDashboard.putNumber(getName() + "/Yaw", getPigeonYaw());
 
         SmartDashboard.putBoolean(getName() + "/IsAligned", isAligned());
-
+        SmartDashboard.putBoolean(getName() + "/TargetAcquired", limelight.getTargetAcquired());
+        SmartDashboard.putBoolean(getName() + "/LimelightLEDState", limelight.getLEDState());
     }
 
     @Override

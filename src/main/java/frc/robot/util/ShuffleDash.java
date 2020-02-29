@@ -177,9 +177,11 @@ public class ShuffleDash {
                 case FAR_RIGHT:
                     addFarRightAutons();
                     oldPosition = StartingPosition.FAR_RIGHT;
+                    break;
                 case ANY_POSITION:
                     addAnyPositionAutons();
                     oldPosition = StartingPosition.ANY_POSITION;
+                    break;
                 default:
                     autonChooser.addOption("No Option", "No Option");
                     oldPosition = StartingPosition.NULL;

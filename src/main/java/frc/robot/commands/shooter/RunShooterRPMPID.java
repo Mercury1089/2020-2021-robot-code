@@ -7,9 +7,9 @@
 
 package frc.robot.commands.shooter;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LimelightCamera;
+import frc.robot.sensors.Limelight;
+import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.Shooter;
 import frc.robot.util.interfaces.IMercMotorController;
 
@@ -19,28 +19,28 @@ public class RunShooterRPMPID extends CommandBase {
 
   private Shooter shooter;
 
-  private LimelightCamera limelightCamera;
+  private Limelight limelight;
 
   /**
    * Creates a new RunShooter.
    */
-  public RunShooterRPMPID(Shooter shooter, LimelightCamera limelightCamera) {
+  public RunShooterRPMPID(Shooter shooter, Limelight limelight) {
     addRequirements(shooter);
     setName("RunShooterRPMPID");
     this.shooter = shooter;
-    this.limelightCamera = limelightCamera;
+    this.limelight = limelight;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    limelight.setLEDState(LimelightLEDState.ON);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    this.shooter.updateTargetRPM(limelightCamera.getLimelight().calcDistFromVert());
-    this.shooter.setVelocity(Math.abs(shooter.getTargetRPM()));
+    shooter.setVelocity(Math.abs(shooter.getTargetRPM()));
   }
 
   // Called once the command ends or is interrupted.

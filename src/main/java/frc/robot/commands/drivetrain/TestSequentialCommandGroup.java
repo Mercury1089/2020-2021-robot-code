@@ -18,6 +18,11 @@ public class TestSequentialCommandGroup extends SequentialCommandGroup {
   public TestSequentialCommandGroup(DriveTrain driveTrain, LimelightCamera limelightCamera) {
     super(new MoveHeading(60, 10, driveTrain), 
           new MoveHeading(60, 10, driveTrain), 
-          new RotateToTarget(driveTrain, limelightCamera));
+          new RotateToTarget(driveTrain));
   }
 }
+
+
+
+
+

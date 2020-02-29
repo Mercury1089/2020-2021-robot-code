@@ -19,6 +19,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.RobotMap.*;
 import frc.robot.sensors.Limelight;
 
@@ -42,7 +44,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     ONE_WHEEL, NONE
   }
 
-  public Shooter(ShooterMode mode) {
+  public Shooter(ShooterMode mode, Limelight limelight) {
     setName("Shooter");
     this.mode = mode;
 
@@ -69,7 +71,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     targetRPM = 0.0;
     velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
     
-    limelight = new Limelight();
+    this.limelight = limelight;
 
     setPIDGain(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), velocityGains);
   }
@@ -105,11 +107,25 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public double getTargetRPM() {
+    double distance = limelight.calcDistFromVert();
+    if(distance > 100.0 && distance < 250.0)
+      updateTargetRPM(distance);
+    else
+      setTargetRPM(4000);
     return targetRPM;
   }
 
+  public double getTargetRPMFromHypothetical() {
+    double distance = getHyotheticalDistance();
+    return 7.663505E-5*Math.pow(distance, 4) - 0.056264*Math.pow(distance, 3) + 15.436557*Math.pow(distance, 2) - 1867.408104*distance + 87769.565386;
+  }
+
+  public void setTargetRPM(double rpm) {
+    targetRPM = rpm;
+  }
+
   public void updateTargetRPM(double distance) {
-    targetRPM = 62261 - 1032*distance + 4.6*Math.pow(distance, 2) + 0.0132*Math.pow(distance, 3) - 1.44E-4*Math.pow(distance, 4) + 2.77E-7*Math.pow(distance, 5);
+    targetRPM = 7.663505E-5*Math.pow(distance, 4) - 0.056264*Math.pow(distance, 3) + 15.436557*Math.pow(distance, 2) - 1867.408104*distance + 87769.565386;
   }
 
   public boolean atTargetRpm() {
@@ -148,6 +164,10 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     return SmartDashboard.getNumber(getName() + "/SetRPM", 0.0);
   }
 
+  public double getHyotheticalDistance() {
+    return SmartDashboard.getNumber("Hypothetical Distance", 0.0);
+  }
+
   public ShooterMode getMode() {
     return mode;
   }
@@ -163,6 +183,8 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber(getName() + "/PIDGains/F", velocityGains.kF);
 
     SmartDashboard.putBoolean(getName() + "/AtTargetRPM", atTargetRpm());
+    SmartDashboard.putNumber("Hypothetical Distance", getHyotheticalDistance());
+    SmartDashboard.putNumber("Hypothetical RPM", getTargetRPMFromHypothetical());
   }
 
   @Override
