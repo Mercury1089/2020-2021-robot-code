@@ -307,73 +307,33 @@ public class RobotContainer {
                     System.out.println(e);
                 } 
             }
-        } else if (selectedAuton.equals("Left5BallTrench")) {
-            if(driveTrain.isAligned()) {
-                DriverStation.reportError("Left5BallTrench Auton", false);
-                try {
-                    autonCommand = new SequentialCommandGroup(
-                        new ParallelDeadlineGroup(
-                            new WaitCommand(5),
-                            new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
-                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
-                        ),
-                        new ParallelDeadlineGroup(
-                            new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
-                            new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                            new RunIntake(intake)
-                        ),
-                        new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                        new ParallelDeadlineGroup(
-                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
-                            new RunIntake(intake)
-                        ),
-                        new ParallelDeadlineGroup(
-                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
-                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
-                        ),
-                        new ParallelCommandGroup(
-                            new RotateToTarget(driveTrain),
-                            new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
-                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
-                        )
-                    );
-                } catch (FileNotFoundException e) {
-                    System.out.println(e);
-                }      
-            } else {          
-                DriverStation.reportError("Left5BallTrench Auton", false);
-                try {
-                    autonCommand = new SequentialCommandGroup(
-                        new ParallelDeadlineGroup(
-                            new WaitCommand(5),
-                            new RotateToTarget(driveTrain),
-                            new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
-                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
-                        ),
-                        new ParallelDeadlineGroup(
-                            new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
-                            new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                            new RunIntake(intake)
-                        ),
-                        new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                        new ParallelDeadlineGroup(
-                            new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
-                            new RunIntake(intake)
-                        ),
-                        new ParallelDeadlineGroup(
-                            new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
-                            new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
-                        ),
-                        new ParallelCommandGroup(
-                            new RotateToTarget(driveTrain),
-                            new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
-                            new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
-                        )
-                    );
-                } catch (FileNotFoundException e) {
-                    System.out.println(e);
-                } 
-            }
+        } else if (selectedAuton.equals("Left5BallTrench")) {        
+            DriverStation.reportError("Left5BallTrench Auton", false);
+            try {
+                autonCommand = new SequentialCommandGroup(
+                    new ParallelDeadlineGroup(
+                        new WaitCommand(4),
+                        new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper),
+                        new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator)
+                    ),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
+                        new RunIntake(intake)
+                    ),
+                    new ParallelDeadlineGroup(
+                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
+                        new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
+                    ),
+                    new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper)
+                );
+            } catch (FileNotFoundException e) {
+                System.out.println(e);
+            } 
         } else if (selectedAuton.equals("Right5BallRendezvous")) {
             DriverStation.reportError("Right5BallRendezvous Auton", false);
             try {
@@ -416,6 +376,12 @@ public class RobotContainer {
         } else if (selectedAuton.equals("InitiationLine")) {
             autonCommand = new SequentialCommandGroup(
                 new DriveDistance(-24.0, driveTrain)
+            );
+            
+        } else if (selectedAuton.equals("InitiationLineAndShoot")) {
+            autonCommand = new SequentialCommandGroup(
+                new DriveDistance(-24.0, driveTrain),
+                new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper)
             );
         }
         /*

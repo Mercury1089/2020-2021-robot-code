@@ -183,6 +183,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber(getName() + "/PIDGains/F", velocityGains.kF);
 
     SmartDashboard.putBoolean(getName() + "/AtTargetRPM", atTargetRpm());
+    SmartDashboard.putNumber(getName() + "/TargetRPM", getTargetRPM());
     SmartDashboard.putNumber("Hypothetical Distance", getHyotheticalDistance());
     SmartDashboard.putNumber("Hypothetical RPM", getTargetRPMFromHypothetical());
   }

@@ -149,6 +149,7 @@ public class ShuffleDash {
     public void addAnyPositionAutons() {
         autonChooser.addOption("Any Position", null);     
         autonChooser.addOption("Cross Initiation Line", "InitiationLine");
+        autonChooser.addOption("Cross Initiation Line And Shoot", "InitiationLineAndShoot");
         //autonChooser.addOption("Cross Initiation Line", Autons.INITIATION_LINE);     
     }
 

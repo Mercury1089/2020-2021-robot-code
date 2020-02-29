@@ -10,6 +10,7 @@ public class StayOnTarget extends RotateToTarget {
 
     @Override
     public boolean isFinished(){
+        super.isFinished();
         return false;
     }
 }
