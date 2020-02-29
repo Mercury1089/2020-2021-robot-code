@@ -18,10 +18,13 @@ public class RotateToTarget extends DegreeRotate {
 
     private DriveTrain driveTrain;
     private Limelight limelight;
+    boolean isOnTarget;
 
     public RotateToTarget(DriveTrain driveTrain) {
         super(0, driveTrain);
         setName("RotateToTarget");
+
+        this.isOnTarget = false;
 
         this.driveTrain = driveTrain;
         this.limelight = driveTrain.getLimelight();
@@ -42,7 +45,11 @@ public class RotateToTarget extends DegreeRotate {
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-        if(onTargetCount > onTargetMinCount) {
+        double angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
+        angleError = MercMath.pigeonUnitsToDegrees(angleError);
+
+        isOnTarget = (Math.abs(angleError) < DriveTrain.ANGLE_THRESHOLD_DEG);
+        if(isOnTarget) {
             double checkTarget = limelight.getTargetCenterXAngle();
             if(Math.abs(checkTarget) > DriveTrain.ANGLE_THRESHOLD_DEG) {
                     targetHeading = -MercMath.degreesToPigeonUnits(checkTarget);
@@ -56,14 +63,7 @@ public class RotateToTarget extends DegreeRotate {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        double angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
-
-        angleError = MercMath.pigeonUnitsToDegrees(angleError);
-        System.out.println(angleError);
-
         boolean isFinished = false;
-
-        boolean isOnTarget = (Math.abs(angleError) < DriveTrain.ANGLE_THRESHOLD_DEG);
 
         if (isOnTarget) {
             onTargetCount++;
@@ -76,8 +76,6 @@ public class RotateToTarget extends DegreeRotate {
             isFinished = true;
             onTargetCount = 0;
         }
-
-        SmartDashboard.putNumber("angleError", angleError);
         return isFinished;
     }
 

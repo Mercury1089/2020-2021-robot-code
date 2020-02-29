@@ -23,6 +23,7 @@ import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.drivetrain.MoveOnTrajectory;
 import frc.robot.commands.drivetrain.RotateToTarget;
+import frc.robot.commands.drivetrain.StayOnTarget;
 import frc.robot.commands.drivetrain.TestSequentialCommandGroup;
 import frc.robot.commands.elevator.AutomaticElevator;
 import frc.robot.commands.feeder.AutoFeedBalls;
@@ -130,15 +131,16 @@ public class RobotContainer {
 
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
         //right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
-        //right6.whenPressed(new RunCommand(() -> driveTrain.resetEncoders(), driveTrain));
+        right6.whenPressed(new StayOnTarget(driveTrain));
+        right7.whenPressed(new RotateToTarget(driveTrain));
  
         try {
-            right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain));     
+            ;//right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain));     
         } catch(Exception e) {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Center5BallRendezvous", ProfileDirection.FORWARD), driveTrain));            
+            ;//right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Center5BallRendezvous", ProfileDirection.FORWARD), driveTrain));            
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -381,6 +383,7 @@ public class RobotContainer {
         } else if (selectedAuton.equals("InitiationLineAndShoot")) {
             autonCommand = new SequentialCommandGroup(
                 new DriveDistance(-24.0, driveTrain),
+
                 new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper)
             );
         }
