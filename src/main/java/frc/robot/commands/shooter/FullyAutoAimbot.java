@@ -23,10 +23,10 @@ public class FullyAutoAimbot extends ParallelCommandGroup {
   /**
    * Creates a new ShootFullyAutomatic.
    */
-  public FullyAutoAimbot(DriveTrain driveTrain, LimelightCamera limelight, Shooter shooter, Feeder feeder, Hopper hopper) {
+  public FullyAutoAimbot(DriveTrain driveTrain, LimelightCamera limelight, Shooter shooter, Feeder feeder, Hopper hopper, int side) {
     //Rotates to target and revs shooter to target rpm, THEN it runs the feeder and hopper
-    super(new StayOnTarget(driveTrain),
-          new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
-          new AutoFeedBalls(feeder, hopper, shooter, driveTrain));
+    super(new StayOnTarget(driveTrain, side),
+          new RunShooterRPMPID(shooter, driveTrain.getLimelight(), side),
+          new AutoFeedBalls(feeder, hopper, shooter, driveTrain, side));
   }
 }

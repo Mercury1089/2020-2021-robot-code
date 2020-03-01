@@ -106,10 +106,15 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     return shooterLeft != null ? shooterLeft.getEncVelocity() : 0.0;
   }
 
-  public double getTargetRPM() {
+  public double getTargetRPM(int type) {
     double distance = limelight.calcDistFromVert();
     if(distance > 100.0 && distance < 250.0)
-      updateTargetRPM(distance);
+      if(type == 1)
+        updateTargetRPMCenter(distance);
+      else if(type == 2)
+        updateTargetRPMSide(distance);
+      else if(type == 3)
+        targetRPM = 4400;
     else
       setTargetRPM(4000);
     return targetRPM;
@@ -124,12 +129,16 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     targetRPM = rpm;
   }
 
-  public void updateTargetRPM(double distance) {
+  public void updateTargetRPMCenter(double distance) {
     targetRPM = 7.663505E-5*Math.pow(distance, 4) - 0.056264*Math.pow(distance, 3) + 15.436557*Math.pow(distance, 2) - 1867.408104*distance + 87769.565386;
   }
 
+  public void updateTargetRPMSide(double distance) {
+    targetRPM = 2.6986E-6*Math.pow(distance, 5) +  -2.0714714E-3*Math.pow(distance, 4) + 0.620425066*Math.pow(distance, 3) + -90.02739959*Math.pow(distance, 2) + 6266.035238*distance + -160593.55972499;
+  }
+
   public boolean atTargetRpm() {
-    return Math.abs(getRPM() - getTargetRPM()) <= 0.01 * getTargetRPM();
+    return Math.abs(getRPM() - targetRPM) <= 0.01 * targetRPM;
   }
 
   public Command getDefaultCommand() {
@@ -183,7 +192,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber(getName() + "/PIDGains/F", velocityGains.kF);
 
     SmartDashboard.putBoolean(getName() + "/AtTargetRPM", atTargetRpm());
-    SmartDashboard.putNumber(getName() + "/TargetRPM", getTargetRPM());
+    SmartDashboard.putNumber(getName() + "/TargetRPM", targetRPM);
     SmartDashboard.putNumber("Hypothetical Distance", getHyotheticalDistance());
     SmartDashboard.putNumber("Hypothetical RPM", getTargetRPMFromHypothetical());
   }

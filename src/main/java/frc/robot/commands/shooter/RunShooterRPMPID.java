@@ -19,16 +19,18 @@ public class RunShooterRPMPID extends CommandBase {
 
   private Shooter shooter;
 
+  private int side;
   private Limelight limelight;
 
   /**
    * Creates a new RunShooter.
    */
-  public RunShooterRPMPID(Shooter shooter, Limelight limelight) {
+  public RunShooterRPMPID(Shooter shooter, Limelight limelight, int side) {
     addRequirements(shooter);
     setName("RunShooterRPMPID");
     this.shooter = shooter;
     this.limelight = limelight;
+    this.side = side;
   }
 
   // Called when the command is initially scheduled.
@@ -40,7 +42,7 @@ public class RunShooterRPMPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setVelocity(Math.abs(shooter.getTargetRPM()));
+    shooter.setVelocity(Math.abs(shooter.getTargetRPM(side)));
   }
 
   // Called once the command ends or is interrupted.

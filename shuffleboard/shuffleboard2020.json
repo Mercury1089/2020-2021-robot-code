@@ -844,6 +844,41 @@
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
+          },
+          "10,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Hypothetical Distance",
+              "_title": "Hypothetical Distance"
+            }
+          },
+          "11,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Hypothetical RPM",
+              "_title": "Hypothetical RPM"
+            }
+          },
+          "12,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/TargetAcquired",
+              "_title": "DriveTrain/TargetAcquired",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -1309,7 +1344,7 @@
           },
           "7,0": {
             "size": [
-              1,
+              2,
               1
             ],
             "content": {
@@ -1360,50 +1395,6 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/PIDTuner/kI",
               "_title": "/SmartDashboard/PIDTuner/kI"
-            }
-          },
-          "8,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Shooter/RPM",
-              "_title": "/SmartDashboard/Shooter/RPM"
-            }
-          },
-          "8,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Shooter/RunSpeed",
-              "_title": "/SmartDashboard/Shooter/RunSpeed"
-            }
-          },
-          "8,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Shooter/SetRPM",
-              "_title": "/SmartDashboard/Shooter/SetRPM"
-            }
-          },
-          "8,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Shooter/ShooterMode",
-              "_title": "/SmartDashboard/Shooter/ShooterMode"
             }
           },
           "2,0": {
@@ -1461,7 +1452,7 @@
               "_title": "SmartDashboard/DriveTrain/PID0 Sensor right"
             }
           },
-          "10,0": {
+          "10,5": {
             "size": [
               1,
               1
@@ -1474,7 +1465,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "11,0": {
+          "11,5": {
             "size": [
               1,
               1
@@ -1485,6 +1476,47 @@
               "_title": "SmartDashboard/Shooter/AtTargetRPM",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Hypothetical Distance",
+              "_title": "/SmartDashboard/Hypothetical Distance"
+            }
+          },
+          "7,5": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Hypothetical RPM",
+              "_title": "/SmartDashboard/Hypothetical RPM"
+            }
+          },
+          "10,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight-merc",
+              "_title": "limelight-merc",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           }
         }
@@ -1519,7 +1551,7 @@
             "content": {
               "_type": "ComboBox Chooser",
               "_source0": "network_table:///SmartDashboard/Choose Auton",
-              "_title": "SmartDashboard/Choose Auton"
+              "_title": "/SmartDashboard/Choose Auton"
             }
           },
           "4,0": {
@@ -1530,13 +1562,13 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Auton Chosen",
-              "_title": "SmartDashboard/Auton Chosen"
+              "_title": "/SmartDashboard/Auton Chosen"
             }
           },
-          "0,1": {
+          "6,0": {
             "size": [
-              3,
-              2
+              5,
+              5
             ],
             "content": {
               "_type": "Camera Stream",
@@ -1548,11 +1580,86 @@
               "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "imageWidth": 0,
+              "imageHeight": 0
+            }
+          },
+          "11,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Shooter/AtTargetRPM",
+              "_title": "/SmartDashboard/Shooter/AtTargetRPM",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "11,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/IsAligned",
+              "_title": "/SmartDashboard/DriveTrain/IsAligned",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "11,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/IsAligned",
+              "_title": "/SmartDashboard/DriveTrain/IsAligned",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "4,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/LimelightLEDState",
+              "_title": "/SmartDashboard/DriveTrain/LimelightLEDState",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "2,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/RPM",
+              "_title": "/SmartDashboard/Shooter/RPM"
             }
           }
         }
+      }
+    },
+    {
+      "title": "Tab 5",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {}
       }
     }
   ],
