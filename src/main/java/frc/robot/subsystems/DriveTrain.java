@@ -60,6 +60,12 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     private DriveTrainLayout layout;
     private boolean isInMotionMagicMode;
     private Limelight limelight;
+    private ShootingStyle shootingStyle;
+
+    public enum ShootingStyle{
+        AUTOMATIC,
+        MANUAL
+    }
 
     /**
      * Creates the drivetrain, assuming that there are four controllers.
@@ -73,6 +79,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         super();
         setName("DriveTrain");
         this.layout = layout;
+        shootingStyle = ShootingStyle.AUTOMATIC;
         switch (layout) {
             case FALCONS:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
@@ -145,6 +152,14 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         return CommandScheduler.getInstance().getDefaultCommand(this);
     }
 
+    public void setShootingLocation(ShootingStyle shootingStyle){
+        this.shootingStyle = shootingStyle;
+    }
+
+    public ShootingStyle getShootingStyle(){
+        return shootingStyle;
+    }
+
     public void setDefaultCommand(Command command){
         CommandScheduler.getInstance().setDefaultCommand(this, command);
     }
@@ -186,7 +201,6 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
         /* Set status frame periods to ensure we don't have stale data */
         setStatusFramePeriod(framePeriodMs, pigeonFramePeriodMs);
-
         isInMotionMagicMode = true;
     }
 
@@ -194,6 +208,9 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         initializeMotionMagicFeedback(MOTOR_CONTROLLER_STATUS_FRAME_PERIOD_MS, PIGEON_STATUS_FRAME_PERIOD_MS);
     }
 
+    public boolean isReadyToShoot(){
+        return true;
+    }
     public Limelight getLimelight() {
         return this.limelight;
     }
