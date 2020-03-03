@@ -18,16 +18,22 @@ public class AutoFeedBalls extends CommandBase {
   private Hopper hopper;
   private Shooter shooter;
   private DriveTrain driveTrain;
+  private int side;
 
   /**
    * Creates a new AutoFeedBalls.
    */
-  public AutoFeedBalls(Feeder feeder, Hopper hopper, Shooter shooter, DriveTrain driveTrain) {
+  public AutoFeedBalls(Feeder feeder, Hopper hopper, Shooter shooter, DriveTrain driveTrain, int side) {
     addRequirements(feeder);
     this.feeder = feeder;
     this.hopper = hopper;
     this.shooter = shooter;
     this.driveTrain = driveTrain;
+    this.side = side;
+  }
+
+  public AutoFeedBalls(Feeder feeder, Hopper hopper, Shooter shooter, DriveTrain driveTrain) {
+    this(feeder, hopper, shooter, driveTrain, 1);
   }
 
   // Called when the command is initially scheduled.
@@ -38,13 +44,21 @@ public class AutoFeedBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(shooter.atTargetRpm() && driveTrain.isAligned()) {
-      feeder.setSpeed(feeder.getRunSpeed());
-      hopper.setSpeed(hopper.getRunSpeed());
+    if(side != 3) {
+      if(shooter.atTargetRpm() && driveTrain.isAligned()) {
+        feeder.setSpeed(feeder.getRunSpeed());
+        hopper.setSpeed(hopper.getRunSpeed());
+      }
+      else {
+        feeder.setSpeed(0.0);
+        hopper.setSpeed(0.0);
+      }
     }
-    else {
-      feeder.setSpeed(0.0);
-      hopper.setSpeed(0.0);
+    else{
+      if(shooter.atTargetRpm()){
+        feeder.setSpeed(feeder.getRunSpeed());
+        hopper.setSpeed(hopper.getRunSpeed());
+      }
     }
   }
 
