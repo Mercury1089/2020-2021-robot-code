@@ -1316,7 +1316,7 @@
             ],
             "content": {
               "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Hopper/Sig3",
+              "_source0": "network_table:///SmartDashboard/Shooter/SetRPM",
               "_title": "/SmartDashboard/Hopper/Sig3"
             }
           },
@@ -1518,6 +1518,17 @@
               "imageWidth": 0,
               "imageHeight": 0
             }
+          },
+          "3,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/SetRPM",
+              "_title": "/SmartDashboard/Shooter/SetRPM"
+            }
           }
         }
       }
@@ -1638,13 +1649,24 @@
           },
           "2,2": {
             "size": [
-              1,
-              1
+              3,
+              2
             ],
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Shooter/RPM",
               "_title": "/SmartDashboard/Shooter/RPM"
+            }
+          },
+          "4,3": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/TargetRPMFromCenter",
+              "_title": "/SmartDashboard/Shooter/TargetRPMFromCenter"
             }
           }
         }
@@ -1664,9 +1686,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -8.0,
-    "y": -8.0,
-    "width": 1936.0,
-    "height": 1056.0
+    "x": -7.0,
+    "y": 0.0,
+    "width": 1934.0,
+    "height": 1047.0
   }
 }
