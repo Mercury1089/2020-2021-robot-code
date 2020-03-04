@@ -504,13 +504,18 @@ public class RobotContainer {
                     new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench2Ball", ProfileDirection.BACKWARD), driveTrain),
                     new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
                     new RunIntake(intake),
-                    new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1)
+                    new RunShooterRPMPID(shooter, driveTrain.getLimelight(), ShootingStyle.MANUAL)
                 ),
                 new ParallelDeadlineGroup(
                     new MoveOnTrajectory(new MercMotionProfile("ShootTrench2Ball", ProfileDirection.FORWARD), driveTrain),
                     new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
                 ),
-                new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper, 1)
+                //new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, ShootingStyle.AUTOMATIC)
+                new ParallelCommandGroup(
+                    new RotateToTarget(driveTrain),
+                    new RunShooterRPMPID(shooter, driveTrain.getLimelight(), ShootingStyle.MANUAL),
+                    new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                )
             );
         } catch (Exception e) {
             System.out.println(e);
