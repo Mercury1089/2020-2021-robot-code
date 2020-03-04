@@ -2,23 +2,24 @@ package frc.robot.commands.drivetrain;
 
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimelightCamera;
+import frc.robot.subsystems.DriveTrain.ShootingStyle;
 
 public class StayOnTarget extends RotateToTarget {
 
-    private int side;
+    private ShootingStyle shootingStyle;
     
-    public StayOnTarget(DriveTrain driveTrain, int side){
+    public StayOnTarget(DriveTrain driveTrain, ShootingStyle shootingStyle){
         super(driveTrain);
-        this.side = side;
+        this.shootingStyle = shootingStyle;
     }
 
     public StayOnTarget(DriveTrain driveTrain) {
-        this(driveTrain, 1);
+        this(driveTrain, ShootingStyle.AUTOMATIC);
     }
-
+    
     @Override
     public boolean isFinished(){
         super.isFinished();
-        return side == 3;
+        return shootingStyle == ShootingStyle.MANUAL;
     }
 }

@@ -15,6 +15,7 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.DriveTrain.ShootingStyle;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -23,10 +24,15 @@ public class FullyAutoAimbot extends ParallelCommandGroup {
   /**
    * Creates a new ShootFullyAutomatic.
    */
-  public FullyAutoAimbot(DriveTrain driveTrain, LimelightCamera limelight, Shooter shooter, Feeder feeder, Hopper hopper, int side) {
+  public FullyAutoAimbot(DriveTrain driveTrain, Shooter shooter, Feeder feeder, Hopper hopper, ShootingStyle shootingStyle) {
     //Rotates to target and revs shooter to target rpm, THEN it runs the feeder and hopper
-    super(new StayOnTarget(driveTrain, side),
-          new RunShooterRPMPID(shooter, driveTrain.getLimelight(), side),
-          new AutoFeedBalls(feeder, hopper, shooter, driveTrain, side));
+    super(new StayOnTarget(driveTrain, shootingStyle),
+          new RunShooterRPMPID(shooter, driveTrain.getLimelight(), shootingStyle),
+          new AutoFeedBalls(feeder, hopper, shooter, driveTrain, shootingStyle));
+  }
+
+  public FullyAutoAimbot(DriveTrain driveTrain, Shooter shooter, Feeder feeder, Hopper hopper) {
+    //Rotates to target and revs shooter to target rpm, THEN it runs the feeder and hopper
+    this(driveTrain, shooter, feeder, hopper, ShootingStyle.AUTOMATIC);
   }
 }

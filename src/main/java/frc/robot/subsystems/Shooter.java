@@ -23,6 +23,7 @@ import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.RobotMap.*;
 import frc.robot.sensors.Limelight;
+import frc.robot.subsystems.DriveTrain.ShootingStyle;
 
 public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher, IMercPIDTunable {
   // private IMercMotorController flywheel;
@@ -39,6 +40,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   private PIDGain velocityGains;
 
   private Limelight limelight;
+  private ShootingStyle shootingStyle;
 
   public enum ShooterMode {
     ONE_WHEEL, NONE
@@ -106,19 +108,25 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     return shooterLeft != null ? shooterLeft.getEncVelocity() : 0.0;
   }
 
-  public double getTargetRPM(int type) {
+  public boolean isReadyToShoot(){
+    return atTargetRpm();
+  }
+
+  public double getTargetRPM() {
     double distance = limelight.calcDistFromVert();
     if(distance > 100.0 && distance < 250.0)
-      if(type == 1)
+      if(shootingStyle == ShootingStyle.AUTOMATIC)
         updateTargetRPMCenter(distance);
-      else if(type == 2)
-        updateTargetRPMSide(distance);
-      else if(type == 3)
+      else if(shootingStyle == ShootingStyle.MANUAL)
         targetRPM = 4400;
     else
       setTargetRPM(4000);
     targetRPM = getRunRPM();
     return targetRPM;
+  }
+
+  public void setShootingStyle(ShootingStyle shootingStyle) {
+    this.shootingStyle = shootingStyle;
   }
 
   public double getTargetRPMFromHypothetical() {

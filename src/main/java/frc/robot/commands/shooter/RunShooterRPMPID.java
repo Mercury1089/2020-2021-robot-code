@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.sensors.Limelight;
 import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.DriveTrain.ShootingStyle;
 import frc.robot.util.interfaces.IMercMotorController;
 
 public class RunShooterRPMPID extends CommandBase {
@@ -19,18 +20,21 @@ public class RunShooterRPMPID extends CommandBase {
 
   private Shooter shooter;
 
-  private int side;
   private Limelight limelight;
 
   /**
    * Creates a new RunShooter.
    */
-  public RunShooterRPMPID(Shooter shooter, Limelight limelight, int side) {
+  public RunShooterRPMPID(Shooter shooter, Limelight limelight, ShootingStyle shootingStyle) {
     addRequirements(shooter);
     setName("RunShooterRPMPID");
     this.shooter = shooter;
     this.limelight = limelight;
-    this.side = side;
+    shooter.setShootingStyle(shootingStyle);
+  }
+
+  public RunShooterRPMPID(Shooter shooter, Limelight limelight) {
+    this(shooter, limelight, ShootingStyle.AUTOMATIC);
   }
 
   // Called when the command is initially scheduled.
@@ -42,7 +46,7 @@ public class RunShooterRPMPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    shooter.setVelocity(Math.abs(shooter.getTargetRPM(side)));
+    shooter.setVelocity(Math.abs(shooter.getTargetRPM()));
   }
 
   // Called once the command ends or is interrupted.

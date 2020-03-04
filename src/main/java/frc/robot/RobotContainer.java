@@ -39,6 +39,7 @@ import frc.robot.commands.spinner.ShiftOnScale;
 import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
+import frc.robot.subsystems.DriveTrain.ShootingStyle;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Elevator.ElevatorPosition;
 import frc.robot.subsystems.Feeder;
@@ -154,8 +155,8 @@ public class RobotContainer {
         //gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         gamepadLB.whenPressed(() -> driveTrain.getLimelight().setLEDState(LimelightLEDState.ON));
         gamepadRB.whenPressed(() -> driveTrain.getLimelight().setLEDState(LimelightLEDState.OFF));
-        gamepadLT.toggleWhenPressed(new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper, 3));
-        gamepadRT.toggleWhenPressed(new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper, 1));
+        gamepadLT.toggleWhenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, ShootingStyle.MANUAL));
+        gamepadRT.toggleWhenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, ShootingStyle.AUTOMATIC));
         
     }
 
@@ -253,7 +254,7 @@ public class RobotContainer {
                     autonCommand = new SequentialCommandGroup(
                         new ParallelDeadlineGroup(
                             new WaitCommand(5),
-                            new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                            new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                             new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                         ),
                         new ParallelDeadlineGroup(
@@ -272,7 +273,7 @@ public class RobotContainer {
                         ),
                         new ParallelCommandGroup(
                             new RotateToTarget(driveTrain),
-                            new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                            new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                             new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                         )
                     );
@@ -286,7 +287,7 @@ public class RobotContainer {
                         new ParallelDeadlineGroup(
                             new WaitCommand(5),
                             new RotateToTarget(driveTrain),
-                            new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                            new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                             new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                         ),
                         new ParallelDeadlineGroup(
@@ -305,7 +306,7 @@ public class RobotContainer {
                         ),
                         new ParallelCommandGroup(
                             new RotateToTarget(driveTrain),
-                            new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                            new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                             new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                         )
                     );
@@ -319,7 +320,7 @@ public class RobotContainer {
                 autonCommand = new SequentialCommandGroup(
                     new ParallelDeadlineGroup(
                         new WaitCommand(4),
-                        new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper, 1),
+                        new FullyAutoAimbot(driveTrain, shooter, feeder, hopper),
                         new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator)
                     ),
                     new ParallelDeadlineGroup(
@@ -335,7 +336,7 @@ public class RobotContainer {
                         new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
                         new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
                     ),
-                    new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper, 1)
+                    new FullyAutoAimbot(driveTrain, shooter, feeder, hopper)
                 );
             } catch (FileNotFoundException e) {
                 System.out.println(e);
@@ -372,7 +373,7 @@ public class RobotContainer {
                     new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
                     new ParallelCommandGroup(
                         new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                        new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                         new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                     )
                 );
@@ -388,7 +389,7 @@ public class RobotContainer {
             autonCommand = new SequentialCommandGroup(
                 new DriveDistance(-24.0, driveTrain),
 
-                new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper, 1)
+                new FullyAutoAimbot(driveTrain, shooter, feeder, hopper)
             );
         }
         */
@@ -429,7 +430,7 @@ public class RobotContainer {
                 autonCommand = new SequentialCommandGroup(
                     new ParallelDeadlineGroup(
                         new WaitCommand(5),
-                        new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                        new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                         new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                     ),
                     new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
@@ -448,7 +449,7 @@ public class RobotContainer {
                     ),
                     new ParallelCommandGroup(
                         new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                        new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                         new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                     )
                 );
@@ -462,7 +463,7 @@ public class RobotContainer {
                     new ParallelDeadlineGroup(
                         new WaitCommand(5),
                         new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                        new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                         new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                     ),
                     new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
@@ -481,7 +482,7 @@ public class RobotContainer {
                     ),
                     new ParallelCommandGroup(
                         new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                        new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                         new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                     )
                 );
@@ -523,7 +524,7 @@ public class RobotContainer {
                 autonCommand = new SequentialCommandGroup(
                     new ParallelDeadlineGroup(
                         new WaitCommand(5),
-                        new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                        new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                         new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                     ),
                     new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
@@ -542,7 +543,7 @@ public class RobotContainer {
                     ),
                     new ParallelCommandGroup(
                         new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                        new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                         new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                     )
                 );
@@ -556,7 +557,7 @@ public class RobotContainer {
                     new ParallelDeadlineGroup(
                         new WaitCommand(5),
                         new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                        new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                         new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                     ),
                     new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
@@ -575,7 +576,7 @@ public class RobotContainer {
                     ),
                     new ParallelCommandGroup(
                         new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                        new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                         new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                     )
                 );
@@ -601,7 +602,7 @@ public class RobotContainer {
                 new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
                 new ParallelCommandGroup(
                     new RotateToTarget(driveTrain),
-                    new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1),
+                    new RunShooterRPMPID(shooter, driveTrain.getLimelight()),
                     new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
                 )
             );
