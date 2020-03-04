@@ -9,6 +9,7 @@ package frc.robot.commands.feeder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain.ShootingStyle;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Shooter;
@@ -18,22 +19,22 @@ public class AutoFeedBalls extends CommandBase {
   private Hopper hopper;
   private Shooter shooter;
   private DriveTrain driveTrain;
-  private int side;
+  private ShootingStyle shootingStyle;
 
   /**
    * Creates a new AutoFeedBalls.
    */
-  public AutoFeedBalls(Feeder feeder, Hopper hopper, Shooter shooter, DriveTrain driveTrain, int side) {
+  public AutoFeedBalls(Feeder feeder, Hopper hopper, Shooter shooter, DriveTrain driveTrain, ShootingStyle shootingStyle) {
     addRequirements(feeder);
     this.feeder = feeder;
     this.hopper = hopper;
     this.shooter = shooter;
     this.driveTrain = driveTrain;
-    this.side = side;
+    this.shootingStyle = shootingStyle;
   }
 
   public AutoFeedBalls(Feeder feeder, Hopper hopper, Shooter shooter, DriveTrain driveTrain) {
-    this(feeder, hopper, shooter, driveTrain, 1);
+    this(feeder, hopper, shooter, driveTrain, ShootingStyle.AUTOMATIC);
   }
 
   // Called when the command is initially scheduled.
@@ -44,21 +45,9 @@ public class AutoFeedBalls extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(side != 3) {
-      if(shooter.atTargetRpm() && driveTrain.isAligned()) {
-        feeder.setSpeed(feeder.getRunSpeed());
-        hopper.setSpeed(hopper.getRunSpeed());
-      }
-      else {
-        feeder.setSpeed(0.0);
-        hopper.setSpeed(0.0);
-      }
-    }
-    else{
-      if(shooter.atTargetRpm()){
-        feeder.setSpeed(feeder.getRunSpeed());
-        hopper.setSpeed(hopper.getRunSpeed());
-      }
+    if(driveTrain.isReadyToShoot() && shooter.isReadyToShoot()){
+      hopper.setSpeed(hopper.getRunSpeed());
+      feeder.setSpeed(feeder.getRunSpeed());
     }
   }
 

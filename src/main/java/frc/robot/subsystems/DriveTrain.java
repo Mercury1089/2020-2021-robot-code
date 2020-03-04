@@ -209,7 +209,13 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     }
 
     public boolean isReadyToShoot(){
-        return true;
+        switch(shootingStyle) {
+            case AUTOMATIC:
+                return isAligned();
+            case MANUAL:
+                return true;
+        }
+        return false;
     }
     public Limelight getLimelight() {
         return this.limelight;
