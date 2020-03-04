@@ -69,7 +69,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
     setRunSpeed(0.0);
     targetRPM = 0.0;
-    velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
+    velocityGains = new PIDGain(2e-5, 325e-9, 1e-5, 0);
     
     this.limelight = limelight;
 
@@ -117,6 +117,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
         targetRPM = 4400;
     else
       setTargetRPM(4000);
+    targetRPM = getRunRPM();
     return targetRPM;
   }
 

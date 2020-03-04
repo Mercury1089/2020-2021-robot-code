@@ -51,6 +51,7 @@ import frc.robot.subsystems.Shooter.ShooterMode;
 import frc.robot.subsystems.Spinner;
 import frc.robot.util.MercMotionProfile;
 import frc.robot.util.MercMotionProfile.ProfileDirection;
+import frc.robot.util.ShuffleDash.Autons;
 import frc.robot.util.ShuffleDash;
 import frc.robot.util.TriggerButton;
 
@@ -238,12 +239,14 @@ public class RobotContainer {
         gamepadRT = new TriggerButton(gamepad, GAMEPAD_AXIS.rightTrigger);
     }
     
-    public void initializeAutonCommand(){
-        String selectedAuton = shuffleDash.getAuton();
-        if(selectedAuton == null) {
+    public void initializeAutonCommand() {
+        ShuffleDash.Autons selectedAuton = shuffleDash.getAuton(); 
+        if(selectedAuton == null || selectedAuton == Autons.NOTHING) {
             System.out.println("No Auton My Dude");
             return;
-        } else if (selectedAuton.equals("Center5BallTrench")) {
+        } 
+        /*
+        else if (selectedAuton.equals("Center5BallTrench")) {
             if(driveTrain.isAligned()) {
                 DriverStation.reportError("Center5BallTrench Auton", false);
                 try {
@@ -388,30 +391,31 @@ public class RobotContainer {
                 new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper, 1)
             );
         }
-        /*
-        else {
-            switch(selectedAuton) {
-                case CENTER_5BALL_RENDEZVOUS:
-                    initCenter5BallRendezvous();
-                    break;
-                case CENTER_5BALL_TRENCH:
-                    initCenter5BallTrench();
-                    break;
-                case INITIATION_LINE:
-                    initInitiationLine();
-                    break;
-                case LEFT_5BALL_TRENCH:
-                    initLeft5BallTrench();
-                    break;
-                case RIGHT_5BALL_RENDEZVOUS:
-                    initRight5BallRendezvous();
-                    break;
-                case STEAL_OPPONENT_2BALL:
-                    initStealOpponent2Ball();
-                    break;
-            }
-        }
         */
+        switch(selectedAuton) {
+            case CENTER_5BALL_RENDEZVOUS:
+                initCenter5BallRendezvous();
+                break;
+            case CENTER_5BALL_TRENCH:
+                initCenter5BallTrench();
+                break;
+            case INITIATION_LINE:
+                initInitiationLine();
+                break;
+            case LEFT_2BALL_TRENCH:
+                initLeft2BallTrench();
+                break;
+            case LEFT_5BALL_TRENCH:
+                initLeft5BallTrench();
+                break;
+            case RIGHT_5BALL_RENDEZVOUS:
+                initRight5BallRendezvous();
+                break;
+            case STEAL_OPPONENT_2BALL:
+                initStealOpponent2Ball();
+                break;
+            default:
+        }
     }
 
     public void initCenter5BallRendezvous() {
@@ -489,6 +493,27 @@ public class RobotContainer {
 
     public void initInitiationLine() {
         
+    }
+
+    public void initLeft2BallTrench() {
+        DriverStation.reportError("Left2BallTrench Auton", false);
+        try {
+            autonCommand = new SequentialCommandGroup(
+                new ParallelDeadlineGroup(
+                    new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench2Ball", ProfileDirection.BACKWARD), driveTrain),
+                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                    new RunIntake(intake),
+                    new RunShooterRPMPID(shooter, driveTrain.getLimelight(), 1)
+                ),
+                new ParallelDeadlineGroup(
+                    new MoveOnTrajectory(new MercMotionProfile("ShootTrench2Ball", ProfileDirection.FORWARD), driveTrain),
+                    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
+                ),
+                new FullyAutoAimbot(driveTrain, limelightCamera, shooter, feeder, hopper, 1)
+            );
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     public void initLeft5BallTrench() {
