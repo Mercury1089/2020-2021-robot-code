@@ -117,7 +117,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     if(distance > 100.0 && distance < 250.0)
       if(shootingStyle == ShootingStyle.AUTOMATIC)
         updateTargetRPMCenter(distance);
-      else if(shootingStyle == ShootingStyle.AUTOMATIC)
+      else if(shootingStyle == ShootingStyle.MANUAL)
         targetRPM = 4400;
     else
       setTargetRPM(4000);

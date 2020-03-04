@@ -16,7 +16,7 @@ public class StayOnTarget extends RotateToTarget {
     public StayOnTarget(DriveTrain driveTrain) {
         this(driveTrain, ShootingStyle.AUTOMATIC);
     }
-
+    
     @Override
     public boolean isFinished(){
         super.isFinished();
