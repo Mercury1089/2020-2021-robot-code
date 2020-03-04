@@ -129,6 +129,7 @@ public class ShuffleDash {
     public void addRightAutons() {
         autonChooser.addOption("Right", null);
         //autonChooser.addOption("5BallRendezvousRun", "Right5BallRendezvous");
+        //autonChooser.addOption("2BallRendezvousRun", Autons.RIGHT_2BALL_RENDEZVOUS);
         autonChooser.addOption("5BallRendezvousRun", Autons.RIGHT_5BALL_RENDEZVOUS);
     }
 
@@ -136,6 +137,7 @@ public class ShuffleDash {
         autonChooser.addOption("Center", null);
         //autonChooser.addOption("5BallRendezvousRun", "Center5BallRendezvous");
         //autonChooser.addOption("5BallTrenchRun", "Center5BallTrench");
+        autonChooser.addOption("2BallRendezvousRun", Autons.CENTER_2BALL_RENDEZVOUS);
         autonChooser.addOption("5BallRendezvousRun", Autons.CENTER_5BALL_RENDEZVOUS);
         autonChooser.addOption("5BallTrenchRun", Autons.CENTER_5BALL_TRENCH);
     }
@@ -223,6 +225,7 @@ public class ShuffleDash {
     }
 
     public enum Autons {
+        CENTER_2BALL_RENDEZVOUS,
         CENTER_5BALL_RENDEZVOUS,
         CENTER_5BALL_TRENCH,
         INITIATION_LINE,

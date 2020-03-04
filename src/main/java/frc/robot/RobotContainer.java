@@ -394,6 +394,9 @@ public class RobotContainer {
         }
         */
         switch(selectedAuton) {
+            case CENTER_2BALL_RENDEZVOUS:
+                initCenter2BallRendezvous();
+                break;
             case CENTER_5BALL_RENDEZVOUS:
                 initCenter5BallRendezvous();
                 break;
@@ -419,9 +422,35 @@ public class RobotContainer {
         }
     }
 
-    public void initCenter5BallRendezvous() {
-        
+    public void initCenter2BallRendezvous() {
+        DriverStation.reportError("Center2BallRendezvous Auton", false);
+        try {
+            autonCommand = new SequentialCommandGroup(
+                new ParallelDeadlineGroup(
+                    new MoveOnTrajectory(new MercMotionProfile("Center2BallRendezvous", ProfileDirection.BACKWARD), driveTrain),
+                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
+                    new RunIntake(intake),
+                    new RunShooterRPMPID(shooter, driveTrain.getLimelight(), ShootingStyle.MANUAL)
+                ),
+                new ParallelDeadlineGroup(
+                    new MoveOnTrajectory(new MercMotionProfile("2BallRendezvousToShoot", ProfileDirection.FORWARD), driveTrain),
+                    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
+                ),
+                //new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, ShootingStyle.AUTOMATIC) 
+                new ParallelCommandGroup(
+                    new RotateToTarget(driveTrain),
+                    new RunShooterRPMPID(shooter, driveTrain.getLimelight(), ShootingStyle.MANUAL),
+                    new AutoFeedBalls(feeder, hopper, shooter, driveTrain)
+                )
+            );
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     } 
+
+    public void initCenter5BallRendezvous() {
+    
+    }
         
     public void initCenter5BallTrench() {
         if(driveTrain.isAligned()) {
