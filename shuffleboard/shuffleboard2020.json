@@ -1020,6 +1020,12 @@
                   "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [6]",
                   "_title": "LiveWindow/Ungrouped/Victor SPX [6]",
                   "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Speed Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [15]",
+                  "_title": "Victor SPX [15]",
+                  "Visuals/Orientation": "HORIZONTAL"
                 }
               ]
             }
@@ -1667,6 +1673,17 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Shooter/TargetRPMFromCenter",
               "_title": "/SmartDashboard/Shooter/TargetRPMFromCenter"
+            }
+          },
+          "2,4": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/TargetRPM",
+              "_title": "SmartDashboard/Shooter/TargetRPM"
             }
           }
         }

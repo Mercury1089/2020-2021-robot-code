@@ -114,14 +114,18 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
   public double getTargetRPM() {
     double distance = limelight.calcDistFromVert();
-    if(distance > 100.0 && distance < 250.0)
-      if(shootingStyle == ShootingStyle.AUTOMATIC)
+    System.out.println(shootingStyle);
+    switch(shootingStyle) {
+      case AUTOMATIC:
         updateTargetRPMCenter(distance);
-      else if(shootingStyle == ShootingStyle.MANUAL)
-        targetRPM = 4400;
-    else
-      setTargetRPM(4000);
-    targetRPM = getRunRPM();
+        break;
+      case MANUAL:
+        targetRPM = 4400.0;
+        break;
+      default:
+        targetRPM = 4000.0;
+        break;
+    }
     return targetRPM;
   }
 

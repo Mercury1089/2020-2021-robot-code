@@ -128,6 +128,8 @@ public class RobotContainer {
         left2.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.setRollerSpeed(0.0), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
         left3.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), 
                                                    new RunCommand(() -> intake.setRollerSpeed(-0.7 * intake.INTAKE_SPEED), intake)));
+                                
+        left4.toggleWhenPressed(new RunShooterRPMPID(shooter, driveTrain.getLimelight(), ShootingStyle.MANUAL));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
         System.out.println(intakeArticulator.getIntakePosition().toString());
 

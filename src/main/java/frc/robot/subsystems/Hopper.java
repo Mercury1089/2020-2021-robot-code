@@ -20,17 +20,23 @@ import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
 public class Hopper extends SubsystemBase implements IMercShuffleBoardPublisher {
   
-  private IMercMotorController hopperBelt;
-  private double runSpeed;
+  private IMercMotorController hopperBelt, ballJiggler;
+  private final double RUN_SPEED, JIGGLE_SPEED;
 
   private BallCounter ballCounter;
   /**
    * Creates a new Hopper.
    */
   public Hopper() {
+    RUN_SPEED = -0.5;
+    JIGGLE_SPEED = 0.5;
+
     hopperBelt = new MercVictorSPX(CAN.HOPPER_BELT);
     hopperBelt.setNeutralMode(NeutralMode.Brake);
-    runSpeed = -0.5;
+
+    ballJiggler = new MercVictorSPX(CAN.JIGGLER);
+    ballJiggler.setNeutralMode(NeutralMode.Brake);
+
     setName("Hopper");
 
     ballCounter = new BallCounter();
@@ -40,8 +46,18 @@ public class Hopper extends SubsystemBase implements IMercShuffleBoardPublisher 
     hopperBelt.setSpeed(speed);
   }
 
+  public void stopHopper() {
+    hopperBelt.setSpeed(0.0);
+    ballJiggler.setSpeed(0.0);
+  }
+
+  public void runHopper(){
+    hopperBelt.setSpeed(RUN_SPEED);
+    ballJiggler.setSpeed(JIGGLE_SPEED);
+  }
+
   public double getRunSpeed() {
-    return runSpeed;
+    return RUN_SPEED;
   }
 
   @Override

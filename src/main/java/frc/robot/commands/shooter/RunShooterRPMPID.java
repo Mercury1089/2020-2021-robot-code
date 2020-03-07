@@ -22,6 +22,8 @@ public class RunShooterRPMPID extends CommandBase {
 
   private Limelight limelight;
 
+  private ShootingStyle shootingStyle;
+
   /**
    * Creates a new RunShooter.
    */
@@ -30,17 +32,18 @@ public class RunShooterRPMPID extends CommandBase {
     setName("RunShooterRPMPID");
     this.shooter = shooter;
     this.limelight = limelight;
-    shooter.setShootingStyle(shootingStyle);
+    this.shootingStyle = shootingStyle;
   }
-
+  
   public RunShooterRPMPID(Shooter shooter, Limelight limelight) {
     this(shooter, limelight, ShootingStyle.AUTOMATIC);
   }
-
+  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     limelight.setLEDState(LimelightLEDState.ON);
+    shooter.setShootingStyle(shootingStyle);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

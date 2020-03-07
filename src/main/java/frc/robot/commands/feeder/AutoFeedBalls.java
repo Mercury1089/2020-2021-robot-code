@@ -46,8 +46,8 @@ public class AutoFeedBalls extends CommandBase {
   @Override
   public void execute() {
     if(driveTrain.isReadyToShoot() && shooter.isReadyToShoot()){
-      hopper.setSpeed(hopper.getRunSpeed());
-      feeder.setSpeed(feeder.getRunSpeed());
+      hopper.runHopper();
+      feeder.runFeeder();
     }
   }
 
@@ -55,6 +55,7 @@ public class AutoFeedBalls extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     feeder.setSpeed(0.0);
+    hopper.stopHopper();
   }
 
   // Returns true when the command should end.
