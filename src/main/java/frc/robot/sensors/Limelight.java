@@ -22,7 +22,7 @@ public class Limelight implements TableEntryListener {
     private final double horizExp = -0.953;
 
     private NetworkTable nt; // finds the limelight network table
-    private double numTargets, targetCenterXAngle, targetCenterYAngle, targetArea, horizontalLength, verticalLength;
+    private double numTargets, targetCenterXAngle, targetCenterYAngle, targetArea, horizontalLength, verticalLength, shortLength, longLength;
     private double[] cornerx;
     private boolean targetAcquired;
     private final double areaCoeff = 16.2;
@@ -44,6 +44,8 @@ public class Limelight implements TableEntryListener {
         targetAcquired = false;
         cornerx = new double[] {};
         nt.addEntryListener(this, EntryListenerFlags.kUpdate);
+        shortLength = 0.0;
+        longLength = 0.0;
     }
 
     /**
@@ -87,6 +89,12 @@ public class Limelight implements TableEntryListener {
             }
             case "tcornx": {
                 cornerx = nv.getDoubleArray();
+            }
+            case "tshort": {
+                shortLength = nv.getDouble();
+            }
+            case "tlong": {
+                longLength = nv.getDouble();
             }
             default: {
                 break;
@@ -162,6 +170,14 @@ public class Limelight implements TableEntryListener {
         return this.cornerx;
     }
 
+    public synchronized double getShortLength() {
+        return this.shortLength;
+    }
+
+    public synchronized double getLongLenght() {
+        return this.longLength;
+    }
+
     /**
      * u want the distance based on the area?
      *
@@ -204,7 +220,7 @@ public class Limelight implements TableEntryListener {
      * @return the distance based on vertical distance
      */
     public double calcDistFromVert() {
-        return movingAverage.calculate(vertCoeff * Math.pow(getVerticalLength(), vertExp));
+        return movingAverage.calculate(vertCoeff * Math.pow(getShortLength(), vertExp));
     }
 
     /**
