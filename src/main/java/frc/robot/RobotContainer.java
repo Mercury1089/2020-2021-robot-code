@@ -524,7 +524,11 @@ public class RobotContainer {
     }
 
     public void initInitiationLine() {
-        
+        DriverStation.reportError("Cross Initiation Line Auton", false);
+        autonCommand = new SequentialCommandGroup(
+            new DriveDistance(-24.0, driveTrain),
+            new FullyAutoAimbot(driveTrain, shooter, feeder, hopper)
+        );
     }
 
     public void initLeft2BallTrench() {
