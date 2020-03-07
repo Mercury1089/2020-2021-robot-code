@@ -71,7 +71,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
     setRunSpeed(0.0);
     targetRPM = 0.0;
-    velocityGains = new PIDGain(2e-5, 325e-9, 1e-5, 0);
+    velocityGains = new PIDGain(18e-6, 325e-9, 5e-6, 0);
     
     this.limelight = limelight;
 
