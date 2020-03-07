@@ -35,8 +35,7 @@ public class RotateToTarget extends DegreeRotate {
     public void initialize() {
         super.initialize();
         limelight.setLEDState(LimelightLEDState.ON);
-        this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
-
+        
         targetHeading = -MercMath.degreesToPigeonUnits(limelight.getTargetCenterXAngle());
         System.out.println("RotateToTarget initialized with angle " + limelight.getTargetCenterXAngle());
 

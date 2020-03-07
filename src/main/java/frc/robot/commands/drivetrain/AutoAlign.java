@@ -2,43 +2,68 @@
 package frc.robot.commands.drivetrain;
 
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain.DriveTrainSide;
+import frc.robot.util.MercMath;
 
-public class AutoAlign extends DegreeRotate {
+public class AutoAlign extends MoveHeading {
+    private final double ANGLE_THRESHOLD_DEGREE = 1.0;
 
     private DriveTrain driveTrain;
-    private final double ANGLE_THRESHOLD;
-
+    private double angleError;
 
     public AutoAlign(DriveTrain driveTrain) {
-        super(0, driveTrain);
+        super(0, 0, driveTrain);
 
         this.setName("AutoAlign");
         this.driveTrain = driveTrain;
 
-        ANGLE_THRESHOLD = 3.0; //CHANGE THIS VALUE 
+        moveThresholdTicks = 100;
+        onTargetMinCount = 3;
     }
 
    // Called just before this Command runs the first time
    @Override   
    public void initialize() {
-       this.driveTrain.resetEncoders();
-       super.initialize();
+        targetHeading = driveTrain.getLimelight().getTargetCenterXAngle();
+        System.out.println("AutoAlign initialized with angle: " + targetHeading);
+        targetHeading = -1.0 * MercMath.degreesToPigeonUnits(targetHeading);
+        super.initialize();
+        this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
+
    }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
-
+        super.execute();
     }
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return false;  
+        angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
+        angleError = MercMath.pigeonUnitsToDegrees(angleError);
+
+        boolean isFinished = false;
+        boolean isOnTarget = (Math.abs(angleError) < ANGLE_THRESHOLD_DEGREE);
+
+        if (isOnTarget) {
+            onTargetCount++;
+        } else {
+            if (onTargetCount > 0)
+                onTargetCount = 0;
+        }
+
+        if (onTargetCount > onTargetMinCount) {
+            isFinished = true;
+            onTargetCount = 0;
+        }
+
+        return isFinished;
     }
 
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted) {
-        this.driveTrain.stop();
+        super.end(interrupted);
     }
 }

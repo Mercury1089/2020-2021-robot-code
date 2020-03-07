@@ -8,6 +8,7 @@
 package frc.robot.commands.shooter;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.drivetrain.RotateToTarget;
 import frc.robot.commands.drivetrain.StayOnTarget;
 import frc.robot.commands.feeder.AutoFeedBalls;
 import frc.robot.subsystems.DriveTrain;
