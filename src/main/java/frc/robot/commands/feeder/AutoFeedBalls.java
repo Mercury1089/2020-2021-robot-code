@@ -12,6 +12,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.ShootingStyle;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 public class AutoFeedBalls extends CommandBase {
@@ -20,21 +21,23 @@ public class AutoFeedBalls extends CommandBase {
   private Shooter shooter;
   private DriveTrain driveTrain;
   private ShootingStyle shootingStyle;
+  private Intake intake;
 
   /**
    * Creates a new AutoFeedBalls.
    */
-  public AutoFeedBalls(Feeder feeder, Hopper hopper, Shooter shooter, DriveTrain driveTrain, ShootingStyle shootingStyle) {
+  public AutoFeedBalls(Feeder feeder, Hopper hopper, Intake intake, Shooter shooter, DriveTrain driveTrain, ShootingStyle shootingStyle) {
     addRequirements(feeder);
     this.feeder = feeder;
     this.hopper = hopper;
+    this.intake = intake;
     this.shooter = shooter;
     this.driveTrain = driveTrain;
     this.shootingStyle = shootingStyle;
   }
 
-  public AutoFeedBalls(Feeder feeder, Hopper hopper, Shooter shooter, DriveTrain driveTrain) {
-    this(feeder, hopper, shooter, driveTrain, ShootingStyle.AUTOMATIC);
+  public AutoFeedBalls(Feeder feeder, Hopper hopper, Intake intake, Shooter shooter, DriveTrain driveTrain) {
+    this(feeder, hopper, intake, shooter, driveTrain, ShootingStyle.AUTOMATIC);
   }
 
   // Called when the command is initially scheduled.
@@ -48,6 +51,7 @@ public class AutoFeedBalls extends CommandBase {
     if(driveTrain.isReadyToShoot() && shooter.isReadyToShoot()){
       hopper.runHopper();
       feeder.runFeeder();
+      intake.setRollerSpeed(0.7 * intake.INTAKE_SPEED);
     }
   }
 
@@ -56,6 +60,7 @@ public class AutoFeedBalls extends CommandBase {
   public void end(boolean interrupted) {
     feeder.setSpeed(0.0);
     hopper.stopHopper();
+    intake.setRollerSpeed(0.0);
   }
 
   // Returns true when the command should end.
