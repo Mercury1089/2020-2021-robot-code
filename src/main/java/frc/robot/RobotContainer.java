@@ -238,68 +238,11 @@ public class RobotContainer {
     }
     
     public void initializeAutonCommand() {
-        ShuffleDash.Autons selectedAuton = shuffleDash.getAuton(); 
-        if(selectedAuton == null || selectedAuton == Autons.NOTHING) {
-            System.out.println("No Auton My Dude");
-            return;
-        } 
-        switch(selectedAuton) {
-            case CENTER_2BALL_RENDEZVOUS:
-                initCenter2BallRendezvous();
-                break;
-            case CENTER_5BALL_RENDEZVOUS:
-                initCenter5BallRendezvous();
-                break;
-            case CENTER_5BALL_TRENCH:
-                initCenter5BallTrench();
-                break;
-            case INITIATION_LINE:
-                initInitiationLine();
-                break;
-            case LEFT_2BALL_TRENCH:
-                initLeft2BallTrench();
-                break;
-            case LEFT_5BALL_TRENCH:
-                initLeft5BallTrench();
-                break;
-            case RIGHT_5BALL_RENDEZVOUS:
-                initRight5BallRendezvous();
-                break;
-            case STEAL_OPPONENT_2BALL:
-                initStealOpponent2Ball();
-                break;
-            default:
-        }
-    }
-
-    public void initCenter2BallRendezvous() {
-        DriverStation.reportError("Center2BallRendezvous Auton", false);
-        try {
+        if(autonCommand == null)
             autonCommand = new SequentialCommandGroup(
-                new ParallelDeadlineGroup(
-                    new MoveOnTrajectory(new MercMotionProfile("Center2BallRendezvous", ProfileDirection.BACKWARD), driveTrain),
-                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                    new RunIntake(intake),
-                    new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL)
-                ),
-                new ParallelDeadlineGroup(
-                    new MoveOnTrajectory(new MercMotionProfile("2BallRendezvousToShoot", ProfileDirection.FORWARD), driveTrain),
-                    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
-                ),
-                //new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, ShootingStyle.AUTOMATIC) 
-                new ParallelCommandGroup(
-                    new RotateToTarget(driveTrain),
-                    new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL),
-                    new AutoFeedBalls(feeder, hopper, intake, shooter, driveTrain)
-                )
+                new DriveDistance(-24.0, driveTrain),
+                new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight)
             );
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    } 
-
-    public void initCenter5BallRendezvous() {
-    
     }
         
     public void initCenter5BallTrench() {
