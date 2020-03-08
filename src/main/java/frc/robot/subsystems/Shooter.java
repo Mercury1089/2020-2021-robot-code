@@ -71,9 +71,10 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
     setRunSpeed(0.0);
     targetRPM = 0.0;
-    velocityGains = new PIDGain(18e-6, 325e-9, 5e-6, 0);
+    velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
     
     this.limelight = limelight;
+    
 
     setPIDGain(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), velocityGains);
   }
@@ -125,8 +126,8 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
         targetRPM = 4000.0;
         break;
     }
-    //return targetRPM;
-    return getRunRPM();
+    return targetRPM;
+   //return getRunRPM();
   }
 
   public void setShootingStyle(ShootingStyle shootingStyle) {
