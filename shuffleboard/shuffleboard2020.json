@@ -1851,6 +1851,28 @@
               "_source0": "network_table:///SmartDashboard/DriveTrain/Yaw",
               "_title": "SmartDashboard/DriveTrain/Yaw"
             }
+          },
+          "0,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/RotateToTarget/onTargetCount",
+              "_title": "SmartDashboard/DriveTrain/RotateToTarget/onTargetCount"
+            }
+          },
+          "0,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/RotateToTarget/reTargetCount",
+              "_title": "SmartDashboard/DriveTrain/RotateToTarget/reTargetCount"
+            }
           }
         }
       }
