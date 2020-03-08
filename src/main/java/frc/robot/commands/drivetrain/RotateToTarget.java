@@ -40,7 +40,7 @@ public class RotateToTarget extends DegreeRotate {
         System.out.println("RotateToTarget initialized with angle " + limelight.getTargetCenterXAngle());
         reTargetCount = 0;
         driveTrain.configNeutralDeadband(DriveTrain.ROTATION_NEUTRAL_DEADBAND);
-        driveTrain.configVoltage(0.025, DriveTrain.PEAK_OUT);
+        //driveTrain.configVoltage(0.025, DriveTrain.PEAK_OUT);
     }
 
     // Called repeatedly when this Command is scheduled to run

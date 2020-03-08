@@ -19,6 +19,7 @@ public class ShuffleDash {
     private static final String PID_TUNER_I = "PIDTuner/kI";
     private static final String PID_TUNER_D = "PIDTuner/kD";
     private static final String PID_TUNER_F = "PIDTuner/kF";
+    private static final String PID_TUNER_MAX_OUTPUT = "PIDTuner/maxOutput";
 
     private static final double UPDATE_PERIOD_SECONDS = 0.100; // Update every 100ms
 
@@ -69,6 +70,7 @@ public class ShuffleDash {
         SmartDashboard.putNumber(PID_TUNER_I, 0.0);
         SmartDashboard.putNumber(PID_TUNER_D, 0.0);
         SmartDashboard.putNumber(PID_TUNER_F, 0.0);
+        SmartDashboard.putNumber(PID_TUNER_MAX_OUTPUT, 0.0);
 
         shuffleDashUpdater = new Notifier(this::updateDash);
         shuffleDashUpdater.startPeriodic(UPDATE_PERIOD_SECONDS);
@@ -99,10 +101,13 @@ public class ShuffleDash {
                 SmartDashboard.putNumber(PID_TUNER_I, gains.kI);
                 SmartDashboard.putNumber(PID_TUNER_D, gains.kD);
                 SmartDashboard.putNumber(PID_TUNER_F, gains.kF);
+                SmartDashboard.putNumber(PID_TUNER_MAX_OUTPUT, gains.clMaxOut);
             } else {
                 PIDGain gains = new PIDGain(SmartDashboard.getNumber(PID_TUNER_P, 0.0),
-                        SmartDashboard.getNumber(PID_TUNER_I, 0.0), SmartDashboard.getNumber(PID_TUNER_D, 0.0),
-                        SmartDashboard.getNumber(PID_TUNER_F, 0.0));
+                        SmartDashboard.getNumber(PID_TUNER_I, 0.0), 
+                        SmartDashboard.getNumber(PID_TUNER_D, 0.0),
+                        SmartDashboard.getNumber(PID_TUNER_F, 0.0),
+                        SmartDashboard.getNumber(PID_TUNER_MAX_OUTPUT, 0.0));
                 tunableSlot.tunable.setPIDGain(tunableSlot.slot, gains);
             }
             this.tunableSlot = tunableSlot;
