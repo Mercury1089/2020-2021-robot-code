@@ -95,6 +95,11 @@ public class MercVictorSPX implements IMercMotorController {
     }
 
     @Override
+    public void configNeutralDeadband(double percentDeadband) {
+        victorspx.configNeutralDeadband(percentDeadband);
+    }
+
+    @Override
     public void setNeutralMode(NeutralMode neutralMode) {
         victorspx.setNeutralMode(neutralMode);
     }

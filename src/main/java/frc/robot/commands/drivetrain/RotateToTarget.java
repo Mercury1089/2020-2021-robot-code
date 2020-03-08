@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.sensors.Limelight;
 import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 import frc.robot.util.MercMath;
 
 public class RotateToTarget extends DegreeRotate {
 
     private DriveTrain driveTrain;
     private Limelight limelight;
-    boolean isOnTarget;
+    private boolean isOnTarget;
+    private int reTargetCount = 0;
 
     public RotateToTarget(DriveTrain driveTrain) {
         super(0, driveTrain);
@@ -38,7 +38,9 @@ public class RotateToTarget extends DegreeRotate {
         
         targetHeading = -MercMath.degreesToPigeonUnits(limelight.getTargetCenterXAngle());
         System.out.println("RotateToTarget initialized with angle " + limelight.getTargetCenterXAngle());
-
+        reTargetCount = 0;
+        driveTrain.configNeutralDeadband(DriveTrain.ROTATION_NEUTRAL_DEADBAND);
+        driveTrain.configVoltage(0.025, DriveTrain.PEAK_OUT);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -54,9 +56,12 @@ public class RotateToTarget extends DegreeRotate {
                     targetHeading = -MercMath.degreesToPigeonUnits(checkTarget);
                     driveTrain.resetPigeonYaw();
                     onTargetCount = 0;
+                    reTargetCount++;
             } 
         }
         super.execute();
+        SmartDashboard.putNumber(driveTrain.getName() + "/" + getName() + "/onTargetCount", onTargetCount);
+        SmartDashboard.putNumber(driveTrain.getName() + "/" + getName() + "/reTargetCount", reTargetCount);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -82,5 +87,6 @@ public class RotateToTarget extends DegreeRotate {
     @Override
     public void end(boolean interrupted) {
         super.end(interrupted);
+        driveTrain.configNeutralDeadband(DriveTrain.NEUTRAL_DEADBAND);
     }
 }

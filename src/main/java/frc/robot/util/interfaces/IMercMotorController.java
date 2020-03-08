@@ -115,6 +115,11 @@ public interface IMercMotorController {
     void configVoltage(double nominalOutput, double peakOutput);
 
     /**
+     * @param percentDeadband 
+     */
+    void configNeutralDeadband(double percentDeadband);
+
+    /**
      * Set the neutral mode - brake or coast
      *
      * @param neutralMode the NeutralMode to set it to

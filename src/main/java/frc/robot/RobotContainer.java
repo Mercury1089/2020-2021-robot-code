@@ -155,10 +155,10 @@ public class RobotContainer {
         //gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.MAX_HEIGHT));
         //gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         //gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
-        gamepadLB.whenPressed(() -> driveTrain.getLimelight().setLEDState(LimelightLEDState.ON));
-        gamepadRB.whenPressed(() -> driveTrain.getLimelight().setLEDState(LimelightLEDState.OFF));
-        gamepadLT.toggleWhenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, ShootingStyle.MANUAL));
-        gamepadRT.toggleWhenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, ShootingStyle.AUTOMATIC));
+        gamepadLB.whenPressed(new RunShooterRPMPID(shooter, driveTrain.getLimelight(), ShootingStyle.AUTOMATIC)); //rev shooter
+        gamepadRB.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter)); //end fully auto aimbot
+        gamepadLT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, ShootingStyle.MANUAL)); //run shooter in manual mode
+        gamepadRT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, ShootingStyle.AUTOMATIC)); //rek the opponents
         
     }
 

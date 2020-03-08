@@ -97,6 +97,11 @@ public class MercTalonSRX implements IMercMotorController {
     }
 
     @Override
+    public void configNeutralDeadband(double percentDeadband) {
+        talonsrx.configNeutralDeadband(percentDeadband);
+    }
+
+    @Override
     public void setNeutralMode(NeutralMode neutralMode) {
         talonsrx.setNeutralMode(neutralMode);
     }

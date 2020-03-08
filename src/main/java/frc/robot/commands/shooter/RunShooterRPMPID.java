@@ -33,6 +33,9 @@ public class RunShooterRPMPID extends CommandBase {
     this.shooter = shooter;
     this.limelight = limelight;
     this.shootingStyle = shootingStyle;
+    if(!limelight.getTargetAcquired())
+      this.shootingStyle = ShootingStyle.MANUAL;
+
   }
   
   public RunShooterRPMPID(Shooter shooter, Limelight limelight) {

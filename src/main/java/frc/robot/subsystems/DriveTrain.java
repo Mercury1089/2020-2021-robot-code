@@ -45,7 +45,9 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         WHEEL_DIAMETER_INCHES = 5.8;
     public static final double ANGLE_THRESHOLD_DEG = 1.2, ON_TARGET_THRESHOLD_DEG = 1.2;
     public static final double NOMINAL_OUT = 0.0,
-                               PEAK_OUT = 1.0;
+                               PEAK_OUT = 1.0,
+                               ROTATION_NEUTRAL_DEADBAND = 0.01,
+                               NEUTRAL_DEADBAND = 0.04;
  
     public static final int MOTOR_CONTROLLER_STATUS_FRAME_PERIOD_MS = 20;
     public static final int PIGEON_STATUS_FRAME_PERIOD_MS = 5;
@@ -142,7 +144,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
         configVoltage(NOMINAL_OUT, PEAK_OUT);
         setMaxOutput(PEAK_OUT);
-
+        configNeutralDeadband(NEUTRAL_DEADBAND);
         stop();
 
         limelight = new Limelight();
@@ -292,6 +294,15 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     public void configVoltage(double nominalOutput, double peakOutput) {
         leaderLeft.configVoltage(nominalOutput, peakOutput);
         leaderRight.configVoltage(nominalOutput, peakOutput);
+    }
+
+    /**
+     * 
+     * @param 
+     */
+    public void configNeutralDeadband(double percentDeadband) {
+        leaderLeft.configNeutralDeadband(percentDeadband);
+        leaderRight.configNeutralDeadband(percentDeadband);
     }
 
     public DriveDirection getDirection() {

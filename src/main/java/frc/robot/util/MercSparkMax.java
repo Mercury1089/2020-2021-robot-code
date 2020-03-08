@@ -110,6 +110,11 @@ public class MercSparkMax implements IMercMotorController {
     }
 
     @Override
+    public void configNeutralDeadband(double percentDeadband) {
+        return;
+    }
+
+    @Override
     public void setNeutralMode(NeutralMode neutralMode) {
         CANSparkMax.IdleMode mode;
         if (neutralMode == NeutralMode.Brake)
