@@ -375,7 +375,7 @@ public class RobotContainer {
         DriverStation.reportError("Cross Initiation Line Auton", false);
         autonCommand = new SequentialCommandGroup(
             new DriveDistance(-24.0, driveTrain),
-            new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake)
+            new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight)
         );
     }
 
@@ -393,7 +393,7 @@ public class RobotContainer {
                     new MoveOnTrajectory(new MercMotionProfile("ShootTrench2Ball", ProfileDirection.FORWARD), driveTrain),
                     new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
                 ),
-                new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, ShootingStyle.AUTOMATIC)
+                new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)
             );
         } catch (Exception e) {
             System.out.println(e);
