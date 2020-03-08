@@ -19,10 +19,10 @@ public class RunShooterRPMPID extends CommandBase {
   protected IMercMotorController shooterLeft, shooterRight;
 
   private Shooter shooter;
-
   private Limelight limelight;
 
   private ShootingStyle shootingStyle;
+  private boolean manualShooting;
 
   /**
    * Creates a new RunShooter.
@@ -33,9 +33,10 @@ public class RunShooterRPMPID extends CommandBase {
     this.shooter = shooter;
     this.limelight = limelight;
     this.shootingStyle = shootingStyle;
-    if(!limelight.getTargetAcquired())
-      this.shootingStyle = ShootingStyle.MANUAL;
-
+    if(shootingStyle == ShootingStyle.MANUAL)
+      manualShooting = true;
+    else
+      manualShooting = false;
   }
   
   public RunShooterRPMPID(Shooter shooter, Limelight limelight) {
@@ -52,6 +53,10 @@ public class RunShooterRPMPID extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if(!limelight.getTargetAcquired())
+      shootingStyle = ShootingStyle.MANUAL;
+    else if(!manualShooting)
+      shootingStyle = ShootingStyle.AUTOMATIC;
     shooter.setVelocity(Math.abs(shooter.getTargetRPM()));
   }
 
