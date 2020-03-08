@@ -323,7 +323,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     }
 
     public boolean isAligned(){
-        return Math.abs(limelight.getTargetCenterXAngle()) <= ON_TARGET_THRESHOLD_DEG;
+        return limelight.getTargetAcquired() && Math.abs(limelight.getTargetCenterXAngle()) <= ON_TARGET_THRESHOLD_DEG;
     }
 
     public PigeonIMU getPigeon() {
@@ -334,6 +334,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         //return lidar;
     //}
 
+    
     public double getPigeonYaw() {
         double[] currYawPitchRoll = new double[3];
         podgeboi.getYawPitchRoll(currYawPitchRoll);
