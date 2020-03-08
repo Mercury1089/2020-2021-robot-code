@@ -74,7 +74,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
      *
      * @param layout The layout of motor controllers used on the drivetrain
      */
-    public DriveTrain(DriveTrain.DriveTrainLayout layout) {
+    public DriveTrain(DriveTrain.DriveTrainLayout layout, Limelight limelight) {
         //This should eventually be fully configurable
         // At this point it's based on what the layout is
 
@@ -147,7 +147,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         configNeutralDeadband(NEUTRAL_DEADBAND);
         stop();
 
-        limelight = new Limelight();
+        this.limelight = limelight;
     }
 
     public Command getDefaultCommand(){
