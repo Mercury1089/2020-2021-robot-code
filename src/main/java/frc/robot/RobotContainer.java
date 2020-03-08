@@ -530,4 +530,8 @@ public class RobotContainer {
     public LimelightCamera getLimelightCamera() {
         return limelightCamera;
     }
+
+    public ShuffleDash getShuffleDash() {
+        return shuffleDash;
+    }
 }
