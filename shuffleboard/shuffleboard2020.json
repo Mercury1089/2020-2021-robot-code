@@ -1688,6 +1688,172 @@
           }
         }
       }
+    },
+    {
+      "title": "Tuning",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "6,0": {
+            "size": [
+              5,
+              5
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://limelight-merc",
+              "_title": "limelight-merc",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
+            }
+          },
+          "11,0": {
+            "size": [
+              2,
+              5
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/IsAligned",
+              "_title": "SmartDashboard/DriveTrain/IsAligned",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "2,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "ComboBox Chooser",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/Target",
+              "_title": "SmartDashboard/PIDTuner/Target"
+            }
+          },
+          "4,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/kP",
+              "_title": "SmartDashboard/PIDTuner/kP"
+            }
+          },
+          "4,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/kI",
+              "_title": "SmartDashboard/PIDTuner/kI"
+            }
+          },
+          "4,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/kD",
+              "_title": "SmartDashboard/PIDTuner/kD"
+            }
+          },
+          "4,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/kF",
+              "_title": "SmartDashboard/PIDTuner/kF"
+            }
+          },
+          "4,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/PIDTuner/maxOutput",
+              "_title": "SmartDashboard/PIDTuner/maxOutput"
+            }
+          },
+          "0,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Left Encoder (ticks)",
+              "_title": "SmartDashboard/DriveTrain/Left Encoder (ticks)"
+            }
+          },
+          "2,1": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Right Encoder (ticks)",
+              "_title": "SmartDashboard/DriveTrain/Right Encoder (ticks)"
+            }
+          },
+          "2,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Right RPM",
+              "_title": "SmartDashboard/DriveTrain/Right RPM"
+            }
+          },
+          "0,2": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Left RPM",
+              "_title": "SmartDashboard/DriveTrain/Left RPM"
+            }
+          },
+          "0,0": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/Yaw",
+              "_title": "SmartDashboard/DriveTrain/Yaw"
+            }
+          }
+        }
+      }
     }
   ],
   "windowGeometry": {
