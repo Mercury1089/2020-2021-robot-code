@@ -74,7 +74,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
     
     this.limelight = limelight;
-    
+    shootingStyle = ShootingStyle.AUTOMATIC;
 
     setPIDGain(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), velocityGains);
   }
@@ -126,7 +126,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
         targetRPM = 4000.0;
     }
     return targetRPM;
-   //return getRunRPM();
+    //return getRunRPM();
   }
 
   public void setShootingStyle(ShootingStyle shootingStyle) {
@@ -135,7 +135,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
   public double getTargetRPMFromHypothetical() {
     double distance = getHyotheticalDistance();
-    return 7.663505E-5*Math.pow(distance, 4) - 0.056264*Math.pow(distance, 3) + 15.436557*Math.pow(distance, 2) - 1867.408104*distance + 87769.565386;
+    return -2.93E-9*Math.pow(distance, 6) + 3.22E-6*Math.pow(distance, 5) - 1.41E-3*Math.pow(distance, 4) + 0.307*Math.pow(distance, 3) - 33.9*Math.pow(distance, 2) + 1607*distance - 9443;
   }
 
   public void setTargetRPM(double rpm) {
@@ -143,7 +143,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public void updateTargetRPMCenter(double distance) {
-    targetRPM = 7.663505E-5*Math.pow(distance, 4) - 0.056264*Math.pow(distance, 3) + 15.436557*Math.pow(distance, 2) - 1867.408104*distance + 87769.565386;
+    targetRPM = -2.93E-9*Math.pow(distance, 6) + 3.22E-6*Math.pow(distance, 5) - 1.41E-3*Math.pow(distance, 4) + 0.307*Math.pow(distance, 3) - 33.9*Math.pow(distance, 2) + 1607*distance - 9443;
   }
 
   public void updateTargetRPMSide(double distance) {
@@ -151,7 +151,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public boolean atTargetRpm() {
-    return Math.abs(getRPM() - targetRPM) <= 0.01 * targetRPM;
+    return Math.abs(getRPM() - getTargetRPM()) <= 0.01 * getTargetRPM();
   }
 
   public Command getDefaultCommand() {

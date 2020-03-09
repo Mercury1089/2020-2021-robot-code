@@ -1873,15 +1873,48 @@
               "_source0": "network_table:///SmartDashboard/DriveTrain/RotateToTarget/reTargetCount",
               "_title": "SmartDashboard/DriveTrain/RotateToTarget/reTargetCount"
             }
+          },
+          "2,4": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/RPM",
+              "_title": "SmartDashboard/Shooter/RPM"
+            }
+          },
+          "2,5": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/LimelightCamera/FromVert",
+              "_title": "SmartDashboard/LimelightCamera/FromVert"
+            }
+          },
+          "2,3": {
+            "size": [
+              2,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Shooter/SetRPM",
+              "_title": "/SmartDashboard/Shooter/SetRPM"
+            }
           }
         }
       }
     }
   ],
   "windowGeometry": {
-    "x": -7.0,
+    "x": 0.0,
     "y": 0.0,
-    "width": 1934.0,
-    "height": 1047.0
+    "width": 1920.0,
+    "height": 1040.0
   }
 }

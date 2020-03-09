@@ -47,12 +47,12 @@ public class RunShooterRPMPID extends CommandBase {
   @Override
   public void initialize() {
     limelight.setLEDState(LimelightLEDState.ON);
-    shooter.setShootingStyle(shootingStyle);
   }
-
+  
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    shooter.setShootingStyle(shootingStyle);
     if(!limelight.getTargetAcquired())
       shootingStyle = ShootingStyle.MANUAL;
     else if(!manualShooting)

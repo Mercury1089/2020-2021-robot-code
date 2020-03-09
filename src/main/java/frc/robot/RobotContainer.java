@@ -126,7 +126,6 @@ public class RobotContainer {
                                 
         left4.toggleWhenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
-        System.out.println(intakeArticulator.getIntakePosition().toString());
 
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
         //right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
