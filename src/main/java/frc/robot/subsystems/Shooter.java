@@ -125,7 +125,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
       default:
         targetRPM = 4000.0;
     }
-    return targetRPM;
+    return targetRPM < 5000 && targetRPM > 3700 ? targetRPM : 4400;
     //return getRunRPM();
   }
 
@@ -135,7 +135,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
   public double getTargetRPMFromHypothetical() {
     double distance = getHyotheticalDistance();
-    return -2.93E-9*Math.pow(distance, 6) + 3.22E-6*Math.pow(distance, 5) - 1.41E-3*Math.pow(distance, 4) + 0.307*Math.pow(distance, 3) - 33.9*Math.pow(distance, 2) + 1607*distance - 9443;
+    return -2.93032197e-09*Math.pow(distance, 6) + 3.21815380e-06*Math.pow(distance, 5) - 1.40572567e-03*Math.pow(distance, 4) + 3.06747428e-01*Math.pow(distance, 3) - 3.38724423e+01*Math.pow(distance, 2) + 1.60699276e+03*distance - 9.44326999e+03;
   }
 
   public void setTargetRPM(double rpm) {
@@ -143,11 +143,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public void updateTargetRPMCenter(double distance) {
-    targetRPM = -2.93E-9*Math.pow(distance, 6) + 3.22E-6*Math.pow(distance, 5) - 1.41E-3*Math.pow(distance, 4) + 0.307*Math.pow(distance, 3) - 33.9*Math.pow(distance, 2) + 1607*distance - 9443;
-  }
-
-  public void updateTargetRPMSide(double distance) {
-    targetRPM = 2.6986E-6*Math.pow(distance, 5) +  -2.0714714E-3*Math.pow(distance, 4) + 0.620425066*Math.pow(distance, 3) + -90.02739959*Math.pow(distance, 2) + 6266.035238*distance + -160593.55972499;
+    targetRPM = -2.93032197e-09*Math.pow(distance, 6) + 3.21815380e-06*Math.pow(distance, 5) - 1.40572567e-03*Math.pow(distance, 4) + 3.06747428e-01*Math.pow(distance, 3) - 3.38724423e+01*Math.pow(distance, 2) + 1.60699276e+03*distance - 9.44326999e+03;
   }
 
   public boolean atTargetRpm() {
