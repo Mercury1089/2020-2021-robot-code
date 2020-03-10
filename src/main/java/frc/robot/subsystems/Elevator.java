@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.CAN;
@@ -23,27 +24,8 @@ import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
 public class Elevator extends SubsystemBase implements IMercShuffleBoardPublisher {
-  
-  public enum ElevatorPosition{
-    MAX_HEIGHT(100000),     //Test enc values
-    BOTTOM(1000),         //1nd and lowest position
-    CONTROL_PANEL(20000),    //2rd lowest position
-    CLIMB(50000),           //Highest position
-    HANGING(7000);          //3st position
 
-    public final double encPos;
-
-        /**
-         * Creates an elevator position, storing the encoder ticks
-         * representing the height that the elevator should be at,
-         * as well as the P value to use to reach that level.
-         *
-         * @param ep encoder position, in ticks
-         */
-        ElevatorPosition(double ep) {
-            encPos = ep;
-        }
-  }
+  private Relay elevatorLock;
 
   private static final int MAX_ELEV_RPM = 18000;
   public static final double NORMAL_P_VAL = 0.21;
@@ -58,7 +40,12 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   public Elevator() {
     super();
     setName("Elevator");
+
+    elevatorLock = new Relay(0, Relay.Direction.kBoth);
+    elevatorLock.set(Relay.Value.kOff);
+
     elevator = new MercTalonSRX(CAN.ELEVATOR);
+
     runSpeed = 0.5;
     elevator.setNeutralMode(NeutralMode.Brake);
 
@@ -77,6 +64,14 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     elevator.resetEncoder();
 
     elevator.configPID(Elevator.PRIMARY_PID_LOOP, new PIDGain(NORMAL_P_VAL, 0.0, 0.0, MercMath.calculateFeedForward(MAX_ELEV_RPM)));
+  }
+
+  public void setLockState(Relay.Value value){
+    elevatorLock.set(value);
+  }
+
+  public Relay.Value getLockState(){
+    return elevatorLock.get();
   }
 
   public void setRaiseOrLowerSpeed(double speed) {
@@ -122,5 +117,26 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   @Override
   public void publishValues() {
     SmartDashboard.putNumber(getName() + "/Height(ticks)", getEncTicks());
+  }
+
+  public enum ElevatorPosition{
+    MAX_HEIGHT(100000),     //Test enc values
+    BOTTOM(1000),         //1nd and lowest position
+    CONTROL_PANEL(20000),    //2rd lowest position
+    CLIMB(50000),           //Highest position
+    HANGING(7000);          //3st position
+
+    public final double encPos;
+
+        /**
+         * Creates an elevator position, storing the encoder ticks
+         * representing the height that the elevator should be at,
+         * as well as the P value to use to reach that level.
+         *
+         * @param ep encoder position, in ticks
+         */
+        ElevatorPosition(double ep) {
+            encPos = ep;
+        }
   }
 }
