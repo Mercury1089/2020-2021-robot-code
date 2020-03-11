@@ -22,6 +22,8 @@ import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.drivetrain.MoveOnTrajectory;
 import frc.robot.commands.drivetrain.RotateToTarget;
 import frc.robot.commands.drivetrain.StayOnTarget;
+import frc.robot.commands.elevator.AutomaticElevator;
+import frc.robot.commands.elevator.Hang;
 import frc.robot.commands.feeder.AutoFeedBalls;
 import frc.robot.commands.intake.RunIntake;
 import frc.robot.commands.limelightCamera.SwitchLEDState;
@@ -32,6 +34,7 @@ import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.subsystems.DriveTrain.ShootingStyle;
+import frc.robot.subsystems.Elevator.ElevatorPosition;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
@@ -44,7 +47,6 @@ import frc.robot.subsystems.Spinner;
 import frc.robot.util.MercMotionProfile;
 import frc.robot.util.MercMotionProfile.ProfileDirection;
 import frc.robot.util.ShuffleDash;
-import frc.robot.util.ShuffleDash.Autons;
 import frc.robot.util.TriggerButton;
 
 /**
@@ -144,11 +146,11 @@ public class RobotContainer {
         }
 
         //Operator controls
-        //gamepadRB.whenPressed(new RotationControl(spinner));
-        //gamepadLB.whenPressed(new ColorControl(spinner));
-        //gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.MAX_HEIGHT));
         //gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         //gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
+        gamepadY.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CLIMB)); //make the elevator go up
+        gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.HANGING)); //make the roboboi go jump
+        gamepadStart.and(gamepadBack).whenActive(new Hang(elevator)); //lock the elevator
         gamepadLB.whenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)); //rev shooter
         gamepadRB.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter)); //end fully auto aimbot
         gamepadLT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.MANUAL)); //run shooter in manual mode
