@@ -19,7 +19,7 @@ public class RobotMap {
                 PIGEON = 10,
                 ELEVATOR = 11,
                 SPINNER = 12,
-                JIGGLER = 15,
+                AGITATOR = 14,
                 CANCODER_ML = 51,
                 CANCODER_MR = 52;
 
