@@ -27,7 +27,7 @@ public class AutoFeedBalls extends CommandBase {
    * Creates a new AutoFeedBalls.
    */
   public AutoFeedBalls(Feeder feeder, Hopper hopper, Intake intake, Shooter shooter, DriveTrain driveTrain, ShootingStyle shootingStyle) {
-    addRequirements(feeder);
+    addRequirements(feeder, hopper);
     this.feeder = feeder;
     this.hopper = hopper;
     this.intake = intake;
@@ -52,6 +52,9 @@ public class AutoFeedBalls extends CommandBase {
       hopper.runHopper();
       feeder.runFeeder();
       intake.setRollerSpeed(0.7 * intake.INTAKE_SPEED);
+    } else {
+      hopper.stopHopper();
+      feeder.setSpeed(0.0);
     }
   }
 
