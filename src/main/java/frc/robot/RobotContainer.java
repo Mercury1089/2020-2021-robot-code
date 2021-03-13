@@ -89,7 +89,7 @@ public class RobotContainer {
         driveTrain = new DriveTrain(DriveTrainLayout.FALCONS, limelight); //make sure to switch it back to Falcons
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
-        shooter = new Shooter(ShooterMode.NONE, limelight);
+        shooter = new Shooter(ShooterMode.ONE_WHEEL, limelight);
         shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
         
         hopper = new Hopper();       
