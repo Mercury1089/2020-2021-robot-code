@@ -22,13 +22,14 @@ public class AutoFeedBalls extends CommandBase {
   private DriveTrain driveTrain;
   private ShootingStyle shootingStyle;
   private Intake intake;
+  private boolean started;
 
   /**
    * Creates a new AutoFeedBalls.
    */
   public AutoFeedBalls(Feeder feeder, Hopper hopper, Intake intake, Shooter shooter, DriveTrain driveTrain, ShootingStyle shootingStyle) {
-    addRequirements(feeder, hopper);
-    //addRequirements(feeder, hopper, intake);
+    //addRequirements(feeder, hopper);
+    addRequirements(feeder, hopper, intake);
     this.feeder = feeder;
     this.hopper = hopper;
     this.intake = intake;
@@ -44,6 +45,7 @@ public class AutoFeedBalls extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    started = false;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -52,14 +54,19 @@ public class AutoFeedBalls extends CommandBase {
     if(driveTrain.isReadyToShoot() && shooter.isReadyToShoot()){
       hopper.runHopper();
       feeder.runFeeder();
-      //intake.runIntakeRoller(0.7);
-      //intake.runAgitator();
+      started = true;
     } else {
       hopper.stopHopper();
       feeder.setSpeed(0.0);
-      //intake.stopIntakeRoller();
-      //intake.stopAgitator();
     }
+    if (started) {
+      intake.runIntakeRoller(0.7);
+      intake.runAgitator();
+    } else {
+      intake.stopIntakeRoller();
+      intake.stopAgitator();
+    }
+    
   }
 
   // Called once the command ends or is interrupted.
