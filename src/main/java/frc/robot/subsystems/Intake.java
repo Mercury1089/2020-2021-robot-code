@@ -7,18 +7,11 @@
 
 package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.MercTalonSRX;
 import frc.robot.util.MercVictorSPX;
 import frc.robot.util.interfaces.IMercMotorController;
-import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
-import frc.robot.util.interfaces.IMercMotorController.LimitSwitchDirection;
-import frc.robot.Robot;
 import frc.robot.RobotMap.CAN;
-import frc.robot.RobotMap.GAMEPAD_AXIS;
-import frc.robot.commands.intake.RunManualIntake;
 
 public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher {
   private final IMercMotorController intakeRoller, agitator;
@@ -30,15 +23,16 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
   public Intake() {
     super();
 
-    double agitatorSpeed = 0.5;
-    
     INTAKE_SPEED = 1.0;
+    AGITATOR_SPEED = 0.5;
     IS_CLOCKWISE = true;
-    AGITATOR_SPEED = IS_CLOCKWISE ? -agitatorSpeed : agitatorSpeed;
+    
     setName("Intake");
+    
     intakeRoller = new MercVictorSPX(CAN.INTAKE_ROLLER);
     intakeRoller.setInverted(true);
     agitator = new MercVictorSPX(CAN.AGITATOR);
+    agitator.setInverted(IS_CLOCKWISE);
     agitator.setNeutralMode(NeutralMode.Brake);
   }
 
@@ -46,8 +40,8 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
     intakeRoller.setSpeed(speed);
   }
 
-  public void runIntakeRoller(double speedProportion) {
-    intakeRoller.setSpeed(INTAKE_SPEED * speedProportion);
+  public void runIntakeRoller(double velocityProportion) {
+    intakeRoller.setSpeed(INTAKE_SPEED * velocityProportion);
   }
 
   public void runIntakeRoller() {
