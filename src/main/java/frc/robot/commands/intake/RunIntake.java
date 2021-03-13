@@ -13,31 +13,40 @@ import frc.robot.subsystems.Intake;
 public class RunIntake extends CommandBase {
 
   private Intake intake;
+  private Double rollerModifier;
 
   /**
    * Creates a new RunIntake.
    */
-  public RunIntake(Intake intake) {
+  public RunIntake(Intake intake, double rollerModifier) {
     addRequirements(intake);
     setName("RunIntake");
     this.intake = intake;
+    this.rollerModifier = rollerModifier;
+  }
+
+  public RunIntake(Intake intake) {
+    this(intake, 1.0);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.intake.setRollerSpeed(intake.INTAKE_SPEED);
+    intake.runIntakeRoller(rollerModifier);
+    intake.runAgitator();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    this.intake.setRollerSpeed(0.0);
+    intake.stopAgitator();
+    intake.stopIntakeRoller();
   }
 
   // Returns true when the command should end.

@@ -28,6 +28,7 @@ public class AutoFeedBalls extends CommandBase {
    */
   public AutoFeedBalls(Feeder feeder, Hopper hopper, Intake intake, Shooter shooter, DriveTrain driveTrain, ShootingStyle shootingStyle) {
     addRequirements(feeder, hopper);
+    //addRequirements(feeder, hopper, intake);
     this.feeder = feeder;
     this.hopper = hopper;
     this.intake = intake;
@@ -51,10 +52,13 @@ public class AutoFeedBalls extends CommandBase {
     if(driveTrain.isReadyToShoot() && shooter.isReadyToShoot()){
       hopper.runHopper();
       feeder.runFeeder();
-      intake.setRollerSpeed(0.7 * intake.INTAKE_SPEED);
+      //intake.runIntakeRoller(0.7);
+      //intake.runAgitator();
     } else {
       hopper.stopHopper();
       feeder.setSpeed(0.0);
+      //intake.stopIntakeRoller();
+      //intake.stopAgitator();
     }
   }
 
