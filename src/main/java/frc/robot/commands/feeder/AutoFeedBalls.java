@@ -74,7 +74,8 @@ public class AutoFeedBalls extends CommandBase {
   public void end(boolean interrupted) {
     feeder.setSpeed(0.0);
     hopper.stopHopper();
-    intake.setRollerSpeed(0.0);
+    intake.stopAgitator();
+    intake.stopIntakeRoller();
   }
 
   // Returns true when the command should end.
