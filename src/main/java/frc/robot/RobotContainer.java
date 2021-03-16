@@ -135,12 +135,12 @@ public class RobotContainer {
         right7.whenPressed(new RotateToTarget(driveTrain));
  
         try {
-            ;//right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain));     
+            right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Slalom", ProfileDirection.FORWARD), driveTrain));     
         } catch(Exception e) {
             System.out.println(e);
         }
         try {
-            ;//right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Center5BallRendezvous", ProfileDirection.FORWARD), driveTrain));            
+            right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Straight", ProfileDirection.FORWARD), driveTrain));            
         } catch(Exception e) {
             System.out.println(e);
         }
