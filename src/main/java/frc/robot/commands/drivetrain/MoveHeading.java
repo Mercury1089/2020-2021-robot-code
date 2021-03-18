@@ -56,6 +56,7 @@ public class MoveHeading extends CommandBase {
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
+        this.driveTrain.stop();
         this.driveTrain.resetEncoders();
 
         if (!this.driveTrain.isInMotionMagicMode())

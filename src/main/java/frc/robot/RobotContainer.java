@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -101,7 +102,7 @@ public class RobotContainer {
         intake = new Intake();
         limelightCamera = new LimelightCamera();
         spinner = new Spinner();
-        elevator = new Elevator();
+        //elevator = new Elevator();
 
         
         shuffleDash = new ShuffleDash();
@@ -111,7 +112,7 @@ public class RobotContainer {
         shuffleDash.addPublisher(intake);
         shuffleDash.addPublisher(limelightCamera);
         shuffleDash.addPublisher(intakeArticulator);
-        shuffleDash.addPublisher(elevator);
+        //shuffleDash.addPublisher(elevator);
         shuffleDash.addPublisher(feeder);
         shuffleDash.addPublisher(hopper);
         shuffleDash.addPIDTunable(shooter, "Shooter");
@@ -128,12 +129,18 @@ public class RobotContainer {
                                 
         left4.toggleWhenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
+        left8.whenPressed(new SequentialCommandGroup(new ParallelDeadlineGroup(new DriveDistance(144.0, driveTrain),
+                                                                                new InstantCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator), 
+                                                                                new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)), 
+                                                      new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
 
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
         //right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         right6.whenPressed(new StayOnTarget(driveTrain));
         right7.whenPressed(new RotateToTarget(driveTrain));
- 
+        right9.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
+                                                    new DriveDistance(-150.0, driveTrain)));
+
         try {
             right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Slalom", ProfileDirection.FORWARD), driveTrain));     
         } catch(Exception e) {
@@ -148,9 +155,9 @@ public class RobotContainer {
         //Operator controls
         //gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         //gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
-        gamepadY.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CLIMB)); //make the elevator go up
-        gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.HANGING)); //make the roboboi go jump
-        gamepadStart.and(gamepadBack).whenActive(new Hang(elevator)); //lock the elevator
+        //gamepadY.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CLIMB)); //make the elevator go up
+        //gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.HANGING)); //make the roboboi go jump
+        //gamepadStart.and(gamepadBack).whenActive(new Hang(elevator)); //lock the elevator
         gamepadLB.whenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)); //rev shooter
         gamepadRB.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter)); //end fully auto aimbot
         gamepadLT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.MANUAL)); //run shooter in manual mode

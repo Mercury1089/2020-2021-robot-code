@@ -280,9 +280,10 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
      * Stops the driveAssist train.
      */
     public void stop() {
+        leaderLeft.setSpeed(0.0);
         leaderLeft.stop();
+        leaderRight.setSpeed(0.0);
         leaderRight.stop();
-
     }
 
     /**

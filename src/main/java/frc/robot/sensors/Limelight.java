@@ -44,7 +44,7 @@ public class Limelight implements TableEntryListener {
         verticalLength = 0.0;
         targetAcquired = false;
         cornerx = new double[] {};
-        nt.addEntryListener(this, EntryListenerFlags.kUpdate);
+        nt.addEntryListener(this, EntryListenerFlags.kImmediate | EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
         shortLength = 0.0;
         longLength = 0.0;
     }
