@@ -41,8 +41,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     public static final double MAX_SPEED = 1,
         MIN_SPEED = -1;
     public static final double GEAR_RATIO = 1,
-        MAX_RPM = 545,
-        WHEEL_DIAMETER_INCHES = 5.8;
+        MAX_RPM = 300,
+        WHEEL_DIAMETER_INCHES = 6.0;
     public static final double ANGLE_THRESHOLD_DEG = 1.2, ON_TARGET_THRESHOLD_DEG = 1.2;
     public static final double NOMINAL_OUT = 0.0,
                                PEAK_OUT = 1.0,
