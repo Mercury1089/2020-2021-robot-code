@@ -19,6 +19,7 @@ public class RotateToTarget extends DegreeRotate {
     private Limelight limelight;
     private boolean isOnTarget;
     private int reTargetCount = 0;
+    private boolean isReadyToShoot;
 
     public RotateToTarget(DriveTrain driveTrain) {
         super(0, driveTrain);
@@ -35,6 +36,7 @@ public class RotateToTarget extends DegreeRotate {
     public void initialize() {
         super.initialize();
         limelight.setLEDState(LimelightLEDState.ON);
+        this.isReadyToShoot = false;
         
         targetHeading = -MercMath.degreesToPigeonUnits(limelight.getTargetCenterXAngle());
         System.out.println("RotateToTarget initialized with angle " + limelight.getTargetCenterXAngle());
@@ -52,12 +54,14 @@ public class RotateToTarget extends DegreeRotate {
         isOnTarget = (Math.abs(angleError) < DriveTrain.ANGLE_THRESHOLD_DEG);
         if(isOnTarget) {
             double checkTarget = limelight.getTargetCenterXAngle();
-            if(Math.abs(checkTarget) > DriveTrain.ANGLE_THRESHOLD_DEG) {
-                    targetHeading = -MercMath.degreesToPigeonUnits(checkTarget);
-                    driveTrain.resetPigeonYaw();
-                    onTargetCount = 0;
-                    reTargetCount++;
-            } 
+            if(Math.abs(checkTarget) > DriveTrain.ANGLE_THRESHOLD_DEG && !this.isReadyToShoot) {
+                targetHeading = -MercMath.degreesToPigeonUnits(checkTarget);
+                driveTrain.resetPigeonYaw();
+                onTargetCount = 0;
+                reTargetCount++;
+            } else {
+                this.isReadyToShoot = true;
+            }
         }
         super.execute();
         SmartDashboard.putNumber(driveTrain.getName() + "/" + getName() + "/onTargetCount", onTargetCount);

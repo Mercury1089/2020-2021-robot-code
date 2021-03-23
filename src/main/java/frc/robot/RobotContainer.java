@@ -21,6 +21,7 @@ import frc.robot.commands.drivetrain.DriveDistance;
 import frc.robot.commands.drivetrain.DriveWithJoysticks;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.drivetrain.MoveOnTrajectory;
+import frc.robot.commands.drivetrain.ResetEncoders;
 import frc.robot.commands.drivetrain.RotateToTarget;
 import frc.robot.commands.drivetrain.StayOnTarget;
 import frc.robot.commands.elevator.AutomaticElevator;
@@ -129,18 +130,23 @@ public class RobotContainer {
                                 
         left4.toggleWhenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
-        /*left8.whenPressed(new SequentialCommandGroup(new ParallelDeadlineGroup(new DriveDistance(144.0, driveTrain),
+        left8.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
+                                                     new ParallelDeadlineGroup(new DriveDistance(60.0, driveTrain),
                                                                                 new InstantCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator), 
                                                                                 new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)), 
-                                                      new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
-        */
+                                                     new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
+        
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
         //right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         right6.whenPressed(new StayOnTarget(driveTrain));
         right7.whenPressed(new RotateToTarget(driveTrain));
-        /*right9.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
-                                                    new DriveDistance(-150.0, driveTrain)));
-        */
+        right9.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter),
+                                                    new ResetEncoders(driveTrain),
+                                                    new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
+                                                                            new DriveDistance(-60.0, driveTrain))));
+        right11.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter),
+                                                    new ResetEncoders(driveTrain)));
+
         try {
             right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Circle", ProfileDirection.FORWARD), driveTrain));     
         } catch(Exception e) {
