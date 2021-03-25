@@ -2,7 +2,7 @@
   "lengthUnit": "Meter",
   "exportUnit": "Always Meters",
   "maxVelocity": 2.39,
-  "maxAcceleration": 0.8,
+  "maxAcceleration": 0.3,
   "wheelBase": 0.6223,
   "gameName": "Slalom Path",
   "outputDir": "../../src/main/deploy/trajectories/PathWeaver"

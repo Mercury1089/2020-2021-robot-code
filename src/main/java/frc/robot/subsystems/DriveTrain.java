@@ -41,7 +41,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     public static final double MAX_SPEED = 1,
         MIN_SPEED = -1;
     public static final double GEAR_RATIO = 1,
-        MAX_RPM = 300,
+        MAX_RPM = 610,
         WHEEL_DIAMETER_INCHES = 6.0;
     public static final double ANGLE_THRESHOLD_DEG = 1.2, ON_TARGET_THRESHOLD_DEG = 1.2;
     public static final double NOMINAL_OUT = 0.0,
@@ -94,6 +94,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
                 encLeft.configFeedbackCoefficient(1.0, "Ticks", SensorTimeBase.PerSecond);
                 encRight.configFeedbackCoefficient(1.0, "Ticks", SensorTimeBase.PerSecond);
+
 
                 encLeft.configSensorDirection(false);
                 encRight.configSensorDirection(true);
@@ -367,6 +368,21 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         else
             return encRight.getPosition();
     }
+    public double getLeftEncVelocityInTicksPerTenth() {
+        if (layout == DriveTrainLayout.TALONS_VICTORS)
+            return leaderLeft.getEncVelocity();
+        else
+            // CANCoder returns velocity in tick/s, so divide by 10
+            return encLeft.getVelocity() / 10;
+    }
+
+    public double getRightEncVelocityInTicksPerTenth() {
+        if (layout == DriveTrainLayout.TALONS_VICTORS)
+            return leaderRight.getEncVelocity();
+        else
+            // CANCoder returns velocity in tick/s, so divide by 10
+            return encRight.getVelocity() / 10;
+    }
 
     public double getLeftEncPositionInFeet() {
         return MercMath.getEncPosition(getLeftEncPositionInTicks());
@@ -474,8 +490,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         SmartDashboard.putNumber(getName() + "/PID0 Sensor right", ((MercTalonSRX)leaderRight).get().getSelectedSensorPosition(PRIMARY_LOOP));
         SmartDashboard.putNumber(getName() + "/PID1 Sensor", ((MercTalonSRX)leaderRight).get().getSelectedSensorPosition(AUXILIARY_LOOP));
         //Wheel RPM
-        SmartDashboard.putNumber(getName() + "/Left RPM", MercMath.ticksPerTenthToRevsPerMinute(getLeftLeader().getEncVelocity()));
-        SmartDashboard.putNumber(getName() + "/Right RPM", MercMath.ticksPerTenthToRevsPerMinute(getRightLeader().getEncVelocity()));
+        SmartDashboard.putNumber(getName() + "/Left RPM", MercMath.ticksPerTenthToRevsPerMinute(getLeftEncVelocityInTicksPerTenth()));
+        SmartDashboard.putNumber(getName() + "/Right RPM", MercMath.ticksPerTenthToRevsPerMinute(getRightEncVelocityInTicksPerTenth()));
         //Angle From Pigeon
         SmartDashboard.putNumber(getName() + "/Yaw", getPigeonYaw());
 
