@@ -132,8 +132,8 @@ public class RobotContainer {
         left6.whenPressed(new SwitchLEDState(limelightCamera));
         left8.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
                                                      new ParallelDeadlineGroup(new DriveDistance(60.0, driveTrain),
-                                                                                new InstantCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator), 
-                                                                                new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)), 
+                                                                               new InstantCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator), 
+                                                                               new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)), 
                                                      new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
         
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
@@ -141,14 +141,13 @@ public class RobotContainer {
         right6.whenPressed(new StayOnTarget(driveTrain));
         right7.whenPressed(new RotateToTarget(driveTrain));
         right9.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter),
-                                                    new ResetEncoders(driveTrain),
-                                                    new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
-                                                                            new DriveDistance(-60.0, driveTrain))));
-        right11.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter),
-                                                    new ResetEncoders(driveTrain)));
+                                                      new ResetEncoders(driveTrain),
+                                                      new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
+                                                                               new DriveDistance(-60.0, driveTrain))));
+        right11.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter), new ResetEncoders(driveTrain)));
 
         try {
-            right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Circle", ProfileDirection.FORWARD), driveTrain));     
+            right10.whenPressed(new DriveDistance(60.0, driveTrain));     
         } catch(Exception e) {
             System.out.println(e);
         }
