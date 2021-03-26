@@ -184,8 +184,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
         } else {
             /* Set up a Sum signal from both CANCoders on leaderLeft */
-            leaderLeft.configRemoteFeedbackFilter(encLeft.getDeviceID(), RemoteSensorSource.CANCoder, DriveTrain.REMOTE_DEVICE_0);
-            leaderLeft.configRemoteFeedbackFilter(encRight.getDeviceID(), RemoteSensorSource.CANCoder, DriveTrain.REMOTE_DEVICE_1);
+            leaderLeft.configRemoteFeedbackFilter(encLeft.getDeviceID(), RemoteSensorSource.CANCoder, DriveTrain.REMOTE_DEVICE_1);
+            leaderLeft.configRemoteFeedbackFilter(encRight.getDeviceID(), RemoteSensorSource.CANCoder, DriveTrain.REMOTE_DEVICE_0);
             leaderLeft.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0);
             leaderLeft.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.RemoteSensor1);
             /* Configure the sensor sum as the selected sensor for leaderLeft with a coefficient of 0.5 (average) */
