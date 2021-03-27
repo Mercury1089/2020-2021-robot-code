@@ -4,7 +4,7 @@
 
 package frc.robot.commands.drivetrain.ResetMoveHeading;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.drivetrain.ResetEncoders;
 import frc.robot.commands.drivetrain.MoveHeadingDerivatives.DegreeRotate;
 import frc.robot.subsystems.DriveTrain;
@@ -12,7 +12,7 @@ import frc.robot.subsystems.DriveTrain;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SafeDegreeRotate extends ParallelCommandGroup {
+public class SafeDegreeRotate extends SequentialCommandGroup {
   /** Creates a new SafeDegreeRotate. */
   public SafeDegreeRotate(double angleToTurn, DriveTrain driveTrain) {
     addCommands(new ResetEncoders(driveTrain), new DegreeRotate(angleToTurn, driveTrain));
