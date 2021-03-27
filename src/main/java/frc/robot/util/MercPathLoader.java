@@ -107,7 +107,7 @@ public class MercPathLoader {
                 point.isLastPoint = false;
                 //Append point to point
                 trajectoryPoints.add(point);
-                
+                /*
                 System.out.println("time: " + time + 
                                    " velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) + 
                                    " heading: " + heading +
@@ -117,14 +117,14 @@ public class MercPathLoader {
                                    " point.velocity: " + point.velocity + 
                                    " point.auxiliaryPos: " + point.auxiliaryPos +
                                    " point.position: " + point.position
-                );
+                );*/
                 
                 minTime = Math.min(point.timeDur, minTime);
             }
             TrajectoryPoint point = new TrajectoryPoint(), lastPoint;
             lastPoint = trajectoryPoints.get(trajectoryPoints.size() - 1);
 
-            point.timeDur = lastPoint.timeDur + 20;
+            point.timeDur = lastPoint.timeDur + 100;
             point.velocity = lastPoint.velocity;
             point.position = lastPoint.position;
             point.zeroPos = false;
