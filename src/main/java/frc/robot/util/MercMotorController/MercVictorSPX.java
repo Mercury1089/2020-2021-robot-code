@@ -1,9 +1,11 @@
-package frc.robot.util;
+package frc.robot.util.MercMotorController;
 
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import frc.robot.RobotMap;
+import frc.robot.util.*;
 import frc.robot.util.interfaces.IMercMotorController;
 
 public class MercVictorSPX implements IMercMotorController {
