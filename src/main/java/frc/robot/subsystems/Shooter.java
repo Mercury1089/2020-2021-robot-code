@@ -8,19 +8,21 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.MercSparkMax;
-import frc.robot.util.PIDGain;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercPIDTunable;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
-import frc.robot.Robot;
-import frc.robot.RobotContainer;
+import frc.robot.util.MercMotorController.*;
+import frc.robot.util.PIDGain;
+
 import frc.robot.RobotMap.*;
 import frc.robot.sensors.Limelight;
 import frc.robot.subsystems.DriveTrain.ShootingStyle;

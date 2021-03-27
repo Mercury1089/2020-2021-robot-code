@@ -6,12 +6,15 @@
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.subsystems;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.MercVictorSPX;
+
+import frc.robot.RobotMap.CAN;
+import frc.robot.util.MercMotorController.*;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
-import frc.robot.RobotMap.CAN;
 
 public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher {
   private final IMercMotorController intakeRoller, agitator;

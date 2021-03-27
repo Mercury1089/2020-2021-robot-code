@@ -7,14 +7,17 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import frc.robot.RobotMap.CAN;
 import frc.robot.sensors.REVColor;
 import frc.robot.sensors.REVColor.ControlPanelColor;
-import frc.robot.util.MercTalonSRX;
+
+import frc.robot.util.MercMotorController.*;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
