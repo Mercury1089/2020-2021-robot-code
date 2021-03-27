@@ -5,35 +5,31 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.drivetrain;
+package frc.robot.commands.drivetrain.MoveHeadingDerivatives;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain.DriveTrainSide;
-import frc.robot.util.MercMath;
 
-public class DegreeRotate extends MoveHeading {
+public class DriveDistance extends MoveHeading{
 
-    private DriveTrain driveTrain;
-    private double angleError;
     private int angleThresholdDeg;
 
-    public DegreeRotate(double angleToTurn, DriveTrain driveTrain) {
-        super(0, angleToTurn, driveTrain);
-
-        this.setName("DegreeRotate");
-        this.driveTrain = driveTrain;
-
-        moveThresholdTicks = 100;
-        angleThresholdDeg = 1;
-        onTargetMinCount = 3;
+    /**
+     * Construct Drive Distance w / Motion Magic
+     *
+     * @param distance in inches
+     */
+    public DriveDistance(double distance, DriveTrain driveTrain) {
+        super(distance, 0, driveTrain);
+        setName("DriveDistance");
+        moveThresholdTicks = 500;
+        angleThresholdDeg = 2;
+        onTargetMinCount = 10;
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
         super.initialize();
-        this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -45,13 +41,16 @@ public class DegreeRotate extends MoveHeading {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        angleError = right.getClosedLoopError(DriveTrain.DRIVE_SMOOTH_TURN_SLOT);
+        if (initialCheckCount < checkThreshold) {
+            initialCheckCount++;
+            return false;
+        }
 
-        angleError = MercMath.pigeonUnitsToDegrees(angleError);
+        double distError = right.getClosedLoopError();
 
         boolean isFinished = false;
 
-        boolean isOnTarget = (Math.abs(angleError) < angleThresholdDeg);
+        boolean isOnTarget = (Math.abs(distError) < moveThresholdTicks);
 
         if (isOnTarget) {
             onTargetCount++;
@@ -64,13 +63,6 @@ public class DegreeRotate extends MoveHeading {
             isFinished = true;
             onTargetCount = 0;
         }
-
-        String sdPrefix = driveTrain.getName() + "/" + getName();
-        SmartDashboard.putNumber(sdPrefix + "/onTargetCount", onTargetCount);
-        SmartDashboard.putNumber(sdPrefix + "/onTargetMinCount", onTargetMinCount);
-        SmartDashboard.putNumber(sdPrefix + "/angleError", angleError);
-        SmartDashboard.putBoolean(sdPrefix + "/isOnTarget", isOnTarget);
-        
 
         return isFinished;
     }

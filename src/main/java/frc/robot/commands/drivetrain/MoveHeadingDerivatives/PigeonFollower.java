@@ -5,9 +5,8 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.drivetrain;
+package frc.robot.commands.drivetrain.MoveHeadingDerivatives;
 
-import frc.robot.commands.drivetrain.MoveHeading;
 import frc.robot.subsystems.DriveTrain;
 //import frc.robot.commands.drivetrain.MoveOnPath.MPDirection;
 

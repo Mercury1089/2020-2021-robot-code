@@ -20,6 +20,7 @@ import frc.robot.util.ShuffleDash;
 import frc.robot.util.ShuffleDash.Autons;
 
 import frc.robot.commands.drivetrain.*;
+import frc.robot.commands.drivetrain.MoveHeadingDerivatives.*;
 import frc.robot.commands.elevator.*;
 import frc.robot.commands.feeder.*;
 import frc.robot.commands.hopper.*;
