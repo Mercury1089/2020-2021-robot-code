@@ -137,32 +137,32 @@ public class RobotContainer {
                                                      new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
         
         try {
-            left10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("60in", ProfileDirection.FORWARD), driveTrain));     
+            left10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("120in", ProfileDirection.FORWARD), driveTrain));     
         } catch(Exception e) {
             System.out.println(e);
         }
         try {
-            left11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("60in", ProfileDirection.BACKWARD), driveTrain));            
+            left11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("120in", ProfileDirection.BACKWARD), driveTrain));            
         } catch(Exception e) {
             System.out.println(e);
         }
 
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
         //right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
-        right6.whenPressed(new DriveDistance(60.0, driveTrain));
-        right7.whenPressed(new DriveDistance(-60.0, driveTrain));
+        right6.whenPressed(new DriveDistance(120.0, driveTrain));
+        right7.whenPressed(new DriveDistance(-120.0, driveTrain));
         right8.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter), new ResetEncoders(driveTrain)));
         right9.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter),
                                                       new ResetEncoders(driveTrain),
                                                       new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
                                                                                new DriveDistance(-60.0, driveTrain))));
         try {
-            right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("120in", ProfileDirection.FORWARD), driveTrain));     
+            right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Circle", ProfileDirection.FORWARD), driveTrain));     
         } catch(Exception e) {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("120in", ProfileDirection.BACKWARD), driveTrain));            
+            right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Slalom", ProfileDirection.FORWARD), driveTrain));            
         } catch(Exception e) {
             System.out.println(e);
         }

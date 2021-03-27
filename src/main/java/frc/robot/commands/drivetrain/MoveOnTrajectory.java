@@ -133,9 +133,8 @@ public class MoveOnTrajectory extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return statusRight.activePointValid && 
-           statusRight.isLast &&
-           isRunning;
+    //return statusRight.activePointValid && statusRight.isLast && isRunning;
+    return right.isMotionProfileFinished();
   }
   // Feeds TalonSRX with trajectory points
   public void fillTopBuffer() {
