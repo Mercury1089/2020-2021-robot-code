@@ -20,8 +20,8 @@ public class RobotMap {
                 ELEVATOR = 11,
                 SPINNER = 12,
                 AGITATOR = 14,
-                CANCODER_ML = 51,
-                CANCODER_MR = 52;
+                CANCODER_ML = 1,
+                CANCODER_MR = 2;
 
         private CAN() {
         }
