@@ -32,7 +32,7 @@ import frc.robot.commands.shooter.*;
 import frc.robot.commands.spinner.*;
 
 import frc.robot.sensors.Limelight;
-
+import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.subsystems.DriveTrain.ShootingStyle;
@@ -104,6 +104,7 @@ public class RobotContainer {
         feeder = new Feeder();
         intake = new Intake();
         limelightCamera = new LimelightCamera();
+        limelightCamera.getLimelight().setLEDState(LimelightLEDState.OFF);
         spinner = new Spinner();
         //elevator = new Elevator();
 
