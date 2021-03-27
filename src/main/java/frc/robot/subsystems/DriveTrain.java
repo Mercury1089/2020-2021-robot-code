@@ -89,8 +89,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
                 followerLeft = new MercTalonSRX(CAN.DRIVETRAIN_FL);
                 followerRight = new MercTalonSRX(CAN.DRIVETRAIN_FR);
 
-                encLeft = new CANCoder(RobotMap.CAN.CANCODER_ML);
-                encRight = new CANCoder(RobotMap.CAN.CANCODER_MR);
+                encLeft = new CANCoder(RobotMap.CAN.DRIVETRAIN_ML);
+                encRight = new CANCoder(RobotMap.CAN.DRIVETRAIN_MR);
 
                 encLeft.configFeedbackCoefficient(1.0, "Ticks", SensorTimeBase.PerSecond);
                 encRight.configFeedbackCoefficient(1.0, "Ticks", SensorTimeBase.PerSecond);
