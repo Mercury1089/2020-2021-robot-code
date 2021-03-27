@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -13,31 +14,31 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
-import frc.robot.commands.drivetrain.DriveDistance;
-import frc.robot.commands.drivetrain.DriveWithJoysticks;
+
+import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
-import frc.robot.commands.drivetrain.MoveOnTrajectory;
-import frc.robot.commands.drivetrain.ResetEncoders;
-import frc.robot.commands.drivetrain.RotateToTarget;
-import frc.robot.commands.drivetrain.StayOnTarget;
-import frc.robot.commands.elevator.AutomaticElevator;
-import frc.robot.commands.elevator.Hang;
-import frc.robot.commands.feeder.AutoFeedBalls;
-import frc.robot.commands.intake.RunIntake;
-import frc.robot.commands.limelightCamera.SwitchLEDState;
-import frc.robot.commands.shooter.EndFullyAutoAimBot;
-import frc.robot.commands.shooter.FullyAutoAimbot;
-import frc.robot.commands.shooter.RunShooterRPMPID;
+import frc.robot.commands.drivetrain.MoveHeadingDerivatives.*;
+import frc.robot.commands.elevator.*;
+import frc.robot.commands.feeder.*;
+import frc.robot.commands.hopper.*;
+import frc.robot.commands.intake.*;
+import frc.robot.commands.limelightCamera.*;
+import frc.robot.commands.shooter.*;
+import frc.robot.commands.spinner.*;
+
 import frc.robot.sensors.Limelight;
+
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.subsystems.DriveTrain.ShootingStyle;
-import frc.robot.subsystems.Elevator.ElevatorPosition;
+
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Elevator.ElevatorPosition;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
@@ -46,6 +47,7 @@ import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.ShooterMode;
 import frc.robot.subsystems.Spinner;
+
 import frc.robot.util.MercMotionProfile;
 import frc.robot.util.MercMotionProfile.ProfileDirection;
 import frc.robot.util.ShuffleDash;
