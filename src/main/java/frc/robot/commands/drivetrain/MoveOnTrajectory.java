@@ -110,6 +110,7 @@ public class MoveOnTrajectory extends CommandBase {
     }
 
     driveTrain.stop();
+    //reset();
     driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
     driveTrain.setNeutralMode(NeutralMode.Brake);
     right.setStatusFramePeriod(StatusFrameEnhanced.Status_1_General, 10, RobotMap.CTRE_TIMEOUT);

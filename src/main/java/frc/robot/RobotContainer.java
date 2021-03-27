@@ -131,7 +131,7 @@ public class RobotContainer {
         left4.toggleWhenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
         left8.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
-                                                     new ParallelDeadlineGroup(new DriveDistance(60.0, driveTrain),
+                                                     new ParallelDeadlineGroup(new DriveDistance(150.0, driveTrain),
                                                                                new InstantCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator), 
                                                                                new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)), 
                                                      new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
@@ -148,14 +148,15 @@ public class RobotContainer {
         }
 
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
-        //right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+        right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+        right5.whenPressed(new ResetEncoders(driveTrain));
         right6.whenPressed(new DriveDistance(120.0, driveTrain));
         right7.whenPressed(new DriveDistance(-120.0, driveTrain));
         right8.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter), new ResetEncoders(driveTrain)));
         right9.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter),
                                                       new ResetEncoders(driveTrain),
                                                       new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
-                                                                               new DriveDistance(-60.0, driveTrain))));
+                                                                               new DriveDistance(-150.0, driveTrain))));
         try {
             right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Circle", ProfileDirection.FORWARD), driveTrain));     
         } catch(Exception e) {

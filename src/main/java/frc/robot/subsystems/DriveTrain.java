@@ -131,8 +131,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
         // Config PID
         setPIDGain(DRIVE_PID_SLOT, new PIDGain(0.125, 0.0, 0.05, 0.0, .75));
-        setPIDGain(DRIVE_SMOOTH_MOTION_SLOT, new PIDGain(0.4, 0.000185, 0.0, getFeedForward(), 1.0));
-        setPIDGain(DRIVE_MOTION_PROFILE_SLOT, new PIDGain(0.045, 0.0, 0.0, getFeedForward(), 1.0));
+        setPIDGain(DRIVE_SMOOTH_MOTION_SLOT, new PIDGain(0.7, 0.000185, 0.0, getFeedForward(), 1.0));
+        setPIDGain(DRIVE_MOTION_PROFILE_SLOT, new PIDGain(0.1, 0.0, 0.0, getFeedForward(), 1.0));
         setPIDGain(DRIVE_SMOOTH_TURN_SLOT, new PIDGain(1.0, 0.0, 0.0, 0.0, 0.15));
 
         resetEncoders();
@@ -498,6 +498,9 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         SmartDashboard.putBoolean(getName() + "/IsAligned", isAligned());
         SmartDashboard.putBoolean(getName() + "/TargetAcquired", limelight.getTargetAcquired());
         SmartDashboard.putBoolean(getName() + "/LimelightLEDState", limelight.getLEDState());
+        //Publish Current Command
+        SmartDashboard.putString(getName() + "/Command", getCurrentCommand() != null ? getCurrentCommand().getName() : "None");
+
     }
 
     @Override

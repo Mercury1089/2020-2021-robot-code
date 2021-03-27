@@ -101,7 +101,7 @@ public class MercPathLoader {
                 point.auxiliaryPos = MercMath.degreesToPigeonUnits(heading); // heading stored as auxilliaryPos
                 //PID Profile
                 point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
-                point.profileSlotSelect1 = DriveTrain.DRIVE_SMOOTH_TURN_SLOT;
+                point.profileSlotSelect1 = DriveTrain.DRIVE_SMOOTH_MOTION_SLOT;
                 point.useAuxPID = true;
                 //Says that point is not a last point
                 point.isLastPoint = false;
@@ -121,6 +121,7 @@ public class MercPathLoader {
                 
                 minTime = Math.min(point.timeDur, minTime);
             }
+            /*
             TrajectoryPoint point = new TrajectoryPoint(), lastPoint;
             lastPoint = trajectoryPoints.get(trajectoryPoints.size() - 1);
 
@@ -135,7 +136,7 @@ public class MercPathLoader {
             point.isLastPoint = true;
 
             trajectoryPoints.add(point);
-
+            */
             DriverStation.reportError(pathName + "\nMin Time: " + minTime , false);
         }
         return trajectoryPoints;
