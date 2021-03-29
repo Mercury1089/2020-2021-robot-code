@@ -47,11 +47,9 @@ public class MercPathLoader {
             int prevTime = 0;
             double prevHeading = 0;
             double pos = 0.0;
-            boolean add360 = false;
-            boolean minus360 = false;
             for(Trajectory.State state : trajectoryStates) {
                 TrajectoryPoint point = new TrajectoryPoint();
-                double heading, velocity;
+                double headingDelta, heading, velocity;
                 int time;
 
                 //Time
@@ -60,11 +58,11 @@ public class MercPathLoader {
                 prevTime = time;    
                 if(minTime == 0)
                     minTime = point.timeDur;
-                //time = 20;
-                //point.timeDur = time;
+
                 //Velocity
                 velocity = state.velocityMetersPerSecond;
                 point.velocity = MercMath.metersPerSecondToTicksPerTenth(velocity);
+
                 //Distance
                 if (prevState == null) {
                     point.position = 0.0;
@@ -82,23 +80,27 @@ public class MercPathLoader {
                 }
                 prevState = state;
 
-                //Heading
+                // Calculate heading delta based on absolute heading from path trajectory
                 heading = state.poseMeters.getRotation().getDegrees();
-                if(heading > -180 && heading < 0 && prevHeading <= 180 && prevHeading >= 170) {
-                    add360 = true;
-                    minus360 = false;
+                if (heading > 90 && heading <= 180 && prevHeading < -90 && prevHeading > -180) {
+                    headingDelta = heading - prevHeading - 360;
+                } else if (heading > -180 && heading < -90 && prevHeading <= 180 && prevHeading > 90) {
+                    headingDelta = heading - prevHeading + 360;
+                } else {
+                    headingDelta = heading - prevHeading;
                 }
-                else if((heading < 180 && heading > 0 && prevHeading > -180 && prevHeading < -170) || prevHeading == 180) {
-                    minus360 = true;
-                    add360 = false;
+                prevHeading = heading;
+
+                if (trajectoryPoints.size() == 0) {
+                    // First point - delta is heading
+                    point.auxiliaryPos = MercMath.degreesToPigeonUnits(heading);
+                } else {
+                    // Apply delta to previous pos
+                    point.auxiliaryPos = 
+                        trajectoryPoints.get(trajectoryPoints.size() - 1).auxiliaryPos +
+                        MercMath.degreesToPigeonUnits(headingDelta);
                 }
-                
-                if(add360 && !minus360)
-                    heading += 360;   
-                else if(!add360 && minus360)
-                    heading -= (180 - heading);
-                prevHeading = state.poseMeters.getRotation().getDegrees();
-                point.auxiliaryPos = MercMath.degreesToPigeonUnits(heading); // heading stored as auxilliaryPos
+
                 //PID Profile
                 point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
                 point.profileSlotSelect1 = DriveTrain.DRIVE_SMOOTH_MOTION_SLOT;
@@ -107,6 +109,12 @@ public class MercPathLoader {
                 point.isLastPoint = false;
                 //Append point to point
                 trajectoryPoints.add(point);
+                
+                System.out.println("time: " + time + 
+                                   " radians: " + state.poseMeters.getRotation().getRadians() + 
+                                   " degrees: " + state.poseMeters.getRotation().getDegrees() +
+                                   " heading: " + MercMath.pigeonUnitsToDegrees(point.auxiliaryPos) 
+                );
                 /*
                 System.out.println("time: " + time + 
                                    " velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) + 
@@ -121,22 +129,6 @@ public class MercPathLoader {
                 
                 minTime = Math.min(point.timeDur, minTime);
             }
-            /*
-            TrajectoryPoint point = new TrajectoryPoint(), lastPoint;
-            lastPoint = trajectoryPoints.get(trajectoryPoints.size() - 1);
-
-            point.timeDur = lastPoint.timeDur + 100;
-            point.velocity = lastPoint.velocity;
-            point.position = lastPoint.position;
-            point.zeroPos = false;
-            point.auxiliaryPos = lastPoint.auxiliaryPos;
-            point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
-            point.profileSlotSelect1 = DriveTrain.DRIVE_SMOOTH_TURN_SLOT;
-            point.useAuxPID = true;
-            point.isLastPoint = true;
-
-            trajectoryPoints.add(point);
-            */
             DriverStation.reportError(pathName + "\nMin Time: " + minTime , false);
         }
         return trajectoryPoints;
