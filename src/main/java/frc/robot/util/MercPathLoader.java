@@ -88,7 +88,7 @@ public class MercPathLoader {
                     add360 = true;
                     minus360 = false;
                 }
-                else if(heading < 180 && heading > 0 && (prevHeading > -180 && prevHeading < -170) || prevHeading == 180) {
+                else if((heading < 180 && heading > 0 && prevHeading > -180 && prevHeading < -170) || prevHeading == 180) {
                     minus360 = true;
                     add360 = false;
                 }
@@ -96,8 +96,8 @@ public class MercPathLoader {
                 if(add360 && !minus360)
                     heading += 360;   
                 else if(!add360 && minus360)
-                    heading -= 360;
-                prevHeading = heading;
+                    heading -= (180 - heading);
+                prevHeading = state.poseMeters.getRotation().getDegrees();
                 point.auxiliaryPos = MercMath.degreesToPigeonUnits(heading); // heading stored as auxilliaryPos
                 //PID Profile
                 point.profileSlotSelect0 = DriveTrain.DRIVE_MOTION_PROFILE_SLOT;
