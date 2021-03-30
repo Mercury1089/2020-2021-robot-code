@@ -271,6 +271,14 @@ public class RobotContainer {
                 new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight)
             );
     }
+
+    public void initializeSlalomCommand() {
+       try{
+           autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Slalom", ProfileDirection.FORWARD), driveTrain));
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
         
     public void initCenter5BallTrench() {
         if(driveTrain.isAligned()) {
