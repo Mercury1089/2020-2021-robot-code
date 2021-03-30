@@ -29,7 +29,7 @@ public class MercPathLoader {
     /**
      * @param pathName name + wpilib.json
      */
-    public static List<TrajectoryPoint> loadPath(String pathName) {
+    public static List<TrajectoryPoint> loadPath(String pathName, int angleOffset) {
         List<TrajectoryPoint> trajectoryPoints = new ArrayList<TrajectoryPoint>();
         List<Trajectory.State> trajectoryStates;
         Trajectory trajectory = null;
@@ -81,7 +81,7 @@ public class MercPathLoader {
                 prevState = state;
 
                 // Calculate heading delta based on absolute heading from path trajectory
-                heading = state.poseMeters.getRotation().getDegrees();
+                heading = state.poseMeters.getRotation().getDegrees() + angleOffset;
                 if (heading > 90 && heading <= 180 && prevHeading < -90 && prevHeading > -180) {
                     headingDelta = heading - prevHeading - 360;
                 } else if (heading > -180 && heading < -90 && prevHeading <= 180 && prevHeading > 90) {
@@ -134,6 +134,10 @@ public class MercPathLoader {
             DriverStation.reportError(pathName + "\nMin Time: " + minTime , false);
         }
         return trajectoryPoints;
+    }
+
+    public static List<TrajectoryPoint> loadPath(String pathName) {
+        return loadPath(pathName, 0);
     }
 
     public static int getMinTime() {

@@ -7,52 +7,60 @@
 
 package frc.robot.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ctre.phoenix.motion.TrajectoryPoint;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
+import java.util.List;
 /**
  * Add your docs here.
  */
 public class MercMotionProfile {
-    private final String name;
-    private final String pathDirectory;
-    private final ProfileDirection direction;
-    private final List<TrajectoryPoint> trajectoryPoints;
+    private final int ANGLE_OFFSET;
+    private final List<TrajectoryPoint> TRAJECTORY_POINTS;
+    private final ProfileDirection DIRECTION;
+    private final String NAME;
+    private final String PATH_DIRECTORY;
 
-    public MercMotionProfile(final String name, final ProfileDirection direction) {
-        this.name = name;
-        this.direction = direction;
-        pathDirectory = MercPathLoader.getBasePathLocation() + name + ".wpilib.json"; 
-        trajectoryPoints = MercPathLoader.loadPath(name);
-        if(this.direction == ProfileDirection.BACKWARD)
+    public MercMotionProfile(String name, ProfileDirection direction) {
+        this(name, direction, 0);
+    }
+
+    public MercMotionProfile(String name, ProfileDirection direction, int angleOffset) {
+        this.NAME = name;
+        this.DIRECTION = direction;
+        this.ANGLE_OFFSET = angleOffset;
+        PATH_DIRECTORY = MercPathLoader.getBasePathLocation() + name + ".wpilib.json"; 
+        TRAJECTORY_POINTS = MercPathLoader.loadPath(name, angleOffset);
+        if(this.DIRECTION == ProfileDirection.BACKWARD)
             driveBackwards();
     }
 
     public String getName() {
-        return name;
+        return NAME;
+    }
+
+    public int getAngleOffset() {
+        return ANGLE_OFFSET;
     }
 
     public String getPathDirectory() {
-        return pathDirectory;
+        return PATH_DIRECTORY;
     }
 
     public List<TrajectoryPoint> getTrajectoryPoints() {
-        return trajectoryPoints;
+        return TRAJECTORY_POINTS;
     }
 
     public void driveBackwards() {
-        if(trajectoryPoints == null) {
+        if(TRAJECTORY_POINTS == null) {
             DriverStation.reportError("No Trajectory To Load", false);
             return;
         }
-        for (int i = 0; i < trajectoryPoints.size(); i++) {
-            trajectoryPoints.get(i).velocity *= -1;
-            trajectoryPoints.get(i).position *= -1;
-            trajectoryPoints.get(i).auxiliaryPos *= -1;
+        for (int i = 0; i < TRAJECTORY_POINTS.size(); i++) {
+            TRAJECTORY_POINTS.get(i).velocity *= -1;
+            TRAJECTORY_POINTS.get(i).position *= -1;
+            TRAJECTORY_POINTS.get(i).auxiliaryPos *= -1;
         }
     }
 
