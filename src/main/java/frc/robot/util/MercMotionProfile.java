@@ -52,9 +52,7 @@ public class MercMotionProfile {
         for (int i = 0; i < trajectoryPoints.size(); i++) {
             trajectoryPoints.get(i).velocity *= -1;
             trajectoryPoints.get(i).position *= -1;
-            //trajectoryPoints.get(i).headingDeg =
-            //(trajectoryPoints.get(i).headingDeg + 4096) % 8192;
-            //System.out.println("Velocity: " + trajectoryPoints.get(i).velocity);
+            trajectoryPoints.get(i).auxiliaryPos *= -1;
         }
     }
 

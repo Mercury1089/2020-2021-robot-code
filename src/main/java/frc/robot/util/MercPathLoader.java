@@ -109,12 +109,12 @@ public class MercPathLoader {
                 point.isLastPoint = false;
                 //Append point to point
                 trajectoryPoints.add(point);
-                
+                /*
                 System.out.println("time: " + time + 
                                    " radians: " + state.poseMeters.getRotation().getRadians() + 
                                    " degrees: " + state.poseMeters.getRotation().getDegrees() +
                                    " heading: " + MercMath.pigeonUnitsToDegrees(point.auxiliaryPos) 
-                );
+                );*/
                 /*
                 System.out.println("time: " + time + 
                                    " velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) + 
@@ -129,6 +129,8 @@ public class MercPathLoader {
                 
                 minTime = Math.min(point.timeDur, minTime);
             }
+
+            trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = true;
             DriverStation.reportError(pathName + "\nMin Time: " + minTime , false);
         }
         return trajectoryPoints;

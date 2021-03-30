@@ -161,12 +161,12 @@ public class RobotContainer {
                                                       new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
                                                                                new DriveDistance(-150.0, driveTrain))));
         try {
-            right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Circle", ProfileDirection.FORWARD), driveTrain));     
+            right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD), driveTrain));     
         } catch(Exception e) {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Slalom", ProfileDirection.FORWARD), driveTrain));            
+            right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Bounce1", ProfileDirection.FORWARD), driveTrain));            
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -279,6 +279,27 @@ public class RobotContainer {
             System.out.println(e);
         }
     }
+
+    public void initializeBarrelCommand() {
+        try{
+            autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Barrel", ProfileDirection.FORWARD), driveTrain));
+         } catch(Exception e) {
+             System.out.println(e);
+         }
+     }
+     public void initializeBounceCommand() {
+        try{
+            autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Bounce1", ProfileDirection.FORWARD), driveTrain),
+                                                      new ResetEncoders(driveTrain),
+                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD), driveTrain),
+                                                      new ResetEncoders(driveTrain)/*,
+                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce3", ProfileDirection.FORWARD), driveTrain),
+                                                      new ResetEncoders(driveTrain),
+                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce4", ProfileDirection.BACKWARD), driveTrain)*/);
+         } catch(Exception e) {
+             System.out.println(e);
+         }
+     }
         
     public void initCenter5BallTrench() {
         if(driveTrain.isAligned()) {
