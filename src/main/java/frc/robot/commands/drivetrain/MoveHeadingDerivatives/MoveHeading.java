@@ -23,11 +23,10 @@ public class MoveHeading extends CommandBase {
     protected int checkThreshold = 50;
     protected IMercMotorController left, right;
 
-    protected double distance, targetHeading;
+    protected double distance, targetHeading,dirFactor;
+    protected int onTargetCount, initialCheckCount, resetCounter;
 
-    protected double dirFactor;
-
-    protected int onTargetCount, initialCheckCount;
+    protected boolean reset;
 
     private DriveTrain driveTrain;
 
@@ -78,14 +77,30 @@ public class MoveHeading extends CommandBase {
         this.driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_PID_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
 
         this.driveTrain.resetPigeonYaw();
+
+        reset = driveTrain.getPigeonYaw() == 0.0 && 
+                driveTrain.getLeftEncPositionInTicks() == 0.0 && 
+                driveTrain.getRightEncPositionInTicks() == 0.0;
+        resetCounter = 0;
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute() {
         /* Configured for MotionMagic on Quad Encoders and Auxiliary PID on Pigeon */
-        right.set(ControlMode.MotionMagic, distance, DemandType.AuxPID, targetHeading);
-        left.follow(right, FollowerType.AuxOutput1);
+        if(!reset){
+            if (resetCounter % 5 == 0) {
+                driveTrain.resetEncoders();
+                driveTrain.resetPigeonYaw();
+            }
+            resetCounter++;
+            reset = driveTrain.getPigeonYaw() == 0.0 && 
+                    driveTrain.getLeftEncPositionInTicks() == 0.0 && 
+                    driveTrain.getRightEncPositionInTicks() == 0.0;
+        } else {
+            right.set(ControlMode.MotionMagic, distance, DemandType.AuxPID, targetHeading);
+            left.follow(right, FollowerType.AuxOutput1);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

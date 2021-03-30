@@ -29,7 +29,7 @@ public class MercPathLoader {
     /**
      * @param pathName name + wpilib.json
      */
-    public static List<TrajectoryPoint> loadPath(String pathName, int angleOffset) {
+    public static List<TrajectoryPoint> loadPath(String pathName, double angleOffset) {
         List<TrajectoryPoint> trajectoryPoints = new ArrayList<TrajectoryPoint>();
         List<Trajectory.State> trajectoryStates;
         Trajectory trajectory = null;

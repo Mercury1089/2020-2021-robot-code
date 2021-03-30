@@ -16,7 +16,7 @@ import java.util.List;
  * Add your docs here.
  */
 public class MercMotionProfile {
-    private final int ANGLE_OFFSET;
+    private final double ANGLE_OFFSET;
     private final List<TrajectoryPoint> TRAJECTORY_POINTS;
     private final ProfileDirection DIRECTION;
     private final String NAME;
@@ -26,7 +26,7 @@ public class MercMotionProfile {
         this(name, direction, 0);
     }
 
-    public MercMotionProfile(String name, ProfileDirection direction, int angleOffset) {
+    public MercMotionProfile(String name, ProfileDirection direction, double angleOffset) {
         this.NAME = name;
         this.DIRECTION = direction;
         this.ANGLE_OFFSET = angleOffset;
@@ -40,7 +40,7 @@ public class MercMotionProfile {
         return NAME;
     }
 
-    public int getAngleOffset() {
+    public double getAngleOffset() {
         return ANGLE_OFFSET;
     }
 

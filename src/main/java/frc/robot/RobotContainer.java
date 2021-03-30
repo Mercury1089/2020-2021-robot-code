@@ -291,7 +291,7 @@ public class RobotContainer {
         try{
             autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Bounce1", ProfileDirection.FORWARD), driveTrain),
                                                       new ResetEncoders(driveTrain),
-                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD), driveTrain),
+                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD, 90), driveTrain),
                                                       new ResetEncoders(driveTrain)/*,
                                                       new MoveOnTrajectory(new MercMotionProfile("Bounce3", ProfileDirection.FORWARD), driveTrain),
                                                       new ResetEncoders(driveTrain),
