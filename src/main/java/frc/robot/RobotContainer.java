@@ -283,24 +283,29 @@ public class RobotContainer {
     public void initializeBarrelCommand() {
         try{
             autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Barrel", ProfileDirection.FORWARD), driveTrain));
-         } catch(Exception e) {
-             System.out.println(e);
-         }
-     }
-     public void initializeBounceCommand() {
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+    
+    public void initializeBounceCommand() {
         try{
+        /*
             autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Bounce1", ProfileDirection.FORWARD), driveTrain),
                                                       new ResetEncoders(driveTrain),
                                                       new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD, 90), driveTrain),
-                                                      new ResetEncoders(driveTrain)/*,
+                                                      new ResetEncoders(driveTrain),
                                                       new MoveOnTrajectory(new MercMotionProfile("Bounce3", ProfileDirection.FORWARD), driveTrain),
                                                       new ResetEncoders(driveTrain),
-                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce4", ProfileDirection.BACKWARD), driveTrain)*/);
-         } catch(Exception e) {
-             System.out.println(e);
-         }
-     }
-        
+                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce4", ProfileDirection.BACKWARD), driveTrain));
+        */
+            autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Bounce1", "Bounce2"), driveTrain));
+            //autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Bounce1", "Bounce2", "Bounce3", "Bounce4"), driveTrain));
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+    
     public void initCenter5BallTrench() {
         if(driveTrain.isAligned()) {
             DriverStation.reportError("Center5BallTrench Auton", false);
