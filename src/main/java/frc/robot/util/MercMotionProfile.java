@@ -11,6 +11,7 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
+import java.util.ArrayList;
 import java.util.List;
 /**
  * Add your docs here.
@@ -31,9 +32,24 @@ public class MercMotionProfile {
         this.DIRECTION = direction;
         this.ANGLE_OFFSET = angleOffset;
         PATH_DIRECTORY = MercPathLoader.getBasePathLocation() + name + ".wpilib.json"; 
-        TRAJECTORY_POINTS = MercPathLoader.loadPath(name, angleOffset);
+        TRAJECTORY_POINTS = MercPathLoader.loadPath(name, angleOffset, true);
         if(this.DIRECTION == ProfileDirection.BACKWARD)
             driveBackwards();
+    }
+
+    public MercMotionProfile(String ... names) {
+        NAME = "Paths:";
+        DIRECTION = ProfileDirection.FORWARD;
+        ANGLE_OFFSET = 0.0;
+        PATH_DIRECTORY = MercPathLoader.getBasePathLocation() + "[Many Paths]" + ".wpilib.json";
+        
+        List<TrajectoryPoint> loader = new ArrayList<TrajectoryPoint>();
+        for (String name : names) {
+            NAME.concat(" " + name);
+            loader.addAll(MercPathLoader.loadPath(name, ANGLE_OFFSET, false));
+        }
+        loader.get(loader.size() - 1).isLastPoint = true;
+        TRAJECTORY_POINTS = loader;
     }
 
     public String getName() {

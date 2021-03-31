@@ -29,7 +29,7 @@ public class MercPathLoader {
     /**
      * @param pathName name + wpilib.json
      */
-    public static List<TrajectoryPoint> loadPath(String pathName, double angleOffset) {
+    public static List<TrajectoryPoint> loadPath(String pathName, double angleOffset, boolean lastTrajectory) {
         List<TrajectoryPoint> trajectoryPoints = new ArrayList<TrajectoryPoint>();
         List<Trajectory.State> trajectoryStates;
         Trajectory trajectory = null;
@@ -130,14 +130,14 @@ public class MercPathLoader {
                 minTime = Math.min(point.timeDur, minTime);
             }
 
-            trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = true;
+            trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = lastTrajectory;
             DriverStation.reportError(pathName + "\nMin Time: " + minTime , false);
         }
         return trajectoryPoints;
     }
 
     public static List<TrajectoryPoint> loadPath(String pathName) {
-        return loadPath(pathName, 0);
+        return loadPath(pathName, 0, true);
     }
 
     public static int getMinTime() {
