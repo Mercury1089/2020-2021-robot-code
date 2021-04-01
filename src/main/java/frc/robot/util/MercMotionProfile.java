@@ -37,6 +37,16 @@ public class MercMotionProfile {
             driveBackwards();
     }
 
+    public MercMotionProfile(String name, ProfileDirection direction, double angleOffset, boolean lastPoint) {
+        this.NAME = name;
+        this.DIRECTION = direction;
+        this.ANGLE_OFFSET = angleOffset;
+        PATH_DIRECTORY = MercPathLoader.getBasePathLocation() + name + ".wpilib.json"; 
+        TRAJECTORY_POINTS = MercPathLoader.loadPath(name, angleOffset, lastPoint);
+        if(this.DIRECTION == ProfileDirection.BACKWARD)
+            driveBackwards();
+    }
+
     public MercMotionProfile(String ... names) {
         NAME = "Paths:";
         DIRECTION = ProfileDirection.FORWARD;
@@ -76,7 +86,7 @@ public class MercMotionProfile {
         for (int i = 0; i < TRAJECTORY_POINTS.size(); i++) {
             TRAJECTORY_POINTS.get(i).velocity *= -1;
             TRAJECTORY_POINTS.get(i).position *= -1;
-            TRAJECTORY_POINTS.get(i).auxiliaryPos *= -1;
+            //TRAJECTORY_POINTS.get(i).auxiliaryPos += MercMath.degreesToPigeonUnits(180);
         }
     }
 

@@ -110,11 +110,12 @@ public class MercPathLoader {
                 //Append point to point
                 trajectoryPoints.add(point);
                 /*
-                System.out.println("time: " + time + 
-                                   " radians: " + state.poseMeters.getRotation().getRadians() + 
-                                   " degrees: " + state.poseMeters.getRotation().getDegrees() +
-                                   " heading: " + MercMath.pigeonUnitsToDegrees(point.auxiliaryPos) 
-                );*/
+                    System.out.println(pathName + 
+                                       " time: " + time + 
+                                       " radians: " + state.poseMeters.getRotation().getRadians() + 
+                                       " degrees: " + state.poseMeters.getRotation().getDegrees() +
+                                       " heading: " + MercMath.pigeonUnitsToDegrees(point.auxiliaryPos) 
+                    );*/
                 /*
                 System.out.println("time: " + time + 
                                    " velocity: " + MercMath.inchesPerSecondToRevsPerMinute(state.velocityMetersPerSecond) + 

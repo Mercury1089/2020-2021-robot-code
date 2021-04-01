@@ -35,8 +35,8 @@ public class Robot extends TimedRobot {
         robotContainer = new RobotContainer();
         //robotContainer.initializeAutonCommand();
         //robotContainer.initializeSlalomCommand();
-        //robotContainer.initializeBarrelCommand();
-        robotContainer.initializeBounceCommand();
+        robotContainer.initializeBarrelCommand();
+        //robotContainer.initializeBounceCommand();
         this.autonCommand = robotContainer.getAutonCommand();
     }
 

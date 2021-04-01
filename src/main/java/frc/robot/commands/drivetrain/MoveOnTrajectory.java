@@ -8,6 +8,7 @@
 package frc.robot.commands.drivetrain;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
@@ -31,6 +32,7 @@ import frc.robot.subsystems.DriveTrain.DriveTrainSide;
 
 import frc.robot.util.MercMotionProfile;
 import frc.robot.util.MercPathLoader;
+import frc.robot.util.MercMotionProfile.ProfileDirection;
 import frc.robot.util.MercMotorController.*;
 
 public class MoveOnTrajectory extends CommandBase {
@@ -73,6 +75,28 @@ public class MoveOnTrajectory extends CommandBase {
     right = ((MercTalonSRX) this.driveTrain.getRightLeader()).get();
   }
 
+  public MoveOnTrajectory(DriveTrain driveTrain, String ... paths) {
+    this.driveTrain = driveTrain;
+    this.pathName = "Many";
+
+    addRequirements(driveTrain);
+    setName("MoveOn " + pathName + "Path");
+
+    statusRight = new MotionProfileStatus();
+    trajectoryPoints = new ArrayList<TrajectoryPoint>();
+    buffer = new BufferedTrajectoryPointStream();
+
+    for(String path: paths) {
+      ProfileDirection direction = path.charAt(0) == 'F' ? ProfileDirection.FORWARD : ProfileDirection.BACKWARD;
+      MercMotionProfile profile = new MercMotionProfile(path, direction, 0, false);
+      trajectoryPoints.addAll(profile.getTrajectoryPoints());
+    }
+    trajectoryPoints.get(trajectoryPoints.size() - 1).isLastPoint = true;
+    
+    left = ((MercTalonSRX) this.driveTrain.getLeftLeader()).get();
+    right = ((MercTalonSRX) this.driveTrain.getRightLeader()).get();
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -105,9 +129,9 @@ public class MoveOnTrajectory extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     if (interrupted) {
-      right.clearMotionProfileTrajectories();
       DriverStation.reportError(getName() + " is interrupted", false);
     }
+    right.clearMotionProfileTrajectories();
 
     driveTrain.stop();
     //reset();
@@ -134,9 +158,10 @@ public class MoveOnTrajectory extends CommandBase {
   // Resets values to rerun command
   private void reset() {
     // Reset flags and motion profile modes
+    /*
     right.set(ControlMode.MotionProfileArc, SetValueMotionProfile.Disable.value);
     right.configMotionProfileTrajectoryPeriod(0, RobotMap.CTRE_TIMEOUT);
-
+    */
     // Reconfigure driveTrain settings
     driveTrain.configPIDSlots(DriveTrainSide.RIGHT, DriveTrain.DRIVE_MOTION_PROFILE_SLOT, DriveTrain.DRIVE_SMOOTH_MOTION_SLOT);
     driveTrain.setNeutralMode(NeutralMode.Brake);

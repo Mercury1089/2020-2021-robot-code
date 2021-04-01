@@ -151,8 +151,9 @@ public class RobotContainer {
         }
 
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
+        right3.whenPressed(new ResetEncoders(driveTrain));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
-        right5.whenPressed(new ResetEncoders(driveTrain));
+        right5.whenPressed(new ResetEncoders(driveTrain, false));
         right6.whenPressed(new DriveDistance(120.0, driveTrain));
         right7.whenPressed(new DriveDistance(-120.0, driveTrain));
         right8.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter), new ResetEncoders(driveTrain)));
@@ -161,12 +162,22 @@ public class RobotContainer {
                                                       new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
                                                                                new DriveDistance(-150.0, driveTrain))));
         try {
-            right10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD), driveTrain));     
+            right10.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
+                                                           new MoveOnTrajectory(driveTrain, "FBounce1"),
+                                                           new ResetEncoders(driveTrain), 
+                                                           new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD), driveTrain),
+                                                           new ResetEncoders(driveTrain),
+                                                           new MoveOnTrajectory(driveTrain, "FBounce3"),
+                                                           new ResetEncoders(driveTrain),
+                                                           new MoveOnTrajectory(driveTrain, "Bounce4")));     
         } catch(Exception e) {
             System.out.println(e);
         }
         try {
-            right11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("Bounce1", ProfileDirection.FORWARD), driveTrain));            
+            right11.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
+                                                           new MoveOnTrajectory(driveTrain, "FBounce1"),
+                                                           new ResetEncoders(driveTrain), 
+                                                           new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD), driveTrain)));             
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -290,17 +301,14 @@ public class RobotContainer {
     
     public void initializeBounceCommand() {
         try{
-        /*
-            autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Bounce1", ProfileDirection.FORWARD), driveTrain),
+            autonCommand = new SequentialCommandGroup(new ResetEncoders(driveTrain),
+                                                      new MoveOnTrajectory(driveTrain, "FBounce1"),
+                                                      new ResetEncoders(driveTrain), 
+                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD), driveTrain),
                                                       new ResetEncoders(driveTrain),
-                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD, 90), driveTrain),
+                                                      new MoveOnTrajectory(driveTrain, "FBounce3"),
                                                       new ResetEncoders(driveTrain),
-                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce3", ProfileDirection.FORWARD), driveTrain),
-                                                      new ResetEncoders(driveTrain),
-                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce4", ProfileDirection.BACKWARD), driveTrain));
-        */
-            autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Bounce1", "Bounce2"), driveTrain));
-            //autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Bounce1", "Bounce2", "Bounce3", "Bounce4"), driveTrain));
+                                                      new MoveOnTrajectory(driveTrain, "Bounce4"));
         } catch(Exception e) {
             System.out.println(e);
         }
