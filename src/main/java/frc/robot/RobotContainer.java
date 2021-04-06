@@ -19,7 +19,7 @@ import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
-
+import frc.robot.RobotMap.NIHAR;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
 import frc.robot.commands.drivetrain.MoveHeadingDerivatives.*;
@@ -154,8 +154,8 @@ public class RobotContainer {
         right3.whenPressed(new ResetEncoders(driveTrain));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
         right5.whenPressed(new ResetEncoders(driveTrain, false));
-        right6.whenPressed(new DriveDistance(120.0, driveTrain));
-        right7.whenPressed(new DriveDistance(-120.0, driveTrain));
+        right6.whenPressed(new DriveDistance(60.0, driveTrain));
+        right7.whenPressed(new DriveDistance(-60.0, driveTrain));
         right8.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter), new ResetEncoders(driveTrain)));
         right9.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter),
                                                       new ResetEncoders(driveTrain),
@@ -198,9 +198,9 @@ public class RobotContainer {
     public double getJoystickX(int port) {
         switch (port) {
             case DS_USB.LEFT_STICK:
-                return leftJoystick.getX();
+                return leftJoystick.getX() * NIHAR.LEFT_X;
             case DS_USB.RIGHT_STICK:
-                return rightJoystick.getX();
+                return rightJoystick.getX() * NIHAR.RIGHT_X;
             default:
                 return 0;
         }
@@ -209,9 +209,9 @@ public class RobotContainer {
     public double getJoystickY(int port) {
         switch (port) {
             case DS_USB.LEFT_STICK:
-                return leftJoystick.getY();
+                return leftJoystick.getY() * NIHAR.LEFT_Y;
             case DS_USB.RIGHT_STICK:
-                return rightJoystick.getY();
+                return rightJoystick.getY() * NIHAR.RIGHT_Y;
             default:
                 return 0;
         }
