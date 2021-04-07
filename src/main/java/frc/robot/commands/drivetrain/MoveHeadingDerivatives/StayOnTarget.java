@@ -12,6 +12,7 @@ public class StayOnTarget extends RotateToTarget {
     
     public StayOnTarget(DriveTrain driveTrain, ShootingStyle shootingStyle){
         super(driveTrain);
+        addRequirements(driveTrain);
         this.shootingStyle = shootingStyle;
     }
 

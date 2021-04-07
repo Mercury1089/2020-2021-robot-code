@@ -94,7 +94,7 @@ public class RobotContainer {
         driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
         shooter = new Shooter(ShooterMode.ONE_WHEEL, limelight);
-        shooter.setDefaultCommand(new RunCommand(() -> shooter.setSpeed(0.0), shooter));
+        shooter.setDefaultCommand(new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL));
         
         hopper = new Hopper();       
         hopper.setDefaultCommand(new RunCommand(() -> hopper.setSpeed(0.0), hopper));
@@ -127,25 +127,34 @@ public class RobotContainer {
         //driver controls
         //toggle intake in and out
         left1.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
-        left2.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.stopIntakeRoller(), intake), new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
+        left2.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.stopIntakeRoller(), intake), 
+                                                   new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
         left3.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), 
                                                    new RunCommand(() -> intake.setRollerSpeed(-0.7 * intake.INTAKE_SPEED), intake)));
                                 
-        left4.toggleWhenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL));
+        left4.toggleWhenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.LOWER_PORT));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
+        /*
         left8.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
                                                      new ParallelDeadlineGroup(new DriveDistance(150.0, driveTrain),
                                                                                new InstantCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator), 
                                                                                new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)), 
                                                      new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
+        */
+        left8.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
+                                                     new ParallelDeadlineGroup(new MoveOnTrajectory(driveTrain, "F150in"),
+                                                                               new InstantCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator), 
+                                                                               new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)), 
+                                                     new ResetEncoders(driveTrain),
+                                                     new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
         
         try {
-            left10.whenPressed(new MoveOnTrajectory(new MercMotionProfile("120in", ProfileDirection.FORWARD), driveTrain));     
+            left10.whenPressed(new MoveOnTrajectory(driveTrain, "F150in"));     
         } catch(Exception e) {
             System.out.println(e);
         }
         try {
-            left11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("120in", ProfileDirection.BACKWARD), driveTrain));            
+            left11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("F150in", ProfileDirection.BACKWARD), driveTrain));            
         } catch(Exception e) {
             System.out.println(e);
         }
@@ -157,10 +166,20 @@ public class RobotContainer {
         right6.whenPressed(new DriveDistance(60.0, driveTrain));
         right7.whenPressed(new DriveDistance(-60.0, driveTrain));
         right8.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter), new ResetEncoders(driveTrain)));
+        /*
         right9.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter),
                                                       new ResetEncoders(driveTrain),
                                                       new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
                                                                                new DriveDistance(-150.0, driveTrain))));
+        */
+        try{
+            right9.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter),
+                                                          new ResetEncoders(driveTrain),
+                                                          new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
+                                                                                   new MoveOnTrajectory(new MercMotionProfile("F150in", ProfileDirection.BACKWARD), driveTrain))));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
         try {
             right10.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
                                                            new MoveOnTrajectory(driveTrain, "FBounce1"),
@@ -188,9 +207,9 @@ public class RobotContainer {
         //gamepadY.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CLIMB)); //make the elevator go up
         //gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.HANGING)); //make the roboboi go jump
         //gamepadStart.and(gamepadBack).whenActive(new Hang(elevator)); //lock the elevator
-        gamepadLB.whenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)); //rev shooter
-        gamepadRB.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter)); //end fully auto aimbot
-        gamepadLT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.MANUAL)); //run shooter in manual mode
+        gamepadLB.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter)); //rev shooter
+        gamepadRB.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)); //end fully auto aimbot
+        gamepadLT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.LOWER_PORT)); //run shooter in manual mode
         gamepadRT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)); //rek the opponents
         
     }
