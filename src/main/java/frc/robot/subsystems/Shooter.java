@@ -122,12 +122,14 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
         updateTargetRPMCenter(distance);
         break;
       case MANUAL:
-        targetRPM = 1000.0;
+        targetRPM = 4400.0;
         break;
+      case LOWER_PORT:
+        return 1000.0;
       default:
         targetRPM = 4000.0;
     }
-    return targetRPM < 5000 && targetRPM > 3700 ? targetRPM : 1000;
+    return targetRPM < 5000 && targetRPM > 3700 ? targetRPM : 4000;
     //return getRunRPM();
   }
 

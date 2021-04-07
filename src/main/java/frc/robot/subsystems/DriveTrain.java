@@ -70,7 +70,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
 
     public enum ShootingStyle{
         AUTOMATIC,
-        MANUAL
+        MANUAL,
+        LOWER_PORT
     }
 
     /**
@@ -220,6 +221,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
             case AUTOMATIC:
                 return isAligned();
             case MANUAL:
+                return true;
+            case LOWER_PORT:
                 return true;
         }
         return false;

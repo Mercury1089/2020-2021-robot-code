@@ -23,6 +23,7 @@ public class RunShooterRPMPID extends CommandBase {
 
   private ShootingStyle shootingStyle;
   private boolean manualShooting;
+  private boolean lowerPortShooting;
 
   /**
    * Creates a new RunShooter.
@@ -33,10 +34,8 @@ public class RunShooterRPMPID extends CommandBase {
     this.shooter = shooter;
     this.limelight = limelight;
     this.shootingStyle = shootingStyle;
-    if(shootingStyle == ShootingStyle.MANUAL)
-      manualShooting = true;
-    else
-      manualShooting = false;
+    manualShooting = shootingStyle == ShootingStyle.MANUAL;
+    lowerPortShooting = shootingStyle == ShootingStyle.LOWER_PORT;
   }
   
   public RunShooterRPMPID(Shooter shooter, Limelight limelight) {
@@ -57,6 +56,8 @@ public class RunShooterRPMPID extends CommandBase {
       shootingStyle = ShootingStyle.MANUAL;
     else if(!manualShooting)
       shootingStyle = ShootingStyle.AUTOMATIC;
+    if(lowerPortShooting)
+        shootingStyle = ShootingStyle.LOWER_PORT;
     shooter.setVelocity(Math.abs(shooter.getTargetRPM()));
   }
 
