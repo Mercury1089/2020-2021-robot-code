@@ -1,10 +1,12 @@
 package frc.robot;
 
+import static frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType.ARCADE;
+
 import java.io.FileNotFoundException;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
-
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -97,7 +99,7 @@ public class RobotContainer {
         shooter.setDefaultCommand(new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL));
         
         hopper = new Hopper();       
-        hopper.setDefaultCommand(new RunCommand(() -> hopper.setSpeed(0.0), hopper));
+        //hopper.setDefaultCommand(new RunCommand(() -> hopper.setSpeed(0.0), hopper));
 
         intake = new Intake();
         intakeArticulator = new IntakeArticulator();
@@ -106,7 +108,8 @@ public class RobotContainer {
         limelightCamera = new LimelightCamera();
         limelightCamera.getLimelight().setLEDState(LimelightLEDState.OFF);
         spinner = new Spinner();
-        //elevator = new Elevator();
+        elevator = new Elevator();
+        elevator.setDefaultCommand(new ManualElevator(elevator));
 
         
         shuffleDash = new ShuffleDash();
@@ -116,7 +119,7 @@ public class RobotContainer {
         shuffleDash.addPublisher(intake);
         shuffleDash.addPublisher(limelightCamera);
         shuffleDash.addPublisher(intakeArticulator);
-        //shuffleDash.addPublisher(elevator);
+        shuffleDash.addPublisher(elevator);
         shuffleDash.addPublisher(feeder);
         shuffleDash.addPublisher(hopper);
         shuffleDash.addPIDTunable(shooter, "Shooter");
@@ -141,23 +144,6 @@ public class RobotContainer {
                                                                                new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)), 
                                                      new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
         */
-        left8.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
-                                                     new ParallelDeadlineGroup(new MoveOnTrajectory(driveTrain, "F150in"),
-                                                                               new InstantCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator), 
-                                                                               new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)), 
-                                                     new ResetEncoders(driveTrain),
-                                                     new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
-        
-        try {
-            left10.whenPressed(new MoveOnTrajectory(driveTrain, "F150in"));     
-        } catch(Exception e) {
-            System.out.println(e);
-        }
-        try {
-            left11.whenPressed(new MoveOnTrajectory(new MercMotionProfile("F150in", ProfileDirection.BACKWARD), driveTrain));            
-        } catch(Exception e) {
-            System.out.println(e);
-        }
 
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
         right3.whenPressed(new ResetEncoders(driveTrain));
@@ -172,37 +158,11 @@ public class RobotContainer {
                                                       new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
                                                                                new DriveDistance(-150.0, driveTrain))));
         */
-        try{
-            right9.whenPressed(new SequentialCommandGroup(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter),
-                                                          new ResetEncoders(driveTrain),
-                                                          new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake), 
-                                                                                   new MoveOnTrajectory(new MercMotionProfile("F150in", ProfileDirection.BACKWARD), driveTrain))));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        try {
-            right10.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
-                                                           new MoveOnTrajectory(driveTrain, "FBounce1"),
-                                                           new ResetEncoders(driveTrain), 
-                                                           new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD), driveTrain),
-                                                           new ResetEncoders(driveTrain),
-                                                           new MoveOnTrajectory(driveTrain, "FBounce3"),
-                                                           new ResetEncoders(driveTrain),
-                                                           new MoveOnTrajectory(driveTrain, "Bounce4")));     
-        } catch(Exception e) {
-            System.out.println(e);
-        }
-        try {
-            right11.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
-                                                           new MoveOnTrajectory(driveTrain, "FBounce1"),
-                                                           new ResetEncoders(driveTrain), 
-                                                           new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD), driveTrain)));             
-        } catch(Exception e) {
-            System.out.println(e);
-        }
+    
 
         //Operator controls
         //gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
+        gamepadB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> elevator.setLockState(Relay.Value.kOn), elevator)));
         //gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         //gamepadY.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CLIMB)); //make the elevator go up
         //gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.HANGING)); //make the roboboi go jump

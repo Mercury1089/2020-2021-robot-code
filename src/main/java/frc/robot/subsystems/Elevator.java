@@ -21,6 +21,7 @@ import frc.robot.RobotMap.CAN;
 import frc.robot.util.*;
 import frc.robot.util.interfaces.IMercMotorController;
 import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
+import frc.robot.util.interfaces.IMercMotorController.LimitSwitchDirection;
 import frc.robot.util.MercMotorController.*;
 
 public class Elevator extends SubsystemBase implements IMercShuffleBoardPublisher {
@@ -117,6 +118,8 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   @Override
   public void publishValues() {
     SmartDashboard.putNumber(getName() + "/Height(ticks)", getEncTicks());
+    SmartDashboard.putBoolean(getName() + "/FwdLimit", elevator.isLimitSwitchClosed(LimitSwitchDirection.FORWARD));
+    SmartDashboard.putBoolean(getName() + "/RevLimit", elevator.isLimitSwitchClosed(LimitSwitchDirection.REVERSE));
   }
 
   public enum ElevatorPosition{
