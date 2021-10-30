@@ -90,6 +90,8 @@ public class RobotContainer {
         leftJoystick = new Joystick(DS_USB.LEFT_STICK);
         rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
         gamepad = new Joystick(DS_USB.GAMEPAD);
+        initializeJoystickButtons();
+
         limelight = new Limelight();
 
         driveTrain = new DriveTrain(DriveTrainLayout.FALCONS, limelight); //make sure to switch it back to Falcons
@@ -125,7 +127,6 @@ public class RobotContainer {
         shuffleDash.addPIDTunable(shooter, "Shooter");
         shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
     
-        initializeJoystickButtons();
 
         //driver controls
         //toggle intake in and out
@@ -137,13 +138,6 @@ public class RobotContainer {
                                 
         left4.toggleWhenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.LOWER_PORT));
         left6.whenPressed(new SwitchLEDState(limelightCamera));
-        /*
-        left8.whenPressed(new SequentialCommandGroup(new ResetEncoders(driveTrain),
-                                                     new ParallelDeadlineGroup(new DriveDistance(150.0, driveTrain),
-                                                                               new InstantCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator), 
-                                                                               new RunShooterRPMPID(shooter, limelight, ShootingStyle.AUTOMATIC)), 
-                                                     new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)));
-        */
 
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
         right3.whenPressed(new ResetEncoders(driveTrain));
@@ -162,7 +156,7 @@ public class RobotContainer {
 
         //Operator controls
         //gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
-        gamepadB.whenPressed(new ParallelCommandGroup(new RunCommand(() -> elevator.setLockState(Relay.Value.kOn), elevator)));
+        //gamepadB.whenPressed(new InstantCommand(() -> elevator.setLockState(Relay.Value.kForward), elevator));
         //gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         //gamepadY.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CLIMB)); //make the elevator go up
         //gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.HANGING)); //make the roboboi go jump

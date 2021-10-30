@@ -7,6 +7,7 @@
 
 package frc.robot.commands.elevator;
 
+import edu.wpi.first.wpilibj.Relay.Value;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
@@ -27,6 +28,7 @@ public class ManualElevator extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    elevator.setLockState(Value.kOff);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
