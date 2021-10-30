@@ -42,7 +42,7 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     super();
     setName("Elevator");
 
-    elevatorLock = new Relay(0, Relay.Direction.kBoth);
+    elevatorLock = new Relay(0, Relay.Direction.kForward);
     elevatorLock.set(Relay.Value.kOff);
 
     elevator = new MercTalonSRX(CAN.ELEVATOR);
