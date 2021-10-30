@@ -40,7 +40,7 @@ public class RobotMap {
     public static class PCM {
 
         private PCM() {
-            
+
         }
     }
 
@@ -69,6 +69,13 @@ public class RobotMap {
         public static final int LIMELIGHT_SERVO = 1;
 
         private PWM() {
+        }
+    }
+
+    public static class RELAY {
+        public static final int ELEVATOR_LOCK = 0;
+
+        private RELAY() {
         }
     }
 
