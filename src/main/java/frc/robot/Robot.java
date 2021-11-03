@@ -72,6 +72,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         (new SetLEDState(robotContainer.getLimelightCamera(), LimelightLEDState.ON)).schedule();
+        robotContainer.getElevator().setLockEngaged(false);
     }
 
     @Override

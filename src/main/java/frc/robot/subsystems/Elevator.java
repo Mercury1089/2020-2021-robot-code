@@ -34,6 +34,11 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
 
   private IMercMotorController elevator;
   private double runSpeed;
+
+  public static class Positions {
+    public final int MAX_HEIGHT = 60000;
+    public static final int MIN_HEIGHT = 0;
+  }
   
   /**
    * Creates a new Elevator.
@@ -67,8 +72,12 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     elevator.configPID(Elevator.PRIMARY_PID_LOOP, new PIDGain(NORMAL_P_VAL, 0.0, 0.0, MercMath.calculateFeedForward(MAX_ELEV_RPM)));
   }
 
-  public void setLockState(Relay.Value value){
-    elevatorLock.set(value);
+  public void setLockEngaged(boolean state){
+    if (state) {
+      elevatorLock.set(Relay.Value.kOn);
+    } else {
+      elevatorLock.set(Relay.Value.kOff);
+    }
   }
 
   public Relay.Value getLockState(){

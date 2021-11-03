@@ -1006,25 +1006,36 @@
                 {
                   "_type": "Speed Controller",
                   "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [4]",
-                  "_title": "LiveWindow/Ungrouped/Talon SRX [4]",
+                  "_title": "Talon SRX [4]",
                   "Visuals/Orientation": "HORIZONTAL"
                 },
                 {
                   "_type": "Speed Controller",
                   "_source0": "network_table:///LiveWindow/Ungrouped/Talon SRX [3]",
-                  "_title": "LiveWindow/Ungrouped/Talon SRX [3]",
+                  "_title": "Talon SRX [3]",
                   "Visuals/Orientation": "HORIZONTAL"
                 },
                 {
                   "_type": "Speed Controller",
                   "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [6]",
-                  "_title": "LiveWindow/Ungrouped/Victor SPX [6]",
+                  "_title": "Victor SPX [6]",
                   "Visuals/Orientation": "HORIZONTAL"
                 },
                 {
                   "_type": "Speed Controller",
                   "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [15]",
                   "_title": "Victor SPX [15]",
+                  "Visuals/Orientation": "HORIZONTAL"
+                },
+                {
+                  "_type": "Relay Widget",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Relay[0]",
+                  "_title": "Relay[0]"
+                },
+                {
+                  "_type": "Speed Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/Victor SPX [14]",
+                  "_title": "Victor SPX [14]",
                   "Visuals/Orientation": "HORIZONTAL"
                 }
               ]
@@ -1653,7 +1664,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "2,2": {
+          "0,2": {
             "size": [
               3,
               2
@@ -1675,7 +1686,7 @@
               "_title": "/SmartDashboard/Shooter/TargetRPMFromCenter"
             }
           },
-          "2,4": {
+          "0,4": {
             "size": [
               3,
               2

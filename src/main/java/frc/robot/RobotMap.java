@@ -31,7 +31,7 @@ public class RobotMap {
         public static final double
             LEFT_X = 1.0,
             LEFT_Y = 1.0,
-            RIGHT_X = 0.8,
+            RIGHT_X = 1.0,
             RIGHT_Y = 1.0;
         
         private NIHAR() {}
