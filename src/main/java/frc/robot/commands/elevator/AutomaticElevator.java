@@ -17,7 +17,7 @@ import frc.robot.util.interfaces.IMercMotorController;
 public class AutomaticElevator extends CommandBase {
 
   private Elevator elevator;
-  private final int ELEVATOR_THRESHOLD = 3000;
+  private final double ELEVATOR_THRESHOLD = Elevator.ElevatorPosition.TOP.encPos;
   private ElevatorPosition targetPos;
   private boolean endable;
   private boolean down;

@@ -35,11 +35,6 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   private IMercMotorController elevator;
   private double runSpeed;
 
-  public static class Positions {
-    public final int MAX_HEIGHT = 60000;
-    public static final int MIN_HEIGHT = 0;
-  }
-  
   /**
    * Creates a new Elevator.
    */
@@ -65,7 +60,7 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     //elevator.configAllowableClosedLoopError(0, 5);
     elevator.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, RobotMap.PID.PRIMARY_PID_LOOP);
     elevator.configSetParameter(ParamEnum.eClearPositionOnLimitR, 1, 0, 0);
-    elevator.setForwardSoftLimit((int) ElevatorPosition.MAX_HEIGHT.encPos);
+    elevator.setForwardSoftLimit((int) ElevatorPosition.TOP.encPos);
     elevator.enableForwardSoftLimit();
     elevator.resetEncoder();
 
@@ -121,9 +116,6 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     return elevator.getEncTicks();
   }
 
-
-
-
   @Override
   public void publishValues() {
     SmartDashboard.putNumber(getName() + "/Height(ticks)", getEncTicks());
@@ -131,19 +123,22 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     SmartDashboard.putBoolean(getName() + "/RevLimit", elevator.isLimitSwitchClosed(LimitSwitchDirection.REVERSE));
   }
 
+  public static class Positions {
+    public final int MAX_HEIGHT = 60000;
+    public static final int MIN_HEIGHT = 0;
+  }
+  
   public enum ElevatorPosition{
-    MAX_HEIGHT(100000),     //Test enc values
-    BOTTOM(1000),         //1nd and lowest position
-    CONTROL_PANEL(20000),    //2rd lowest position
-    CLIMB(50000),           //Highest position
-    HANGING(7000);          //3st position
+    TOP(60000),       // Maximum height
+    BOTTOM(-500),     // Negative value ensures we always move down until limit switch enabled
+    HOOK(50000),      // Ready hook position
+    HANGING(10000);    // Hang position
 
     public final double encPos;
 
         /**
          * Creates an elevator position, storing the encoder ticks
-         * representing the height that the elevator should be at,
-         * as well as the P value to use to reach that level.
+         * representing the height that the elevator should be at.
          *
          * @param ep encoder position, in ticks
          */
