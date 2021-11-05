@@ -97,6 +97,10 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     }
   }
 
+  public void stopShooter() {
+    shooterLeft.stop();
+  }
+
   public void increaseSpeed() {
     currentSpeed += 0.05;
     this.setSpeed(currentSpeed);

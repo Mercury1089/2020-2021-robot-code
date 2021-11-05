@@ -70,7 +70,7 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   public void setLockEngaged(boolean state){
     if (state) {
       elevatorLock.set(Relay.Value.kOn);
-      elevator.setForwardSoftLimit(0);
+      elevator.setForwardSoftLimit((int) ElevatorPosition.BOTTOM.encPos);
     } else {
       elevatorLock.set(Relay.Value.kOff);
       elevator.setForwardSoftLimit((int) ElevatorPosition.TOP.encPos);
