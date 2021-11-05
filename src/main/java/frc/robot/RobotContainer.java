@@ -69,7 +69,7 @@ public class RobotContainer {
 
     private JoystickButton left1, left2, left3, left4, left5, left6, left7, left8, left9, left10, left11;
     private JoystickButton right1, right2, right3, right4, right5, right6, right7, right8, right9, right10, right11;
-    private JoystickButton gamepadA, gamepadB, gamepadX, gamepadY, gamepadRB, gamepadLB, gamepadBack, gamepadStart, gamepadLeftStickButton, gamepadRightStickButton;
+    private JoystickButton gamepadA, gamepadB, gamepadX, gamepadY, gamepadRB, gamepadLB, gamepadL3, gamepadBack, gamepadStart, gamepadLeftStickButton, gamepadRightStickButton;
     private TriggerButton gamepadLT, gamepadRT;
 
     private DriveTrain driveTrain;
@@ -142,16 +142,22 @@ public class RobotContainer {
         right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
         right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
 
+        right10.whenPressed(new DriveDistance(-24.0, driveTrain));
+
         //Operator controls
         //gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
         //gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         //gamepadY.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CLIMB)); //make the elevator go up
         //gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.HANGING)); //make the roboboi go jump
-        gamepadStart.and(gamepadBack).whenActive(new InstantCommand(() -> elevator.setLockEngaged(true), elevator)); //lock the elevator
+        gamepadStart.and(gamepadBack).whenActive(new SequentialCommandGroup(new InstantCommand(() -> elevator.setLockEngaged(true), elevator),
+                                                                          new AutomaticElevator(elevator, Elevator.ElevatorPosition.HANG))); //lock the elevator
         gamepadLB.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter)); //rev shooter
         gamepadRB.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)); //end fully auto aimbot
         gamepadLT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.LOWER_PORT)); //run shooter in manual mode
         gamepadRT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)); //rek the opponents
+        gamepadA.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.BOTTOM));
+        gamepadY.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.TOP, false));
+        gamepadL3.whenPressed(new ManualElevator(elevator));
         
     }
 
@@ -229,6 +235,7 @@ public class RobotContainer {
         gamepadLB = new JoystickButton(gamepad, GAMEPAD_BUTTONS.LB);
         gamepadBack = new JoystickButton(gamepad, GAMEPAD_BUTTONS.BACK);
         gamepadStart = new JoystickButton(gamepad, GAMEPAD_BUTTONS.START);
+        gamepadL3 = new JoystickButton(gamepad, GAMEPAD_BUTTONS.L3);
         gamepadLeftStickButton = new JoystickButton(gamepad, GAMEPAD_BUTTONS.L3);
         gamepadRightStickButton = new JoystickButton(gamepad, GAMEPAD_BUTTONS.R3);
         gamepadLT = new TriggerButton(gamepad, GAMEPAD_AXIS.leftTrigger);
@@ -239,40 +246,10 @@ public class RobotContainer {
         if(autonCommand == null)
             autonCommand = new SequentialCommandGroup(
                 new DriveDistance(-24.0, driveTrain),
-                new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight)
+                new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)
             );
     }
 
-    public void initializeSlalomCommand() {
-       try{
-           autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Slalom", ProfileDirection.FORWARD), driveTrain));
-        } catch(Exception e) {
-            System.out.println(e);
-        }
-    }
-
-    public void initializeBarrelCommand() {
-        try{
-            autonCommand = new SequentialCommandGroup(new MoveOnTrajectory(new MercMotionProfile("Barrel", ProfileDirection.FORWARD), driveTrain));
-        } catch(Exception e) {
-            System.out.println(e);
-        }
-    }
-    
-    public void initializeBounceCommand() {
-        try{
-            autonCommand = new SequentialCommandGroup(new ResetEncoders(driveTrain),
-                                                      new MoveOnTrajectory(driveTrain, "FBounce1"),
-                                                      new ResetEncoders(driveTrain), 
-                                                      new MoveOnTrajectory(new MercMotionProfile("Bounce2", ProfileDirection.BACKWARD), driveTrain),
-                                                      new ResetEncoders(driveTrain),
-                                                      new MoveOnTrajectory(driveTrain, "FBounce3"),
-                                                      new ResetEncoders(driveTrain),
-                                                      new MoveOnTrajectory(driveTrain, "Bounce4"));
-        } catch(Exception e) {
-            System.out.println(e);
-        }
-    }
     
     public void initCenter5BallTrench() {
         if(driveTrain.isAligned()) {

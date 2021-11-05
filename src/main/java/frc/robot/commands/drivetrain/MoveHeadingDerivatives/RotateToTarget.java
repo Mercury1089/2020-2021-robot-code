@@ -35,6 +35,7 @@ public class RotateToTarget extends DegreeRotate {
     @Override
     public void initialize() {
         super.initialize();
+        this.driveTrain.configVoltage(DriveTrain.NOMINAL_OUT, DriveTrain.PEAK_OUT);
         limelight.setLEDState(LimelightLEDState.ON);
         this.isReadyToShoot = false;
         

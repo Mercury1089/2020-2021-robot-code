@@ -33,10 +33,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().enable();
 
         robotContainer = new RobotContainer();
-        //robotContainer.initializeAutonCommand();
-        //robotContainer.initializeSlalomCommand();
-        robotContainer.initializeBarrelCommand();
-        //robotContainer.initializeBounceCommand();
+        robotContainer.initializeAutonCommand();
         this.autonCommand = robotContainer.getAutonCommand();
     }
 
@@ -57,6 +54,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        (new SetLEDState(robotContainer.getLimelightCamera(), LimelightLEDState.ON)).schedule();
         if (autonCommand != null){
             autonCommand.schedule();
             DriverStation.reportError("Auton is Scheduled", false);

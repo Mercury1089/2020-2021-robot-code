@@ -70,8 +70,10 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   public void setLockEngaged(boolean state){
     if (state) {
       elevatorLock.set(Relay.Value.kOn);
+      elevator.setForwardSoftLimit(0);
     } else {
       elevatorLock.set(Relay.Value.kOff);
+      elevator.setForwardSoftLimit((int) ElevatorPosition.TOP.encPos);
     }
   }
 
@@ -122,19 +124,15 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     SmartDashboard.putBoolean(getName() + "/FwdLimit", elevator.isLimitSwitchClosed(LimitSwitchDirection.FORWARD));
     SmartDashboard.putBoolean(getName() + "/RevLimit", elevator.isLimitSwitchClosed(LimitSwitchDirection.REVERSE));
   }
-
-  public static class Positions {
-    public final int MAX_HEIGHT = 60000;
-    public static final int MIN_HEIGHT = 0;
-  }
   
   public enum ElevatorPosition{
-    TOP(60000),       // Maximum height
-    BOTTOM(-500),     // Negative value ensures we always move down until limit switch enabled
-    HOOK(50000),      // Ready hook position
-    HANGING(10000);    // Hang position
+    TOP(58000, false),       // Maximum height
+    BOTTOM(-500, false),     // Negative value ensures we always move down until limit switch enabled
+    HOOK(50000, false),      // Ready hook position
+    HANG(-20000, true);    // Hang position - relative to current position.
 
     public final double encPos;
+    public final boolean isRelative;
 
         /**
          * Creates an elevator position, storing the encoder ticks
@@ -142,8 +140,9 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
          *
          * @param ep encoder position, in ticks
          */
-        ElevatorPosition(double ep) {
-            encPos = ep;
+        ElevatorPosition(double encPos, boolean isRelative) {
+            this.encPos = encPos;
+            this.isRelative = isRelative;
         }
   }
 }
