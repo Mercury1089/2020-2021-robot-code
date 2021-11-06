@@ -117,14 +117,14 @@ public class RobotContainer {
         shuffleDash.addPublisher(shooter);
         shuffleDash.addPublisher(driveTrain);
         //shuffleDash.addPublisher(spinner);
-        shuffleDash.addPublisher(intake);
+        //shuffleDash.addPublisher(intake);
         shuffleDash.addPublisher(limelightCamera);
-        shuffleDash.addPublisher(intakeArticulator);
-        shuffleDash.addPublisher(elevator);
-        shuffleDash.addPublisher(feeder);
-        shuffleDash.addPublisher(hopper);
-        shuffleDash.addPIDTunable(shooter, "Shooter");
-        shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
+        //shuffleDash.addPublisher(intakeArticulator);
+        //shuffleDash.addPublisher(elevator);
+        //shuffleDash.addPublisher(feeder);
+        //shuffleDash.addPublisher(hopper);
+        //shuffleDash.addPIDTunable(shooter, "Shooter");
+        //shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
     
         initializeJoystickButtons();
 
@@ -158,7 +158,7 @@ public class RobotContainer {
         gamepadLT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.LOWER_PORT)); //run shooter in manual mode
         gamepadRT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)); //rek the opponents
         gamepadA.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.BOTTOM));
-        gamepadY.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.TOP, false));
+        gamepadY.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.READY, false));
         gamepadL3.whenPressed(new ManualElevator(elevator));
         
     }

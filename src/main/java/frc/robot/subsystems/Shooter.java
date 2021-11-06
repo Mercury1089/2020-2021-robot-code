@@ -199,19 +199,19 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public void publishValues() {
-    SmartDashboard.putString(getName() + "/ShooterMode",
-        getMode() == ShooterMode.ONE_WHEEL ? "ONE WHEEL" : "NONE");
+    //SmartDashboard.putString(getName() + "/ShooterMode",
+        //getMode() == ShooterMode.ONE_WHEEL ? "ONE WHEEL" : "NONE");
     SmartDashboard.putNumber(getName() + "/RPM", getRPM());
     
-    SmartDashboard.putNumber(getName() + "/PIDGains/P", velocityGains.kP);
-    SmartDashboard.putNumber(getName() + "/PIDGains/I", velocityGains.kI);
-    SmartDashboard.putNumber(getName() + "/PIDGains/D", velocityGains.kD);
-    SmartDashboard.putNumber(getName() + "/PIDGains/F", velocityGains.kF);
+    //SmartDashboard.putNumber(getName() + "/PIDGains/P", velocityGains.kP);
+    //SmartDashboard.putNumber(getName() + "/PIDGains/I", velocityGains.kI);
+    //SmartDashboard.putNumber(getName() + "/PIDGains/D", velocityGains.kD);
+    //SmartDashboard.putNumber(getName() + "/PIDGains/F", velocityGains.kF);
 
     SmartDashboard.putBoolean(getName() + "/AtTargetRPM", atTargetRpm());
     SmartDashboard.putNumber(getName() + "/TargetRPM", targetRPM);
-    SmartDashboard.putNumber("Hypothetical Distance", getHyotheticalDistance());
-    SmartDashboard.putNumber("Hypothetical RPM", getTargetRPMFromHypothetical());
+    //SmartDashboard.putNumber("Hypothetical Distance", getHyotheticalDistance());
+    //SmartDashboard.putNumber("Hypothetical RPM", getTargetRPMFromHypothetical());
   }
 
   @Override

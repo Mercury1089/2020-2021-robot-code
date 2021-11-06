@@ -51,6 +51,6 @@ public class Feeder extends SubsystemBase implements IMercShuffleBoardPublisher 
 
   @Override
   public void publishValues() {
-    SmartDashboard.putNumber("Speed", feedWheel.getSpeed());
+    //SmartDashboard.putNumber("Speed", feedWheel.getSpeed());
   }
 }

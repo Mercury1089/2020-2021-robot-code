@@ -484,24 +484,24 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
     //Publish values to ShuffleBoard
     public void publishValues() {
         //Drive direction
-        SmartDashboard.putString(getName() + "/Direction", getDirection().name());
+        //SmartDashboard.putString(getName() + "/Direction", getDirection().name());
         //Encoder positions
-        SmartDashboard.putNumber(getName() + "/Left Encoder (feet)", getLeftEncPositionInFeet());
-        SmartDashboard.putNumber(getName() + "/Right Encoder (feet)", getRightEncPositionInFeet());
-        SmartDashboard.putNumber(getName() + "/Left Encoder (ticks)", getLeftEncPositionInTicks());
-        SmartDashboard.putNumber(getName() + "/Right Encoder (ticks)", getRightEncPositionInTicks());
-        SmartDashboard.putNumber(getName() + "/Right Closed Loop Error (ticks)", leaderRight.getClosedLoopError());
+        //SmartDashboard.putNumber(getName() + "/Left Encoder (feet)", getLeftEncPositionInFeet());
+        //SmartDashboard.putNumber(getName() + "/Right Encoder (feet)", getRightEncPositionInFeet());
+        //SmartDashboard.putNumber(getName() + "/Left Encoder (ticks)", getLeftEncPositionInTicks());
+        //SmartDashboard.putNumber(getName() + "/Right Encoder (ticks)", getRightEncPositionInTicks());
+        //SmartDashboard.putNumber(getName() + "/Right Closed Loop Error (ticks)", leaderRight.getClosedLoopError());
         //Selected Sensor Position
-        SmartDashboard.putNumber(getName() + "/PID0 Sensor primary left", ((MercTalonSRX)leaderLeft).get().getSelectedSensorPosition(PRIMARY_LOOP));
-        SmartDashboard.putNumber(getName() + "/PID0 Sensor auxiliary left", ((MercTalonSRX)leaderLeft).get().getSelectedSensorPosition(AUXILIARY_LOOP));
+        //SmartDashboard.putNumber(getName() + "/PID0 Sensor primary left", ((MercTalonSRX)leaderLeft).get().getSelectedSensorPosition(PRIMARY_LOOP));
+        //SmartDashboard.putNumber(getName() + "/PID0 Sensor auxiliary left", ((MercTalonSRX)leaderLeft).get().getSelectedSensorPosition(AUXILIARY_LOOP));
 
-        SmartDashboard.putNumber(getName() + "/PID0 Sensor right", ((MercTalonSRX)leaderRight).get().getSelectedSensorPosition(PRIMARY_LOOP));
-        SmartDashboard.putNumber(getName() + "/PID1 Sensor", ((MercTalonSRX)leaderRight).get().getSelectedSensorPosition(AUXILIARY_LOOP));
+        //SmartDashboard.putNumber(getName() + "/PID0 Sensor right", ((MercTalonSRX)leaderRight).get().getSelectedSensorPosition(PRIMARY_LOOP));
+        //SmartDashboard.putNumber(getName() + "/PID1 Sensor", ((MercTalonSRX)leaderRight).get().getSelectedSensorPosition(AUXILIARY_LOOP));
         //Wheel RPM
-        SmartDashboard.putNumber(getName() + "/Left RPM", MercMath.ticksPerTenthToRevsPerMinute(getLeftEncVelocityInTicksPerTenth()));
-        SmartDashboard.putNumber(getName() + "/Right RPM", MercMath.ticksPerTenthToRevsPerMinute(getRightEncVelocityInTicksPerTenth()));
+        //SmartDashboard.putNumber(getName() + "/Left RPM", MercMath.ticksPerTenthToRevsPerMinute(getLeftEncVelocityInTicksPerTenth()));
+        //SmartDashboard.putNumber(getName() + "/Right RPM", MercMath.ticksPerTenthToRevsPerMinute(getRightEncVelocityInTicksPerTenth()));
         //Angle From Pigeon
-        SmartDashboard.putNumber(getName() + "/Yaw", getPigeonYaw());
+        //SmartDashboard.putNumber(getName() + "/Yaw", getPigeonYaw());
 
         SmartDashboard.putBoolean(getName() + "/IsAligned", isAligned());
         SmartDashboard.putBoolean(getName() + "/TargetAcquired", limelight.getTargetAcquired());

@@ -70,10 +70,10 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   public void setLockEngaged(boolean state){
     if (state) {
       elevatorLock.set(Relay.Value.kOn);
-      elevator.setForwardSoftLimit((int) ElevatorPosition.BOTTOM.encPos);
+      //elevator.setForwardSoftLimit((int) ElevatorPosition.BOTTOM.encPos);
     } else {
       elevatorLock.set(Relay.Value.kOff);
-      elevator.setForwardSoftLimit((int) ElevatorPosition.TOP.encPos);
+      //elevator.setForwardSoftLimit((int) ElevatorPosition.TOP.encPos);
     }
   }
 
@@ -120,13 +120,14 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
 
   @Override
   public void publishValues() {
-    SmartDashboard.putNumber(getName() + "/Height(ticks)", getEncTicks());
+    //SmartDashboard.putNumber(getName() + "/Height(ticks)", getEncTicks());
     SmartDashboard.putBoolean(getName() + "/FwdLimit", elevator.isLimitSwitchClosed(LimitSwitchDirection.FORWARD));
     SmartDashboard.putBoolean(getName() + "/RevLimit", elevator.isLimitSwitchClosed(LimitSwitchDirection.REVERSE));
   }
   
   public enum ElevatorPosition{
     TOP(58000, false),       // Maximum height
+    READY(43000, false),
     BOTTOM(-500, false),     // Negative value ensures we always move down until limit switch enabled
     HOOK(50000, false),      // Ready hook position
     HANG(-20000, true);    // Hang position - relative to current position.

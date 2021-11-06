@@ -21,7 +21,7 @@ public class ShuffleDash {
     private static final String PID_TUNER_F = "PIDTuner/kF";
     private static final String PID_TUNER_MAX_OUTPUT = "PIDTuner/maxOutput";
 
-    private static final double UPDATE_PERIOD_SECONDS = 0.100; // Update every 100ms
+    private static final double UPDATE_PERIOD_SECONDS = 0.200; // Update every 200ms
 
     private class TunablePIDSlot {
         public IMercPIDTunable tunable;
