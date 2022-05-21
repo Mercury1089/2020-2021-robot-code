@@ -73,8 +73,11 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     SmartDashboard.putNumber(getName() + "/SetRPM", 0.0);
     setRunSpeed(0.0);
     targetRPM = 0.0;
-    velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
-    
+    // velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
+    ((MercSparkMax)shooterLeft).get().enableVoltageCompensation(10.5);
+    ((MercSparkMax)shooterRight).get().enableVoltageCompensation(10.5);
+    velocityGains = new PIDGain(0.00024, 0.00000001, 0.01, 0.0002016);    
+
     this.limelight = limelight;
     shootingStyle = ShootingStyle.AUTOMATIC;
 
@@ -126,7 +129,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
         updateTargetRPMCenter(distance);
         break;
       case MANUAL:
-        targetRPM = 4100.0;
+        targetRPM = 3800.0;
         break;
       case LOWER_PORT:
         return 1000.0;
@@ -210,6 +213,8 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
     SmartDashboard.putBoolean(getName() + "/AtTargetRPM", atTargetRpm());
     SmartDashboard.putNumber(getName() + "/TargetRPM", targetRPM);
+    SmartDashboard.putBoolean(getName() + "/IsReadtToShoot", isReadyToShoot());
+    
     //SmartDashboard.putNumber("Hypothetical Distance", getHyotheticalDistance());
     //SmartDashboard.putNumber("Hypothetical RPM", getTargetRPMFromHypothetical());
   }

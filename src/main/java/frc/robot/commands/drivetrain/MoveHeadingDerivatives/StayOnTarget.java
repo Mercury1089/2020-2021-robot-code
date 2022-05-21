@@ -14,6 +14,7 @@ public class StayOnTarget extends RotateToTarget {
         super(driveTrain);
         addRequirements(driveTrain);
         this.shootingStyle = shootingStyle;
+        driveTrain.setShootingStyle(shootingStyle);
     }
 
     public StayOnTarget(DriveTrain driveTrain) {
@@ -21,8 +22,14 @@ public class StayOnTarget extends RotateToTarget {
     }
     
     @Override
+    public void execute() {
+        if(shootingStyle == ShootingStyle.AUTOMATIC) {
+            super.execute();
+        }
+    }
+
+    @Override
     public boolean isFinished(){
-        super.isFinished();
-        return shootingStyle == ShootingStyle.MANUAL;
+        return(false);
     }
 }

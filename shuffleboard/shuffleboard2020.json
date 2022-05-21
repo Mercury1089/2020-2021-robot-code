@@ -9,11 +9,12 @@
         "showGrid": true,
         "hgap": 16.0,
         "vgap": 16.0,
+        "titleType": 0,
         "tiles": {
           "6,0": {
             "size": [
               5,
-              5
+              4
             ],
             "content": {
               "_type": "Camera Stream",
@@ -68,7 +69,7 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "4,1": {
+          "4,0": {
             "size": [
               2,
               1
@@ -81,10 +82,10 @@
               "Colors/Color when false": "#8B0000FF"
             }
           },
-          "1,0": {
+          "4,2": {
             "size": [
-              3,
-              2
+              2,
+              1
             ],
             "content": {
               "_type": "Text View",
@@ -92,15 +93,41 @@
               "_title": "/SmartDashboard/Shooter/RPM"
             }
           },
-          "1,2": {
+          "4,1": {
             "size": [
-              3,
-              2
+              2,
+              1
             ],
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/Shooter/TargetRPM",
               "_title": "SmartDashboard/Shooter/TargetRPM"
+            }
+          },
+          "3,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Shooter/IsReadtToShoot",
+              "_title": "SmartDashboard/Shooter/IsReadtToShoot",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "3,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/DriveTrain/IsReadyToShoot",
+              "_title": "SmartDashboard/DriveTrain/IsReadyToShoot",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -108,9 +135,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
+    "x": -12.0,
     "y": 0.0,
-    "width": 1920.0,
-    "height": 1040.0
+    "width": 1620.0,
+    "height": 710.0
   }
 }

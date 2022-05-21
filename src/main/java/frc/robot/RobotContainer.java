@@ -141,17 +141,17 @@ public class RobotContainer {
         //gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
         //gamepadY.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CLIMB)); //make the elevator go up
         //gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.HANGING)); //make the roboboi go jump
-        gamepadStart.and(gamepadBack).whenActive(new ParallelCommandGroup(new SequentialCommandGroup(new InstantCommand(() -> elevator.setLockEngaged(true), elevator),
-                                                                                                     new AutomaticElevator(elevator, Elevator.ElevatorPosition.HANG),
-                                                                                                     new ManualElevator(elevator)),
-                                                 new RunCommand(() -> shooter.stopShooter(), shooter))); //lock the elevator
+       // gamepadStart.and(gamepadBack).whenActive(new ParallelCommandGroup(new SequentialCommandGroup(new InstantCommand(() -> elevator.setLockEngaged(true), elevator),
+        //                                                                                             new AutomaticElevator(elevator, Elevator.ElevatorPosition.HANG),
+       //                                                                                              new ManualElevator(elevator)),
+       //                                          new RunCommand(() -> shooter.stopShooter(), shooter))); //lock the elevator
         gamepadLB.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter)); //rev shooter
-        gamepadRB.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)); //end fully auto aimbot
+        gamepadRB.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.MANUAL)); //end fully auto aimbot
         gamepadLT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.LOWER_PORT)); //run shooter in manual mode
-        gamepadRT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)); //rek the opponents
-        gamepadA.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.BOTTOM));
-        gamepadY.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.READY, false));
-        gamepadL3.whenPressed(new ManualElevator(elevator));
+       //gamepadRT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)); //rek the opponents
+        //gamepadA.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.BOTTOM));
+        //gamepadY.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.READY, false));
+        //gamepadL3.whenPressed(new ManualElevator(elevator));
         
     }
 

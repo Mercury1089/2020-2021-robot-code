@@ -86,7 +86,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         super();
         setName("DriveTrain");
         this.layout = layout;
-        shootingStyle = ShootingStyle.AUTOMATIC;
+        shootingStyle = ShootingStyle.MANUAL;
         switch (layout) {
             case FALCONS:
                 leaderLeft = new MercTalonSRX(CAN.DRIVETRAIN_ML);
@@ -160,7 +160,7 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         return CommandScheduler.getInstance().getDefaultCommand(this);
     }
 
-    public void setShootingLocation(ShootingStyle shootingStyle){
+    public void setShootingStyle(ShootingStyle shootingStyle){
         this.shootingStyle = shootingStyle;
     }
 
@@ -503,7 +503,8 @@ public class DriveTrain extends SubsystemBase implements IMercShuffleBoardPublis
         //Angle From Pigeon
         //SmartDashboard.putNumber(getName() + "/Yaw", getPigeonYaw());
 
-        SmartDashboard.putBoolean(getName() + "/IsAligned", isAligned());
+        SmartDashboard.putBoolean(getName() + "/IsReadyToShoot", isReadyToShoot());
+        SmartDashboard.putString(getName() + "/ShootingStype", shootingStyle.toString());
         SmartDashboard.putBoolean(getName() + "/TargetAcquired", limelight.getTargetAcquired());
         SmartDashboard.putBoolean(getName() + "/LimelightLEDState", limelight.getLEDState());
         //Publish Current Command
