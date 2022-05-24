@@ -76,7 +76,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     // velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
     ((MercSparkMax)shooterLeft).get().enableVoltageCompensation(10.5);
     ((MercSparkMax)shooterRight).get().enableVoltageCompensation(10.5);
-    velocityGains = new PIDGain(0.00024, 0.00000001, 0.01, 0.0002016);    
+    velocityGains = new PIDGain(0.00024, 0.00000001, 0.01, 0.0002025);    
 
     this.limelight = limelight;
     shootingStyle = ShootingStyle.AUTOMATIC;

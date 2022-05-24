@@ -9,16 +9,23 @@ import frc.robot.subsystems.DriveTrain.ShootingStyle;
 public class StayOnTarget extends RotateToTarget {
 
     private ShootingStyle shootingStyle;
+    private DriveTrain driveTrain;
     
     public StayOnTarget(DriveTrain driveTrain, ShootingStyle shootingStyle){
         super(driveTrain);
         addRequirements(driveTrain);
         this.shootingStyle = shootingStyle;
-        driveTrain.setShootingStyle(shootingStyle);
+        this.driveTrain = driveTrain;
     }
 
     public StayOnTarget(DriveTrain driveTrain) {
         this(driveTrain, ShootingStyle.AUTOMATIC);
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        driveTrain.setShootingStyle(shootingStyle);
     }
     
     @Override
