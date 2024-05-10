@@ -1,41 +1,31 @@
 package frc.robot;
 
 import java.io.FileNotFoundException;
+import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandGroupBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotMap.DS_USB;
 import frc.robot.RobotMap.GAMEPAD_AXIS;
 import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
 import frc.robot.RobotMap.NIHAR;
-import frc.robot.commands.drivetrain.DriveWithJoysticks;
-import frc.robot.commands.drivetrain.DriveWithJoysticks.DriveType;
-import frc.robot.commands.drivetrain.MoveOnTrajectory;
-import frc.robot.commands.drivetrain.MoveHeadingDerivatives.DriveDistance;
-import frc.robot.commands.drivetrain.MoveHeadingDerivatives.RotateToTarget;
-import frc.robot.commands.elevator.AutomaticElevator;
-import frc.robot.commands.elevator.ManualElevator;
-import frc.robot.commands.feeder.AutoFeedBalls;
-import frc.robot.commands.intake.RunIntake;
-import frc.robot.commands.limelightCamera.SwitchLEDState;
-import frc.robot.commands.shooter.EndFullyAutoAimBot;
-import frc.robot.commands.shooter.FullyAutoAimbot;
-import frc.robot.commands.shooter.RunShooterRPMPID;
 import frc.robot.sensors.Limelight;
 import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
-import frc.robot.subsystems.DriveTrain.ShootingStyle;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
@@ -47,7 +37,6 @@ import frc.robot.subsystems.Shooter.ShooterMode;
 import frc.robot.util.MercMotionProfile;
 import frc.robot.util.MercMotionProfile.ProfileDirection;
 import frc.robot.util.ShuffleDash;
-import frc.robot.util.TriggerButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -59,12 +48,15 @@ public class RobotContainer {
 
     private ShuffleDash shuffleDash;
 
-    private Joystick rightJoystick, leftJoystick, gamepad;
+    private CommandJoystick rightJoystick, leftJoystick;
+    private CommandXboxController gamepad;
 
-    private JoystickButton left1, left2, left3, left4, left5, left6, left7, left8, left9, left10, left11;
-    private JoystickButton right1, right2, right3, right4, right5, right6, right7, right8, right9, right10, right11;
-    private JoystickButton gamepadA, gamepadB, gamepadX, gamepadY, gamepadRB, gamepadLB, gamepadL3, gamepadBack, gamepadStart, gamepadLeftStickButton, gamepadRightStickButton;
-    private TriggerButton gamepadLT, gamepadRT;
+    private Trigger left1, left2, left3, left4, left5, left6, left7, left8, left9, left10, left11;
+    private Trigger right1, right2, right3, right4, right5, right6, right7, right8, right9, right10, right11;
+    private Trigger gamepadA, gamepadB, gamepadX, gamepadY, gamepadRB, gamepadLB, gamepadL3, gamepadBack, gamepadStart, gamepadLeftStickButton, gamepadRightStickButton;
+    private Trigger gamepadLT, gamepadRT;
+    private Trigger gamepadPOVDown, gamepadPOVUpLeft, gamepadPOVUp, gamepadPOVUpRight, gamepadPOVLeft, gamepadPOVRight, gamepadPOVDownRight, gamepadPOVDownLeft;
+    private Supplier<Double> gamepadLeftX, gamepadLeftY, gamepadRightX, gamepadRightY, rightJoystickX, rightJoystickY, leftJoystickX, leftJoystickY;
 
     private DriveTrain driveTrain;
     private Shooter shooter;
@@ -77,20 +69,18 @@ public class RobotContainer {
 
     private Limelight limelight;
     
-    private CommandGroupBase autonCommand = null;
+    private Command autonCommand = null;
 
     public RobotContainer() {
-        leftJoystick = new Joystick(DS_USB.LEFT_STICK);
-        rightJoystick = new Joystick(DS_USB.RIGHT_STICK);
-        gamepad = new Joystick(DS_USB.GAMEPAD);
+        leftJoystick = new CommandJoystick(DS_USB.LEFT_STICK);
+        rightJoystick = new CommandJoystick(DS_USB.RIGHT_STICK);
+        gamepad = new CommandXboxController(DS_USB.GAMEPAD);
 
         limelight = new Limelight();
 
-        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS, limelight); //make sure to switch it back to Falcons
-        driveTrain.setDefaultCommand(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
+        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS); //make sure to switch it back to Falcons
 
         shooter = new Shooter(ShooterMode.ONE_WHEEL, limelight);
-        shooter.setDefaultCommand(new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL));
         
         hopper = new Hopper();       
         //hopper.setDefaultCommand(new RunCommand(() -> hopper.setSpeed(0.0), hopper));
@@ -102,39 +92,11 @@ public class RobotContainer {
         limelightCamera = new LimelightCamera();
         limelightCamera.getLimelight().setLEDState(LimelightLEDState.OFF);
         elevator = new Elevator();
-        elevator.setDefaultCommand(new ManualElevator(elevator));
 
         
         shuffleDash = new ShuffleDash();
         shuffleDash.addPublisher(shooter);
-        shuffleDash.addPublisher(driveTrain);
-        //shuffleDash.addPublisher(spinner);
-        //shuffleDash.addPublisher(intake);
-        shuffleDash.addPublisher(limelightCamera);
-        //shuffleDash.addPublisher(intakeArticulator);
-        //shuffleDash.addPublisher(elevator);
-        //shuffleDash.addPublisher(feeder);
-        //shuffleDash.addPublisher(hopper);
-        //shuffleDash.addPIDTunable(shooter, "Shooter");
-        //shuffleDash.addPIDTunable(driveTrain, "DriveTrain");
-    
         initializeJoystickButtons();
-
-        //driver controls
-        //toggle intake in and out
-        left1.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), new RunIntake(intake)));
-        left2.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intake.stopIntakeRoller(), intake), 
-                                                   new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)));
-        left3.whenPressed(new ParallelCommandGroup(new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator), 
-                                                   new RunCommand(() -> intake.setRollerSpeed(-0.7 * intake.INTAKE_SPEED), intake)));
-                                
-        left4.toggleWhenPressed(new RunShooterRPMPID(shooter, limelight, ShootingStyle.LOWER_PORT));
-        left6.whenPressed(new SwitchLEDState(limelightCamera));
-
-        right2.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter));
-        right4.whenPressed(new DriveWithJoysticks(DriveType.ARCADE, driveTrain));
-
-        right10.whenPressed(new DriveDistance(-24.0, driveTrain));
 
         //Operator controls
         //gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
@@ -145,9 +107,6 @@ public class RobotContainer {
         //                                                                                             new AutomaticElevator(elevator, Elevator.ElevatorPosition.HANG),
        //                                                                                              new ManualElevator(elevator)),
        //                                          new RunCommand(() -> shooter.stopShooter(), shooter))); //lock the elevator
-        gamepadLB.whenPressed(new EndFullyAutoAimBot(driveTrain, feeder, hopper, shooter)); //rev shooter
-        gamepadRB.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.MANUAL)); //end fully auto aimbot
-        gamepadLT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.LOWER_PORT)); //run shooter in manual mode
        //gamepadRT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)); //rek the opponents
         //gamepadA.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.BOTTOM));
         //gamepadY.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.READY, false));
@@ -197,244 +156,68 @@ public class RobotContainer {
     }
 
     private void initializeJoystickButtons() {
-        left1 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN1);
-        left2 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN2);
-        left3 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN3);
-        left4 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN4);
-        left5 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN5);
-        left6 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN6);
-        left7 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN7);
-        left8 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN8);
-        left9 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN9);
-        left10 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN10);
-        left11 = new JoystickButton(leftJoystick, JOYSTICK_BUTTONS.BTN11);
-
-        right1 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN1);
-        right2 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN2);
-        right3 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN3);
-        right4 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN4);
-        right5 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN5);
-        right6 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN6);
-        right7 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN7);
-        right8 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN8);
-        right9 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN9);
-        right10 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN10);
-        right11 = new JoystickButton(rightJoystick, JOYSTICK_BUTTONS.BTN11);
-
-        gamepadA = new JoystickButton(gamepad, GAMEPAD_BUTTONS.A);
-        gamepadB = new JoystickButton(gamepad, GAMEPAD_BUTTONS.B);
-        gamepadX = new JoystickButton(gamepad, GAMEPAD_BUTTONS.X);
-        gamepadY = new JoystickButton(gamepad, GAMEPAD_BUTTONS.Y);
-        gamepadRB = new JoystickButton(gamepad, GAMEPAD_BUTTONS.RB);
-        gamepadLB = new JoystickButton(gamepad, GAMEPAD_BUTTONS.LB);
-        gamepadBack = new JoystickButton(gamepad, GAMEPAD_BUTTONS.BACK);
-        gamepadStart = new JoystickButton(gamepad, GAMEPAD_BUTTONS.START);
-        gamepadL3 = new JoystickButton(gamepad, GAMEPAD_BUTTONS.L3);
-        gamepadLeftStickButton = new JoystickButton(gamepad, GAMEPAD_BUTTONS.L3);
-        gamepadRightStickButton = new JoystickButton(gamepad, GAMEPAD_BUTTONS.R3);
-        gamepadLT = new TriggerButton(gamepad, GAMEPAD_AXIS.leftTrigger);
-        gamepadRT = new TriggerButton(gamepad, GAMEPAD_AXIS.rightTrigger);
+        // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
+    
+            left1 = leftJoystick.button(JOYSTICK_BUTTONS.BTN1);
+            left2 = leftJoystick.button(JOYSTICK_BUTTONS.BTN2);
+            left3 = leftJoystick.button(JOYSTICK_BUTTONS.BTN3);
+            left4 = leftJoystick.button(JOYSTICK_BUTTONS.BTN4);
+            left5 = leftJoystick.button(JOYSTICK_BUTTONS.BTN5);
+            left6 = leftJoystick.button(JOYSTICK_BUTTONS.BTN6);
+            left7 = leftJoystick.button(JOYSTICK_BUTTONS.BTN7);
+            left8 = leftJoystick.button(JOYSTICK_BUTTONS.BTN8);
+            left9 = leftJoystick.button(JOYSTICK_BUTTONS.BTN9);
+            left10 = leftJoystick.button(JOYSTICK_BUTTONS.BTN10);
+            left11 = leftJoystick.button(JOYSTICK_BUTTONS.BTN11);
+    
+            right1 = rightJoystick.button(JOYSTICK_BUTTONS.BTN1);
+            right2 = rightJoystick.button(JOYSTICK_BUTTONS.BTN2);
+            right3 = rightJoystick.button(JOYSTICK_BUTTONS.BTN3);
+            right4 = rightJoystick.button(JOYSTICK_BUTTONS.BTN4);
+            right5 = rightJoystick.button(JOYSTICK_BUTTONS.BTN5);
+            right6 = rightJoystick.button(JOYSTICK_BUTTONS.BTN6);
+            right7 = rightJoystick.button(JOYSTICK_BUTTONS.BTN7);
+            right8 = rightJoystick.button(JOYSTICK_BUTTONS.BTN8);
+            right9 = rightJoystick.button(JOYSTICK_BUTTONS.BTN9);
+            right10 = rightJoystick.button(JOYSTICK_BUTTONS.BTN10);
+            right11 = rightJoystick.button(JOYSTICK_BUTTONS.BTN11);
+    
+            gamepadA = gamepad.a();
+            gamepadB = gamepad.b();
+            gamepadX = gamepad.x();
+            gamepadY = gamepad.y();
+            gamepadRB = gamepad.rightBumper();
+            gamepadLB = gamepad.leftBumper();
+            gamepadBack = gamepad.back();
+            gamepadStart = gamepad.start();
+            gamepadLeftStickButton = gamepad.leftStick();
+            gamepadRightStickButton = gamepad.rightStick();
+            gamepadLT = gamepad.leftTrigger();
+            gamepadRT = gamepad.rightTrigger();
+            
+            gamepadPOVDown = gamepad.povDown();
+            gamepadPOVUpLeft = gamepad.povUpLeft();
+            gamepadPOVUp = gamepad.povUp();
+            gamepadPOVUpRight = gamepad.povUpRight();
+            gamepadPOVLeft = gamepad.povLeft();
+            gamepadPOVRight = gamepad.povRight();
+            gamepadPOVDownRight = gamepad.povDownRight();
+            gamepadPOVDownLeft = gamepad.povDownLeft();
+    
+            gamepadLeftX = () -> gamepad.getLeftX();
+            gamepadRightX = () -> gamepad.getRightX();
+            gamepadLeftY = () -> -gamepad.getLeftY();
+            gamepadRightY = () -> -gamepad.getRightY();
+    
+            leftJoystickX = () -> leftJoystick.getX();
+            leftJoystickY = () -> leftJoystick.getY();
+            rightJoystickX = () -> rightJoystick.getX();
+            rightJoystickY = () -> rightJoystick.getY();
     }
     
     public void initializeAutonCommand() {
         if(autonCommand == null)
-            autonCommand = new SequentialCommandGroup(
-                new DriveDistance(-24.0, driveTrain),
-                new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)
-            );
-    }
-
-    
-    public void initCenter5BallTrench() {
-        if(driveTrain.isAligned()) {
-            DriverStation.reportError("Center5BallTrench Auton", false);
-            try {
-                autonCommand = new SequentialCommandGroup(
-                    new ParallelDeadlineGroup(
-                        new WaitCommand(5),
-                        new RunShooterRPMPID(shooter, limelight),
-                        new AutoFeedBalls(feeder, hopper, intake, shooter, driveTrain)
-                    ),
-                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
-                        new RunIntake(intake)
-                    ),
-                    new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
-                        new RunIntake(intake)
-                    ),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
-                        new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
-                    ),
-                    new ParallelCommandGroup(
-                        new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, limelight),
-                        new AutoFeedBalls(feeder, hopper, intake, shooter, driveTrain)
-                    )
-                );
-            } catch (FileNotFoundException e) {
-                System.out.println(e);
-            }      
-        } else {          
-            DriverStation.reportError("Center5BallTrench Auton", false);
-            try {
-                autonCommand = new SequentialCommandGroup(
-                    new ParallelDeadlineGroup(
-                        new WaitCommand(5),
-                        new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, limelight),
-                        new AutoFeedBalls(feeder, hopper, intake, shooter, driveTrain)
-                    ),
-                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("CenterTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
-                        new RunIntake(intake)
-                    ),
-                    new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
-                        new RunIntake(intake)
-                    ),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
-                        new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
-                    ),
-                    new ParallelCommandGroup(
-                        new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, limelight),
-                        new AutoFeedBalls(feeder, hopper, intake, shooter, driveTrain)
-                    )
-                );
-            } catch (FileNotFoundException e) {
-                System.out.println(e);
-            } 
-        }
-    }
-
-    public void initInitiationLine() {
-        DriverStation.reportError("Cross Initiation Line Auton", false);
-        autonCommand = new SequentialCommandGroup(
-            new DriveDistance(-24.0, driveTrain),
-            new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight)
-        );
-    }
-
-    public void initLeft2BallTrench() {
-        DriverStation.reportError("Left2BallTrench Auton", false);
-        try {
-            autonCommand = new SequentialCommandGroup(
-                new ParallelDeadlineGroup(
-                    new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench2Ball", ProfileDirection.BACKWARD), driveTrain),
-                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                    new RunIntake(intake),
-                    new RunShooterRPMPID(shooter, limelight, ShootingStyle.MANUAL)
-                ),
-                new ParallelDeadlineGroup(
-                    new MoveOnTrajectory(new MercMotionProfile("ShootTrench2Ball", ProfileDirection.FORWARD), driveTrain),
-                    new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
-                ),
-                new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)
-            );
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
-    public void initLeft5BallTrench() {
-        if(driveTrain.isAligned()) {
-            DriverStation.reportError("Left5BallTrench Auton", false);
-            try {
-                autonCommand = new SequentialCommandGroup(
-                    new ParallelDeadlineGroup(
-                        new WaitCommand(5),
-                        new RunShooterRPMPID(shooter, limelight),
-                        new AutoFeedBalls(feeder, hopper, intake, shooter, driveTrain)
-                    ),
-                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
-                        new RunIntake(intake)
-                    ),
-                    new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
-                        new RunIntake(intake)
-                    ),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
-                        new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
-                    ),
-                    new ParallelCommandGroup(
-                        new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, limelight),
-                        new AutoFeedBalls(feeder, hopper, intake, shooter, driveTrain)
-                    )
-                );
-            } catch (FileNotFoundException e) {
-                System.out.println(e);
-            }      
-        } else {          
-            DriverStation.reportError("Left5BallTrench Auton", false);
-            try {
-                autonCommand = new SequentialCommandGroup(
-                    new ParallelDeadlineGroup(
-                        new WaitCommand(5),
-                        new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, limelight),
-                        new AutoFeedBalls(feeder, hopper, intake, shooter, driveTrain)
-                    ),
-                    new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("LeftTargetZoneToTrench", ProfileDirection.BACKWARD), driveTrain),
-                        new RunIntake(intake)
-                    ),
-                    new  MoveOnTrajectory(new MercMotionProfile("TrenchBall", ProfileDirection.FORWARD), driveTrain),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("TrenchOtherBall", ProfileDirection.BACKWARD), driveTrain),
-                        new RunIntake(intake)
-                    ),
-                    new ParallelDeadlineGroup(
-                        new MoveOnTrajectory(new MercMotionProfile("ShootInTrench", ProfileDirection.FORWARD), driveTrain),
-                        new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator)
-                    ),
-                    new ParallelCommandGroup(
-                        new RotateToTarget(driveTrain),
-                        new RunShooterRPMPID(shooter, limelight),
-                        new AutoFeedBalls(feeder, hopper, intake, shooter, driveTrain)
-                    )
-                );
-            } catch (FileNotFoundException e) {
-                System.out.println(e);
-            } 
-        }
-    }
-
-    public void initRight5BallRendezvous() {
-        
-    }
-
-    public void initStealOpponent2Ball() {
-        DriverStation.reportError("StealFromOpponentTrench Auton", false);
-        try {
-            autonCommand = new SequentialCommandGroup(
-                new RunCommand(() -> intakeArticulator.setIntakeOut(), intakeArticulator),
-                new ParallelDeadlineGroup(
-                    new MoveOnTrajectory(new MercMotionProfile("StealFromOpponentTrench", ProfileDirection.BACKWARD), driveTrain),
-                    new RunIntake(intake)
-                ),
-                new RunCommand(() -> intakeArticulator.setIntakeIn(), intakeArticulator),
-                new ParallelCommandGroup(
-                    new RotateToTarget(driveTrain),
-                    new RunShooterRPMPID(shooter, limelight),
-                    new AutoFeedBalls(feeder, hopper, intake, shooter, driveTrain)
-                )
-            );
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+            autonCommand = new PrintCommand("No Auton.");
     }
 
     public Command getAutonCommand(){
@@ -462,7 +245,7 @@ public class RobotContainer {
     public Elevator getElevator() {
         return elevator;
     }
-    public LimelightCamera getLimelightCamera() {
-        return limelightCamera;
+    public Limelight getLimelight() {
+        return limelightCamera.getLimelight();
     }
 }
