@@ -17,12 +17,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap.CAN;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
-public class Hopper extends SubsystemBase implements IMercShuffleBoardPublisher {
+public class Hopper extends SubsystemBase {
   
-  private VictorSPX hopperBelt;
-  private final double RUN_SPEED;
+  private VictorSPX hopperBelt, agitator;
+  private final double RUN_SPEED, AGITATOR_SPEED;
+  public final boolean IS_CLOCKWISE;
   /**
    * Creates a new Hopper.
    */
@@ -31,9 +31,25 @@ public class Hopper extends SubsystemBase implements IMercShuffleBoardPublisher 
 
     hopperBelt = new VictorSPX(CAN.HOPPER_BELT);
     hopperBelt.setNeutralMode(NeutralMode.Brake);
-
+    AGITATOR_SPEED = 0.5;
+    IS_CLOCKWISE = true;
+    agitator = new VictorSPX(CAN.AGITATOR);
+    agitator.setInverted(IS_CLOCKWISE);
+    agitator.setNeutralMode(NeutralMode.Brake);
     setName("Hopper");
 
+  }
+
+  public void runAgitator() {
+    agitator.set(ControlMode.PercentOutput, AGITATOR_SPEED);
+  }
+
+  public void stopAgitator() {
+    agitator.set(ControlMode.PercentOutput, 0.0);
+  }
+
+  public boolean getIsClockwise() {
+    return IS_CLOCKWISE;
   }
 
   public void setSpeed(double speed) {
@@ -52,12 +68,18 @@ public class Hopper extends SubsystemBase implements IMercShuffleBoardPublisher 
     return RUN_SPEED;
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
+  public void runHopperAgitator(){ 
+    runAgitator();
+    runHopper();
+  }
+
+  public void stopHopperAgitator(){ 
+    stopAgitator();
+    stopHopper();
   }
 
   @Override
-  public void publishValues() {
+  public void periodic() {
+    // This method will be called once per scheduler run
   }
 }

@@ -14,12 +14,10 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.RobotMap.CAN;
-import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
-public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher {
-  private final VictorSPX intakeRoller, agitator;
-  public final double INTAKE_SPEED, AGITATOR_SPEED;
-  public final boolean IS_CLOCKWISE;
+public class Intake extends SubsystemBase {
+  private final VictorSPX intakeRoller;
+  public final double INTAKE_SPEED;
   /**
    * Creates a new Intake.
    */
@@ -27,16 +25,12 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
     super();
 
     INTAKE_SPEED = 1.0;
-    AGITATOR_SPEED = 0.5;
-    IS_CLOCKWISE = true;
     
     setName("Intake");
     
     intakeRoller = new VictorSPX(CAN.INTAKE_ROLLER);
     intakeRoller.setInverted(true);
-    agitator = new VictorSPX(CAN.AGITATOR);
-    agitator.setInverted(IS_CLOCKWISE);
-    agitator.setNeutralMode(NeutralMode.Brake);
+    
   }
 
   public void setRollerSpeed(double speed) {
@@ -55,25 +49,10 @@ public class Intake extends SubsystemBase implements IMercShuffleBoardPublisher 
     setRollerSpeed(0.0);
   }
 
-  public void runAgitator() {
-    agitator.set(ControlMode.PercentOutput, AGITATOR_SPEED);
-  }
-
-  public void stopAgitator() {
-    agitator.set(ControlMode.PercentOutput, 0.0);
-  }
-
-  public boolean getIsClockwise() {
-    return IS_CLOCKWISE;
-  }
+  
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void publishValues() {
-    
   }
 }

@@ -15,9 +15,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.CAN;
-import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
-public class IntakeArticulator extends SubsystemBase implements IMercShuffleBoardPublisher{
+public class IntakeArticulator extends SubsystemBase {
 
   public enum IntakePosition {
     OUT(0.75),
@@ -60,7 +59,7 @@ public class IntakeArticulator extends SubsystemBase implements IMercShuffleBoar
   }
 
   @Override
-  public void publishValues() {
+  public void periodic() {
     // SmartDashboard.putBoolean(getName() + "/FwdLimit", intakeArticulator.getSensorCollection().isFwdLimitSwitchClosed());
     // SmartDashboard.putBoolean(getName() + "/RevLimit", intakeArticulator.getSensorCollection().isRevLimitSwitchClosed());
   }

@@ -20,11 +20,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.RobotMap;
 import frc.robot.RobotMap.CAN;
+import frc.robot.util.MercMath;
 
-import frc.robot.util.*;
-import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
-
-public class Elevator extends SubsystemBase implements IMercShuffleBoardPublisher {
+public class Elevator extends SubsystemBase {
 
   private Relay elevatorLock;
 
@@ -87,6 +85,10 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     }
   }
 
+  public void setPosition(ElevatorPosition pos) {
+    elevator.set(ControlMode.Position, pos.encPos);
+  }
+
   public Relay.Value getLockState(){
     return elevatorLock.get();
   }
@@ -99,11 +101,6 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
     elevator.set(ControlMode.PercentOutput,speed);
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
   /**
    * Get current height of claw on elevator.
    *
@@ -114,7 +111,7 @@ public class Elevator extends SubsystemBase implements IMercShuffleBoardPublishe
   }
 
   @Override
-  public void publishValues() {
+  public void periodic() {
     SmartDashboard.putNumber(getName() + "/Height(ticks)", getCurrentHeight());
   }
   

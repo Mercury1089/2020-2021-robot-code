@@ -30,15 +30,13 @@ import frc.robot.RobotMap.CAN;
 import frc.robot.util.DriveAssist;
 import frc.robot.util.MercMath;
 import frc.robot.util.PIDGain;
-import frc.robot.util.interfaces.IMercPIDTunable;
-import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
 /**
  * Subsystem that encapsulates the driveAssist train.
  * This contains the {@link DriveAssist} needed to driveAssist manually
  * using the motor controllers.
  */
-public class DriveTrain extends SubsystemBase implements IMercPIDTunable {
+public class DriveTrain extends SubsystemBase {
 
     public static final int
         DRIVE_PID_SLOT = 0,
@@ -451,37 +449,6 @@ public class DriveTrain extends SubsystemBase implements IMercPIDTunable {
 
         return newPoint;
     }
-
-    @Override
-    public int[] getSlots() {
-        return new int[] {
-            DRIVE_PID_SLOT,
-            DRIVE_SMOOTH_MOTION_SLOT,
-            DRIVE_MOTION_PROFILE_SLOT,
-            DRIVE_SMOOTH_TURN_SLOT
-        };
-    }
-
-    @Override
-    public PIDGain getPIDGain(int slot) {
-        PIDGain gains = null;
-        switch (slot) {
-            case DRIVE_PID_SLOT:
-                gains = driveGains;
-                break;
-            case DRIVE_SMOOTH_MOTION_SLOT:
-                gains = smoothGains;
-                break;
-            case DRIVE_MOTION_PROFILE_SLOT:
-                gains = motionProfileGains;
-                break;
-            case DRIVE_SMOOTH_TURN_SLOT:
-                gains = turnGains;
-                break;
-        }
-        return gains;
-    }
-
     private void configPID(BaseMotorController talon, int slot, PIDGain gains) {
         talon.config_kP(slot, gains.kP, 10);
         talon.config_kI(slot, gains.kI, 10);
@@ -490,7 +457,6 @@ public class DriveTrain extends SubsystemBase implements IMercPIDTunable {
         talon.configClosedLoopPeakOutput(slot, gains.clMaxOut, 10);
     }
 
-    @Override
     public void setPIDGain(int slot, PIDGain gains) {
         switch (slot) {
             case DRIVE_PID_SLOT:

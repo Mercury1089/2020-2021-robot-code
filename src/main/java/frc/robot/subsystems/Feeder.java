@@ -13,9 +13,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.RobotMap.CAN;
-import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 
-public class Feeder extends SubsystemBase implements IMercShuffleBoardPublisher {
+public class Feeder extends SubsystemBase {
   
   private TalonSRX feedWheel;
   private static final double RUN_SPEED = 1.0;
@@ -38,6 +37,10 @@ public class Feeder extends SubsystemBase implements IMercShuffleBoardPublisher 
     setSpeed(RUN_SPEED);
   }
 
+  public void stopFeeder() {
+    setSpeed(0.0);
+  }
+
   public void setSpeed(double speed) {
     feedWheel.set(ControlMode.PercentOutput, speed);
   }
@@ -45,10 +48,6 @@ public class Feeder extends SubsystemBase implements IMercShuffleBoardPublisher 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
-
-  @Override
-  public void publishValues() {
     //SmartDashboard.putNumber("Speed", feedWheel.getSpeed());
   }
 }

@@ -1,41 +1,25 @@
 package frc.robot;
 
-import java.io.FileNotFoundException;
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotMap.DS_USB;
-import frc.robot.RobotMap.GAMEPAD_AXIS;
-import frc.robot.RobotMap.GAMEPAD_BUTTONS;
 import frc.robot.RobotMap.JOYSTICK_BUTTONS;
 import frc.robot.RobotMap.NIHAR;
-import frc.robot.sensors.Limelight;
-import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeArticulator;
-import frc.robot.subsystems.LimelightCamera;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Elevator.ElevatorPosition;
+import frc.robot.subsystems.IntakeArticulator.IntakePosition;
 import frc.robot.subsystems.Shooter.ShooterMode;
-import frc.robot.util.MercMotionProfile;
-import frc.robot.util.MercMotionProfile.ProfileDirection;
-import frc.robot.util.ShuffleDash;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -44,8 +28,6 @@ import frc.robot.util.ShuffleDash;
 
 public class RobotContainer {
     public static final double DEADZONE = 0.08;
-
-    private ShuffleDash shuffleDash;
 
     private CommandJoystick rightJoystick, leftJoystick;
     private CommandXboxController gamepad;
@@ -64,55 +46,79 @@ public class RobotContainer {
     private Feeder feeder;
     private Hopper hopper;
     private Elevator elevator;
-    private LimelightCamera limelightCamera;
-
-    private Limelight limelight;
-    
-    private Command autonCommand = null;
 
     public RobotContainer() {
         leftJoystick = new CommandJoystick(DS_USB.LEFT_STICK);
         rightJoystick = new CommandJoystick(DS_USB.RIGHT_STICK);
         gamepad = new CommandXboxController(DS_USB.GAMEPAD);
 
-        limelight = new Limelight();
 
         driveTrain = new DriveTrain();
-        driveTrain.setDefaultCommand(new RunCommand(() -> driveTrain.arcadeDrive(leftJoystickX, rightJoystickY, true), driveTrain));
+        driveTrain.setDefaultCommand(new RunCommand(() -> driveTrain.arcadeDrive(leftJoystickY, rightJoystickX, true), driveTrain));
 
-        shooter = new Shooter(ShooterMode.ONE_WHEEL, limelight);
+        shooter = new Shooter(ShooterMode.ONE_WHEEL);
+        shooter.setDefaultCommand(new RunCommand(() -> shooter.stopShooter(), shooter));
         
         hopper = new Hopper();       
-        hopper.setDefaultCommand(new RunCommand(() -> hopper.setSpeed(0.0), hopper));
+        hopper.setDefaultCommand(new RunCommand(() -> hopper.stopHopperAgitator(), hopper));
 
         intake = new Intake();
+        intake.setDefaultCommand(new RunCommand(() -> intake.stopIntakeRoller(), intake));
         
         intakeArticulator = new IntakeArticulator();
+        intakeArticulator.setDefaultCommand(new RunCommand(() -> intakeArticulator.setIntakePosition(IntakePosition.IN), intakeArticulator));
+
         feeder = new Feeder();
-        intake = new Intake();
-        limelightCamera = new LimelightCamera();
-        limelightCamera.getLimelight().setLEDState(LimelightLEDState.OFF);
+        feeder.setDefaultCommand(new RunCommand(() -> feeder.stopFeeder(), feeder));
+
         elevator = new Elevator();
 
-        
-        shuffleDash = new ShuffleDash();
-        shuffleDash.addPublisher(shooter);
         initializeJoystickButtons();
+       
 
-        //Operator controls
-        //gamepadB.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CONTROL_PANEL));
-        //gamepadLeftStickButton.toggleWhenPressed(new ShiftOnScale(spinner));
-        //gamepadY.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.CLIMB)); //make the elevator go up
-        //gamepadA.whenPressed(new AutomaticElevator(elevator, ElevatorPosition.HANGING)); //make the roboboi go jump
-       // gamepadStart.and(gamepadBack).whenActive(new ParallelCommandGroup(new SequentialCommandGroup(new InstantCommand(() -> elevator.setLockEngaged(true), elevator),
-        //                                                                                             new AutomaticElevator(elevator, Elevator.ElevatorPosition.HANG),
-       //                                                                                              new ManualElevator(elevator)),
-       //                                          new RunCommand(() -> shooter.stopShooter(), shooter))); //lock the elevator
-       //gamepadRT.whenPressed(new FullyAutoAimbot(driveTrain, shooter, feeder, hopper, intake, limelight, ShootingStyle.AUTOMATIC)); //rek the opponents
-        //gamepadA.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.BOTTOM));
-        //gamepadY.whenPressed(new AutomaticElevator(elevator, Elevator.ElevatorPosition.READY, false));
-        //gamepadL3.whenPressed(new ManualElevator(elevator));
-        
+        gamepadA.whileTrue(
+            new ParallelCommandGroup(
+                new RunCommand(() -> intakeArticulator.setIntakePosition(IntakePosition.OUT), intakeArticulator),
+                new RunCommand(() -> intake.runIntakeRoller(), intake),
+                new RunCommand(() -> hopper.runHopper(), hopper)
+            )
+        );
+
+        gamepadB.whileTrue(
+            new ParallelCommandGroup(
+                new RunCommand(() -> shooter.setVelocity(Shooter.STEADY_RPM), shooter),
+                new RunCommand(() -> feeder.runFeeder(), feeder),
+                new RunCommand(() -> hopper.runHopperAgitator(), hopper)
+            )
+        );
+
+        gamepadX.whileTrue(
+            new RunCommand(() -> shooter.setVelocity(Shooter.STEADY_RPM), shooter)
+        );
+
+        gamepadY.whileTrue(
+            new RunCommand(() -> hopper.runHopperAgitator(), hopper)
+        );
+
+        gamepadLT.whileTrue(
+            new RunCommand(() -> intakeArticulator.setIntakePosition(IntakePosition.OUT), intakeArticulator)
+        );
+
+        gamepadRT.whileTrue(
+            new RunCommand(() -> intake.runIntakeRoller(), intake)
+        );
+
+        gamepadRB.whileTrue(
+            new RunCommand(() -> feeder.runFeeder(), feeder)
+        );
+
+        gamepadPOVUp.onTrue(
+            new RunCommand(() -> elevator.setPosition(ElevatorPosition.TOP))
+        );
+
+        gamepadPOVDown.onTrue(
+            new RunCommand(() -> elevator.setPosition(ElevatorPosition.BOTTOM))
+        );
     }
 
     public double getJoystickX(int port) {
@@ -216,14 +222,6 @@ public class RobotContainer {
             rightJoystickY = () -> rightJoystick.getY();
     }
     
-    public void initializeAutonCommand() {
-        if(autonCommand == null)
-            autonCommand = new PrintCommand("No Auton.");
-    }
-
-    public Command getAutonCommand(){
-        return this.autonCommand;
-    }
 
     public DriveTrain getDriveTrain() {
         return driveTrain;
@@ -246,7 +244,5 @@ public class RobotContainer {
     public Elevator getElevator() {
         return elevator;
     }
-    public Limelight getLimelight() {
-        return limelightCamera.getLimelight();
-    }
+
 }

@@ -21,19 +21,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-
-import frc.robot.util.interfaces.IMercPIDTunable;
-import frc.robot.util.interfaces.IMercShuffleBoardPublisher;
 import frc.robot.util.PIDGain;
 
 import frc.robot.RobotMap.*;
-import frc.robot.sensors.Limelight;
 
-public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher, IMercPIDTunable {
+public class Shooter extends SubsystemBase {
   // private IMercMotorController flywheel;
 
   public static final double NOMINAL_OUT = 0.0, PEAK_OUT = 1.0;
-  public static final double MAX_RPM = 5000.0, STEADY_RPM = 3600.0, LOW_RPM = 1000.0, NULL_RPM = -1.0;
+  public static final double MAX_RPM = 5000.0, STEADY_RPM = 3000.0, LOW_RPM = 1000.0, NULL_RPM = -1.0;
   public static final double MIN_DISTANCE = 6.7, MAX_DISTANCE = 17.0;
   //public static final double MIN_DISTANCE = 2.0, MAX_DISTANCE = 20.0;
   public final int BREAKBEAM_DIO = 2;
@@ -47,13 +43,11 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
 
   private PIDGain velocityGains;
 
-  private Limelight limelight;
-
   public enum ShooterMode {
     ONE_WHEEL, NONE
   }
 
-  public Shooter(ShooterMode mode, Limelight limelight) {
+  public Shooter(ShooterMode mode) {
     setName("Shooter");
     this.mode = mode;
 
@@ -84,7 +78,6 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     // velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
     velocityGains = new PIDGain(0.00024, 0.00000001, 0.01, 0.0002025);    
 
-    this.limelight = limelight;
     setPIDGain(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), velocityGains);
   }
 
@@ -118,8 +111,7 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
   }
 
   public double getTargetVelocity() {
-    double distance = limelight.getRawVertDistance();
-    return distance >= MIN_DISTANCE && distance <= MAX_DISTANCE ? getVelocityFromDistance(distance) : NULL_RPM;
+    return STEADY_RPM;
   }
 
   public double getTargetRPMFromHypothetical() {
@@ -185,10 +177,6 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     //SmartDashboard.putNumber("Hypothetical RPM", getTargetRPMFromHypothetical());
   }
 
-  @Override
-  public PIDGain getPIDGain(int slot) {
-    return this.velocityGains;
-  }
   private void configPID(CANSparkMax sparkmax, int slot, PIDGain gains) {
     sparkmax.getPIDController().setP(gains.kP, slot);
     sparkmax.getPIDController().setI(gains.kI, slot);
@@ -196,7 +184,6 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
     sparkmax.getPIDController().setFF(gains.kF, slot);
   }
 
-  @Override
   public void setPIDGain(int slot, PIDGain gains) {
     this.velocityGains = gains;
 
@@ -204,11 +191,6 @@ public class Shooter extends SubsystemBase implements IMercShuffleBoardPublisher
       configPID(shooterLeft, SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
       configPID(shooterLeft, SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
     }
-  }
-
-  @Override
-  public int[] getSlots() {
-    return new int[] { 0 };
   }
 
   public enum SHOOTER_PID_SLOTS {
