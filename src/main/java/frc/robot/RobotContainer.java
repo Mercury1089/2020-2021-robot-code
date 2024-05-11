@@ -25,7 +25,6 @@ import frc.robot.RobotMap.NIHAR;
 import frc.robot.sensors.Limelight;
 import frc.robot.sensors.Limelight.LimelightLEDState;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain.DriveTrainLayout;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hopper;
@@ -78,14 +77,16 @@ public class RobotContainer {
 
         limelight = new Limelight();
 
-        driveTrain = new DriveTrain(DriveTrainLayout.FALCONS); //make sure to switch it back to Falcons
+        driveTrain = new DriveTrain();
+        driveTrain.setDefaultCommand(new RunCommand(() -> driveTrain.arcadeDrive(leftJoystickX, rightJoystickY, true), driveTrain));
 
         shooter = new Shooter(ShooterMode.ONE_WHEEL, limelight);
         
         hopper = new Hopper();       
-        //hopper.setDefaultCommand(new RunCommand(() -> hopper.setSpeed(0.0), hopper));
+        hopper.setDefaultCommand(new RunCommand(() -> hopper.setSpeed(0.0), hopper));
 
         intake = new Intake();
+        
         intakeArticulator = new IntakeArticulator();
         feeder = new Feeder();
         intake = new Intake();

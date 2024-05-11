@@ -77,60 +77,37 @@ public class DriveTrain extends SubsystemBase implements IMercPIDTunable {
 
     private DriveAssist driveAssist;
     private PigeonIMU podgeboi;
-
-    private DriveTrainLayout layout;
-
-    public enum DriveType {
-        TANK,
-        ARCADE
-    }
-
     /**
      * Creates the drivetrain, assuming that there are four controllers.
      *
      * @param layout The layout of motor controllers used on the drivetrain
      */
-    public DriveTrain(DriveTrain.DriveTrainLayout layout) {
+    public DriveTrain() {
         //This should eventually be fully configurable
         // At this point it's based on what the layout is
 
         super();
         setName("DriveTrain");
-        this.layout = layout;
-
-        
 
         // Initialize the motor controllers and (if applicable) the encoders
-        switch (layout) {
-            case FALCONS:
-                // Four TalonFX controllers with two CANCoders
-                leaderLeft = new TalonFX(CAN.DRIVETRAIN_ML);
-                leaderRight = new TalonFX(CAN.DRIVETRAIN_MR);
-                followerLeft = new TalonFX(CAN.DRIVETRAIN_FL);
-                followerRight = new TalonFX(CAN.DRIVETRAIN_FR);
+        // Four TalonFX controllers with two CANCoders
+        leaderLeft = new TalonFX(CAN.DRIVETRAIN_ML);
+        leaderRight = new TalonFX(CAN.DRIVETRAIN_MR);
+        followerLeft = new TalonFX(CAN.DRIVETRAIN_FL);
+        followerRight = new TalonFX(CAN.DRIVETRAIN_FR);
 
-                encLeft = new CANCoder(RobotMap.CAN.CANCODER_ML);
-                encLeft.configFactoryDefault();
-                encRight = new CANCoder(RobotMap.CAN.CANCODER_MR);
-                encRight.configFactoryDefault();
+        encLeft = new CANCoder(RobotMap.CAN.CANCODER_ML);
+        encLeft.configFactoryDefault();
+        encRight = new CANCoder(RobotMap.CAN.CANCODER_MR);
+        encRight.configFactoryDefault();
 
-                encLeft.configFeedbackCoefficient(1.0, "Ticks", SensorTimeBase.PerSecond);
-                encRight.configFeedbackCoefficient(1.0, "Ticks", SensorTimeBase.PerSecond);
+        encLeft.configFeedbackCoefficient(1.0, "Ticks", SensorTimeBase.PerSecond);
+        encRight.configFeedbackCoefficient(1.0, "Ticks", SensorTimeBase.PerSecond);
 
 
-                encLeft.configSensorDirection(false);
-                encRight.configSensorDirection(true);
-                break;
-            case TALONS_VICTORS:
-                // Two TalonSRX controllers with mag encoders attached plus two VictorSPX followers
-                leaderLeft = new TalonSRX(CAN.DRIVETRAIN_ML);
-                leaderRight = new TalonSRX(CAN.DRIVETRAIN_MR);
-                followerLeft = new VictorSPX(CAN.DRIVETRAIN_FL);
-                followerRight = new VictorSPX(CAN.DRIVETRAIN_FR);
+        encLeft.configSensorDirection(false);
+        encRight.configSensorDirection(true);
 
-                encLeft = encRight = null;
-                break;
-        }
         leaderLeft.configFactoryDefault(); leaderRight.configFactoryDefault();
         followerLeft.configFactoryDefault(); followerRight.configFactoryDefault();
 
@@ -183,32 +160,18 @@ public class DriveTrain extends SubsystemBase implements IMercPIDTunable {
 
     private void configureFeedbackSensors(int framePeriodMs, int pigeonFramePeriodMs) {
         /* Configure left's encoder as left's selected sensor */
-        if (layout == DriveTrainLayout.TALONS_VICTORS){
-            leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
+        /* Set up a Sum signal from both CANCoders on leaderLeft */
+        leaderLeft.configRemoteFeedbackFilter(encLeft.getDeviceID(), RemoteSensorSource.CANCoder, DriveTrain.REMOTE_DEVICE_1);
+        leaderLeft.configRemoteFeedbackFilter(encRight.getDeviceID(), RemoteSensorSource.CANCoder, DriveTrain.REMOTE_DEVICE_0);
+        leaderLeft.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0);
+        leaderLeft.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.RemoteSensor1);
+        /* Configure the sensor sum as the selected sensor for leaderLeft with a coefficient of 0.5 (average) */
+        leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
+        leaderLeft.configSelectedFeedbackCoefficient(0.5, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
+        /* Configure the selected sensor on leaderLeft (the avg.) as the remote sensor 0 for leaderRight */
+        leaderRight.configRemoteFeedbackFilter(leaderLeft.getDeviceID(), RemoteSensorSource.TalonFX_SelectedSensor, DriveTrain.REMOTE_DEVICE_0);
+        leaderRight.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
 
-            /* Configure the Remote Talon's selected sensor as a remote sensor for the right Talon */
-            leaderRight.configRemoteFeedbackFilter(leaderLeft.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, DriveTrain.REMOTE_DEVICE_0, RobotMap.CTRE_TIMEOUT);
-            /* Setup Sum signal to be used for Distance */
-            leaderRight.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, RobotMap.CTRE_TIMEOUT);
-            leaderRight.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.CTRE_MagEncoder_Relative);
-            /* Configure Sum [Sum of both QuadEncoders] to be used for Primary PID Index */
-            leaderRight.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
-            /* Scale Feedback by 0.5 to half the sum of Distance */
-            leaderRight.configSelectedFeedbackCoefficient(0.5, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
-
-        } else {
-            /* Set up a Sum signal from both CANCoders on leaderLeft */
-            leaderLeft.configRemoteFeedbackFilter(encLeft.getDeviceID(), RemoteSensorSource.CANCoder, DriveTrain.REMOTE_DEVICE_1);
-            leaderLeft.configRemoteFeedbackFilter(encRight.getDeviceID(), RemoteSensorSource.CANCoder, DriveTrain.REMOTE_DEVICE_0);
-            leaderLeft.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0);
-            leaderLeft.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.RemoteSensor1);
-            /* Configure the sensor sum as the selected sensor for leaderLeft with a coefficient of 0.5 (average) */
-            leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
-            leaderLeft.configSelectedFeedbackCoefficient(0.5, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
-            /* Configure the selected sensor on leaderLeft (the avg.) as the remote sensor 0 for leaderRight */
-            leaderRight.configRemoteFeedbackFilter(leaderLeft.getDeviceID(), RemoteSensorSource.TalonFX_SelectedSensor, DriveTrain.REMOTE_DEVICE_0);
-            leaderRight.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
-        }
         /* Configure the Pigeon IMU to the other remote slot available on the right Talon */
         leaderRight.configRemoteFeedbackFilter(podgeboi.getDeviceID(), RemoteSensorSource.Pigeon_Yaw, DriveTrain.REMOTE_DEVICE_1);
         /* Configure Remote 1 [Pigeon IMU's Yaw] to be used for Auxiliary PID Index */
@@ -288,13 +251,8 @@ public class DriveTrain extends SubsystemBase implements IMercPIDTunable {
     }
 
     public void resetEncoders() {
-        if(layout == DriveTrainLayout.TALONS_VICTORS) {
-            ((TalonSRX) leaderLeft).getSensorCollection().setQuadraturePosition(0, RobotMap.CTRE_TIMEOUT);
-            ((TalonSRX) leaderLeft).getSensorCollection().setQuadraturePosition(0, RobotMap.CTRE_TIMEOUT);
-        } else {
-            encLeft.setPosition(0.0);
-            encRight.setPosition(0.0);
-        }
+        encLeft.setPosition(0.0);
+        encRight.setPosition(0.0);
     }
 
     /**
@@ -423,24 +381,15 @@ public class DriveTrain extends SubsystemBase implements IMercPIDTunable {
     }
 
     public double getLeftEncPositionInTicks() {
-        if (layout == DriveTrainLayout.TALONS_VICTORS)
-            return leaderLeft.getSelectedSensorPosition(0);
-        else
-            return encLeft.getPosition();
+        return encLeft.getPosition();
     }
 
     public double getRightEncPositionInTicks() {
-        if (layout == DriveTrainLayout.TALONS_VICTORS)
-            return leaderRight.getSelectedSensorPosition(0);
-        else
-            return encRight.getPosition();
+        return encRight.getPosition();
     }
     public double getLeftEncVelocityInTicksPerTenth() {
-        if (layout == DriveTrainLayout.TALONS_VICTORS)
-            return leaderLeft.getSelectedSensorVelocity(0);
-        else
-            // CANCoder returns velocity in tick/s, so divide by 10
-            return encLeft.getVelocity() / 10;
+        // CANCoder returns velocity in tick/s, so divide by 10
+        return encLeft.getVelocity() / 10;
     }
 
     public double getVelocityInRevsPerMinute() {
@@ -454,11 +403,8 @@ public class DriveTrain extends SubsystemBase implements IMercPIDTunable {
 
 
     public double getRightEncVelocityInTicksPerTenth() {
-        if (layout == DriveTrainLayout.TALONS_VICTORS)
-            return leaderRight.getSelectedSensorVelocity(0);
-        else
-            // CANCoder returns velocity in tick/s, so divide by 10
-            return encRight.getVelocity() / 10;
+        // CANCoder returns velocity in tick/s, so divide by 10
+        return encRight.getVelocity() / 10;
     }
 
     public double getLeftEncPositionInFeet() {
@@ -471,11 +417,6 @@ public class DriveTrain extends SubsystemBase implements IMercPIDTunable {
 
     public double getFeedForward() {
         return MercMath.calculateFeedForward(MAX_RPM);
-    }
-
-    public enum DriveTrainLayout {
-        TALONS_VICTORS,
-        FALCONS
     }
 
        
