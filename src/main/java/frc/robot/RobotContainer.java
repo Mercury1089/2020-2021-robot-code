@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -80,15 +81,18 @@ public class RobotContainer {
             new ParallelCommandGroup(
                 new RunCommand(() -> intakeArticulator.setIntakePosition(IntakePosition.OUT), intakeArticulator),
                 new RunCommand(() -> intake.runIntakeRoller(), intake),
-                new RunCommand(() -> hopper.runHopper(), hopper)
+                new RunCommand(() -> hopper.runHopperAgitator(), hopper)
             )
         );
 
         gamepadB.whileTrue(
-            new ParallelCommandGroup(
-                new RunCommand(() -> shooter.setVelocity(Shooter.STEADY_RPM), shooter),
-                new RunCommand(() -> feeder.runFeeder(), feeder),
-                new RunCommand(() -> hopper.runHopperAgitator(), hopper)
+            new SequentialCommandGroup(
+                new RunCommand(() -> shooter.setVelocity(Shooter.STEADY_RPM), shooter).until(() -> shooter.getRPM() > 3750.0),
+                new ParallelCommandGroup(
+                    new RunCommand(() -> shooter.setVelocity(Shooter.STEADY_RPM), shooter),
+                    new RunCommand(() -> feeder.runFeeder(), feeder),
+                    new RunCommand(() -> hopper.runHopperAgitator(), hopper)
+                )
             )
         );
 
