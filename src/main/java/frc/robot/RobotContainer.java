@@ -76,8 +76,7 @@ public class RobotContainer {
 
         initializeJoystickButtons();
        
-
-        gamepadA.whileTrue(
+        left1.whileTrue(
             new ParallelCommandGroup(
                 new RunCommand(() -> intakeArticulator.setIntakePosition(IntakePosition.OUT), intakeArticulator),
                 new RunCommand(() -> intake.runIntakeRoller(), intake),
@@ -85,9 +84,9 @@ public class RobotContainer {
             )
         );
 
-        gamepadB.whileTrue(
+        right1.whileTrue(
             new SequentialCommandGroup(
-                new RunCommand(() -> shooter.setVelocity(Shooter.STEADY_RPM), shooter).until(() -> shooter.getRPM() > 3750.0),
+                new RunCommand(() -> shooter.setVelocity(Shooter.STEADY_RPM), shooter).until(() -> shooter.atTargetRpm()),
                 new ParallelCommandGroup(
                     new RunCommand(() -> shooter.setVelocity(Shooter.STEADY_RPM), shooter),
                     new RunCommand(() -> feeder.runFeeder(), feeder),
@@ -96,31 +95,11 @@ public class RobotContainer {
             )
         );
 
-        gamepadX.whileTrue(
-            new RunCommand(() -> shooter.setVelocity(Shooter.STEADY_RPM), shooter)
-        );
-
-        gamepadY.whileTrue(
-            new RunCommand(() -> hopper.runHopperAgitator(), hopper)
-        );
-
-        gamepadLT.whileTrue(
-            new RunCommand(() -> intakeArticulator.setIntakePosition(IntakePosition.OUT), intakeArticulator)
-        );
-
-        gamepadRT.whileTrue(
-            new RunCommand(() -> intake.runIntakeRoller(), intake)
-        );
-
-        gamepadRB.whileTrue(
-            new RunCommand(() -> feeder.runFeeder(), feeder)
-        );
-
-        gamepadPOVUp.onTrue(
+        left2.onTrue(
             new RunCommand(() -> elevator.setPosition(ElevatorPosition.TOP))
         );
 
-        gamepadPOVDown.onTrue(
+        right2.onTrue(
             new RunCommand(() -> elevator.setPosition(ElevatorPosition.BOTTOM))
         );
     }
