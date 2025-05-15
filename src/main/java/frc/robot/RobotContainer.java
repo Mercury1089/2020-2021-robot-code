@@ -96,11 +96,10 @@ public class RobotContainer {
         );
 
         left2.onTrue(
-            new RunCommand(() -> elevator.setPosition(ElevatorPosition.TOP))
+            new RunCommand(() -> elevator.setPosition(ElevatorPosition.TOP), elevator)
         );
-
         right2.onTrue(
-            new RunCommand(() -> elevator.setPosition(ElevatorPosition.BOTTOM))
+            new RunCommand(() -> elevator.setPosition(ElevatorPosition.BOTTOM), elevator)
         );
     }
 

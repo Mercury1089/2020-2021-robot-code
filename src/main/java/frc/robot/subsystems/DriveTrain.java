@@ -13,13 +13,13 @@ import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix.sensors.PigeonIMU_StatusFrame;
 import com.ctre.phoenix.sensors.SensorTimeBase;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -70,7 +70,7 @@ public class DriveTrain extends SubsystemBase {
 
     private PIDGain driveGains, smoothGains, motionProfileGains, turnGains;
 
-    private BaseMotorController leaderLeft, leaderRight, followerLeft, followerRight;
+    private TalonSRX leaderLeft, leaderRight, followerLeft, followerRight;
     private CANCoder encLeft, encRight;
 
     private DriveAssist driveAssist;
@@ -89,10 +89,10 @@ public class DriveTrain extends SubsystemBase {
 
         // Initialize the motor controllers and (if applicable) the encoders
         // Four TalonFX controllers with two CANCoders
-        leaderLeft = new TalonFX(CAN.DRIVETRAIN_ML);
-        leaderRight = new TalonFX(CAN.DRIVETRAIN_MR);
-        followerLeft = new TalonFX(CAN.DRIVETRAIN_FL);
-        followerRight = new TalonFX(CAN.DRIVETRAIN_FR);
+        leaderLeft = new TalonSRX(CAN.DRIVETRAIN_ML);
+        leaderRight = new TalonSRX(CAN.DRIVETRAIN_MR);
+        followerLeft = new TalonSRX(CAN.DRIVETRAIN_FL);
+        followerRight = new TalonSRX(CAN.DRIVETRAIN_FR);
 
         encLeft = new CANCoder(RobotMap.CAN.CANCODER_ML);
         encLeft.configFactoryDefault();
@@ -167,7 +167,7 @@ public class DriveTrain extends SubsystemBase {
         leaderLeft.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
         leaderLeft.configSelectedFeedbackCoefficient(0.5, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
         /* Configure the selected sensor on leaderLeft (the avg.) as the remote sensor 0 for leaderRight */
-        leaderRight.configRemoteFeedbackFilter(leaderLeft.getDeviceID(), RemoteSensorSource.TalonFX_SelectedSensor, DriveTrain.REMOTE_DEVICE_0);
+        leaderRight.configRemoteFeedbackFilter(leaderLeft.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor, DriveTrain.REMOTE_DEVICE_0);
         leaderRight.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, DriveTrain.DISTANCE_LOOP, RobotMap.CTRE_TIMEOUT);
 
         /* Configure the Pigeon IMU to the other remote slot available on the right Talon */

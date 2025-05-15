@@ -8,13 +8,20 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel;
-import com.revrobotics.CANSparkBase.ControlType;
+import java.lang.ProcessBuilder.Redirect.Type;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.servohub.ServoHub.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,13 +42,18 @@ public class Shooter extends SubsystemBase {
   public final int BREAKBEAM_DIO = 2;
   private final double TARGET_VELOCITY_THRESHOLD = 50.0; // within a +- 50 rpm range to shoot
   private final double MAX_VOLTAGE = 10.5;
-  private CANSparkMax shooterLeft, shooterRight;
+  private SparkMax shooterLeft, shooterRight;
 
   private double targetVelocity;
 
   private ShooterMode mode;
 
   private PIDGain velocityGains;
+
+  private SparkMaxConfig shooterLeftConfig = new SparkMaxConfig();
+  private SparkMaxConfig shooterRightConfig = new SparkMaxConfig();
+
+  private SparkClosedLoopController shooterController;
 
   public enum ShooterMode {
     ONE_WHEEL, NONE
@@ -50,22 +62,30 @@ public class Shooter extends SubsystemBase {
   public Shooter(ShooterMode mode) {
     setName("Shooter");
     this.mode = mode;
+    
+    velocityGains = new PIDGain(0.00024, 0.00000001, 0.01, 0.0002025);    
 
     if (mode == ShooterMode.ONE_WHEEL) {
-      shooterLeft = new CANSparkMax(CAN.SHOOTER_LEFT, MotorType.kBrushless);
-      shooterRight = new CANSparkMax(CAN.SHOOTER_RIGHT, MotorType.kBrushless);
+      shooterLeft = new SparkMax(CAN.SHOOTER_LEFT, MotorType.kBrushless);
+      shooterRight = new SparkMax(CAN.SHOOTER_RIGHT, MotorType.kBrushless);
 
-      shooterLeft.enableVoltageCompensation(MAX_VOLTAGE);
-      shooterRight.enableVoltageCompensation(MAX_VOLTAGE);
+      shooterLeftConfig.voltageCompensation(MAX_VOLTAGE)
+                    .inverted(true)
+                    .idleMode(IdleMode.kCoast)
+                    .closedLoop.outputRange(NOMINAL_OUT, PEAK_OUT)
+                    .pidf(velocityGains.kP,velocityGains.kI,velocityGains.kD, velocityGains.kF, ClosedLoopSlot.kSlot0);
 
-      shooterLeft.getPIDController().setOutputRange(NOMINAL_OUT, PEAK_OUT);
-      shooterRight.getPIDController().setOutputRange(NOMINAL_OUT, PEAK_OUT);
+      shooterRightConfig.voltageCompensation(MAX_VOLTAGE)
+                    .follow(shooterLeft, true)
+                    .idleMode(IdleMode.kCoast)
+                    .closedLoop.outputRange(NOMINAL_OUT, PEAK_OUT)
+                    .pidf(velocityGains.kP,velocityGains.kI,velocityGains.kD, velocityGains.kF, ClosedLoopSlot.kSlot0);
 
-      shooterLeft.setIdleMode(IdleMode.kCoast);
-      shooterRight.setIdleMode(IdleMode.kCoast);
+      shooterLeft.configure(shooterLeftConfig, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+      shooterRight.configure(shooterRightConfig, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-      shooterLeft.setInverted(true);
-      shooterRight.follow(shooterLeft, true); // Follow inverted
+      shooterController = shooterLeft.getClosedLoopController();
+       // Follow inverted
     } else if (mode == ShooterMode.NONE) {
       shooterLeft = shooterRight = null;
     }
@@ -76,9 +96,6 @@ public class Shooter extends SubsystemBase {
     stopShooter();
     targetVelocity = 0.0;
     // velocityGains = new PIDGain(1e-5, 2e-7, 1e-5, 0);
-    velocityGains = new PIDGain(0.00024, 0.00000001, 0.01, 0.0002025);    
-
-    setPIDGain(SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), velocityGains);
   }
 
   @Override
@@ -93,7 +110,7 @@ public class Shooter extends SubsystemBase {
       targetVelocity = velocity;
       // If the target velocity is outside the valid range, run at steady rate.
       double setVelocity = velocity != NULL_RPM && velocity <= MAX_RPM ? velocity : STEADY_RPM;
-      shooterLeft.getPIDController().setReference(setVelocity, ControlType.kVelocity);
+      shooterController.setReference(setVelocity, ControlType.kVelocity);
     }
   }
 
@@ -177,21 +194,25 @@ public class Shooter extends SubsystemBase {
     //SmartDashboard.putNumber("Hypothetical RPM", getTargetRPMFromHypothetical());
   }
 
-  private void configPID(CANSparkMax sparkmax, int slot, PIDGain gains) {
-    sparkmax.getPIDController().setP(gains.kP, slot);
-    sparkmax.getPIDController().setI(gains.kI, slot);
-    sparkmax.getPIDController().setD(gains.kD, slot);
-    sparkmax.getPIDController().setFF(gains.kF, slot);
-  }
+  // private void configPID(SparkMax sparkmax, PIDGain gains) {
+  //   shooterLeftConfig.closedLoop
+  //     .pid(gains.kP,gains.kI,gains.kF,ClosedLoopSlot.kSlot0);
 
-  public void setPIDGain(int slot, PIDGain gains) {
-    this.velocityGains = gains;
+  //   shooterLeftConfig.closedLoop
+  //     .pid(gains.kP,gains.kI,gains.kF,ClosedLoopSlot.kSlot0);
 
-    if (shooterLeft != null && shooterRight != null) {
-      configPID(shooterLeft, SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
-      configPID(shooterLeft, SHOOTER_PID_SLOTS.VELOCITY_GAINS.getValue(), this.velocityGains);
-    }
-  }
+  //   shooterLeft.configure(shooterLeftConfig, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  //   shooterRight.configure(shooterRightConfig, com.revrobotics.spark.SparkBase.ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  // }
+
+  // public void setPIDGain(int slot, PIDGain gains) {
+  //   this.velocityGains = gains;
+
+  //   if (shooterLeft != null && shooterRight != null) {
+  //     configPID(shooterLeft, this.velocityGains);
+  //     configPID(shooterLeft, this.velocityGains);
+  //   }
+  // }
 
   public enum SHOOTER_PID_SLOTS {
     VELOCITY_GAINS(0);
